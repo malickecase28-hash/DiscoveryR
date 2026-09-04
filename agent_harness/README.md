@@ -4,9 +4,15 @@ This harness keeps scientific definitions in this repository and keeps live
 agent workspaces under F:\TrinityR-runs, outside the Git worktree.
 
 The launcher requires WSL2. It starts a root WSL mount namespace, bind-mounts
-the repository and XAUUSD lake read-only, bind-mounts only the selected role
-workspace read-write, removes the host C: and F: mounts, then drops to the
-unprivileged nobody user before running the command.
+the selected shared contract/registry/authority surfaces and XAUUSD lake view
+read-only, bind-mounts only the selected role workspace read-write, removes the
+host C: and F: mounts, then drops to the unprivileged nobody user before
+running the command.
+
+AUTHORITY receives committed schema/inventory metadata and no raw lake.
+DEVELOPMENT requires the external development view declared by
+instruments/XAUUSD/data_scope_v1.json. CONFIRMATION is always rejected until a
+separate explicit freeze action is implemented.
 
 The harness is an operational boundary, not a provider/model scheduler.
 Provider identity must remain in an orchestrator-owned system outside the

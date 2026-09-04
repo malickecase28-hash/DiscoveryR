@@ -1,0 +1,32 @@
+{
+  "profile_id": "AP-001",
+  "scientific_identity": "role_id_only",
+  "provider_identity_visible_to_agent": false,
+  "live_workspace_root": "F:\\TrinityR-runs\\AP-001\\{role_id}",
+  "peer_visibility": "DENY",
+  "legacy_visibility": "DENY",
+  "profiles": {
+    "AUTHORITY": {
+      "repository": "READ_ONLY",
+      "lake": "DENY_RAW_DATA_USE_COMMITTED_INVENTORY",
+      "confirmation": "DENY",
+      "purpose": "schema and producer-semantics inspection"
+    },
+    "DEVELOPMENT": {
+      "repository": "READ_ONLY",
+      "lake": "EXTERNAL_DEVELOPMENT_VIEW_READ_ONLY",
+      "confirmation": "DENY",
+      "purpose": "development-only experiment execution"
+    },
+    "CONFIRMATION": {
+      "repository": "READ_ONLY",
+      "lake": "DENY",
+      "confirmation": "DENY_UNTIL_EXPLICIT_FREEZE",
+      "purpose": "locked before frozen confirmation"
+    }
+  },
+  "orchestrator_private": {
+    "provider_map": "F:\\TrinityR-runs\\AP-001\\orchestrator\\provider-map.json",
+    "agent_visibility": "DENY"
+  }
+}

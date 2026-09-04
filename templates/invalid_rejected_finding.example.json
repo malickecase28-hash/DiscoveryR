@@ -1,0 +1,11 @@
+{
+  "record_type": "FINDING",
+  "record_id": "F-INVALID-001",
+  "content": {},
+  "status": "REJECTED",
+  "provenance": {
+    "evidence_ids": [],
+    "researcher_id": "A-01"
+  },
+  "created_utc": "2026-01-01T00:00:00Z"
+}

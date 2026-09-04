@@ -2,6 +2,7 @@
   "program_id": "AP-001",
   "role_id": "A-01",
   "phase": "AUTHORITY",
+  "access_profile": "AP-001.AUTHORITY",
   "detector_id": "drift_burst",
   "assignment": "Independently reconstruct drift_burst lifecycle, availability, and episode identity semantics.",
   "authorized_repository_surfaces": [

@@ -15,3 +15,7 @@ path = "src/bin/validate_contract.rs"
 [[bin]]
 name = "generate_schemas"
 path = "src/bin/generate_schemas.rs"
+
+[[bin]]
+name = "ingest_knowledge"
+path = "src/bin/ingest_knowledge.rs"

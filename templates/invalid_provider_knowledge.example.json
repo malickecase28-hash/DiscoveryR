@@ -1,0 +1,13 @@
+{
+  "record_type": "QUESTION",
+  "record_id": "Q-INVALID-PROVIDER-001",
+  "content": {
+    "provider": "example"
+  },
+  "status": "OPEN",
+  "provenance": {
+    "evidence_ids": [],
+    "researcher_id": "A-01"
+  },
+  "created_utc": "2026-01-01T00:00:00Z"
+}

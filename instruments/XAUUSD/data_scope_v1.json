@@ -1,0 +1,29 @@
+{
+  "scope_id": "XAUUSD_DATA_SCOPE_V1",
+  "instrument": "XAUUSD",
+  "source_manifest_identity": "1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af",
+  "payload_manifest_identity": "78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed",
+  "boundary_rule": "80 percent chronological elapsed-time split from observed corpus bounds",
+  "observed_coverage": {
+    "start_utc": "2025-07-31T16:15:00Z",
+    "end_utc_inclusive": "2026-07-13T23:45:00Z",
+    "start_epoch_millis": 1753978500000,
+    "end_epoch_millis": 1783986300000
+  },
+  "development": {
+    "start_utc_inclusive": "2025-07-31T16:15:00Z",
+    "end_utc_exclusive": "2026-05-05T12:39:00Z",
+    "end_epoch_millis_exclusive": 1777984740000
+  },
+  "confirmation": {
+    "start_utc_inclusive": "2026-05-05T12:39:00Z",
+    "start_epoch_millis_inclusive": 1777984740000,
+    "end_utc_inclusive": "2026-07-13T23:45:00Z",
+    "status": "LOCKED_UNTIL_EXPLICIT_FREEZE"
+  },
+  "development_view": {
+    "root": "F:\\TrinityR-runs\\AP-001\\development-lake",
+    "status": "NOT_MATERIALIZED",
+    "required_before": "DEVELOPMENT_ACCESS"
+  }
+}
