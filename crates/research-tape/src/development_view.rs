@@ -33,11 +33,107 @@ pub enum Classification {
     FullConfirmation,
     Mixed,
 }
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct RowStats {
-    pub rows: u64,
-    pub gate_min: Option<i64>,
-    pub gate_max: Option<i64>,
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum GateStats {
+    Bar {
+        rows: u64,
+        bar_close_min: Option<i64>,
+        bar_close_max: Option<i64>,
+    },
+    Tick {
+        rows: u64,
+        event_min: Option<i64>,
+        event_max: Option<i64>,
+        received_min: Option<i64>,
+        received_max: Option<i64>,
+    },
+}
+pub type RowStats = GateStats;
+
+impl GateStats {
+    fn new(gate: Gate) -> Self {
+        match gate {
+            Gate::Bar { .. } => Self::Bar {
+                rows: 0,
+                bar_close_min: None,
+                bar_close_max: None,
+            },
+            Gate::Tick { .. } => Self::Tick {
+                rows: 0,
+                event_min: None,
+                event_max: None,
+                received_min: None,
+                received_max: None,
+            },
+        }
+    }
+    fn rows(&self) -> u64 {
+        match self {
+            Self::Bar { rows, .. } | Self::Tick { rows, .. } => *rows,
+        }
+    }
+    fn maxes_before(&self, boundary: i64) -> bool {
+        match self {
+            Self::Bar { bar_close_max, .. } => bar_close_max.is_none_or(|x| x < boundary),
+            Self::Tick {
+                event_max,
+                received_max,
+                ..
+            } => {
+                event_max.is_none_or(|x| x < boundary) && received_max.is_none_or(|x| x < boundary)
+            }
+        }
+    }
+    fn push(&mut self, gate: Gate, batch: &RecordBatch, row: usize) -> Result<(), String> {
+        match self {
+            Self::Bar {
+                rows,
+                bar_close_min,
+                bar_close_max,
+            } => {
+                let a = batch
+                    .column_by_name("bar_close_ts")
+                    .and_then(|x| x.as_any().downcast_ref::<Int64Array>())
+                    .ok_or("missing bar_close_ts")?;
+                if a.is_null(row) {
+                    return Err(format!("null gating time at row {row}"));
+                }
+                let v = a.value(row);
+                *rows += 1;
+                *bar_close_min = Some(bar_close_min.map_or(v, |x| x.min(v)));
+                *bar_close_max = Some(bar_close_max.map_or(v, |x| x.max(v)));
+            }
+            Self::Tick {
+                rows,
+                event_min,
+                event_max,
+                received_min,
+                received_max,
+            } => {
+                let e = batch
+                    .column_by_name("event_ts_ns")
+                    .and_then(|x| x.as_any().downcast_ref::<Int64Array>())
+                    .ok_or("missing event_ts_ns")?;
+                let r = batch
+                    .column_by_name("received_ts_ns")
+                    .and_then(|x| x.as_any().downcast_ref::<Int64Array>())
+                    .ok_or("missing received_ts_ns")?;
+                if e.is_null(row) || r.is_null(row) {
+                    return Err(format!("null gating time at row {row}"));
+                }
+                let (ev, rv) = (e.value(row), r.value(row));
+                *rows += 1;
+                *event_min = Some(event_min.map_or(ev, |x| x.min(ev)));
+                *event_max = Some(event_max.map_or(ev, |x| x.max(ev)));
+                *received_min = Some(received_min.map_or(rv, |x| x.min(rv)));
+                *received_max = Some(received_max.map_or(rv, |x| x.max(rv)));
+            }
+        }
+        if matches!(gate, Gate::Bar { .. }) != matches!(self, Self::Bar { .. }) {
+            return Err("gate/stat mismatch".into());
+        }
+        Ok(())
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -110,18 +206,15 @@ pub fn classify_batch(
     gate: Gate,
 ) -> Result<(Classification, RowStats), String> {
     let values = gate_values(batch, gate)?;
-    let mut stats = RowStats::default();
+    let mut stats = GateStats::new(gate);
     let mut included = 0;
     for row in 0..batch.num_rows() {
-        let v = values[row].unwrap();
-        stats.rows += 1;
-        stats.gate_min = Some(stats.gate_min.map_or(v, |x| x.min(v)));
-        stats.gate_max = Some(stats.gate_max.map_or(v, |x| x.max(v)));
+        stats.push(gate, batch, row)?;
         if eligible(&values, gate, row, batch)? {
             included += 1;
         }
     }
-    let kind = if included == stats.rows {
+    let kind = if included == stats.rows() {
         Classification::FullDevelopment
     } else if included == 0 {
         Classification::FullConfirmation
@@ -168,7 +261,7 @@ pub fn scan_part(
         .build()?;
     let mut result = PartResult {
         classification: Classification::FullConfirmation,
-        stats: RowStats::default(),
+        stats: GateStats::new(gate),
         eligible: 0,
         scanned: 0,
     };
@@ -177,10 +270,10 @@ pub fn scan_part(
         result.scanned += batch.num_rows() as u64;
         let values = gate_values(&batch, gate)?;
         for row in 0..batch.num_rows() {
-            let v = values[row].unwrap();
-            result.stats.rows += 1;
-            result.stats.gate_min = Some(result.stats.gate_min.map_or(v, |x| x.min(v)));
-            result.stats.gate_max = Some(result.stats.gate_max.map_or(v, |x| x.max(v)));
+            result
+                .stats
+                .push(gate, &batch, row)
+                .map_err(io::Error::other)?;
             if eligible(&values, gate, row, &batch)? {
                 result.eligible += 1;
             }
@@ -210,27 +303,27 @@ pub fn filter_part(
         .set_compression(Compression::SNAPPY)
         .build();
     let output = File::create(target)?;
-    let mut writer = ArrowWriter::try_new(output, schema, Some(props))?;
-    let mut stats = RowStats::default();
+    let mut writer = ArrowWriter::try_new(output, schema.clone(), Some(props))?;
+    let mut stats = GateStats::new(gate);
     for batch in reader {
         let batch = batch?;
-        let (kind, part_stats) = classify_batch(&batch, gate).map_err(io::Error::other)?;
-        stats.rows += part_stats.rows;
-        stats.gate_min = match (stats.gate_min, part_stats.gate_min) {
-            (Some(a), Some(b)) => Some(a.min(b)),
-            (a, b) => a.or(b),
-        };
-        stats.gate_max = match (stats.gate_max, part_stats.gate_max) {
-            (Some(a), Some(b)) => Some(a.max(b)),
-            (a, b) => a.or(b),
-        };
+        let (kind, _) = classify_batch(&batch, gate).map_err(io::Error::other)?;
         if kind != Classification::FullConfirmation {
             if let Some(filtered) = filter_batch(&batch, gate).map_err(io::Error::other)? {
+                for row in 0..filtered.num_rows() {
+                    stats.push(gate, &filtered, row).map_err(io::Error::other)?;
+                }
                 writer.write(&filtered)?;
             }
         }
     }
     writer.close()?;
+    let actual = ParquetRecordBatchReaderBuilder::try_new(File::open(target)?)?
+        .schema()
+        .clone();
+    if actual.as_ref() != schema.as_ref() {
+        return Err(io::Error::other("filtered output schema drift").into());
+    }
     Ok(stats)
 }
 
@@ -281,6 +374,7 @@ pub fn hash_view_identity(
     paths: &[&str],
     stats: &[RowStats],
     hashes: &[&str],
+    kinds: &[&str],
     code: &str,
     _runtime_millis: u128,
 ) -> String {
@@ -289,11 +383,35 @@ pub fn hash_view_identity(
         frame(&mut h, s.as_bytes());
     }
     h.update(boundary.to_le_bytes());
-    for ((path, stat), hash) in paths.iter().zip(stats).zip(hashes) {
+    for (((path, stat), hash), kind) in paths.iter().zip(stats).zip(hashes).zip(kinds) {
         frame(&mut h, path.as_bytes());
-        h.update(stat.rows.to_le_bytes());
-        h.update(stat.gate_min.unwrap_or_default().to_le_bytes());
-        h.update(stat.gate_max.unwrap_or_default().to_le_bytes());
+        frame(&mut h, kind.as_bytes());
+        match stat {
+            GateStats::Bar {
+                rows,
+                bar_close_min,
+                bar_close_max,
+            } => {
+                h.update([0]);
+                h.update(rows.to_le_bytes());
+                h.update(bar_close_min.unwrap_or_default().to_le_bytes());
+                h.update(bar_close_max.unwrap_or_default().to_le_bytes());
+            }
+            GateStats::Tick {
+                rows,
+                event_min,
+                event_max,
+                received_min,
+                received_max,
+            } => {
+                h.update([1]);
+                h.update(rows.to_le_bytes());
+                h.update(event_min.unwrap_or_default().to_le_bytes());
+                h.update(event_max.unwrap_or_default().to_le_bytes());
+                h.update(received_min.unwrap_or_default().to_le_bytes());
+                h.update(received_max.unwrap_or_default().to_le_bytes());
+            }
+        }
         frame(&mut h, hash.as_bytes());
     }
     format!("{:x}", h.finalize())
@@ -338,8 +456,12 @@ pub struct ManifestFile {
     pub logical_path: String,
     pub materialization_kind: String,
     pub development_row_count: u64,
-    pub gate_time_min: Option<i64>,
-    pub gate_time_max: Option<i64>,
+    pub bar_close_min: Option<i64>,
+    pub bar_close_max: Option<i64>,
+    pub event_min: Option<i64>,
+    pub event_max: Option<i64>,
+    pub received_min: Option<i64>,
+    pub received_max: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub sha256: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -367,6 +489,37 @@ pub fn parse_scale(value: &serde_json::Value) -> Result<(String, Gate), String> 
             boundary_ms: BOUNDARY_MS,
         },
     ))
+}
+
+#[derive(Deserialize)]
+struct Inventory {
+    source_manifest_identity: String,
+    payload_manifest_identity: String,
+    sources: Vec<InventoryGroup>,
+}
+#[derive(Deserialize)]
+struct InventoryGroup {
+    scale: serde_json::Value,
+    parts: Vec<InventoryPart>,
+}
+#[derive(Deserialize)]
+struct InventoryPart {
+    path: String,
+    rows: u64,
+}
+fn required_identity(name: &str, value: &str) -> Result<String, Box<dyn std::error::Error>> {
+    if value.len() != 64 || !value.bytes().all(|b| b.is_ascii_hexdigit()) {
+        return Err(io::Error::other(format!("invalid {name}")).into());
+    }
+    Ok(value.into())
+}
+pub fn validate_code_identity(value: &str) -> Result<&str, Box<dyn std::error::Error>> {
+    if value.len() != 40 || !value.bytes().all(|b| b.is_ascii_hexdigit()) {
+        return Err(
+            io::Error::other("DISCOVERYR_CODE_IDENTITY must be a 40-character Git SHA").into(),
+        );
+    }
+    Ok(value)
 }
 
 pub fn verify_view(
@@ -400,8 +553,9 @@ pub fn verify_view(
             reject_reparse(&path)?;
             expected.insert(file.logical_path.clone());
             let result = scan_part(&path, gate, batch_size)?;
-            if result.classification == Classification::FullConfirmation
-                || result.eligible != file.development_row_count
+            if result.classification != Classification::FullDevelopment
+                || result.eligible != result.scanned
+                || result.scanned != file.development_row_count
             {
                 return Err(io::Error::other(format!(
                     "confirmation leak or row mismatch: {}",
@@ -413,7 +567,7 @@ pub fn verify_view(
                 Gate::Bar { boundary_ms } => boundary_ms,
                 Gate::Tick { boundary_ns } => boundary_ns,
             };
-            if result.stats.gate_max.is_some_and(|max| max >= boundary) {
+            if !result.stats.maxes_before(boundary) {
                 return Err(
                     io::Error::other(format!("gate violation: {}", file.logical_path)).into(),
                 );
@@ -456,14 +610,17 @@ pub fn materialize(
     copy_full: bool,
 ) -> Result<String, Box<dyn std::error::Error>> {
     let started = Instant::now();
-    let inventory: serde_json::Value = serde_json::from_reader(File::open(inventory_path)?)?;
+    validate_code_identity(code)?;
+    let inventory: Inventory = serde_json::from_reader(File::open(inventory_path)?)?;
     let scope = "XAUUSD_DATA_SCOPE_V1";
-    let source_id = inventory["source_manifest_identity"]
-        .as_str()
-        .unwrap_or_default();
-    let payload_id = inventory["payload_manifest_identity"]
-        .as_str()
-        .unwrap_or_default();
+    let source_id = required_identity(
+        "source_manifest_identity",
+        &inventory.source_manifest_identity,
+    )?;
+    let payload_id = required_identity(
+        "payload_manifest_identity",
+        &inventory.payload_manifest_identity,
+    )?;
     if view_root.exists() {
         let existing: Manifest =
             serde_json::from_reader(File::open(view_root.join("view_manifest.json"))?)?;
@@ -473,6 +630,7 @@ pub fn materialize(
             && existing.builder_code_identity == code
             && existing.development_end_exclusive == "2026-05-05T12:39:00Z"
         {
+            verify_view(view_root, &existing, batch_size)?;
             return Ok("ALREADY_MATERIALIZED".into());
         }
         return Err(io::Error::other("existing development view conflicts").into());
@@ -487,11 +645,15 @@ pub fn materialize(
     let mut paths = Vec::new();
     let mut stats = Vec::new();
     let mut hashes = Vec::new();
-    for group in inventory["sources"].as_array().ok_or("sources missing")? {
-        let (name, gate) = parse_scale(&group["scale"])?;
+    let mut kinds = Vec::new();
+    let mut audit_parts = Vec::new();
+    let mut bytes_linked = 0u64;
+    let mut bytes_rewritten = 0u64;
+    for group in &inventory.sources {
+        let (name, gate) = parse_scale(&group.scale)?;
         let mut files = Vec::new();
-        for part in group["parts"].as_array().ok_or("parts missing")? {
-            let logical = part["path"].as_str().ok_or("path missing")?;
+        for part in &group.parts {
+            let logical = part.path.as_str();
             let logical_path = Path::new(logical);
             if logical_path.is_absolute()
                 || logical_path
@@ -502,42 +664,80 @@ pub fn materialize(
             }
             let source = source_root.join(logical_path);
             let result = scan_part(&source, gate, batch_size)?;
+            if result.scanned != part.rows {
+                return Err(
+                    io::Error::other(format!("declared row count mismatch: {logical}")).into(),
+                );
+            }
+            let classification = match result.classification {
+                Classification::FullDevelopment => "FULL_DEVELOPMENT",
+                Classification::FullConfirmation => "FULL_CONFIRMATION",
+                Classification::Mixed => "MIXED",
+            };
+            audit_parts.push(serde_json::json!({"logical_path": logical, "classification": classification, "declared_source_rows": part.rows, "scanned_rows": result.scanned, "development_rows": result.eligible, "excluded_rows": result.scanned - result.eligible}));
             if result.classification == Classification::FullConfirmation {
                 continue;
             }
             let target = temp.join(logical_path);
             fs::create_dir_all(target.parent().unwrap())?;
-            let (kind, sha) = match result.classification {
+            let (kind, sha, development_stats) = match result.classification {
                 Classification::FullDevelopment => {
                     hard_link_or_copy(&source, &target, copy_full)?;
+                    bytes_linked += fs::metadata(&source)?.len();
                     (
                         if copy_full {
                             "COPIED_FULL_DEVELOPMENT"
                         } else {
                             "HARDLINK_FULL_DEVELOPMENT"
                         }
-                        .into(),
+                        .to_string(),
                         None,
+                        result.stats.clone(),
                     )
                 }
                 Classification::Mixed => {
-                    filter_part(&source, &target, gate, batch_size)?;
-                    ("FILTERED_MIXED_PART".into(), Some(hash_file(&target)?))
+                    let filtered_stats = filter_part(&source, &target, gate, batch_size)?;
+                    bytes_rewritten += fs::metadata(&target)?.len();
+                    (
+                        "FILTERED_MIXED_PART".to_string(),
+                        Some(hash_file(&target)?),
+                        filtered_stats,
+                    )
                 }
                 Classification::FullConfirmation => unreachable!(),
             };
             paths.push(logical);
-            stats.push(RowStats {
-                rows: result.eligible,
-                ..result.stats
-            });
+            stats.push(development_stats.clone());
             hashes.push(sha.clone().unwrap_or_default());
+            kinds.push(kind.clone());
             files.push(ManifestFile {
                 logical_path: logical.into(),
                 materialization_kind: kind,
                 development_row_count: result.eligible,
-                gate_time_min: result.stats.gate_min,
-                gate_time_max: result.stats.gate_max,
+                bar_close_min: match development_stats {
+                    GateStats::Bar { bar_close_min, .. } => bar_close_min,
+                    _ => None,
+                },
+                bar_close_max: match development_stats {
+                    GateStats::Bar { bar_close_max, .. } => bar_close_max,
+                    _ => None,
+                },
+                event_min: match development_stats {
+                    GateStats::Tick { event_min, .. } => event_min,
+                    _ => None,
+                },
+                event_max: match development_stats {
+                    GateStats::Tick { event_max, .. } => event_max,
+                    _ => None,
+                },
+                received_min: match development_stats {
+                    GateStats::Tick { received_min, .. } => received_min,
+                    _ => None,
+                },
+                received_max: match development_stats {
+                    GateStats::Tick { received_max, .. } => received_max,
+                    _ => None,
+                },
                 sha256: sha,
                 source_part: (result.classification == Classification::Mixed)
                     .then(|| logical.into()),
@@ -547,14 +747,16 @@ pub fn materialize(
     }
     let path_refs: Vec<_> = paths.to_vec();
     let hash_refs: Vec<_> = hashes.iter().map(String::as_str).collect();
+    let kind_refs: Vec<_> = kinds.iter().map(String::as_str).collect();
     let identity = hash_view_identity(
         scope,
-        source_id,
-        payload_id,
+        &source_id,
+        &payload_id,
         BOUNDARY_MS,
         &path_refs,
         &stats,
         &hash_refs,
+        &kind_refs,
         code,
         started.elapsed().as_millis(),
     );
@@ -566,7 +768,7 @@ pub fn materialize(
     fs::create_dir_all(audit_root)?;
     serde_json::to_writer_pretty(
         File::create(audit_root.join("build_audit.json"))?,
-        &serde_json::json!({"scope_id":scope,"elapsed_millis":started.elapsed().as_millis(),"logical_view_identity":identity}),
+        &serde_json::json!({"scope_id":scope,"source_parts_examined":audit_parts,"hardlinked_parts":kinds.iter().filter(|k| k.as_str()=="HARDLINK_FULL_DEVELOPMENT").count(),"filtered_mixed_parts":kinds.iter().filter(|k| k.as_str()=="FILTERED_MIXED_PART").count(),"confirmation_only_parts":audit_parts.iter().filter(|p| p["classification"]=="FULL_CONFIRMATION").count(),"bytes_linked":bytes_linked,"bytes_rewritten":bytes_rewritten,"elapsed_millis":started.elapsed().as_millis(),"logical_view_identity":identity}),
     )?;
     Ok(identity)
 }
