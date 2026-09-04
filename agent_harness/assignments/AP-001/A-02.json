@@ -1,0 +1,17 @@
+{
+  "program_id": "AP-001",
+  "role_id": "A-02",
+  "phase": "AUTHORITY",
+  "detector_id": "drift_burst",
+  "assignment": "Independently reconstruct drift_burst lifecycle, availability, and episode identity semantics.",
+  "authorized_repository_surfaces": [
+    "protocol",
+    "contracts",
+    "registry",
+    "instruments/XAUUSD/instrument_config.json",
+    "instruments/XAUUSD/source_inventory.json"
+  ],
+  "authorized_lake_surface": "XAUUSD source paths explicitly listed in source_inventory.json",
+  "private_workspace": "F:\\TrinityR-runs\\AP-001\\A-02",
+  "peer_visibility": "DENY"
+}
