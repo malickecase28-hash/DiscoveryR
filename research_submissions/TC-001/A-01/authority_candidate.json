@@ -1,0 +1,395 @@
+{
+  "artifact_type": "AUTHORITY_CANDIDATE",
+  "program_id": "TC-001",
+  "role_id": "A-01",
+  "subjects": ["tick_conditioning"],
+  "claims": [
+    {
+      "claim_id": "TC001-A01-C001",
+      "subject": "tick_conditioning",
+      "topic": "declared_serialization_contract",
+      "claim": "Authority source xauusd.wave1.tc001 (schema trinity.authority.v2) selects, for program TC-001 subject tick_conditioning on XAUUSD, a declared contract with contract_schema_version 'trinity.research.tick-payload-contract.v1' and contract_source 'native_detector_serialization_contract'.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/contract_schema_version", "evidence_type": "declared_contract_selection", "supports": "declared contract_schema_version trinity.research.tick-payload-contract.v1"},
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/contract_source", "evidence_type": "declared_contract_selection", "supports": "declared contract_source native_detector_serialization_contract"},
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/bundle_manifest.json", "locator": "/bundle_content_identity", "evidence_type": "declared_bundle_identity", "supports": "authority bundle content identity 668f932ebc660929a6c16587ad90693dcd04ebdd294983963399f764d8d28281"},
+        {"source_id": "assignment.tc-001_a-01", "relative_path": "repository/agent_harness/assignments/TC-001/A-01.json", "locator": "/authority_source_ids", "evidence_type": "declared_authority_source", "supports": "assignment declares xauusd.wave1.tc001 as the authorized authority source id"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Any future authority bundle with a different bundle_content_identity could replace this selection; the claim is bound to the declared bundle identity.",
+      "dependency_implications": "Provides the contract identifier downstream roles may use for serialization alignment only; no semantic or dependency commitment follows from it.",
+      "notes": "Program, subject, and instrument bindings are taken from the authority record's own declared fields. In the provenance-only correction, the program input manifest citation was replaced by the assignment's authorization of the source id."
+    },
+    {
+      "claim_id": "TC001-A01-C002",
+      "subject": "tick_conditioning",
+      "topic": "declared_serialization_contract",
+      "claim": "The authority record declares status ['DECLARED_SERIALIZATION_CONTRACT_AVAILABLE'], an empty unresolved array, and provenance consisting of eight JSON pointers into payload_manifest.json at sha256 78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed, covering /declared_tick_payload_contract/schema_version, /source, and one /detectors/<family> pointer for each of the six declared families.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/status", "evidence_type": "declared_status", "supports": "literal status list DECLARED_SERIALIZATION_CONTRACT_AVAILABLE"},
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/unresolved", "evidence_type": "declared_status", "supports": "literal empty unresolved array"},
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/provenance (8 entries)", "evidence_type": "declared_provenance", "supports": "eight JSON pointers into payload_manifest.json at sha256 78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "The pointed-to payload_manifest.json was not readable under this access profile; an authorized future view of that manifest could refine what the eight pointers denote.",
+      "dependency_implications": "Confirms the existence and provenance anchoring of the declaration only; downstream semantics remain governed by the unresolved dimensions.",
+      "notes": "The empty unresolved array in the authority record is reported literally and is not interpreted as an assertion that no semantics remain unresolved."
+    },
+    {
+      "claim_id": "TC001-A01-C003",
+      "subject": "tick_conditioning",
+      "topic": "declared_serialization_contract",
+      "claim": "The declared contract's entire selected content consists of per-family record-variant names, each carrying only a field_paths name list; it declares no value vocabularies, no threshold values, no computation windows, no clocks, no keying rules, and no semantic-category assignments.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected (subtree contains only family -> variant -> field_paths)", "evidence_type": "declared_structure", "supports": "the selected subtree holds no elements beyond family, variant, and field-path names"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A future contract revision adding vocabularies, thresholds, windows, clocks, keying, or semantic categories would supersede this scope statement.",
+      "dependency_implications": "Downstream roles cannot derive computation semantics from this contract and must not simulate them from names.",
+      "notes": "Scope statement reads the declared structure itself and adds no interpretation of names."
+    },
+    {
+      "claim_id": "TC001-A01-C004",
+      "subject": "tick_conditioning",
+      "topic": "declared_serialization_contract",
+      "claim": "Across the complete authorized corpus read for this assignment (authority bundle 2 files; manifest/research_input_manifest.json; protocol 2 files; contracts 4 schema files; registry 1 file; instruments/XAUUSD 2 files; assignment 1 file), no surface assigns an occurrence time, an availability time, a semantic category (event, state, transition, baseline, direction, reset, persistence, history-dependence, causal availability), or a row-keying rule to any declared tick payload record variant.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected (names and field paths only)", "evidence_type": "corpus_absence", "supports": "no clock, keying, or semantic-category declaration in the contract selection"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Any newly authorized surface (for example the payload manifest or a detector-semantics declaration) could immediately close or alter this absence claim; restored provenance for the non-representable surfaces could restore a stronger status.",
+      "dependency_implications": "Until superseded, downstream roles must treat all semantic dimensions as undeclared and must not build keying or eligibility rules on tick payloads.",
+      "notes": "Downgraded from PROVISIONAL in the provenance-only correction: the corpus-wide scope rests on registry, instrument-inventory, contract, and program-manifest surfaces that cannot be represented by an authorized source_id; only the authority-selection absence remains evidenced. The no-row-keying conclusion is unchanged."
+    },
+    {
+      "claim_id": "TC001-A01-C005",
+      "subject": "tick_conditioning",
+      "topic": "record_variants_and_field_paths",
+      "claim": "The contract declares exactly six detector families carrying record variants: feed_health (8 variants), micro_volatility (3), quote_arrival (2), quote_dynamics (8), quote_pressure (2), spread_state (3) — 26 record variants in total.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/feed_health (8 variant keys)", "evidence_type": "declared_variant_inventory", "supports": "feed_health variant count"},
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/micro_volatility (3)", "evidence_type": "declared_variant_inventory", "supports": "micro_volatility variant count"},
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/quote_arrival (2)", "evidence_type": "declared_variant_inventory", "supports": "quote_arrival variant count"},
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/quote_dynamics (8)", "evidence_type": "declared_variant_inventory", "supports": "quote_dynamics variant count"},
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/quote_pressure (2)", "evidence_type": "declared_variant_inventory", "supports": "quote_pressure variant count"},
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/spread_state (3)", "evidence_type": "declared_variant_inventory", "supports": "spread_state variant count"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A revised contract bundle could change the family or variant inventory; the claim is scoped to the declared bundle identity.",
+      "dependency_implications": "The inventory fixes the serialization vocabulary available for downstream mapping; it implies no inter-family dependency.",
+      "notes": "Family set equals the six families named in the assignment's declared-structure list."
+    },
+    {
+      "claim_id": "TC001-A01-C006",
+      "subject": "tick_conditioning",
+      "topic": "record_variants_and_field_paths",
+      "claim": "The declared record-variant names are exactly: feed_health {clock_inversion, event_time_gap, event_time_regression, expected_market_closure, latency_spike, sequence_duplicate, sequence_gap, sequence_regression}; micro_volatility {micro_volatility_burst, micro_volatility_compression, micro_volatility_transition}; quote_arrival {arrival_burst, arrival_gap}; quote_dynamics {asymmetric_reprice_down, asymmetric_reprice_up, down, quote_acceleration_down, quote_acceleration_up, quote_reprice_up, spread_compression_impulse, spread_widening_impulse}; quote_pressure {buy_quote_pressure, sell_quote_pressure}; spread_state {spread_compression, spread_state_transition, spread_widening}.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/* (variant keys per family, enumerated verbatim)", "evidence_type": "declared_variant_inventory", "supports": "exact record-variant name sets for all six families"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Variant names could be added, removed, or renamed in a future bundle; consumers should re-verify against the bundle identity they consume.",
+      "dependency_implications": "Names are usable as opaque serialization labels only; no behavioral category may be attached to any of them.",
+      "notes": "The variant-name inventory is reported without inferring event, state, transition, or directional character from any name."
+    },
+    {
+      "claim_id": "TC001-A01-C007",
+      "subject": "tick_conditioning",
+      "topic": "record_variants_and_field_paths",
+      "claim": "The declared field-path unions per family are exactly: feed_health (15 distinct) {event_time_ns, received_time_ns, signed_latency_ns, gap_ns, threshold_ns, prior_event_time_ns, regression_ns, market_state, authority_hash, latency_ns, median_latency_ns, ratio, source_sequence, prior_sequence, sequence_delta}; micro_volatility (5) {from, to, short_rms_bps, baseline_rms_bps, ratio}; quote_arrival (3) {interarrival_ns, median_ns, ratio}; quote_dynamics (22) {return_bps, baseline_rms_bps, magnitude_ratio, motion_class, bid_change, ask_change, bid_change_bps, ask_change_bps, spread_change_bps, spread_effect, dt_ns, acceleration_bps_per_s2, baseline_acceleration_rms_bps_per_s2, velocity_bps_per_s, prior_velocity_bps_per_s, current_dt_s, prior_dt_s, velocity_sample_separation_s, spread_change, baseline_spread_change_rms_bps, prior_spread, current_spread}; quote_pressure (6) {semantics, direction_pressure, pressure, instantaneous_pressure, bid_move, ask_move}; spread_state (5) {spread_bps, median_bps, ratio, from, to}.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/*/[]/field_paths (verbatim field-path lists, unioned per family)", "evidence_type": "declared_field_paths", "supports": "exact field-path unions and counts for all six families"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Field-path sets could change in a future bundle; consumers should re-verify against the bundle identity they consume.",
+      "dependency_implications": "Field-path sharing across families (recorded in TC001-A01-C023) must not be read as shared computation or derivation.",
+      "notes": "Unions are name sets only; field occurrence within specific variants is declared in the same source and was not otherwise interpreted."
+    },
+    {
+      "claim_id": "TC001-A01-C008",
+      "subject": "tick_conditioning",
+      "topic": "record_variants_and_field_paths",
+      "claim": "Declared field-path names compare to tick physical column names as follows: 'source_sequence' is string-identical to the physical column 'source_sequence', while 'event_time_ns' and 'received_time_ns' differ from physical columns 'event_ts_ns' and 'received_ts_ns' by suffix only; these are name-comparison facts and establish nothing about reference, linkage, keying, or provenance of any record field.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/feed_health/*/field_paths", "evidence_type": "declared_field_paths", "supports": "declared names source_sequence, event_time_ns, received_time_ns"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "The payload manifest or a future linkage declaration could establish actual reference relationships that this name-comparison claim deliberately does not assert; restored provenance for the instrument inventory could restore a stronger status.",
+      "dependency_implications": "No keying or linkage rule may be derived from the name correspondences reported here.",
+      "notes": "Downgraded from AUTHORITATIVE in the provenance-only correction: the physical-column half of the comparison rests on the instrument source inventory, which cannot be represented by an authorized source_id; only the declared-names half remains evidenced."
+    },
+    {
+      "claim_id": "TC001-A01-C009",
+      "subject": "tick_conditioning",
+      "topic": "tick_surface_schema",
+      "claim": "The XAUUSD tick source is declared with 6 parts totalling 68,445,659 rows, physical schema {event_ts_ns Int64 non-null, received_ts_ns Int64 non-null, source_sequence Int64 non-null, bid Float64 non-null, ask Float64 non-null} plus 7 nullable LargeUtf8 payload columns, and physical_time_coordinate_fields [event_ts_ns, received_ts_ns].",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "A future source_inventory revision could change the physical schema or partition layout; restored provenance for the instrument inventory could restore a stronger status.",
+      "dependency_implications": "Physical time coordinate fields are row-level storage facts; downstream anchor rules must not treat them as payload clocks (see TC001-A01-C014, TC001-A01-C016).",
+      "notes": "Downgraded from AUTHORITATIVE in the provenance-only correction: the claim is evidenced only by the instrument source inventory, which cannot be represented by an authorized source_id, so no provenance-compatible evidence remains. The row total remains the sum of the six declared part row counts."
+    },
+    {
+      "claim_id": "TC001-A01-C010",
+      "subject": "tick_conditioning",
+      "topic": "tick_surface_schema",
+      "claim": "The seven tick payload column names are string-equal to the detector_ids of the seven tick-domain registry detectors (drift_burst, spread_state, quote_dynamics, quote_arrival, micro_volatility, feed_health, quote_pressure); the six contract families are a subset of these, and payload_drift_burst has no declared record-variant structure in this authority source.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected (families feed_health, micro_volatility, quote_arrival, quote_dynamics, quote_pressure, spread_state; no drift_burst)", "evidence_type": "declared_structure", "supports": "contract family set excludes drift_burst"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A future authority bundle covering drift_burst, or a revised inventory, would supersede the coverage asymmetry reported here; restored provenance for the inventory and registry surfaces could restore a stronger status.",
+      "dependency_implications": "Six of seven tick detectors have declared serialization structure; drift_burst must be treated as structurally undeclared until covered.",
+      "notes": "Downgraded from AUTHORITATIVE in the provenance-only correction: the payload-column and registry detector_id halves rest on surfaces that cannot be represented by an authorized source_id; only the contract-family-exclusion half remains evidenced. The column-to-detector correspondence remains a string-equality observation and nothing more."
+    },
+    {
+      "claim_id": "TC001-A01-C011",
+      "subject": "tick_conditioning",
+      "topic": "registry_status",
+      "claim": "The registry contains 23 entries: 16 bar-domain detectors with native_scales {kind: explicit, scales [15s, 30s, 1m, 5m, 15m, 1h, 4h]} and 7 tick-domain detectors with native_scales {kind: tick} and known_surfaces [tick]; every entry carries semantic_status 'UNRESOLVED', availability_semantics 'UNRESOLVED; authoritative manifest surface only.', derives_from [], lifecycle_vocabulary [], and roles [].",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "A future registry revision could populate semantic_status, availability_semantics, derives_from, lifecycle_vocabulary, or roles, superseding the quoted values; restored provenance for the registry surface could restore a stronger status.",
+      "dependency_implications": "Until then, no role, lifecycle state, or derivation may be assumed for any registered detector.",
+      "notes": "Downgraded from AUTHORITATIVE in the provenance-only correction: the claim is evidenced only by the registry surface, which cannot be represented by an authorized source_id, so no provenance-compatible evidence remains. Registry values were quoted literally from the registry surface as read."
+    },
+    {
+      "claim_id": "TC001-A01-C012",
+      "subject": "tick_conditioning",
+      "topic": "provenance_consistency",
+      "claim": "The authority provenance source_sha256 for payload_manifest.json (78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed) is string-identical to the payload_manifest_identity declared in the XAUUSD source inventory.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/provenance/0/source_sha256", "evidence_type": "declared_hash_identity", "supports": "authority-side payload manifest sha256"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A future bundle re-anchor could change the payload manifest identity and break this equality; restored provenance for the instrument inventory could restore a stronger status.",
+      "dependency_implications": "The equality, where established, supports provenance traceability only; it establishes no content semantics.",
+      "notes": "Downgraded from AUTHORITATIVE in the provenance-only correction: the equality requires the instrument inventory's declared identity, which cannot be represented by an authorized source_id; only the authority-side value remains evidenced. Both values are declared strings compared for equality; no file content was read."
+    },
+    {
+      "claim_id": "TC001-A01-C013",
+      "subject": "tick_conditioning",
+      "topic": "provenance_consistency",
+      "claim": "The bundle manifest declares authority.json at sha256 equal to its bundle_content_identity (668f932ebc660929a6c16587ad90693dcd04ebdd294983963399f764d8d28281), and the research input manifest lists the same bundle_content_identity and a directory_transport_hash (1fdda4e9d5702f5eb1563acbe618bab7af84d9d72ac236cf54a00319cc853400) for source xauusd.wave1.tc001.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/bundle_manifest.json", "locator": "/generated_files/0/sha256, /bundle_content_identity, /directory_transport_hash", "evidence_type": "declared_bundle_identity", "supports": "bundle-side identity values"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A re-published bundle would change the identity values; consumers must re-verify against the manifest they are given; restored provenance for the program manifest could restore a stronger status.",
+      "dependency_implications": "Where established, the identity chain enables integrity verification of the authority input; no scientific content follows from it.",
+      "notes": "Downgraded from AUTHORITATIVE in the provenance-only correction: the research-input-manifest half rests on a surface that cannot be represented by an authorized source_id; only the bundle-manifest half remains evidenced. Identity agreement is reported as declared-string equality."
+    },
+    {
+      "claim_id": "TC001-A01-C014",
+      "subject": "tick_conditioning",
+      "topic": "payload_occurrence_clock",
+      "claim": "The payload occurrence clock is unresolved: no authorized surface declares which time coordinate, if any, constitutes the occurrence time of any declared record variant; the tick rows' physical_time_coordinate_fields (event_ts_ns, received_ts_ns) are physical-schema facts only, and physical co-location of payload columns on a tick row does not establish occurrence time for payload records.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected (no clock field declared for any variant)", "evidence_type": "corpus_absence", "supports": "no occurrence-clock declaration in the contract selection"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "An authorized occurrence or availability declaration, or readable payload manifest content, could resolve which clock governs each variant.",
+      "dependency_implications": "No anchor-time or eligibility rule may be built on tick payloads until an occurrence clock is declared; row time coordinates cannot substitute.",
+      "notes": "Status reflects absence of declaration, not a contradiction; no row-keying hypothesis is formed. In the provenance-only correction, the physical-schema citation was dropped because the instrument inventory cannot be represented by an authorized source_id."
+    },
+    {
+      "claim_id": "TC001-A01-C015",
+      "subject": "tick_conditioning",
+      "topic": "detector_availability_clock",
+      "claim": "The registry itself declares availability semantics unresolved for every registered detector, with the literal availability_semantics string 'UNRESOLVED; authoritative manifest surface only.' on all 23 entries.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "A future registry revision replacing the literal unresolved string would supersede this observation; restored provenance for the registry surface could restore a stronger status.",
+      "dependency_implications": "Registry-level unresolvedness, where established, binds all downstream availability assumptions to fail-closed.",
+      "notes": "Downgraded from AUTHORITATIVE in the provenance-only correction: the literal registry string is evidenced only by the registry surface, which cannot be represented by an authorized source_id, so no provenance-compatible evidence remains. The substantive availability question is carried by TC001-A01-C016."
+    },
+    {
+      "claim_id": "TC001-A01-C016",
+      "subject": "tick_conditioning",
+      "topic": "detector_availability_clock",
+      "claim": "The detector availability clock is unresolved: no authorized surface declares when any declared record variant becomes available relative to any clock, whether availability coincides with or lags occurrence, or what visibility rule governs a payload column's contents at any anchor time.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected (no availability declaration)", "evidence_type": "corpus_absence", "supports": "no availability declaration in the contract selection"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "An authorized availability contract or detector-semantics declaration could resolve availability timing and visibility.",
+      "dependency_implications": "Until then, point-in-time eligibility of tick payloads at any anchor is undeclared and must be treated as unresolved in any future design.",
+      "notes": "Status reflects absence of declaration across the enumerated corpus. In the provenance-only correction, the registry citation was dropped because the registry surface cannot be represented by an authorized source_id."
+    },
+    {
+      "claim_id": "TC001-A01-C017",
+      "subject": "tick_conditioning",
+      "topic": "reset",
+      "claim": "Reset semantics are unresolved: no authorized surface declares whether any family or record variant involves state reset at any boundary (session, market-state change, day, or otherwise); the field paths market_state and authority_hash (feed_health/expected_market_closure) and from/to (micro_volatility, spread_state) are declared names whose reset-related interpretation is not established.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/feed_health/expected_market_closure/field_paths", "evidence_type": "declared_field_paths", "supports": "declared names market_state, authority_hash with no reset semantics"},
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/micro_volatility/*/field_paths, /selected/spread_state/spread_state_transition/field_paths", "evidence_type": "declared_field_paths", "supports": "declared names from, to with no reset semantics"},
+        {"source_id": "protocol.research_rules", "relative_path": "repository/protocol/RESEARCH_RULES.md", "locator": "rules 2 and 4 (occurrence provenance vs. eligible information; lifecycle-first)", "evidence_type": "protocol_rule", "supports": "program constraints on information eligibility; constraints, not declarations"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A semantics declaration covering expected_market_closure or the transition-named variants could establish or refute reset behavior.",
+      "dependency_implications": "Downstream aggregation or windowing must not assume any reset boundary for any family.",
+      "notes": "No reset semantics may be inferred from the names market_state, authority_hash, from, or to."
+    },
+    {
+      "claim_id": "TC001-A01-C018",
+      "subject": "tick_conditioning",
+      "topic": "persistence",
+      "claim": "Persistence semantics are unresolved: no authorized surface declares whether record variants represent persistent state, per-event recomputation, or episodic emissions; the tick payload columns are declared nullable in the physical schema, which is a storage fact and does not establish an emission or persistence rule.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected (no persistence declaration)", "evidence_type": "corpus_absence", "supports": "no persistence or emission declaration in the contract selection"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "An emission or state-model declaration could resolve whether variants are persistent, episodic, or per-event.",
+      "dependency_implications": "Downstream consumption must not assume any particular persistence or emission pattern.",
+      "notes": "Nullability is a storage-level fact and was not observed against data (raw lake access denied). In the provenance-only correction, the physical-schema citation was dropped because the instrument inventory cannot be represented by an authorized source_id."
+    },
+    {
+      "claim_id": "TC001-A01-C019",
+      "subject": "tick_conditioning",
+      "topic": "direction",
+      "claim": "Direction semantics are unresolved: no authorized surface declares whether directionally named variants (asymmetric_reprice_down, asymmetric_reprice_up, down, quote_acceleration_down, quote_acceleration_up, buy_quote_pressure, sell_quote_pressure, spread_compression, spread_widening) or field paths (direction_pressure, bid_move, ask_move, bid_change, ask_change) carry directional or side-attribution semantics, and no value vocabularies are declared for motion_class, spread_effect, semantics, direction_pressure, market_state, from, or to.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected (variant and field-path names only; no enum vocabularies or value domains anywhere)", "evidence_type": "corpus_absence", "supports": "names are declared; no value domains or directional semantics are declared"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Declared value vocabularies for motion_class, spread_effect, semantics, direction_pressure, market_state, from, and to could resolve directional semantics.",
+      "dependency_implications": "No directional or side-attribution interpretation may be attached to any variant in downstream work.",
+      "notes": "Direction-named identifiers are treated as opaque; nothing here asserts or denies directional behavior."
+    },
+    {
+      "claim_id": "TC001-A01-C020",
+      "subject": "tick_conditioning",
+      "topic": "baseline",
+      "claim": "Baseline semantics are unresolved: field paths baseline_rms_bps, baseline_acceleration_rms_bps_per_s2, baseline_spread_change_rms_bps, median_ns, median_latency_ns, and median_bps are declared names, but no authorized surface declares whether they are causal baselines, their reference windows, their update rules, or whether the companion ratio fields compare against them causally.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/*/[]/field_paths (baseline_* and median_* names)", "evidence_type": "declared_field_paths", "supports": "baseline and median field-path names exist as declared names only"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A declaration of baseline computation (reference window, update rule, causal status) could resolve this dimension.",
+      "dependency_implications": "ratio-type fields must not be consumed as causally normalized values until baseline semantics are declared.",
+      "notes": "No baseline character is inferred from the names."
+    },
+    {
+      "claim_id": "TC001-A01-C021",
+      "subject": "tick_conditioning",
+      "topic": "history",
+      "claim": "History dependence is unresolved: declared field paths prior_event_time_ns, prior_sequence, prior_velocity_bps_per_s, prior_dt_s, and prior_spread, and the from/to pairs, are declared names only; whether any record variant references earlier records, maintains state across rows, or is history-dependent in any causal sense is not established by any authorized surface.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/feed_health/*/field_paths, /selected/quote_dynamics/*/field_paths", "evidence_type": "declared_field_paths", "supports": "prior_* and from/to names exist as declared names only"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A state-model declaration could resolve whether prior_* and from/to paths reference earlier records or maintained state.",
+      "dependency_implications": "Downstream use must not assume either history dependence or history independence.",
+      "notes": "History dependence is left open in both directions; no inference is drawn from the prior_ prefix."
+    },
+    {
+      "claim_id": "TC001-A01-C022",
+      "subject": "tick_conditioning",
+      "topic": "dependencies",
+      "claim": "No derivation edges are declared anywhere in the authorized surfaces: the registry carries derives_from [] for all 23 detectors, and no protocol, contract, instrument, manifest, or authority file declares a derivation, conditioning, or dependency relationship between any two detectors.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected (families declared side by side, no inter-family references)", "evidence_type": "corpus_absence", "supports": "no derivation or conditioning declaration in the contract selection"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A future registry revision or semantics declaration could add derivation edges, superseding the empty-declaration fact; restored provenance for the registry surface could restore a stronger status.",
+      "dependency_implications": "Absence of declared derivation is not evidence of independence; confluence independence remains unestablished (protocol rule 11).",
+      "notes": "Downgraded from AUTHORITATIVE in the provenance-only correction: the registry half rests on a surface that cannot be represented by an authorized source_id; only the authority-selection absence remains evidenced. The claim is about declared lineage only, not about actual computational dependence."
+    },
+    {
+      "claim_id": "TC001-A01-C023",
+      "subject": "tick_conditioning",
+      "topic": "dependencies",
+      "claim": "The actual dependency and conditioning structure among tick detectors is unresolved: declared field-path names are shared across families (for example ratio in five of six families; from/to in micro_volatility and spread_state; bid_change, ask_change, bid_change_bps, ask_change_bps in quote_dynamics variants; baseline_rms_bps in micro_volatility and quote_dynamics; median_* in feed_health, quote_arrival, spread_state), but name-sharing establishes neither shared computation, nor derivation, nor confluence independence per protocol rule 11.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected/*/[]/field_paths (cross-family name comparison)", "evidence_type": "declared_field_paths", "supports": "shared field-path names across families"},
+        {"source_id": "protocol.research_rules", "relative_path": "repository/protocol/RESEARCH_RULES.md", "locator": "rule 11 (derivation defeats automatic confluence independence)", "evidence_type": "protocol_rule", "supports": "program constraint on dependence and confluence"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A declared derivation or shared-input documentation would resolve the dependency structure.",
+      "dependency_implications": "Downstream confluence designs must treat all tick detectors as potentially dependent.",
+      "notes": "Name-sharing is reported as an observed structural fact and nothing more. In the provenance-only correction, the registry citation was dropped because the registry surface cannot be represented by an authorized source_id."
+    },
+    {
+      "claim_id": "TC001-A01-C024",
+      "subject": "tick_conditioning",
+      "topic": "dependencies",
+      "claim": "The relationship of payload_drift_burst — the seventh tick payload column and a registered tick-domain detector — to the six contract-declared families is unresolved: it has no declared record-variant structure in this authority source, and nothing declares whether it shares conditioning inputs with them.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected (no drift_burst family)", "evidence_type": "corpus_absence", "supports": "no declared variant structure for drift_burst in this source"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A future authority bundle covering drift_burst could resolve its structural relationship to the six families.",
+      "dependency_implications": "drift_burst must be excluded from any dependency or confluence reasoning until declared.",
+      "notes": "Coverage asymmetry is a fact about this authority source, not about the detector. In the provenance-only correction, the inventory and registry citations were dropped because those surfaces cannot be represented by an authorized source_id."
+    },
+    {
+      "claim_id": "TC001-A01-C025",
+      "subject": "tick_conditioning",
+      "topic": "future_mapping",
+      "claim": "No experiment contract instance, run manifest, or knowledge record exists in the authorized corpus; the experiment_contract_v1 schema requires an anchor with anchor_time_semantics, detector_id, and lifecycle_state plus anchor_time_rule, native_scale_scope, and eligible_context, but no authorized artifact binds any declared tick record variant to those slots.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "assignment.tc-001_a-01", "relative_path": "repository/agent_harness/assignments/TC-001/A-01.json", "locator": "/authorized_repository_surfaces", "evidence_type": "corpus_absence", "supports": "the assignment's authorized surface list enumerates no experiment, run, or knowledge artifacts"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Future experiment contract instances or run manifests, once authorized, would populate the anchor slots and could supersede this absence claim; restored provenance for the governance schemas could restore a stronger status.",
+      "dependency_implications": "No tick record variant is currently bound to any anchor, eligible-context, or lifecycle slot.",
+      "notes": "Downgraded from PROVISIONAL in the provenance-only correction: the governance-schema half rests on contract surfaces that cannot be represented by an authorized source_id; only the assignment-surface enumeration remains evidenced."
+    },
+    {
+      "claim_id": "TC001-A01-C026",
+      "subject": "tick_conditioning",
+      "topic": "future_mapping",
+      "claim": "The mapping of declared tick record variants to future research use is unresolved: no authorized surface declares which variants may serve as anchors, eligible context, or lifecycle states, and the registry's lifecycle_vocabulary is empty for all tick detectors.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.tc001", "relative_path": "authority/authority.json", "locator": "/selected (no usage or mapping declaration)", "evidence_type": "corpus_absence", "supports": "no usage or mapping declaration in the contract selection"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A populated lifecycle_vocabulary or an authorized experiment contract instance could resolve the mapping.",
+      "dependency_implications": "Future programs must declare the mapping explicitly rather than infer it from this corpus.",
+      "notes": "Future mapping is left entirely undeclared by the authorized surfaces. In the provenance-only correction, the registry citation was dropped because the registry surface cannot be represented by an authorized source_id."
+    }
+  ],
+  "unresolved_questions": [
+    {"question_id": "UQ-001", "question": "Which time coordinate, if any, constitutes the occurrence clock of each declared tick payload record variant?", "related_claim_ids": ["TC001-A01-C014"]},
+    {"question_id": "UQ-002", "question": "When does each declared record variant become available relative to any clock, and what visibility rule governs payload contents at an anchor time?", "related_claim_ids": ["TC001-A01-C015", "TC001-A01-C016"]},
+    {"question_id": "UQ-003", "question": "Does any family or record variant involve state reset at any boundary?", "related_claim_ids": ["TC001-A01-C017"]},
+    {"question_id": "UQ-004", "question": "Do record variants represent persistent state, per-event recomputation, or episodic emissions?", "related_claim_ids": ["TC001-A01-C018"]},
+    {"question_id": "UQ-005", "question": "Do the direction-named variants and field paths carry directional or side-attribution semantics, and what are the value vocabularies of motion_class, spread_effect, semantics, direction_pressure, market_state, from, and to?", "related_claim_ids": ["TC001-A01-C019"]},
+    {"question_id": "UQ-006", "question": "Are the baseline_* and median_* field paths causal baselines, with what reference windows and update rules?", "related_claim_ids": ["TC001-A01-C020"]},
+    {"question_id": "UQ-007", "question": "Are the prior_* and from/to field paths references to earlier records or maintained state, making any variant history-dependent?", "related_claim_ids": ["TC001-A01-C021"]},
+    {"question_id": "UQ-008", "question": "What derivation or conditioning dependencies exist among the tick detectors, including payload_drift_burst's relationship to the six declared families?", "related_claim_ids": ["TC001-A01-C022", "TC001-A01-C023", "TC001-A01-C024"]},
+    {"question_id": "UQ-009", "question": "Which declared tick record variants may serve as anchors, eligible context, or lifecycle states in future experiments?", "related_claim_ids": ["TC001-A01-C025", "TC001-A01-C026"]}
+  ],
+  "sources_consulted": [
+    {"source_id": "xauusd.wave1.tc001", "relative_paths": ["authority/authority.json", "authority/bundle_manifest.json"], "surface_class": "authority_source"},
+    {"source_id": "protocol.research_rules", "relative_paths": ["repository/protocol/RESEARCH_RULES.md"], "surface_class": "protocol"},
+    {"source_id": "assignment.tc-001_a-01", "relative_paths": ["repository/agent_harness/assignments/TC-001/A-01.json"], "surface_class": "assignment"}
+  ]
+}

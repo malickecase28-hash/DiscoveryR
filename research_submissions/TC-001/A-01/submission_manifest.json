@@ -1,0 +1,22 @@
+{
+    "schema_version":  "trinity.submission-manifest.v1",
+    "program_id":  "TC-001",
+    "role_id":  "A-01",
+    "research_base_sha":  "9b20d7f0db6b2426a37a9a31d449169544405cd9",
+    "research_input_manifest_sha256":  "2a886a91fd2367fe503cb86c3eaf200d8478d7342e6c2fba2adb8341ccead8bf",
+    "assignment_sha256":  "a81ef8bab3ee6650756df2faeb700626645f7cf9ddfb588be2359c6d4f0abb1c",
+    "shared_input_fingerprint":  "896aed2d12832ed76df733f41a1477f9eac9f95d885a2f16bdbca14def2085a7",
+    "authority_source_ids":  [
+                                 "xauusd.wave1.tc001"
+                             ],
+    "authority_bundle_hashes":  [
+                                    {
+                                        "source_id":  "xauusd.wave1.tc001",
+                                        "bundle_content_identity":  "dd7be97031f13ad40eed089ce49175f484e8f32abd91598fb2cf2bcbaa55cf5c",
+                                        "directory_transport_hash":  "9f1cb755ccb442df1784cdb5b731f9c89e0d2cb2f48e5c01acaa67eb14b5d5cf"
+                                    }
+                                ],
+    "authority_candidate_sha256":  "79997ba67bae540720a84e9b71e050bbf7dc1cfbfa9d49dfe218b6021321ac03",
+    "authority_review_sha256":  "e6d71b9bc9938028d0a47d561e33d66091f6fac606d170265c49a81a2566ed05",
+    "published_utc":  "2026-09-04T19:15:46.5955432Z"
+}
