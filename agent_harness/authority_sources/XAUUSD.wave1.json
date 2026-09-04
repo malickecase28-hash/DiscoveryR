@@ -1,0 +1,34 @@
+{
+  "schema_version": "trinity.authority-sources.v2",
+  "instrument": "XAUUSD",
+  "sources": [
+    {
+      "source_id": "xauusd.wave1.ap001",
+      "root_env": "TRINITYR_AUTHORITY_ROOT",
+      "relative_path": "XAUUSD/WAVE1_AUTHORITY_V1/AP-001",
+      "mount_target": "/shared/authority/xauusd/ap001",
+      "hash": "d6625102381227fcc16b6ff729f024c65517cdca614a831317ff850164c69e88"
+    },
+    {
+      "source_id": "xauusd.wave1.ap002",
+      "root_env": "TRINITYR_AUTHORITY_ROOT",
+      "relative_path": "XAUUSD/WAVE1_AUTHORITY_V1/AP-002",
+      "mount_target": "/shared/authority/xauusd/ap002",
+      "hash": "0a84a9ed2a4db8f1ecb9d2762c1a8213549ff07faefbc22be3dce20f798f40e1"
+    },
+    {
+      "source_id": "xauusd.wave1.tc001",
+      "root_env": "TRINITYR_AUTHORITY_ROOT",
+      "relative_path": "XAUUSD/WAVE1_AUTHORITY_V1/TC-001",
+      "mount_target": "/shared/authority/xauusd/tc001",
+      "hash": "f7fe780bb01f7528cf57b1b6891e86a7a0b2510b56498e43f671385108ede5a9"
+    },
+    {
+      "source_id": "xauusd.wave1.bg001",
+      "root_env": "TRINITYR_AUTHORITY_ROOT",
+      "relative_path": "XAUUSD/WAVE1_AUTHORITY_V1/BG-001",
+      "mount_target": "/shared/authority/xauusd/bg001",
+      "hash": "103a44fa00c4d9199444177baadf1407cc4eb890f0d3009c6ddd404669a572c5"
+    }
+  ]
+}
