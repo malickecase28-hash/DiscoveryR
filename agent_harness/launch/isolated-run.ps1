@@ -177,7 +177,7 @@ foreach ($surface in @($assignment.authorized_repository_surfaces)) {
 if (-not $assignment.authority_registry_id -and @($assignment.authority_source_ids).Count -gt 0) { throw 'authority_registry_id is required when authority sources are declared.' }
 $registryId = if ($assignment.authority_registry_id) { $assignment.authority_registry_id } else { 'XAUUSD' }
 SafeId $registryId 'authority_registry_id'
-$registryFile = Join-Path $repoFull "agent_harness\authority_sources\$registryId.json"
+$registryFile = if ($env:TRINITYR_AUTHORITY_REGISTRY) { [IO.Path]::GetFullPath($env:TRINITYR_AUTHORITY_REGISTRY) } else { Join-Path $repoFull "agent_harness\authority_sources\$registryId.json" }
 if (-not (Test-Path -LiteralPath $registryFile -PathType Leaf)) { throw "Authority registry not found: $registryId" }
 $authority = Get-Content -Raw -LiteralPath $registryFile | ConvertFrom-Json
 foreach ($sourceId in @($assignment.authority_source_ids)) {

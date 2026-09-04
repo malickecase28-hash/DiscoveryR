@@ -1,8 +1,10 @@
 [CmdletBinding()]
-param([string] $RunRoot = 'F:\TrinityR-runs', [string] $Distro = 'Ubuntu', [switch] $LocalSynthetic)
+param([string] $RunRoot = 'F:\TrinityR-runs', [string] $Distro = 'Ubuntu', [string] $AuthorityRegistryPath, [switch] $LocalSynthetic)
 $ErrorActionPreference = 'Stop'
 $launcher = Join-Path $PSScriptRoot '..\launch\isolated-run.ps1'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+if ([string]::IsNullOrWhiteSpace($AuthorityRegistryPath)) { $AuthorityRegistryPath = Join-Path $repo 'agent_harness\authority_sources\XAUUSD.json' }
+elseif (-not [IO.Path]::IsPathRooted($AuthorityRegistryPath)) { $AuthorityRegistryPath = Join-Path $repo $AuthorityRegistryPath }
 function SafeId([string] $Value) { $Value -match '^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$' }
 function RejectOperationalKeys($Node, [string] $Path = 'assignment') {
     if ($Node -is [PSCustomObject]) {
@@ -45,7 +47,7 @@ function ValidateArtifactClaims($Claims) { $seen=@{};foreach($claim in @($Claims
 MustFail { & $launcher -ProgramId DOES-NOT-EXIST -Role A-01 -Command true } 'missing program'
 MustFail { & $launcher -ProgramId AP-001 -Role DOES-NOT-EXIST -Command true } 'missing role'
 MustFail { & $launcher -ProgramId AP-001 -Role A-01 -Command true -RunRoot $repo } 'repository run root'
-$authority = Get-Content -Raw (Join-Path $repo 'agent_harness\authority_sources\XAUUSD.json') | ConvertFrom-Json
+$authority = Get-Content -Raw $AuthorityRegistryPath | ConvertFrom-Json
 $env:TRINITYR_AUTHORITY_ROOT = if ($env:TRINITYR_AUTHORITY_ROOT) { $env:TRINITYR_AUTHORITY_ROOT } else { 'F:\TrinityR-authority' }
 $env:TRINITYR_MANIFEST_ROOT = if ($env:TRINITYR_MANIFEST_ROOT) { $env:TRINITYR_MANIFEST_ROOT } else { 'F:\TrinityR-manifests\wave1-v2' }
 $profiles = Get-Content -Raw (Join-Path $repo 'agent_harness\access_profiles\default.json') | ConvertFrom-Json
