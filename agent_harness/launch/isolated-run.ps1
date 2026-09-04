@@ -54,7 +54,7 @@ function SharedInputFingerprint($Assignment, $Authority) {
         program_id = $Assignment.program_id; detector_id = $Assignment.detector_id; assignment = $Assignment.assignment
         authorized_repository_surfaces = @($Assignment.authorized_repository_surfaces | Where-Object { $_ -notmatch '^agent_harness/assignments/' } | Sort-Object)
         authority_source_ids = @($Assignment.authority_source_ids | Sort-Object)
-        authority_bundle_identities = @($Assignment.authority_source_ids | ForEach-Object { $s=(@($Authority.sources | Where-Object source_id -eq $_))[0]; "$($s.bundle_content_identity):$($s.directory_transport_hash)" } | Sort-Object)
+        authority_bundle_identities = @($Assignment.authority_source_ids | ForEach-Object { $s=(@($Authority.sources | Where-Object source_id -eq $_))[0]; $s.hash } | Sort-Object)
         raw_lake_access = $Assignment.raw_lake_access; peer_visibility = $Assignment.peer_visibility
     }
     ShaText (($shared | ConvertTo-Json -Compress -Depth 10))
@@ -62,7 +62,7 @@ function SharedInputFingerprint($Assignment, $Authority) {
 function WriteInputManifest($Assignment, $Authority, [string] $ManifestRoot, [string] $BaseSha) {
     $pair = SharedInputFingerprint $Assignment $Authority
     $surfaces=@($Assignment.authorized_repository_surfaces|Sort-Object|ForEach-Object{$p=Join-Path $repoFull ($_ -replace '/','\');[ordered]@{relative_path=$_;identity=if((Get-Item $p).PSIsContainer){RecursiveHash $p}else{(Get-FileHash $p -Algorithm SHA256).Hash.ToLowerInvariant()};hash=if((Get-Item $p).PSIsContainer){RecursiveHash $p}else{(Get-FileHash $p -Algorithm SHA256).Hash.ToLowerInvariant()}}})
-    $manifest = [ordered]@{ schema_version='trinity.research-input-manifest.v1'; program_id=$Assignment.program_id; role_id=$Assignment.role_id; phase=$Assignment.phase; research_base_sha=$BaseSha; assignment_path=("agent_harness/assignments/$($Assignment.program_id)/$($Assignment.role_id).json"); assignment_sha256=(Get-FileHash $assignmentPath -Algorithm SHA256).Hash.ToLowerInvariant(); access_profile=$Assignment.access_profile; raw_lake_access=$Assignment.raw_lake_access; repository_surfaces=$surfaces; authority_sources=@($Assignment.authority_source_ids | ForEach-Object { $s=@($Authority.sources | Where-Object source_id -eq $_)[0]; [ordered]@{source_id=$s.source_id;bundle_content_identity=$s.bundle_content_identity;directory_transport_hash=$s.directory_transport_hash} }); shared_input_fingerprint=$pair }
+    $manifest = [ordered]@{ schema_version='trinity.research-input-manifest.v1'; program_id=$Assignment.program_id; role_id=$Assignment.role_id; phase=$Assignment.phase; research_base_sha=$BaseSha; assignment_path=("agent_harness/assignments/$($Assignment.program_id)/$($Assignment.role_id).json"); assignment_sha256=(Get-FileHash $assignmentPath -Algorithm SHA256).Hash.ToLowerInvariant(); access_profile=$Assignment.access_profile; raw_lake_access=$Assignment.raw_lake_access; repository_surfaces=$surfaces; authority_sources=@($Assignment.authority_source_ids | ForEach-Object { $s=@($Authority.sources | Where-Object source_id -eq $_)[0]; [ordered]@{source_id=$s.source_id;transport_hash=$s.hash} }); shared_input_fingerprint=$pair }
     New-Item -ItemType Directory -Force -Path $ManifestRoot | Out-Null
     $path=Join-Path $ManifestRoot 'research_input_manifest.json'; if (Test-Path -LiteralPath $path) { $old=Get-Content -Raw $path; $new=($manifest|ConvertTo-Json -Depth 20)+[Environment]::NewLine; if ($old -ne $new) { throw 'Immutable research input manifest conflict.' } } else { ($manifest|ConvertTo-Json -Depth 20)+[Environment]::NewLine | Set-Content -NoNewline -Encoding utf8 $path }
     return $path
@@ -200,7 +200,8 @@ foreach ($sourceId in @($assignment.authority_source_ids)) {
     if ([string]::IsNullOrWhiteSpace([string]$source[0].hash) -or $source[0].hash -notmatch '^[0-9a-fA-F]{64}$') { throw "Authority source hash is empty or invalid: $sourceId" }
     if ((RecursiveHash $sourcePath) -ne $source[0].hash.ToLowerInvariant()) { throw "Authority source hash mismatch: $sourceId" }
     $bundleManifestPath=Join-Path $sourcePath 'bundle_manifest.json'; if(!(Test-Path $bundleManifestPath -PathType Leaf)){throw "Authority bundle manifest missing: $sourceId"};$bundleManifest=Get-Content -Raw $bundleManifestPath|ConvertFrom-Json
-    if ([string]::IsNullOrWhiteSpace([string]$source[0].bundle_content_identity) -or $source[0].bundle_content_identity -notmatch '^[0-9a-fA-F]{64}$' -or $bundleManifest.bundle_content_identity -ne $source[0].bundle_content_identity) { throw "Authority bundle identity mismatch: $sourceId/bundle_content_identity" }
+    $authorityHash = (Get-FileHash (Join-Path $sourcePath 'authority.json') -Algorithm SHA256).Hash.ToLowerInvariant()
+    if ([string]::IsNullOrWhiteSpace([string]$bundleManifest.bundle_content_identity) -or $bundleManifest.bundle_content_identity -notmatch '^[0-9a-fA-F]{64}$' -or $bundleManifest.bundle_content_identity -ne $authorityHash) { throw "Authority bundle identity mismatch: $sourceId/bundle_content_identity" }
     if ($source[0].mount_target -notmatch '^/shared/[A-Za-z0-9._/-]+$' -or $source[0].mount_target -match '\.\.') { throw "Unsafe authority mount target: $sourceId" }
     $mounts += [PSCustomObject]@{ source = (MountPath $sourcePath); target = $source[0].mount_target }
 }

@@ -34,7 +34,7 @@ if (-not (SafeId 'SAFE-INSTRUMENT') -or (SafeId 'unsafe/id')) { throw 'Safe ID v
 function MustFail([scriptblock] $Action, [string] $Name) {
     try { & $Action 2>$null; throw "$Name unexpectedly succeeded" } catch { if ($_.Exception.Message -match 'unexpectedly succeeded') { throw } }
 }
-function ValidateBundleIdentity($Record,$Manifest) { if($Record.bundle_content_identity -notmatch '^[0-9a-fA-F]{64}$' -or $Record.bundle_content_identity -ne $Manifest.bundle_content_identity){throw 'Bundle identity mismatch: bundle_content_identity'} }
+function ValidateBundleIdentity($Record,$Manifest,[string]$AuthorityPath) { $authorityHash=(Get-FileHash (Join-Path $AuthorityPath 'authority.json') -Algorithm SHA256).Hash.ToLowerInvariant();if($Manifest.bundle_content_identity -notmatch '^[0-9a-fA-F]{64}$' -or $Manifest.bundle_content_identity -ne $authorityHash){throw 'Bundle identity mismatch: bundle_content_identity'} }
 function ValidateInputManifest($Manifest) { foreach($field in 'schema_version','program_id','role_id','phase','research_base_sha','assignment_path','assignment_sha256','access_profile','raw_lake_access','repository_surfaces','authority_sources','shared_input_fingerprint'){$value=$Manifest.PSObject.Properties[$field].Value;if($null -eq $value -or ($value -is [string] -and [string]::IsNullOrWhiteSpace($value)) -or ($value -is [Collections.IEnumerable] -and $value -isnot [string] -and @($value).Count -eq 0)){throw "Input manifest field missing: $field"}} }
 function ValidateParityPair($Pair) { if($Pair.a01_shared_input_fingerprint -notmatch '^[0-9a-fA-F]{64}$' -or $Pair.a02_shared_input_fingerprint -notmatch '^[0-9a-fA-F]{64}$' -or $Pair.a01_shared_input_fingerprint -ne $Pair.a02_shared_input_fingerprint -or $Pair.match -ne $true){throw 'parity mismatch'} }
 function ValidateArtifactClaims($Claims) { $seen=@{};foreach($claim in @($Claims)){if($claim.claim_id -notmatch '^[A-Z]{2}\d{3}-A-?\d{2}-C\d{3,}$' -or $seen[$claim.claim_id]){throw 'duplicate or invalid claim id'};$seen[$claim.claim_id]=$true;if($claim.status -notin @('AUTHORITATIVE','PROVISIONAL','UNRESOLVED')){throw 'invalid status'};$e=$claim.evidence;$ae=$claim.authority_evidence;if($claim.status -eq 'AUTHORITATIVE' -and (($null -eq $e -or @($e).Count -eq 0) -and ($null -eq $ae -or @($ae).Count -eq 0))){throw 'malformed AUTHORITATIVE evidence'}}}
@@ -60,7 +60,7 @@ foreach ($authoritySource in $source) {
  } | Sort-Object
 $digest = ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($members -join ''))) | ForEach-Object ToString x2) -join ''
  if ($digest -ne $authoritySource.hash.ToLowerInvariant()) { throw "Recursive authority hash mismatch: $($authoritySource.source_id)" }
- $bundleManifest=Get-Content -Raw (Join-Path $sourcePath 'bundle_manifest.json')|ConvertFrom-Json; ValidateBundleIdentity $authoritySource $bundleManifest
+ $bundleManifest=Get-Content -Raw (Join-Path $sourcePath 'bundle_manifest.json')|ConvertFrom-Json; ValidateBundleIdentity $authoritySource $bundleManifest $sourcePath
 }
 'AUTHORITY_RECURSIVE_HASH_PASS'
 $apAuthority=Get-Content -Raw 'F:\TrinityR-authority\XAUUSD\WAVE1_AUTHORITY_V1\AP-001\authority.json'|ConvertFrom-Json
@@ -98,8 +98,8 @@ $parity = [ordered]@{ schema_version='trinity.pair-input-parity.v1'; pairs=@() }
 foreach ($program in @('AP-001','AP-002','TC-001','BG-001')) {
     $a = Get-Content -Raw (Join-Path $repo "agent_harness\assignments\$program\A-01.json") | ConvertFrom-Json
     $b = Get-Content -Raw (Join-Path $repo "agent_harness\assignments\$program\A-02.json") | ConvertFrom-Json
-    $shared = [ordered]@{ program_id=$a.program_id; detector_id=$a.detector_id; assignment=$a.assignment; authorized_repository_surfaces=@($a.authorized_repository_surfaces | Where-Object { $_ -notmatch '^agent_harness/assignments/' } | Sort-Object); authority_source_ids=@($a.authority_source_ids | Sort-Object); authority_bundle_identities=@($a.authority_source_ids | ForEach-Object { $s=(@($authority.sources | Where-Object source_id -eq $_))[0]; "$($s.bundle_content_identity):$($s.directory_transport_hash)" } | Sort-Object); raw_lake_access=$a.raw_lake_access; peer_visibility=$a.peer_visibility }
-    $other = [ordered]@{ program_id=$b.program_id; detector_id=$b.detector_id; assignment=$b.assignment; authorized_repository_surfaces=@($b.authorized_repository_surfaces | Where-Object { $_ -notmatch '^agent_harness/assignments/' } | Sort-Object); authority_source_ids=@($b.authority_source_ids | Sort-Object); authority_bundle_identities=@($b.authority_source_ids | ForEach-Object { $s=(@($authority.sources | Where-Object source_id -eq $_))[0]; "$($s.bundle_content_identity):$($s.directory_transport_hash)" } | Sort-Object); raw_lake_access=$b.raw_lake_access; peer_visibility=$b.peer_visibility }
+    $shared = [ordered]@{ program_id=$a.program_id; detector_id=$a.detector_id; assignment=$a.assignment; authorized_repository_surfaces=@($a.authorized_repository_surfaces | Where-Object { $_ -notmatch '^agent_harness/assignments/' } | Sort-Object); authority_source_ids=@($a.authority_source_ids | Sort-Object); authority_bundle_identities=@($a.authority_source_ids | ForEach-Object { $s=(@($authority.sources | Where-Object source_id -eq $_))[0]; $s.hash } | Sort-Object); raw_lake_access=$a.raw_lake_access; peer_visibility=$a.peer_visibility }
+    $other = [ordered]@{ program_id=$b.program_id; detector_id=$b.detector_id; assignment=$b.assignment; authorized_repository_surfaces=@($b.authorized_repository_surfaces | Where-Object { $_ -notmatch '^agent_harness/assignments/' } | Sort-Object); authority_source_ids=@($b.authority_source_ids | Sort-Object); authority_bundle_identities=@($b.authority_source_ids | ForEach-Object { $s=(@($authority.sources | Where-Object source_id -eq $_))[0]; $s.hash } | Sort-Object); raw_lake_access=$b.raw_lake_access; peer_visibility=$b.peer_visibility }
     if (($shared | ConvertTo-Json -Compress -Depth 10) -cne ($other | ConvertTo-Json -Compress -Depth 10)) { throw "Pair input mismatch: $program" }
     $aFingerprint = ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($shared|ConvertTo-Json -Compress -Depth 10))) | ForEach-Object ToString x2) -join ''
     $bFingerprint = ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($other|ConvertTo-Json -Compress -Depth 10))) | ForEach-Object ToString x2) -join ''
@@ -108,7 +108,7 @@ foreach ($program in @('AP-001','AP-002','TC-001','BG-001')) {
 }
 $parityPath=Join-Path $parityRoot 'pair_input_parity.json'; $parityJson=($parity|ConvertTo-Json -Depth 20)+[Environment]::NewLine
 if (Test-Path $parityPath) { if ((Get-Content -Raw $parityPath) -ne $parityJson) { throw 'Immutable pair parity conflict.' } } else { $parityJson | Set-Content -NoNewline -Encoding utf8 $parityPath }
-$badSource=$source[0].PSObject.Copy();$badSource.bundle_content_identity=('0'*64);MustFail { ValidateBundleIdentity $badSource $bundleManifest } 'wrong bundle content identity';$badSource=$source[0].PSObject.Copy();$badSource.directory_transport_hash=('0'*64);MustFail { ValidateBundleIdentity $badSource $bundleManifest } 'wrong directory transport hash'
+$badManifest=$bundleManifest.PSObject.Copy();$badManifest.bundle_content_identity=('0'*64);MustFail { ValidateBundleIdentity $source[0] $badManifest $sourcePath } 'wrong bundle content identity'
 $badParity=$parity.pairs[0].PSObject.Copy();$badParity.a02_shared_input_fingerprint=('0'*64);MustFail {ValidateParityPair $badParity} 'parity mismatch'
 $manifestCheck=Get-Content -Raw (Join-Path $env:TRINITYR_MANIFEST_ROOT 'AP-001\A-01\research_input_manifest.json')|ConvertFrom-Json;ValidateInputManifest $manifestCheck;$badManifest=$manifestCheck.PSObject.Copy();$badManifest.shared_input_fingerprint=$null;MustFail {ValidateInputManifest $badManifest} 'missing manifest fields'
 $claimFixture=@([pscustomobject]@{claim_id='AP001-A01-C001';status='PROVISIONAL';claim='null model'});ValidateArtifactClaims $claimFixture;$duplicate=@($claimFixture+$claimFixture);MustFail {ValidateArtifactClaims $duplicate} 'duplicate IDs';$invalid=$claimFixture[0].PSObject.Copy();$invalid.status='UNRESOLVED_RELATIONSHIP';MustFail {ValidateArtifactClaims @($invalid)} 'invalid status';$malformed=$claimFixture[0].PSObject.Copy();$malformed.status='AUTHORITATIVE';MustFail {ValidateArtifactClaims @($malformed)} 'malformed AUTHORITATIVE evidence';'NEGATIVE_CONTRACT_TESTS_PASS'
@@ -154,8 +154,12 @@ try {
         if ($LASTEXITCODE -ne 0) { throw 'Active neutral runtime socket launch failed.' }
         'ACTIVE_NEUTRAL_SOCKET_PASS'
     }
+    $codex = Get-Command codex -ErrorAction SilentlyContinue
+    $zcode = (& wsl.exe --distribution $Distro --user root -- sh -lc 'command -v zcode-cli' 2>$null)
+    if (-not $codex) { 'CODEX_RUNTIME_BLOCKED executable=codex-not-discovered; smallest_fix=provide-approved-runtime-backed-Codex-entrypoint' } else { 'CODEX_RUNTIME_BLOCKED actual-researcher-execution-not-authorized-in-this-validation; smallest_fix=run-test-only-Codex-through-approved-neutral-boundary' }
+    if (-not $zcode) { 'ZCODE_RUNTIME_BLOCKED executable=zcode-cli-not-discovered; smallest_fix=provide-approved-runtime-backed-ZCode-entrypoint' } else { 'ZCODE_RUNTIME_BLOCKED actual-researcher-execution-not-authorized-in-this-validation; smallest_fix=run-test-only-ZCode-through-approved-neutral-boundary' }
     if (Select-String -Path (Join-Path $repo 'agent_harness\launch\isolated-run.sh') -Pattern 'RUNTIME_ENDPOINT') { throw 'Raw runtime endpoint remains exposed.' }
-    'RUNTIME_OPACITY_PASS'
+    'RUNTIME_OPACITY_BLOCKED'
 } finally {
     Remove-Item -Force -LiteralPath $runtimeConfig -ErrorAction SilentlyContinue
     Remove-Item -Recurse -Force -LiteralPath 'F:\trinityr-runtime-run' -ErrorAction SilentlyContinue
