@@ -39,13 +39,15 @@ function SafeRelative([string] $Value, [string] $Name) {
     if ([string]::IsNullOrWhiteSpace($Value) -or $Value.StartsWith('/') -or $Value.StartsWith('\') -or $Value -match '(^|[\\/])\.\.([\\/]|$)' -or $Value -match ':') { throw "Unsafe ${Name}: $Value" }
 }
 function RecursiveHash([string] $Path) {
-    $members = Get-ChildItem -LiteralPath $Path -Recurse -Force | ForEach-Object {
+    $members = [Collections.Generic.List[string]]::new()
+    Get-ChildItem -LiteralPath $Path -Recurse -Force | ForEach-Object {
         if ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "Reparse points are not allowed: $($_.FullName)" }
         if (-not $_.PSIsContainer) {
             $relative = $_.FullName.Substring($Path.Length + 1).Replace('\','/')
-            "$relative`t$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())`n"
+            $members.Add("$relative`t$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())`n")
         }
-    } | Sort-Object
+    }
+    $members.Sort([StringComparer]::Ordinal)
     ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($members -join ''))) | ForEach-Object ToString x2) -join ''
 }
 function ShaText([string] $Value) { ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes($Value)) | ForEach-Object ToString x2) -join '' }
@@ -177,7 +179,7 @@ foreach ($surface in @($assignment.authorized_repository_surfaces)) {
 if (-not $assignment.authority_registry_id -and @($assignment.authority_source_ids).Count -gt 0) { throw 'authority_registry_id is required when authority sources are declared.' }
 $registryId = if ($assignment.authority_registry_id) { $assignment.authority_registry_id } else { 'XAUUSD' }
 SafeId $registryId 'authority_registry_id'
-$registryFile = if ($env:TRINITYR_AUTHORITY_REGISTRY) { [IO.Path]::GetFullPath($env:TRINITYR_AUTHORITY_REGISTRY) } else { Join-Path $repoFull "agent_harness\authority_sources\$registryId.json" }
+$registryFile = Join-Path $repoFull "agent_harness\authority_sources\$registryId.json"
 if (-not (Test-Path -LiteralPath $registryFile -PathType Leaf)) { throw "Authority registry not found: $registryId" }
 $authority = Get-Content -Raw -LiteralPath $registryFile | ConvertFrom-Json
 foreach ($sourceId in @($assignment.authority_source_ids)) {

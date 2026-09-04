@@ -162,7 +162,8 @@ try {
         'ACTIVE_NEUTRAL_SOCKET_PASS'
     }
     $codex = Get-Command codex -ErrorAction SilentlyContinue
-    $zcode = (& wsl.exe --distribution $Distro --user root -- sh -lc 'command -v zcode-cli' 2>$null)
+    $oldErrorAction = $ErrorActionPreference
+    try { $ErrorActionPreference = 'Continue'; $zcode = (& wsl.exe --distribution $Distro --user root -- sh -lc 'command -v zcode-cli' 2>$null) } finally { $ErrorActionPreference = $oldErrorAction }
     if (-not $codex) { 'CODEX_RUNTIME_BLOCKED executable=codex-not-discovered; smallest_fix=provide-approved-runtime-backed-Codex-entrypoint' } else { 'CODEX_RUNTIME_BLOCKED actual-researcher-execution-not-authorized-in-this-validation; smallest_fix=run-test-only-Codex-through-approved-neutral-boundary' }
     if (-not $zcode) { 'ZCODE_RUNTIME_BLOCKED executable=zcode-cli-not-discovered; smallest_fix=provide-approved-runtime-backed-ZCode-entrypoint' } else { 'ZCODE_RUNTIME_BLOCKED actual-researcher-execution-not-authorized-in-this-validation; smallest_fix=run-test-only-ZCode-through-approved-neutral-boundary' }
     if (Select-String -Path (Join-Path $repo 'agent_harness\launch\isolated-run.sh') -Pattern 'RUNTIME_ENDPOINT') { throw 'Raw runtime endpoint remains exposed.' }

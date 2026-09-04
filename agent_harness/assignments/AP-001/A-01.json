@@ -3,6 +3,8 @@
   "role_id": "A-01",
   "phase": "AUTHORITY",
   "access_profile": "AUTHORITY",
+  "instrument_id": "XAUUSD",
+  "authority_registry_id": "XAUUSD.wave1",
   "detector_id": "drift_burst",
   "assignment": "Independently reconstruct drift_burst lifecycle, availability, and episode identity semantics.",
   "authorized_repository_surfaces": [
@@ -13,7 +15,7 @@
     "instruments/XAUUSD/source_inventory.json",
     "agent_harness/assignments/AP-001/A-01.json"
   ],
-  "authority_source_ids": ["xauusd.schemas"],
+  "authority_source_ids": ["xauusd.wave1.ap001"],
   "raw_lake_access": "DENY",
   "private_workspace": "F:\\TrinityR-runs\\AP-001\\A-01",
   "peer_visibility": "DENY"
