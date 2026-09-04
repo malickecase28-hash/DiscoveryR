@@ -21,6 +21,7 @@ mount_rw_file() {
   source=$1; target=$2
   [ -f "$source" ] || { echo "missing writable sink: $source" >&2; exit 1; }
   mkdir -p "$(dirname "$target")"
+  touch "$target"
   mount --bind "$source" "$target"
 }
 
