@@ -105,6 +105,14 @@ try {
     MustFail { & $launcher -ProgramId TEST-GLM-01 -Role TEST-GLM-01 -RuntimeSlot slot-07 -RunRoot 'F:\trinityr-runtime-run' -Command true } 'unsafe runtime config'
     '{"schema_version":1,"slots":[{"slot_id":"slot-07","broker_socket":"/run/trinityr/missing.sock"}]}' | Set-Content -NoNewline $runtimeConfig
     MustFail { & $launcher -ProgramId TEST-GLM-01 -Role TEST-GLM-01 -RuntimeSlot slot-07 -RunRoot 'F:\trinityr-runtime-run' -Command true } 'missing runtime broker'
+    $oldErrorAction = $ErrorActionPreference
+    try { $ErrorActionPreference = 'Continue'; $liveSocket = (& wsl.exe --distribution $Distro --user root -- find /tmp -maxdepth 1 -type s -name 'znr-*.sock' -print -quit 2>$null) } finally { $ErrorActionPreference = $oldErrorAction }
+    if ($liveSocket) {
+        @{ schema_version = 1; slots = @(@{ slot_id = 'slot-07'; broker_socket = [string]$liveSocket }) } | ConvertTo-Json -Compress | Set-Content -NoNewline $runtimeConfig
+        $result = & $launcher -ProgramId TEST-GLM-01 -Role TEST-GLM-01 -RuntimeSlot slot-07 -RunRoot 'F:\trinityr-runtime-run' -Distro $Distro -Command 'test -S /run/trinityr/runtime.sock'
+        if ($LASTEXITCODE -ne 0) { throw 'Active neutral runtime socket launch failed.' }
+        'ACTIVE_NEUTRAL_SOCKET_PASS'
+    }
     if (Select-String -Path (Join-Path $repo 'agent_harness\launch\isolated-run.sh') -Pattern 'RUNTIME_ENDPOINT') { throw 'Raw runtime endpoint remains exposed.' }
     'RUNTIME_OPACITY_PASS'
 } finally {

@@ -87,8 +87,13 @@ function RuntimeMount($Slot) {
     if ($unknown.Count) { throw 'Unknown runtime slot fields.' }
     $socket = [string]$entry[0].broker_socket
     if ($socket -notmatch '^/(run|tmp)/[A-Za-z0-9._/-]+$' -or $socket -match '\.\.' -or $socket -match '(?i)(provider|model|runtime|token|secret|credential|@|\?)') { throw 'Runtime broker socket is unsafe.' }
-    $socketCheck = & wsl.exe --distribution $Distro --user root -- test -S $socket 2>$null
-    if ($LASTEXITCODE -ne 0) { throw 'Runtime broker socket is unavailable.' }
+    $previousErrorAction = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'Continue'
+        & wsl.exe --distribution $Distro --user root -- test -S $socket 2>$null
+        $socketExit = $LASTEXITCODE
+    } finally { $ErrorActionPreference = $previousErrorAction }
+    if ($socketExit -ne 0) { throw 'Runtime broker socket is unavailable.' }
     [PSCustomObject]@{ source = $socket; target = '/run/trinityr/runtime.sock' }
 }
 $runRootFull = SafePath $RunRoot
