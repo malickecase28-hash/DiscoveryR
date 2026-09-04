@@ -1,0 +1,156 @@
+{
+  "artifact_type": "authority_candidate",
+  "program_id": "TC-001",
+  "role_id": "A-01",
+  "subjects": [
+    "tick_conditioning"
+  ],
+  "claims": [
+    {
+      "claim_id": "TC001-A01-C001",
+      "subject": "tick_conditioning",
+      "topic": "feed_health",
+      "claim": "The declared serialization structure contains feed_health record variants clock_inversion, event_time_gap, event_time_regression, expected_market_closure, latency_spike, sequence_duplicate, sequence_gap, and sequence_regression, with the field paths listed in the authority evidence.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.tc001",
+          "relative_path": "XAUUSD/WAVE1_AUTHORITY_V3/TC-001-c5b9597abc9bdba043b5aa843eebdffd47db6aec0a7c22fddf79fc83abbdc406-fb9515c47fe9ff57b7258c74a5c5449515ff0951966ff7c8e8a444a7daab7ded/authority.json",
+          "locator": "/selected/feed_health",
+          "evidence_type": "declared_serialization_structure",
+          "supports": "The selected contract declares the feed_health variants and field_paths."
+        }
+      ],
+      "counterevidence": ["The registry marks feed_health semantic_status and availability_semantics as UNRESOLVED."],
+      "future_information_risk": "Unknown occurrence and availability clocks, reset or persistence behavior, and producer lifecycle semantics can change interpretation without changing these field paths.",
+      "dependency_implications": "May depend on the declared tick payload contract only; no event, state, timing, causal, or downstream dependency is established.",
+      "notes": "Field names and co-location do not establish event/state role, row keying, clocks, transitions, causality, or scientific meaning."
+    },
+    {
+      "claim_id": "TC001-A01-C002",
+      "subject": "tick_conditioning",
+      "topic": "micro_volatility",
+      "claim": "The declared serialization structure contains micro_volatility record variants micro_volatility_burst, micro_volatility_compression, and micro_volatility_transition, each with from, to, short_rms_bps, baseline_rms_bps, and ratio field paths.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.tc001",
+          "relative_path": "XAUUSD/WAVE1_AUTHORITY_V3/TC-001-c5b9597abc9bdba043b5aa843eebdffd47db6aec0a7c22fddf79fc83abbdc406-fb9515c47fe9ff57b7258c74a5c5449515ff0951966ff7c8e8a444a7daab7ded/authority.json",
+          "locator": "/selected/micro_volatility",
+          "evidence_type": "declared_serialization_structure",
+          "supports": "The selected contract declares the micro_volatility variants and field_paths."
+        }
+      ],
+      "counterevidence": ["The registry marks micro_volatility semantic_status and availability_semantics as UNRESOLVED."],
+      "future_information_risk": "The contract does not establish baseline construction, transition direction, reset, persistence, clocks, or future mapping.",
+      "dependency_implications": "No dependency on history, baseline, timeframe, or other detector is established by the declared structure.",
+      "notes": "The listed paths are structural declarations only."
+    },
+    {
+      "claim_id": "TC001-A01-C003",
+      "subject": "tick_conditioning",
+      "topic": "quote_arrival",
+      "claim": "The declared serialization structure contains quote_arrival record variants arrival_burst and arrival_gap, each with interarrival_ns, median_ns, and ratio field paths.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.tc001",
+          "relative_path": "XAUUSD/WAVE1_AUTHORITY_V3/TC-001-c5b9597abc9bdba043b5aa843eebdffd47db6aec0a7c22fddf79fc83abbdc406-fb9515c47fe9ff57b7258c74a5c5449515ff0951966ff7c8e8a444a7daab7ded/authority.json",
+          "locator": "/selected/quote_arrival",
+          "evidence_type": "declared_serialization_structure",
+          "supports": "The selected contract declares the quote_arrival variants and field_paths."
+        }
+      ],
+      "counterevidence": ["The registry marks quote_arrival semantic_status and availability_semantics as UNRESOLVED."],
+      "future_information_risk": "The contract does not establish what arrives, the occurrence or availability clock, reference-window construction, persistence, or causal role.",
+      "dependency_implications": "No dependency on a quote key, prior record, baseline history, or future record is established.",
+      "notes": "Arrival terminology is not used as evidence of event semantics."
+    },
+    {
+      "claim_id": "TC001-A01-C004",
+      "subject": "tick_conditioning",
+      "topic": "quote_dynamics",
+      "claim": "The declared serialization structure contains quote_dynamics record variants asymmetric_reprice_down, asymmetric_reprice_up, down, quote_acceleration_down, quote_acceleration_up, quote_reprice_up, spread_compression_impulse, and spread_widening_impulse, with the field paths listed in the authority evidence.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.tc001",
+          "relative_path": "XAUUSD/WAVE1_AUTHORITY_V3/TC-001-c5b9597abc9bdba043b5aa843eebdffd47db6aec0a7c22fddf79fc83abbdc406-fb9515c47fe9ff57b7258c74a5c5449515ff0951966ff7c8e8a444a7daab7ded/authority.json",
+          "locator": "/selected/quote_dynamics",
+          "evidence_type": "declared_serialization_structure",
+          "supports": "The selected contract declares the quote_dynamics variants and field_paths."
+        }
+      ],
+      "counterevidence": ["The registry marks quote_dynamics semantic_status and availability_semantics as UNRESOLVED."],
+      "future_information_risk": "Direction, asymmetry meaning, impulse/event boundaries, clocks, persistence, baseline construction, and causality remain unspecified.",
+      "dependency_implications": "No dependency among bid, ask, spread, velocity, acceleration, baseline, or prior values is established beyond their serialized co-occurrence.",
+      "notes": "Variant names and field names do not establish direction, transition semantics, or future outcome mapping."
+    },
+    {
+      "claim_id": "TC001-A01-C005",
+      "subject": "tick_conditioning",
+      "topic": "quote_pressure",
+      "claim": "The declared serialization structure contains quote_pressure record variants buy_quote_pressure and sell_quote_pressure, each with semantics, direction_pressure, pressure, instantaneous_pressure, bid_move, and ask_move field paths.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.tc001",
+          "relative_path": "XAUUSD/WAVE1_AUTHORITY_V3/TC-001-c5b9597abc9bdba043b5aa843eebdffd47db6aec0a7c22fddf79fc83abbdc406-fb9515c47fe9ff57b7258c74a5c5449515ff0951966ff7c8e8a444a7daab7ded/authority.json",
+          "locator": "/selected/quote_pressure",
+          "evidence_type": "declared_serialization_structure",
+          "supports": "The selected contract declares the quote_pressure variants and field_paths."
+        }
+      ],
+      "counterevidence": ["The registry marks quote_pressure semantic_status and availability_semantics as UNRESOLVED."],
+      "future_information_risk": "The contract does not establish pressure sign, direction meaning, reference state, history, persistence, occurrence time, availability time, or causality.",
+      "dependency_implications": "No dependency on bid/ask movement ordering, a prior quote, aggregation, or a future mapping is established.",
+      "notes": "The field named semantics is a serialized path, not evidence that its value semantics are known."
+    },
+    {
+      "claim_id": "TC001-A01-C006",
+      "subject": "tick_conditioning",
+      "topic": "spread_state",
+      "claim": "The declared serialization structure contains spread_state record variants spread_compression, spread_state_transition, and spread_widening, with the field paths listed in the authority evidence.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.tc001",
+          "relative_path": "XAUUSD/WAVE1_AUTHORITY_V3/TC-001-c5b9597abc9bdba043b5aa843eebdffd47db6aec0a7c22fddf79fc83abbdc406-fb9515c47fe9ff57b7258c74a5c5449515ff0951966ff7c8e8a444a7daab7ded/authority.json",
+          "locator": "/selected/spread_state",
+          "evidence_type": "declared_serialization_structure",
+          "supports": "The selected contract declares the spread_state variants and field_paths."
+        }
+      ],
+      "counterevidence": ["The registry marks spread_state semantic_status and availability_semantics as UNRESOLVED."],
+      "future_information_risk": "The contract does not establish state-machine transitions, baseline construction, clocks, reset, persistence, direction, causality, or future mapping.",
+      "dependency_implications": "No dependency on prior spread values, median construction, transition ordering, or another detector is established.",
+      "notes": "The transition variant name does not establish a lifecycle transition."
+    }
+  ],
+  "unresolved_questions": [
+    "For all six topics, what is the record key or row identity?",
+    "For all six topics, what are occurrence time and availability time, and which clock governs each?",
+    "For all six topics, are records events, states, observations, diagnostics, or another role?",
+    "For all six topics, what are reset, persistence, transition, and missing-value semantics?",
+    "For all six topics, what producer logic, history window, baseline, threshold, direction, or causal interpretation exists?",
+    "For all six topics, what dependencies and future mapping, if any, are valid?",
+    "The declared contract does not establish scientific validity, predictive direction, activation authority, or execution use."
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "xauusd.wave1.tc001",
+      "relative_path": "XAUUSD/WAVE1_AUTHORITY_V3/TC-001-c5b9597abc9bdba043b5aa843eebdffd47db6aec0a7c22fddf79fc83abbdc406-fb9515c47fe9ff57b7258c74a5c5449515ff0951966ff7c8e8a444a7daab7ded/authority.json",
+      "locator": "/selected"
+    },
+    {
+      "source_id": "repo.detector_registry",
+      "relative_path": "registry/detectors_v1.json",
+      "locator": "/[detector_id in six assigned topics]"
+    },
+    {
+      "source_id": "repo.xauusd.source_inventory",
+      "relative_path": "instruments/XAUUSD/source_inventory.json",
+      "locator": "/sources[0]/schema/payload_columns"
+    }
+  ]
+}
