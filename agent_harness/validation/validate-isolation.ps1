@@ -16,7 +16,13 @@ function RejectOperationalKeys($Node, [string] $Path = 'assignment') {
 }
 function ValidateAssignment($Assignment, [string] $Name) {
     RejectOperationalKeys $Assignment $Name
-    $allowed = @('program_id','role_id','phase','access_profile','assignment','authorized_repository_surfaces','authority_source_ids','raw_lake_access','peer_visibility','private_workspace','detector_id','instrument_id','data_scope_id','authority_registry_id')
+    $common = @('program_id','role_id','phase','access_profile','assignment','authorized_repository_surfaces','authority_source_ids','raw_lake_access','peer_visibility')
+    $phaseFields = @{
+        AUTHORITY = @('private_workspace','detector_id','instrument_id','authority_registry_id')
+        DEVELOPMENT = @('instrument_id','data_scope_id','authority_registry_id')
+        CONFIRMATION = @('instrument_id','authority_registry_id')
+    }
+    $allowed = @($common + $phaseFields[$Assignment.phase])
     $unknown = @($Assignment.psobject.Properties.Name | Where-Object { $_ -notin $allowed })
     if ($unknown.Count) { throw "Unknown assignment fields: $Name/$($unknown -join ',')" }
     if (-not (SafeId $Assignment.program_id) -or -not (SafeId $Assignment.role_id)) { throw "Unsafe assignment identity: $Name" }
@@ -68,6 +74,8 @@ foreach ($slot in @(
 $glm = Get-Content -Raw (Join-Path $repo 'agent_harness\assignments\TEST-GLM-01\TEST-GLM-01.json') | ConvertFrom-Json
 ValidateAssignment $glm 'TEST-GLM-01/TEST-GLM-01'
 if ($glm.agent_runtime -or $glm.provider -or $glm.model) { throw 'TEST-GLM scientific assignment selects runtime/provider.' }
+'{"program_id":"SAFE","role_id":"SAFE","phase":"DEVELOPMENT","access_profile":"DEVELOPMENT","assignment":"x","authorized_repository_surfaces":["protocol"],"authority_source_ids":[],"raw_lake_access":"DENY","peer_visibility":"DENY","instrument_id":"SAFE","data_scope_id":"SAFE","nested":{"ToKeN":"blocked"}}' | ConvertFrom-Json | ForEach-Object { MustFail { ValidateAssignment $_ 'nested-operational-key' } 'recursive operational identity' }
+'{"program_id":"SAFE","role_id":"SAFE","phase":"DEVELOPMENT","access_profile":"DEVELOPMENT","assignment":"x","authorized_repository_surfaces":["protocol"],"authority_source_ids":[],"raw_lake_access":"DENY","peer_visibility":"DENY","instrument_id":"SAFE","data_scope_id":"SAFE","detector_id":"unexpected"}' | ConvertFrom-Json | ForEach-Object { MustFail { ValidateAssignment $_ 'phase-allowlist' } 'phase field allowlist' }
 'OPAQUE_ASSIGNMENT_PASS'
 $dev = Join-Path $repo 'agent_harness\assignments\TEST-DEVELOPMENT-01\TEST-DEVELOPMENT-01.json'
 ValidateAssignment (Get-Content -Raw $dev | ConvertFrom-Json) 'TEST-DEVELOPMENT-01'

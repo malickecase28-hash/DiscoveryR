@@ -57,8 +57,14 @@ function RejectOperationalKeys($Node, [string] $Path = 'assignment') {
 }
 function ValidateAssignmentShape($Assignment) {
     RejectOperationalKeys $Assignment
-    $common = @('program_id','role_id','phase','access_profile','assignment','authorized_repository_surfaces','authority_source_ids','raw_lake_access','peer_visibility','private_workspace','detector_id','instrument_id','data_scope_id','authority_registry_id')
-    $unknown = @($Assignment.psobject.Properties.Name | Where-Object { $_ -notin $common })
+    $common = @('program_id','role_id','phase','access_profile','assignment','authorized_repository_surfaces','authority_source_ids','raw_lake_access','peer_visibility')
+    $phaseFields = @{
+        AUTHORITY = @('private_workspace','detector_id','instrument_id','authority_registry_id')
+        DEVELOPMENT = @('instrument_id','data_scope_id','authority_registry_id')
+        CONFIRMATION = @('instrument_id','authority_registry_id')
+    }
+    $allowed = @($common + $phaseFields[$Assignment.phase])
+    $unknown = @($Assignment.psobject.Properties.Name | Where-Object { $_ -notin $allowed })
     if ($unknown.Count) { throw "Unknown assignment fields: $($unknown -join ', ')" }
     if ($Assignment.phase -eq 'DEVELOPMENT') {
         if (-not $Assignment.instrument_id -or -not $Assignment.data_scope_id) { throw 'DEVELOPMENT requires instrument_id and data_scope_id.' }
@@ -70,8 +76,9 @@ function RuntimeMount($Slot) {
     if (-not $env:TRINITYR_RUNTIME_CONFIG) { throw 'TRINITYR_RUNTIME_CONFIG is required for RuntimeSlot.' }
     if (-not (Test-Path -LiteralPath $env:TRINITYR_RUNTIME_CONFIG -PathType Leaf)) { throw 'Runtime config is unavailable.' }
     $runtimeConfig = Get-Content -Raw -LiteralPath $env:TRINITYR_RUNTIME_CONFIG | ConvertFrom-Json
-    if ($runtimeConfig.schema_version -ne 1 -or @($runtimeConfig.psobject.Properties.Name) | Where-Object { $_ -notin @('schema_version','slots') }) { throw 'Invalid runtime config schema.' }
-    if (-not $runtimeConfig.slots) { throw 'Runtime config has no slots.' }
+    $unknownConfig = @($runtimeConfig.psobject.Properties.Name | Where-Object { $_ -notin @('schema_version','slots') })
+    if ($runtimeConfig.schema_version -ne 1 -or $unknownConfig.Count) { throw 'Invalid runtime config schema.' }
+    if (-not $runtimeConfig.slots -or $runtimeConfig.slots -is [string]) { throw 'Runtime config has no slots.' }
     $entry = @($runtimeConfig.slots | Where-Object slot_id -eq $Slot)
     if ($entry.Count -ne 1) { throw "Runtime slot is not configured: $Slot" }
     SafeId $entry[0].slot_id 'runtime slot_id'
@@ -80,8 +87,8 @@ function RuntimeMount($Slot) {
     if ($unknown.Count) { throw 'Unknown runtime slot fields.' }
     $socket = [string]$entry[0].broker_socket
     if ($socket -notmatch '^/(run|tmp)/[A-Za-z0-9._/-]+$' -or $socket -match '\.\.' -or $socket -match '(?i)(provider|model|runtime|token|secret|credential|@|\?)') { throw 'Runtime broker socket is unsafe.' }
-    if (-not (Test-Path -LiteralPath $socket)) { throw 'Runtime broker socket is unavailable.' }
-    NoReparse $socket
+    $socketCheck = & wsl.exe --distribution $Distro --user root -- test -S $socket 2>$null
+    if ($LASTEXITCODE -ne 0) { throw 'Runtime broker socket is unavailable.' }
     [PSCustomObject]@{ source = $socket; target = '/run/trinityr/runtime.sock' }
 }
 $runRootFull = SafePath $RunRoot
@@ -171,6 +178,6 @@ $mountText = ($mounts | ForEach-Object { "$(B64 $_.source)|$(B64 $_.target)" }) 
 $launcher = Join-Path $PSScriptRoot 'isolated-run.sh'
 $bootstrap = B64 ((Get-Content -Raw -LiteralPath $launcher).Replace("`r", ''))
 $safeCommand = $Command.Replace("`r", '')
-$commandLine = "printf %s $bootstrap | base64 -d > /tmp/trinityr-isolated-run.sh && chmod 700 /tmp/trinityr-isolated-run.sh && unshare --mount --pid --fork --mount-proc --propagation private -- /bin/bash /tmp/trinityr-isolated-run.sh $(B64 (WslPath $workspace)) $(B64 $assignment.access_profile) $(B64 $safeCommand) $(B64 (B64 $mountText))"
+$commandLine = "mountpoint -q /mnt/f || mount -t drvfs F: /mnt/f; printf %s $bootstrap | base64 -d > /tmp/trinityr-isolated-run.sh && chmod 700 /tmp/trinityr-isolated-run.sh && unshare --mount --pid --fork --mount-proc --propagation private -- /bin/bash /tmp/trinityr-isolated-run.sh $(B64 (WslPath $workspace)) $(B64 $assignment.access_profile) $(B64 $safeCommand) $(B64 (B64 $mountText))"
 & wsl.exe --distribution $Distro --user root -- /bin/bash -lc $commandLine
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
