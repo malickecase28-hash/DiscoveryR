@@ -14,8 +14,9 @@ program_id=$(decode "$9")
 role_id=$(decode "${10}")
 research_base_sha=$(decode "${11}")
 
-mkdir -p /workspace /shared/research-program
 mount --make-rprivate /
+mount -t tmpfs -o size=4m,nosuid,nodev,noexec tmpfs /shared
+mkdir -p /workspace /shared/research-program
 
 mount_rw_file() {
   source=$1; target=$2
@@ -96,10 +97,10 @@ manifest_match=false
 probe() { if [ -e "$1" ]; then printf false; else printf true; fi; }
 peer_workspace=$(probe /shared/peer_workspace)
 peer_assignment=true
-for candidate in AP-001/A-01 AP-001/A-02 AP-002/A-01 AP-002/A-02 TC-001/A-01 TC-001/A-02 BG-001/A-01 BG-001/A-02; do
-  [ "$candidate" = "$program_id/$role_id" ] && continue
-  [ -e "/shared/research-program/agent_harness/assignments/$candidate.json" ] && peer_assignment=false
-done
+own_assignment="/shared/research-program/agent_harness/assignments/$program_id/$role_id.json"
+while IFS= read -r candidate; do
+  [ "$candidate" = "$own_assignment" ] || peer_assignment=false
+done < <(find /shared/research-program/agent_harness/assignments -type f 2>/dev/null)
 confirmation=$(probe /shared/confirmation)
 legacy=$(probe /shared/legacy)
 raw_lake=$(probe /shared/data)
