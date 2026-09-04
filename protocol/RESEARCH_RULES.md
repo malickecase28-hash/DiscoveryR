@@ -24,6 +24,16 @@
    construction belongs to a later separate program.
 14. Agents may research, toolsmith, and review within assignment; scientific
    promotion/freeze remains governed by the human research director.
+15. Submission lifecycle: work remains in the assigned workspace until host
+   validation and signoff; only the required published artifacts and approved
+   reusable scripts move into permanent locations.
+16. Temporary workspace lifecycle: after phase signoff, the host deletes the
+   phase-scoped temporary workspace. Preserve only published artifacts,
+   required manifests/receipts, and reusable scripts moved into their
+   permanent repository location. Without signoff, keep the workspace intact
+   and mark it pending; do not silently reuse or abandon it. Temporary work
+   must be created under a declared phase/run path, never as an untracked
+   top-level folder.
 
 All work preserves chronology, separates raw observations from derived findings,
 reports unresolved semantics and missing data, does not infer provider/model/
