@@ -1,0 +1,251 @@
+{
+  "artifact_type": "authority_candidate",
+  "program_id": "BG-001",
+  "role_id": "A-01",
+  "subjects": [
+    {
+      "subject_id": "bar_dependency_lineage",
+      "domain": "bar",
+      "graph_edges": []
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "BG001-A01-C001",
+      "subject": "bar_dependency_lineage",
+      "topic": "canonical_bar_scales",
+      "claim": "The declared XAUUSD bar surfaces have scales 15s, 30s, 1m, 5m, 15m, 1h, and 4h.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[].scale.Bar and sources[].schema_verified_parts",
+          "evidence_type": "declared_source_inventory",
+          "supports": "The inventory directly enumerates the seven bar scales and their schema-verified parts."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Additional scales or replacement parts could be declared later.",
+      "dependency_implications": "No dependency edge is established.",
+      "notes": "This is a physical inventory statement, not a lifecycle or semantic statement."
+    },
+    {
+      "claim_id": "BG001-A01-C002",
+      "subject": "bar_dependency_lineage",
+      "topic": "canonical_bar_physical_schema",
+      "claim": "Each declared bar scale has non-null Utf8 instrument_id, non-null Int64 bar_open_ts, non-null Int64 bar_close_ts, non-null Float64 open/high/low/close/volume, and nullable LargeUtf8 payload columns.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[].physical_schema for entries where scale.Bar is declared",
+          "evidence_type": "declared_physical_schema",
+          "supports": "The inventory directly declares field names, data types, and nullability for every bar scale."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A future inventory revision could alter fields, types, or nullability.",
+      "dependency_implications": "No producer or detector dependency is established by physical field presence.",
+      "notes": "The claim describes serialization only."
+    },
+    {
+      "claim_id": "BG001-A01-C003",
+      "subject": "bar_dependency_lineage",
+      "topic": "bar_physical_time_coordinates",
+      "claim": "bar_open_ts and bar_close_ts are the declared physical time-coordinate fields for each bar scale; their units and lifecycle meaning are not established here.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[].physical_time_coordinate_fields",
+          "evidence_type": "declared_physical_time_fields",
+          "supports": "The inventory directly names bar_open_ts and bar_close_ts as physical time-coordinate fields."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Timestamp units, timezone, availability, or event semantics may be supplied by later evidence.",
+      "dependency_implications": "Occurrence/known-time and availability relationships remain UNRESOLVED_RELATIONSHIP.",
+      "notes": "Field declaration does not establish occurrence time, known time, or availability time."
+    },
+    {
+      "claim_id": "BG001-A01-C004",
+      "subject": "bar_dependency_lineage",
+      "topic": "serialized_bar_surfaces",
+      "claim": "The declared payload columns are serialized bar surfaces named payload_swings, payload_raw3, payload_range, payload_fvg, payload_bos_choch, payload_order_blocks, payload_local_structure, payload_volume_by_time, payload_structural_liquidity, payload_dealing_range, payload_micro_liquidity, payload_micro_liquidity_context, payload_volume_trend, payload_auction_context, payload_time_context, and payload_vwma_atr.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[].payload_columns",
+          "evidence_type": "declared_payload_surface_list",
+          "supports": "The inventory directly lists the payload columns for each bar scale."
+        },
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "entries where domain=bar and known_surfaces=[bar]",
+          "evidence_type": "detector_surface_registry",
+          "supports": "The registry directly maps the named bar detector surfaces to the bar surface while marking their semantics unresolved."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Payload content schemas and meanings may be supplied by later evidence.",
+      "dependency_implications": "These serialized detector outputs are not classified as raw_inputs; dependency edges remain empty.",
+      "notes": "Names are not interpreted as detector lifecycle, object, or scientific semantics."
+    },
+    {
+      "claim_id": "BG001-A01-C005",
+      "subject": "bar_dependency_lineage",
+      "topic": "producer_raw_inputs",
+      "claim": "The producer raw inputs for the canonical bar surfaces are not directly evidenced.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Producer documentation or source lineage may resolve the inputs.",
+      "dependency_implications": "UNRESOLVED_RELATIONSHIP; no graph edge is emitted.",
+      "notes": "Serialized detector outputs are not treated as raw_inputs."
+    },
+    {
+      "claim_id": "BG001-A01-C006",
+      "subject": "bar_dependency_lineage",
+      "topic": "upstream_detector_inputs",
+      "claim": "Upstream detector inputs are not directly evidenced for any serialized bar surface.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Direct detector implementation or lineage evidence may resolve inputs.",
+      "dependency_implications": "UNRESOLVED_RELATIONSHIP; graph edges remain empty.",
+      "notes": "Registry derives_from values are empty and do not prove producer semantics."
+    },
+    {
+      "claim_id": "BG001-A01-C007",
+      "subject": "bar_dependency_lineage",
+      "topic": "object_ids",
+      "claim": "No bar object identifier field or object identity semantics are directly evidenced.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Payload schemas or lifecycle records may define object identity.",
+      "dependency_implications": "UNRESOLVED_RELATIONSHIP; no identity edge is emitted.",
+      "notes": "Field names and serialized payload presence do not establish object IDs."
+    },
+    {
+      "claim_id": "BG001-A01-C008",
+      "subject": "bar_dependency_lineage",
+      "topic": "occurrence_known_time_lineage",
+      "claim": "Occurrence time, known time, and their lineage relationship are unresolved for bar fields and payloads.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Timestamp provenance and causal-clock evidence may resolve this topic.",
+      "dependency_implications": "UNRESOLVED_RELATIONSHIP.",
+      "notes": "bar_open_ts and bar_close_ts are only physical coordinate fields."
+    },
+    {
+      "claim_id": "BG001-A01-C009",
+      "subject": "bar_dependency_lineage",
+      "topic": "availability_time",
+      "claim": "Availability time and any as-of rule for canonical bar surfaces are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Direct feed or producer availability evidence may resolve this topic.",
+      "dependency_implications": "UNRESOLVED_RELATIONSHIP.",
+      "notes": "No availability semantics are inferred from field names."
+    },
+    {
+      "claim_id": "BG001-A01-C010",
+      "subject": "bar_dependency_lineage",
+      "topic": "persistence_and_transitions",
+      "claim": "Persistence, lifecycle transitions, completion, and termination semantics are unresolved for bars and payloads.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Lifecycle evidence may establish state transitions or persistence rules.",
+      "dependency_implications": "UNRESOLVED_RELATIONSHIP.",
+      "notes": "Physical serialization does not establish lifecycle meaning."
+    },
+    {
+      "claim_id": "BG001-A01-C011",
+      "subject": "bar_dependency_lineage",
+      "topic": "causality",
+      "claim": "Causal ordering and whether any bar surface is eligible at a given information time are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Direct availability and chronology evidence may resolve causal eligibility.",
+      "dependency_implications": "UNRESOLVED_RELATIONSHIP.",
+      "notes": "The declared time-coordinate fields do not prove causal availability."
+    },
+    {
+      "claim_id": "BG001-A01-C012",
+      "subject": "bar_dependency_lineage",
+      "topic": "scientific_interpretation",
+      "claim": "No scientific interpretation, predictive meaning, or behavioral meaning is directly established for any canonical bar field or payload.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Validated semantic or behavioral evidence may resolve specific surfaces.",
+      "dependency_implications": "UNRESOLVED_RELATIONSHIP.",
+      "notes": "This authority run is limited to physical schema and lineage limits."
+    },
+    {
+      "claim_id": "BG001-A01-C013",
+      "subject": "bar_dependency_lineage",
+      "topic": "pair_relationships",
+      "claim": "Specific pair relationships involving canonical bar surfaces are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Direct pair evidence may establish a relationship and its direction or conditions.",
+      "dependency_implications": "UNRESOLVED_RELATIONSHIP; graph edges remain empty.",
+      "notes": "No pair relationship is inferred from shared bar serialization."
+    },
+    {
+      "claim_id": "BG001-A01-C014",
+      "subject": "bar_dependency_lineage",
+      "topic": "confluence",
+      "claim": "Specific confluence among bar surfaces is unresolved; shared serialization does not establish independence or confluence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Direct derivation and causal lineage evidence may resolve confluence.",
+      "dependency_implications": "UNRESOLVED_RELATIONSHIP; graph edges remain empty.",
+      "notes": "No confluence claim is made from detector names or co-location."
+    }
+  ],
+  "unresolved_questions": [
+    "What producer raw inputs generate each canonical bar surface?",
+    "What upstream detector inputs and derivation relationships exist?",
+    "Do payloads contain object IDs, and what identity rules apply?",
+    "What are the occurrence, known, and availability time semantics?",
+    "What persistence and lifecycle transitions apply?",
+    "Which causal, pair, and confluence relationships are directly evidenced?"
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "xauusd.wave1.bg001",
+      "relative_path": "instruments/XAUUSD/source_inventory.json",
+      "locator": "bar source entries, physical_schema, physical_time_coordinate_fields, payload_columns"
+    },
+    {
+      "source_id": "xauusd.wave1.bg001",
+      "relative_path": "registry/detectors_v1.json",
+      "locator": "bar detector entries and known_surfaces"
+    },
+    {
+      "source_id": "xauusd.wave1.bg001",
+      "relative_path": "protocol/RESEARCH_RULES.md",
+      "locator": "rules 1, 2, 3, 8, 11, and 12"
+    },
+    {
+      "source_id": "xauusd.wave1.bg001",
+      "relative_path": "protocol/AGENT_ACCESS.md",
+      "locator": "repository and authority-source access boundaries"
+    }
+  ]
+}
