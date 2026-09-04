@@ -43,6 +43,9 @@ The following stopped distributions were unregistered after process and state ch
 - Active Windows processes were not terminated.
 - Current research, authority, manifest, run, workspace, and data roots were not touched.
 - Active program directories and current research descendants were not touched.
+- Linked Git worktrees for the active infrastructure, integration, review, and
+  diagnostic branches were preserved; they require branch-level signoff before
+  removal.
 - The lifecycle rule was added to `protocol/RESEARCH_RULES.md`.
 - V4 custody commit `9134975bc04cf7450268677f5f9cf32f756d83f1` remains the implementation base.
 
