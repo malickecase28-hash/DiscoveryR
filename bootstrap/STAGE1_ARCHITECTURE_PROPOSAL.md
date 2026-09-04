@@ -25,14 +25,14 @@ The architecture answers: what the scientific units are, what states they pass t
 |--------|-----------|---------------------|
 | One Causal Clock | `available_time <= anchor_time` | Lookahead, back-projection, future-conditioned discovery |
 | Anchor-Based Lifecycle | Research organized around an anchor phenomenon | Scope creep, meaningless isolation, generic "context" |
-| Controlled Exposure | E1 → E2 → E3 staged information release | Premature exposure contaminating discovery |
+| Controlled Exposure | E1/E2/E3 exposure classes | Premature exposure contaminating discovery without creating mandatory research gates |
 | Separation of Discovery & Confirmation | Discovery ≠ confirmation in status, role, and blindness | Self-declared validation, confirmation bias |
 
 ### 2.2 The Primary Scientific Unit: The Anchor Experiment
 
 **Primary unit = Anchor Experiment (AE)**
 
-An Anchor Experiment is one bounded, reproducible study specification for a defined anchor phenomenon, anchor-time rule, population, exposure stage, and researcher assignment. Individual anchor occurrences are observations inside the experiment, not separate experiments.
+An Anchor Experiment is one bounded, reproducible study specification for a defined anchor phenomenon, anchor-time rule, population, and exposure class. Individual anchor occurrences are observations inside the experiment, not separate experiments.
 
 It answers: "What does this anchor phenomenon look like at this point in its lifecycle, given what was knowable at that time?"
 
@@ -103,11 +103,12 @@ stage, and terminal anchors explicit while keeping them on the one clock.
 
 | Entity | Description | Key property |
 |--------|-------------|--------------|
-| **Anchor Phenomenon** | The scientific object being studied (e.g., `drift_burst.weak`, `fvg.formed`, `range.breakout`) | Defined by its lifecycle vocabulary |
+| **Anchor Phenomenon** | The scientific object being studied (e.g., `drift_burst.weak`, `fvg.formed`, `range.breakout`) | References lifecycle vocabulary only when authoritative; otherwise carries unresolved semantic status |
 | **Anchor Program** | A bounded research program around a phenomenon family | Has instrument scope, exposure plan, and success criteria |
-| **Anchor Experiment** | One investigation of a specific anchor at a specific anchor time | Has an exposure stage and an evidence-maturity state |
+| **Anchor Experiment** | One bounded study over a defined population of anchor instances, each receiving its own causal anchor time by the experiment's rule | Has an exposure class and evidence outputs |
 | **Anchor Time** | The specific clock point defining the experiment's causal boundary | `available_time <= anchor_time` |
-| **Researcher** | One blinded agent/model instance | Identified by neutral ID (P-01), blind to peers |
+| **Researcher** | One agent/model instance assigned to a Lab and, when required, a blind phase | Identified by neutral ID (P-01); blind to peers during blind work |
+| **Run Manifest** | Execution record for one researcher/implementation against one Experiment Contract | Links run, neutral researcher, code, inputs, contract hash, and output |
 | **Lab** | A scientific function housing researchers | Defines what information a researcher sees |
 | **Finding** | Any result from an experiment | Has evidence status and provenance |
 | **Evidence Record** | Immutable record tying a finding to its generating code and data | Git SHA + script hash + data reference |
@@ -119,28 +120,32 @@ stage, and terminal anchors explicit while keeping them on the one clock.
 
 Detector/lifecycle research moves through **two orthogonal dimensions**:
 
-### 4.1 Exposure Stages (Information Access)
+### 4.1 Exposure Classes (Information Access)
 
-| Stage | Name | What the researcher sees |
+| Class | Name | What the researcher sees |
 |-------|------|--------------------------|
 | **E1** | PHENOTYPE | The anchor's native lifecycle/phenotype only. No conditioning context. |
 | **E2** | SAME_DOMAIN | Appropriate same-domain conditioning information exposed. |
 | **E3** | CROSS_DOMAIN | Full eligible causally available cross-domain/multi-resolution context. |
 
-E1 is the starting point. E2 and E3 are reached only when the research question requires it. Exposure is **staged upward, not bypassed**.
+These are ordered levels of permissible information, not mandatory per-experiment
+progression gates. A new experiment may begin at any class when its contract
+justifies that scope; it does not need to complete E1 and E2 first. The class is
+fixed by the experiment contract and may not be widened after results without a
+new contract and new provenance.
 
 ### 4.2 Evidence Maturity States
 
 | State | Meaning | What it permits |
 |-------|---------|-----------------|
 | **DISCOVERY** | Exploratory finding from systematic or serendipitous discovery | Not predeclared; cannot be claimed as confirmation |
-| **CANDIDATE** | Selected for challenge/confirmation testing | May proceed to Challenge Lab |
-| **CHALLENGED** | Under adversarial/independent review | Cannot be reported as confirmed |
-| **CONFIRMED** | Survived independent challenge | May become accepted shared knowledge |
+| **CANDIDATE** | Selected for challenge and possible confirmation | May proceed to Challenge Lab |
+| **CONFIRMED** | Survived a method challenge and a separate independent confirmation run | May become accepted shared knowledge |
 | **REJECTED** | Failed confirmation; exact implementation refuted | Rejected implementation, not entire detector family |
 | **NULL** | No effect detected | Preserved as negative evidence |
+| **INCONCLUSIVE** | Evidence is insufficient, conflicting, or otherwise cannot support a null or rejection | Remains open without manufacturing certainty |
 
-**Why these six?** The instruction requires that exploratory and confirmed work not collapse into one label, that negative evidence survives, and that discovery ≠ confirmation. Six states cover all cases without excessive granularity. I evaluated dropping CHALLENGED into CANDIDATE but retained it because adversarial review is a distinct phase with distinct blindness requirements.
+**Why these six?** The instruction requires that exploratory and confirmed work not collapse into one label, that negative evidence survives, and that discovery ≠ confirmation. Six states cover the evidence outcomes without making the procedural method challenge a maturity state. Challenge and confirmation remain separate records and operations.
 
 ### 4.3 The Two-Path Flow
 
@@ -162,32 +167,43 @@ E1 is the starting point. E2 and E3 are reached only when the research question 
                     CANDIDATE state
                                │
                     ┌──────────▼──────────────────┐
-                    │  Challenge Lab               │
-                    │  (adversarial review)        │
+                    │  METHOD CHALLENGE             │
+                    │  (skeptical review)           │
                     └──────────┬──────────────────┘
                                │
+                    challenge survives?
+                         │ yes
+                    FROZEN CONFIRMATION SPEC
+                         │
+                    independent untouched evidence
                     ┌──────────┼──────────┐
                     ▼          ▼          ▼
-               CONFIRMED    REJECTED    NULL
+               CONFIRMED    REJECTED    INCONCLUSIVE
 ```
 
-A discovery does NOT automatically become a candidate. A candidate does NOT automatically become confirmed. Each transition requires explicit evidence and independent review.
+A discovery does NOT automatically become a candidate. A candidate first
+receives a separate method challenge for leakage, denominator, dependence,
+control, multiple-testing, and lineage errors. Only if that challenge survives
+is the confirmation specification frozen and run on independent untouched
+evidence. The skeptic's inability to find a flaw is not replication.
 
 ---
 
-## 5. Exposure-State Model (Detail)
+## 5. Exposure-Class Model (Detail)
 
-The exposure model controls **what information a researcher is allowed to see**, independent of what they found.
+The exposure model controls **what information a researcher is allowed to see**,
+independent of what they found. These are classes, not a per-experiment gate
+sequence.
 
 ### E1 — PHENOTYPE
 - Study the anchor's native lifecycle/phenotype.
 - No conditioning context from other detectors, timeframes, or domains.
-- This is where all anchor research begins.
+- A program may choose this class for phenotype work.
 - Prevents premature cross-contamination.
 
 ### E2 — SAME_DOMAIN
 - Expose appropriate same-domain conditioning information.
-- Example: studying `fvg.formed` at E2 might expose other FVG lifecycle states or same-resolution structural objects.
+- Example: studying `fvg.formed` at E2 might expose known same-domain FVG lifecycle states or same-resolution structural objects.
 - The "same domain" boundary is defined by the anchor's causal neighborhood, not by timeframe.
 
 ### E3 — CROSS_DOMAIN
@@ -195,7 +211,11 @@ The exposure model controls **what information a researcher is allowed to see**,
 - All information with `available_time <= anchor_time` across any timeframe is eligible.
 - Different timeframes are NOT automatically one homogeneous statistical population. They share a clock but retain their stratum identity.
 
-**Key design decision**: Exposure stage is a property of the *experiment contract*, not of the researcher's preference. A researcher cannot unilaterally decide to study at E3.
+**Key design decision**: Exposure class is a property of the *experiment
+contract*, not of the researcher's preference. A researcher cannot unilaterally
+widen access, but a new contract may start at E2 or E3 when its question and
+allowlist justify that scope. No lower-class completion or escalation approval
+is required merely because a higher class was selected.
 
 ---
 
@@ -203,31 +223,33 @@ The exposure model controls **what information a researcher is allowed to see**,
 
 Evidence status answers: "How strongly is this result established?"
 
-### The State Machine
+### The Evidence Workflow
 
 ```
-DISCOVERY ──select──▶ CANDIDATE ──assign──▶ CHALLENGED ──survive──▶ CONFIRMED
-    │                                          │                    │
-    │                     ┌────────────────────┘                    │
-    │                     ▼                                         ▼
-    └── reject ────── REJECTED                              (accepted knowledge)
-    │
-    └── no effect ─── NULL
+DISCOVERY ──select──▶ CANDIDATE
+                         │
+                         ▼
+                  METHOD CHALLENGE
+                   │ survives
+                   ▼
+            FROZEN CONFIRMATION SPEC
+                   │
+        independent untouched evidence
+             ┌─────┼─────────────┐
+             ▼     ▼             ▼
+        CONFIRMED REJECTED INCONCLUSIVE
 ```
 
 ### Rules
 
 1. **DISCOVERY** results must be labeled as discovery. They cannot be presented as predeclared or confirmed.
 2. **CANDIDATE** selection is deliberate and recorded. Not every discovery advances.
-3. **CHALLENGED** results are under adversarial review. They cannot be reported as established.
-4. **CONFIRMED** results survived independent challenge. They may enter shared knowledge.
-5. **REJECTED** results reject the exact implementation/hypothesis, never the entire detector family.
-6. **NULL** results are preserved and discoverable. Absence of evidence is not evidence absence.
-7. **UNRESOLVED** is not a permanent state; it means more work is needed. It should not be used to avoid making a call.
-
-### Why not UNRESOLVED as a permanent state?
-
-UNRESOLVED is useful as a transitional label (e.g., "this finding is unresolved pending more data"), but a permanent UNRESOLVED state creates a graveyard where nothing is ever classified. If after exhaustive challenge a result remains unclear, it should be classified as NULL or REJECTED with the reason documented.
+3. **METHOD CHALLENGE** is a separate operation recorded in a CHALLENGE record. It tests validity threats; it does not establish replication.
+4. **FROZEN CONFIRMATION SPEC** is created only after the method challenge survives. Confirmation runs independently on untouched evidence.
+5. **CONFIRMED** requires the independent confirmation run, not merely a clean challenge.
+6. **REJECTED** rejects the exact implementation/hypothesis, never the entire detector family.
+7. **NULL** means a null result under the specified test and is preserved as negative evidence.
+8. **INCONCLUSIVE** is permanent evidence status for insufficient or conflicting evidence. It must not be forced into NULL or REJECTED.
 
 ---
 
@@ -250,16 +272,15 @@ The contract is the **single source of truth** that allows:
 | `anchor_lifecycle_state` | string | The lifecycle stage that defines the anchor (e.g., `formed`, `first_touch`) |
 | `instrument` | string | Target instrument (e.g., `XAUUSD`) |
 | `anchor_time_rule` | object | How each population occurrence gets its causal boundary from known/available time |
-| `exposure_stage` | enum `[E1, E2, E3]` | What information is available |
+| `exposure_class` | enum `[E1, E2, E3]` | What information is available |
 | `native_timeframe` | string | The native resolution (e.g., `15m`) |
-| `eligible_context` | object | Explicit detector, lifecycle, timeframe, and data-view allowlist resolved from the exposure stage |
+| `eligible_context` | object | Explicit detector, lifecycle, timeframe, and data-view allowlist resolved from the exposure class |
 | `population` | string/object | Definition of the study population |
 | `measurements_and_outcomes` | object | Predeclared observables and lifecycle/context measurements; not trading outcomes |
 | `controls` | object | Required comparison or null controls, when the question needs them |
 | `development_data_scope` | object | Data range for development |
 | `confirmation_data_scope` | object | Data range for confirmation (may be locked) |
 | `discovery_status` | enum `[predeclared, discovered]` | Was this found systematically or discovered unexpectedly? |
-| `researcher_ids` | array | Who worked this experiment |
 | `normalization_basis` | string | How native measurements are normalized |
 | `created_utc` | timestamp | When the contract was written |
 
@@ -271,17 +292,34 @@ The contract is the **single source of truth** that allows:
 - Researcher names or model identities (blinded)
 - Unrelated legacy findings
 
-Code identity is bound to each result, not used to make independent researchers
-run the same implementation. Every accepted result must carry a `result_id`,
-Git SHA/script hash, input-data hashes, configuration/contract hash, and output
-identity. This preserves reproducibility without turning the scientific contract
-into a hidden implementation lock.
+Researcher assignment and code identity are bound to execution, not to the
+scientific question. The same Experiment Contract may produce multiple runs
+without cloning or mutating the contract.
 
 Every measurement preserves its native/raw value, its normalized value when one
 is defined, and the normalization basis used. The contract names the basis; the
 result records carry the values.
 
-### 7.4 Contract as Enforcement
+### 7.4 Run Manifest (execution record)
+
+A **Run Manifest** records who executed one immutable Experiment Contract and
+what implementation and inputs produced the result. Its minimum fields are:
+
+| Field | Purpose |
+|-------|---------|
+| `run_id` | Unique execution identity |
+| `experiment_id` | Link to the frozen scientific specification |
+| `researcher_id` | Neutral ID such as P-01 |
+| `code_identity` | Git SHA and script/binary hash |
+| `contract_hash` | Exact Experiment Contract consumed |
+| `input_identity` | Frozen corpus/view and input hashes |
+| `executed_utc` | Execution timestamp |
+| `output_identity` | Result/evidence artifact hash |
+
+Provider identity remains orchestrator-only metadata. A run is incomplete for
+accepted evidence until its manifest is present.
+
+### 7.5 Contract as Enforcement
 
 The contract must be powerful enough to:
 - Prevent silent goalpost changes (changing the anchor, anchor-time rule, exposure, population, measurements, controls, or data scope after results)
@@ -289,10 +327,10 @@ The contract must be powerful enough to:
 - Drive deterministic Rust execution
 - Preserve the causal rule `available_time <= anchor_time`
 
-### 7.5 Context permission resolution
+### 7.6 Context permission resolution
 
 The contract's `eligible_context` is an explicit allowlist, not a researcher
-choice. The orchestrator derives it from the requested exposure stage plus the
+choice. The orchestrator derives it from the requested exposure class plus the
 Detector Registry's `domain`, `roles`, `derives_from`, lifecycle vocabulary, and
 availability semantics. E1 resolves to the anchor phenotype; E2 adds the
 declared same-domain compatible set; E3 adds the declared cross-domain and
@@ -317,11 +355,13 @@ Each detector entry contains:
 | `detector_id` | Unique identifier (e.g., `drift_burst_weak`) |
 | `name` | Human-readable name |
 | `description` | What the detector identifies |
-| `lifecycle_vocabulary` | States/transitions this detector knows (e.g., `formed`, `burst`, `resolved`) |
+| `lifecycle_vocabulary` | Declared states/transitions, empty until supported by an authoritative surface or validated research |
 | `roles` | Taxonomy roles (directional evidence, state/regime, structural object, temporal context, data quality, lifecycle state, normalization/reference) |
 | `derives_from` | Array of parent detector IDs (dependency graph) |
 | `native_timeframes` | Array of timeframes this detector operates on |
-| `availability_semantics` | When is this detector's output knowable relative to its anchor? |
+| `known_surfaces` | Corpus surfaces where this detector is observed |
+| `semantic_status` | `AUTHORITATIVE`, `PROVISIONAL`, or `UNRESOLVED`; prevents names from being mistaken for lifecycle knowledge |
+| `availability_semantics` | When the output is knowable, or an explicit unresolved status and source |
 | `domain` | What causal domain it belongs to |
 
 ### 8.3 Roles Taxonomy (Draft)
@@ -338,7 +378,7 @@ A detector may belong to multiple roles.
 
 ### 8.4 What Is NOT in the Registry (Yet)
 
-- Full 23-detector population
+- Invented lifecycle semantics for the 23 detector IDs
 - Detailed parameterization
 - Strategy mapping
 - Performance metrics
@@ -353,7 +393,9 @@ The registry is a **contract shape**, not a populated database.
 
 **Lab** = A scientific function. It defines *what information* a researcher is allowed to see and *what role* they play in the scientific process.
 
-**Researcher** = One blinded agent/model instance working inside a Lab. Identified by a neutral ID (P-01, P-02, P-03). Blind to peer researchers' outputs and identities.
+**Researcher** = One agent/model instance working inside a Lab, identified by
+neutral ID (P-01, P-02, P-03). It is blind to peer researchers' outputs and
+identities during designated blind phases.
 
 ### 9.2 Which Labs Truly Require Separation?
 
@@ -361,7 +403,7 @@ The proposed permanent labs are:
 
 | Lab | Function | Blindness Required | Independence Required |
 |-----|----------|-------------------|----------------------|
-| **Discovery Lab** | Systematic discovery, hypothesis generation, phenotype research (E1) | Blind to Challenge Lab inputs | Yes — must not be influenced by confirmation bias |
+| **Discovery Lab** | Systematic discovery, hypothesis generation, and phenotype/context research under the assigned exposure class | Blind to Challenge Lab inputs | Yes — must not be influenced by confirmation bias |
 | **Challenge Lab** | Adversarial review, independent confirmation testing | Blind to Discovery Lab's reasoning process | Yes — must independently evaluate |
 
 **Why only two permanent labs?**
@@ -369,7 +411,7 @@ The proposed permanent labs are:
 The instruction asks to evaluate which roles are genuinely separate, which can merge, and which should be task modes. Here is my analysis:
 
 - **Question/Hypothesis Generation** → Merges into Discovery Lab (discovery naturally generates questions)
-- **Context Research (E2/E3)** → A task mode within Discovery Lab, gated by the experiment contract
+- **Context Research (E2/E3)** → A task mode within Discovery Lab, bounded by the experiment contract's exposure class
 - **Skeptical/Adversarial Review** → Is the Challenge Lab's core function
 - **Confirmation** → Is the Challenge Lab's output function
 - **Synthesis** → A task mode, not a permanent lab; occurs after Challenge Lab produces confirmed results
@@ -378,15 +420,18 @@ The architecture should not become an org chart for its own sake. Two labs provi
 
 ### 9.3 Researcher Assignment
 
-A researcher is assigned to one Lab per experiment. The experiment contract specifies:
-- Which Lab the researcher belongs to
-- What exposure stage they receive
-- What data scope they can access
-- What neutral ID they use
+A researcher is assigned to one Lab per run. The Run Manifest records the Lab,
+neutral researcher ID, exposure class, and data scope actually used. The
+Experiment Contract remains identical for every independent run.
 
 ### 9.4 The "Discovery ≠ Confirmation" Guarantee
 
-The Challenge Lab is never told that a finding came from the Discovery Lab's specific reasoning. It receives the experiment contract, the evidence records, and the finding — and independently evaluates. This prevents a discovered result from being mislabeled as predeclared confirmation.
+The Challenge Lab is never told the Discovery Lab's specific reasoning. A
+Challenge researcher first performs a method challenge; if it survives, a
+different Challenge researcher (or a separately assigned independent run)
+executes the frozen confirmation specification on untouched evidence. The same
+researcher must not perform both tasks for the same claim. A clean method
+challenge cannot be labeled replication.
 
 ---
 
@@ -458,9 +503,10 @@ Autonomy is bounded by the **experiment contract**, not by a chain of human appr
 ### 11.3 What Requires Human Approval
 
 - Creating a new Anchor Program (defines the research scope)
-- Escalating an experiment from E1 to E2 or E3 (changes information exposure)
+- Creating a new experiment with a materially different exposure class or scope
 - Moving a finding from DISCOVERY to CANDIDATE (changes evidence status)
-- Declaring CONFIRMED (requires Challenge Lab)
+- Freezing the confirmation specification for a candidate
+- Declaring CONFIRMED (requires an independent confirmation run)
 
 Everything else is within the contract.
 
@@ -494,7 +540,12 @@ Each researcher receives:
 - Read-only access to authorized data views (e.g., specific Parquet partitions)
 - No access to other researchers' workspaces or outputs
 
-The bootstrap did NOT prove the current runtime enforces these boundaries. The architecture specifies what must be enforced; the mechanism (Docker, ACLs, filesystem permissions, runtime sandbox) is a later implementation decision.
+The bootstrap did NOT prove the current runtime enforces these boundaries. The
+architecture specifies what must be enforced; the mechanism (Docker, ACLs,
+filesystem permissions, runtime sandbox) is a later implementation decision.
+That mechanism must be implemented and verified before the first blind
+multi-researcher run; a single-researcher pilot may proceed without claiming
+blindness.
 
 ### 12.4 What Must Be Enforced (Summary)
 
@@ -518,7 +569,7 @@ The program needs cumulative scientific memory. It cannot rely on chat memory. C
 | Record Type | Purpose | Stable ID |
 |-------------|---------|-----------|
 | **QUESTION** | An open research question | `Q-XXX` |
-| **FINDING** | Any result (discovery, null, rejection) | `F-XXX` |
+| **FINDING** | Any result (discovery, null, rejection, or inconclusive) | `F-XXX` |
 | **CHALLENGE** | An adversarial challenge to a finding | `C-XXX` |
 | **KNOWLEDGE** | Accepted, confirmed knowledge | `K-XXX` |
 
@@ -528,19 +579,24 @@ Each record has:
 - `record_id` (stable identifier)
 - `record_type` (QUESTION/FINDING/CHALLENGE/KNOWLEDGE)
 - `content` (the actual finding/question/challenge)
-- `provenance` (links back to experiment_id, code_identity, evidence)
+- `provenance` (links back to experiment_id, run_id, code_identity, evidence)
 - `status` (current evidence-maturity state)
 - `created_utc`
 - `supersedes` (optional, for versioning)
 - `superseded_by` (optional)
 
+Questions use `OPEN` while they remain unanswered; findings use the six
+evidence statuses defined in Section 4.2. A challenge record records method
+threats and its decision separately from any confirmation result.
+
 ### 13.4 How Negative Evidence Survives
 
 - NULL findings are stored as FINDING records with `status: NULL`
 - REJECTED findings are stored with `status: REJECTED`
+- INCONCLUSIVE findings are stored with `status: INCONCLUSIVE`; uncertainty is not converted into NULL or REJECTED
 - CONTRADICTIONS are stored as FINDING records linking to the contradicted findings
 - Failed replications are stored with full provenance
-- Unresolved questions remain as QUESTION records with no superseding KNOWLEDGE
+- Unresolved questions remain as QUESTION records with `status: OPEN` and no superseding KNOWLEDGE
 
 The knowledge layer must be **queryable by negation** — one must be able to find "all rejected hypotheses about X" or "all null results for detector Y."
 
@@ -548,6 +604,7 @@ The knowledge layer must be **queryable by negation** — one must be able to fi
 
 Every knowledge record traces back through:
 - `experiment_id` → which experiment produced this
+- `run_id` → which execution manifest produced this
 - `code_identity` → what code generated this
 - `evidence_ids` → what data supports this
 - `researcher_id` → who produced this (neutral ID)
@@ -579,7 +636,7 @@ XAUUSD is one instrument. The program expects to repeat for ~15 additional instr
 | Experiment contract schema | Instrument name |
 | Detector registry schema | Data access paths |
 | Anchor phenomenon definitions | Anchor time boundaries |
-| Exposure stage definitions | Development/validation split |
+| Exposure class definitions | Development/validation split |
 | Evidence-maturity model | Normalization parameters |
 | Knowledge record model | Specific detector parameters |
 | Lab/researcher model | Instrument-specific authority |
@@ -589,11 +646,15 @@ XAUUSD is one instrument. The program expects to repeat for ~15 additional instr
 
 When a new instrument is added:
 1. Create an instrument configuration (JSON/YAML)
-2. Register the instrument in the detector registry
+2. Reference detector IDs from that instrument configuration; do not register the instrument in the Detector Registry
 3. Define the anchor time boundaries
 4. Set access scope
 
 No new methodology, no new code tree, no new lifecycle.
+
+The Instrument Registry/config is a separate authority from the Detector
+Registry. An Experiment Contract references an instrument configuration and
+detector IDs; detector semantics never become instrument registration data.
 
 ### 14.4 Git and external boundaries
 
@@ -629,9 +690,9 @@ immutable identifiers or read-only views, not copied into the repository.
 
 | Legacy Concept | Problem | Redesign |
 |----------------|---------|----------|
-| **G0-G5 state machine** | Coupled to timeframe-isolation; 6 gates for what is really 2 phases (discovery, confirmation) | Replace with exposure stages (E1-E3) + evidence maturity states |
+| **G0-G5 state machine** | Coupled to timeframe-isolation and gate progression | Replace with exposure classes (E1-E3) plus separate method-challenge and confirmation operations |
 | **Stream labs (`stream/<timeframe>`)** | Each timeframe as isolated universe | Anchor experiments organized by phenomenon, not timeframe |
-| **Branch-per-stream** | `stream/15s`, `stream/1h` etc. | Branches per experiment or per anchor program |
+| **Branch-per-stream** | `stream/15s`, `stream/1h` etc. | Branches/worktrees are operational conveniences only; experiment identity comes from contracts and manifests |
 | **Web Reviewer per stream** | Reviewer bound to timeframe | Reviewer bound to experiment contract |
 | **Strategy categories (MICRO-SCALP etc.)** | Strategy-first thinking | Strategy research is later; not part of detector science |
 | **Progress Index (per stream)** | Stream-centric tracking | Experiment-centric tracking |
@@ -644,9 +705,9 @@ immutable identifiers or read-only views, not copied into the repository.
 | **Every timeframe requiring isolated research completion** | Contradicts anchor-based lifecycle; timeframes share a clock |
 | **Cross-timeframe work delayed until "graduation"** | Artificially serializes research |
 | **Old strategy categories (MICRO-SCALP etc.)** | Strategy research is later; not detector science |
-| **Old G0-G5 semantics as mandatory architecture** | Replaced by exposure stages + evidence maturity |
+| **Old G0-G5 semantics as mandatory architecture** | Replaced by exposure classes + evidence maturity |
 | **Stream isolation during G1** | Replaced by E1 phenotype isolation per anchor |
-| **Branch naming conventions tied to timeframe** | Branches should follow experiment/anchor program |
+| **Branch naming conventions tied to timeframe** | No scientific branch naming requirement; use ordinary branches/worktrees only when operationally useful |
 | **`All Read.md` as launch instruction** | Historical; authority for new program is unresolved |
 | **Legacy reports/journals as seed context** | Preserve as historical evidence; do not preload into new agent context |
 | **Known Failure Regressions as mandatory per-rule attestations** | Retain as adversarial reference; not mandatory attestation per gate |
@@ -658,20 +719,21 @@ immutable identifiers or read-only views, not copied into the repository.
 ### What Must Be Implemented BEFORE the First Real Anchor Study
 
 1. **Experiment Contract schema** — JSON/YAML definition of the minimum fields (Section 7)
-2. **Detector Registry schema** — Minimum contract shape for detector entries (Section 8)
-3. **Knowledge Record schema** — Minimum record types and structure (Section 13)
-4. **Anchor Phenomenon registry (seed entries)** — The ~23 detector families with lifecycle vocabulary
-5. **Causal clock enforcement check** — A validator that confirms `available_time <= anchor_time` in any experiment
-6. **Researcher workspace model** — Directory structure for isolated workspaces
-7. **Experiment contract template** — A minimal, fillable template for creating an experiment
+2. **Run Manifest schema** — Execution identity linking researcher, code, inputs, contract hash, and outputs
+3. **Detector Registry schema** — Minimum contract shape for detector entries (Section 8)
+4. **Knowledge Record schema** — Minimum record types and structure (Section 13)
+5. **Anchor Phenomenon registry (seed entries)** — The ~23 detector IDs with known surfaces/resolutions and unresolved semantic status; no invented lifecycle semantics
+6. **Causal clock enforcement check** — A validator that confirms `available_time <= anchor_time` in any experiment
+7. **Researcher workspace model** — Directory structure for isolated workspaces
+8. **Experiment contract template** — A minimal, fillable template for creating an experiment
 
-### What Can Safely Wait Until AFTER the First Real Study
+### What Can Safely Wait Until AFTER a Single-Researcher Pilot
 
 1. **Rust scanner implementation** — Can be written once the first experiment contract is validated
-2. **Full detector registry population** — Populate as experiments proceed
+2. **Full detector semantic population** — Populate as authoritative surfaces and validated research establish meaning
 3. **Automated knowledge graph** — Can be built once enough records exist
-4. **Provider identity hiding mechanism** — Can be implemented when researchers are actually deployed
-5. **Filesystem sandbox enforcement** — Can be implemented when the runtime is proven
+4. **Provider identity hiding mechanism** — Must be implemented and verified before any blind multi-researcher run
+5. **Filesystem sandbox enforcement** — Must be implemented and verified before any blind multi-researcher run
 6. **Synthesis tooling** — Can be built after blinded results accumulate
 7. **Question generator** — Can be built after the first anchor program produces discoveries
 8. **Full normalization formulas** — Can be defined per-phenomenon as needed
@@ -681,14 +743,17 @@ immutable identifiers or read-only views, not copied into the repository.
 The smallest Stage 1 implementation that gives a scientifically safe foundation is:
 
 1. **One JSON schema** for the experiment contract
-2. **One JSON schema** for the detector registry entry
-3. **One JSON schema** for knowledge records
-4. **One seed file** listing the ~23 anchor phenomena with lifecycle vocabulary
-5. **One validator** checking `available_time <= anchor_time`
-6. **One directory template** for researcher workspaces
-7. **This document** as the architectural contract
+2. **One JSON schema** for the run manifest
+3. **One JSON schema** for the detector registry entry
+4. **One JSON schema** for knowledge records
+5. **One seed file** listing the ~23 detector IDs, known surfaces/resolutions, and unresolved semantic status
+6. **One validator** checking `available_time <= anchor_time`
+7. **One directory template** for researcher workspaces
+8. **This document** as the architectural contract
 
-That's 7 artifacts, not 14,000 lines of scanner code.
+That's 8 artifacts, not 14,000 lines of scanner code. A single-researcher pilot
+can validate the scientific contract; a blind multi-researcher run waits for
+verified isolation and neutral-identity enforcement.
 
 ---
 
@@ -718,8 +783,8 @@ That's 7 artifacts, not 14,000 lines of scanner code.
 | Risk | Severity | Mitigation |
 |------|----------|------------|
 | Architecture becomes another bureaucracy | High | Every process step must answer "What failure does this prevent?" If no meaningful answer, remove it |
-| Accidentally recreating isolated timeframe research | High | Anchor-based lifecycle replaces timeframe isolation; exposure stages replace stream gates |
-| Too many statuses | Medium | Six evidence states; exposure stages are separate from evidence states |
+| Accidentally recreating isolated timeframe research | High | Anchor-based lifecycle replaces timeframe isolation; exposure classes replace stream gates |
+| Too many statuses | Medium | Six evidence states; method challenge is a record/operation, not another maturity state |
 | Confusing exposure with evidence maturity | High | Explicitly separate concepts in contract and documentation |
 | Forcing hypothesis-first research | Medium | Discovery is legitimate; `discovery_status: discovered` is valid |
 | Making autonomous agents too dangerous | Medium | Bounded by experiment contract; human approval needed for scope changes |
@@ -727,7 +792,7 @@ That's 7 artifacts, not 14,000 lines of scanner code.
 | Huge universal schema before observing real studies | High | Minimal schemas; populate as experiments proceed |
 | XAUUSD architecture becomes instrument-specific | Medium | Configuration vs core separation; instrument-specific in config files |
 | Strategy research enters detector science | High | Explicitly excluded from Stage 1 scope |
-| Negative evidence lost | Medium | Knowledge records preserve NULL/REJECTED; queryable by negation |
+| Negative evidence lost | Medium | Knowledge records preserve NULL/REJECTED/INCONCLUSIVE; queryable by negation |
 | Raw measurements discarded | Medium | Normalization principle preserves RAW + NORMALIZED + BASIS |
 | Rust runner cannot interpret contract | Medium | Contract is machine-readable JSON; validated before use |
 | Three blinded researchers cannot work from same contract | Medium | Contract is the single source of truth; neutral IDs |
@@ -739,10 +804,10 @@ That's 7 artifacts, not 14,000 lines of scanner code.
 ## 19. Open Questions Requiring Research-Director Decision
 
 1. **Primary unit name**: Is "Anchor Experiment" the right term, or should it be "Anchor Study," "Phenotype Investigation," or something else?
-2. **Evidence states**: Should UNRESOLVED be a permanent state or only transitional?
+2. **Evidence states**: Is `INCONCLUSIVE` the clearest permanent label for insufficient or conflicting evidence?
 3. **Lab count**: Are two permanent labs (Discovery + Challenge) sufficient, or do we need a separate Synthesis lab?
-4. **Exposure stage naming**: Are E1/E2/E3 clear, or should they have descriptive names?
-5. **Detector count**: When should the ~23 detector families be fully registered?
+4. **Exposure class granularity**: Are E1/E2/E3 sufficient, or should a later study justify another class?
+5. **Detector semantics**: When should the ~23 detector IDs move beyond `UNRESOLVED`?
 6. **Normalization scope**: Should normalization rules be defined per-experiment or per-phenomenon-family?
 7. **Knowledge storage**: Should knowledge records live in Git files, a database, or both?
 8. **Researcher count**: How many blind researchers per experiment is optimal?
@@ -764,10 +829,11 @@ Research Program/
 │   └── STAGE1_ARCHITECTURE_PROPOSAL.md
 ├── contracts/                                 ← Machine-readable contracts
 │   ├── experiment_contract_v1.json            ← Experiment Contract schema
+│   ├── run_manifest_v1.json                   ← Run Manifest schema
 │   ├── detector_registry_v1.json              ← Detector Registry schema
 │   └── knowledge_record_v1.json               ← Knowledge Record schema
 ├── registry/                                  ← Seed registries
-│   └── anchor_phenomena.json                  ← ~23 anchor phenomena with lifecycle vocabulary
+│   └── anchor_phenomena.json                  ← ~23 detector IDs, known surfaces/resolutions, semantic status
 ├── programs/                                  ← Anchor Programs (one per phenomenon family)
 │   └── drift_burst_weak/
 │       ├── program_contract.json              ← Anchor Program definition
@@ -810,9 +876,9 @@ Research Program/
 
 Before finalizing, I attacked this design against the criteria in Section 18:
 
-1. **Did I accidentally recreate isolated timeframe research?** No. The architecture is anchor-based, not timeframe-based. Timeframes are native attributes, not scientific universes. E1-E3 exposure stages replace stream gates.
+1. **Did I accidentally recreate isolated timeframe research?** No. The architecture is anchor-based, not timeframe-based. Timeframes are native attributes, not scientific universes. E1-E3 exposure classes replace stream gates without mandatory progression.
 
-2. **Did I create too many statuses?** Six evidence states is the minimum that prevents collapsing exploratory and confirmed work. Exposure stages are separate.
+2. **Did I create too many statuses?** Six evidence states preserve discovery, confirmation, null, rejection, and inconclusive evidence. Method challenge is a separate record/operation, and exposure classes are separate.
 
 3. **Did I confuse exposure with evidence maturity?** No. Sections 5 and 6 explicitly separate them. Exposure = what information was available. Evidence status = how strongly established.
 
@@ -836,9 +902,9 @@ Before finalizing, I attacked this design against the criteria in Section 18:
 
 13. **Can three blinded researchers independently work from the same contract?** Yes. The contract is the single source of truth; researchers are identified by neutral IDs.
 
-14. **Can a skeptic reconstruct exactly what was tested?** Yes. Evidence records tie findings to experiment_id, code_identity, and evidence_ids.
+14. **Can a skeptic reconstruct exactly what was tested?** Yes. Run Manifests tie findings to experiment_id, researcher_id, code_identity, contract hash, input identity, and evidence_ids.
 
-15. **Could this realistically help produce the XAUUSD report within days?** Yes. The minimal implementation plan (7 artifacts) can be completed quickly. An E1 phenotype study of a single anchor can proceed immediately.
+15. **Could this realistically help produce the XAUUSD report within days?** Yes. The minimal implementation plan (8 artifacts) can be completed quickly. A single-researcher phenotype study can proceed immediately; blind multi-researcher work waits for verified isolation.
 
 ---
 
@@ -848,13 +914,13 @@ Before finalizing, I attacked this design against the criteria in Section 18:
 |----------|--------|
 | Primary unit of research | **Anchor Experiment** |
 | Primary program unit | **Anchor Program** |
-| Exposure states | **E1 (PHENOTYPE), E2 (SAME_DOMAIN), E3 (CROSS_DOMAIN)** |
-| Evidence states | **DISCOVERY, CANDIDATE, CHALLENGED, CONFIRMED, REJECTED, NULL** (6 states) |
+| Exposure classes | **E1 (PHENOTYPE), E2 (SAME_DOMAIN), E3 (CROSS_DOMAIN)** |
+| Evidence states | **DISCOVERY, CANDIDATE, CONFIRMED, REJECTED, NULL, INCONCLUSIVE** (6 states) |
 | Permanent lab types | **2** (Discovery Lab, Challenge Lab) |
-| Mandatory core record/contracts | **3** (Experiment Contract, Detector Registry, Knowledge Record) |
+| Mandatory core record/contracts | **4** (Experiment Contract, Run Manifest, Detector Registry, Knowledge Record) |
 | Biggest simplifications vs legacy | See Section 23 |
 | Biggest safeguards retained | See Section 23 |
-| Implementation before first study | **7 artifacts** (Section 16) |
+| Implementation before first study | **8 artifacts** (Section 16) |
 
 ---
 
@@ -862,9 +928,9 @@ Before finalizing, I attacked this design against the criteria in Section 18:
 
 1. **Anchor-based lifecycle replaces timeframe isolation**: Instead of 8 parallel stream labs each studying a timeframe as its own universe, research is organized around anchor phenomena. Timeframes are native attributes, not scientific universes. This eliminates the serial "graduation" bottleneck where cross-timeframe work waits for all streams to complete.
 
-2. **Two-phase research replaces six-gate machine**: Instead of G0-G5 gates, the architecture uses exposure stages (E1-E3) for information access and evidence-maturity states (DISCOVERY → CANDIDATE → CHALLENGED → CONFIRMED/REJECTED/NULL) for evidence. This eliminates the bureaucratic overhead of a 6-gate machine while preserving the critical separation between discovery and confirmation.
+2. **Exposure classes and explicit confirmation replace the six-gate machine**: Instead of G0-G5 progression, the architecture uses non-gating exposure classes (E1-E3), a separate method challenge, and evidence states (DISCOVERY → CANDIDATE → CONFIRMED/REJECTED/NULL/INCONCLUSIVE). This removes bureaucracy while preserving the separation between discovery, challenge, and confirmation.
 
-3. **Contract-based autonomy replaces gate-by-gate approval**: Instead of requiring human approval at every checkpoint, agents have full autonomy within an experiment contract. Human approval is required only for scope changes (new program, new exposure stage, status transitions). This eliminates the approval chain bottleneck while keeping agents bounded.
+3. **Contract-based autonomy replaces gate-by-gate approval**: Instead of requiring human approval at every checkpoint, agents have full autonomy within an experiment contract. Human approval is required only for scope changes (new program, new exposure class, status transitions). This eliminates the approval chain bottleneck while keeping agents bounded.
 
 ---
 
@@ -872,15 +938,15 @@ Before finalizing, I attacked this design against the criteria in Section 18:
 
 1. **Causal clock (`available_time <= anchor_time`)**: The fundamental safeguard against lookahead and back-projection is preserved and generalized from stream-level to experiment-level. Every experiment contract enforces this rule.
 
-2. **Separation of discovery from confirmation**: The architecture guarantees that a discovered result cannot be mislabeled as predeclared confirmation. Discovery and Challenge Labs are separate, blinded functions. This preserves the scientific integrity that was a hallmark of the legacy system.
+2. **Separation of discovery, method challenge, and confirmation**: The architecture guarantees that a discovered result cannot be mislabeled as predeclared confirmation. Discovery and Challenge Labs are separate, blinded functions; a method challenge and an independent confirmation run are distinct operations, with no researcher performing both for the same claim.
 
-3. **Preservation of negative evidence**: NULL findings, rejected candidates, and contradictions are stored as first-class knowledge records with full provenance. The knowledge layer is queryable by negation. This prevents the "only positive results survive" failure mode that plagued earlier research.
+3. **Preservation of negative evidence**: NULL, INCONCLUSIVE, and rejected findings, plus contradictions, are stored as first-class knowledge records with full provenance. The knowledge layer is queryable by negation. This prevents the "only positive results survive" failure mode that plagued earlier research.
 
 ---
 
 ## 25. Three Most Important Unresolved Decisions
 
-1. **Exposure stage granularity**: Are E1/E2/E3 sufficient, or do we need intermediate stages? The current design assumes three stages is the minimum viable model, but a specific anchor phenomenon might reveal a need for finer-grained exposure control.
+1. **Exposure class granularity**: Are E1/E2/E3 sufficient, or do we need another class? The current design leaves that empirical question open without making lower classes mandatory.
 
 2. **Knowledge storage mechanism**: Should knowledge records live in Git files (simple, versioned) or a database (queryable, scalable)? Git files align with the existing infrastructure but may not scale to hundreds of experiments. A hybrid approach (Git for provenance, database for querying) is possible but adds complexity.
 
