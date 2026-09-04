@@ -1,1 +1,156 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"Detector Registry Entry v1","type":"object","additionalProperties":false,"required":["detector_id","name","description","lifecycle_vocabulary","roles","derives_from","native_scales","known_surfaces","semantic_status","availability_semantics","domain"],"properties":{"detector_id":{"type":"string"},"name":{"type":"string"},"description":{"type":"string"},"lifecycle_vocabulary":{"type":"array","items":{"type":"string"}},"roles":{"type":"array","items":{"type":"string"}},"derives_from":{"type":"array","items":{"type":"string"}},"native_scales":{},"known_surfaces":{"type":"array","items":{"type":"string"}},"semantic_status":{"enum":["AUTHORITATIVE","PROVISIONAL","UNRESOLVED"]},"availability_semantics":{"type":"string"},"domain":{"type":"string"}}}
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DetectorRegistryEntry",
+  "type": "object",
+  "required": [
+    "availability_semantics",
+    "derives_from",
+    "description",
+    "detector_id",
+    "domain",
+    "known_surfaces",
+    "lifecycle_vocabulary",
+    "name",
+    "native_scales",
+    "roles",
+    "semantic_status"
+  ],
+  "properties": {
+    "availability_semantics": {
+      "type": "string"
+    },
+    "derives_from": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "description": {
+      "type": "string"
+    },
+    "detector_id": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "known_surfaces": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lifecycle_vocabulary": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "name": {
+      "type": "string"
+    },
+    "native_scales": {
+      "$ref": "#/definitions/NativeScaleScope"
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/DetectorRole"
+      }
+    },
+    "semantic_status": {
+      "$ref": "#/definitions/SemanticStatus"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "BarScale": {
+      "type": "string",
+      "enum": [
+        "15s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "4h"
+      ]
+    },
+    "DetectorRole": {
+      "type": "string",
+      "enum": [
+        "directional_evidence",
+        "state_regime",
+        "structural_object",
+        "temporal_context",
+        "data_quality",
+        "lifecycle_state",
+        "normalization_reference"
+      ]
+    },
+    "NativeScaleScope": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "tick"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "scales"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "explicit"
+              ]
+            },
+            "scales": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BarScale"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "all_registered"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SemanticStatus": {
+      "type": "string",
+      "enum": [
+        "AUTHORITATIVE",
+        "PROVISIONAL",
+        "UNRESOLVED"
+      ]
+    }
+  }
+}

@@ -1,8 +1,9 @@
+use schemars::{schema_for, JsonSchema};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::HashSet, fmt};
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ExposureClass {
     E1,
@@ -10,54 +11,67 @@ pub enum ExposureClass {
     E3,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq, Hash)]
 pub enum BarScale {
     #[serde(rename = "15s")]
+    #[schemars(rename = "15s")]
     S15,
     #[serde(rename = "30s")]
+    #[schemars(rename = "30s")]
     S30,
     #[serde(rename = "1m")]
+    #[schemars(rename = "1m")]
     M1,
     #[serde(rename = "5m")]
+    #[schemars(rename = "5m")]
     M5,
     #[serde(rename = "15m")]
+    #[schemars(rename = "15m")]
     M15,
     #[serde(rename = "1h")]
+    #[schemars(rename = "1h")]
     H1,
     #[serde(rename = "4h")]
+    #[schemars(rename = "4h")]
     H4,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(tag = "kind", rename_all = "snake_case")]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum NativeScaleScope {
     Tick,
     Explicit { scales: Vec<BarScale> },
     AllRegistered,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+#[schemars(deny_unknown_fields)]
 pub struct Anchor {
     pub detector_id: String,
     pub lifecycle_state: String,
     pub anchor_time_semantics: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+#[schemars(deny_unknown_fields)]
 pub struct AnchorTimeRule {
     pub source: String,
     pub semantics: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+#[schemars(deny_unknown_fields)]
 pub struct EligibleContext {
     pub allowed_detectors: Vec<String>,
     pub requested_detectors: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
+#[schemars(deny_unknown_fields)]
 pub struct ExperimentContract {
     pub experiment_id: String,
     pub anchor: Anchor,
@@ -76,14 +90,16 @@ pub struct ExperimentContract {
     pub created_utc: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum DiscoveryStatus {
     Predeclared,
     Discovered,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+#[schemars(deny_unknown_fields)]
 pub struct RunManifest {
     pub run_id: String,
     pub experiment_id: String,
@@ -96,7 +112,7 @@ pub struct RunManifest {
     pub output_identity: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum SemanticStatus {
     Authoritative,
@@ -104,7 +120,7 @@ pub enum SemanticStatus {
     Unresolved,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum DetectorRole {
     DirectionalEvidence,
@@ -116,7 +132,9 @@ pub enum DetectorRole {
     NormalizationReference,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+#[schemars(deny_unknown_fields)]
 pub struct DetectorRegistryEntry {
     pub detector_id: String,
     pub name: String,
@@ -131,16 +149,18 @@ pub struct DetectorRegistryEntry {
     pub domain: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum RecordType {
-    Question,
-    Finding,
-    Challenge,
-    Knowledge,
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+#[schemars(deny_unknown_fields)]
+pub struct Provenance {
+    pub experiment_id: Option<String>,
+    pub run_id: Option<String>,
+    pub evidence_ids: Vec<String>,
+    pub code_identity: Option<String>,
+    pub researcher_id: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum FindingStatus {
     Discovery,
@@ -151,29 +171,58 @@ pub enum FindingStatus {
     Inconclusive,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum RejectionReason {
     MethodFailure,
     ConfirmationFailure,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct Provenance {
-    pub experiment_id: Option<String>,
-    pub run_id: Option<String>,
-    pub evidence_ids: Vec<String>,
-    pub code_identity: Option<String>,
-    pub researcher_id: Option<String>,
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum ChallengeDecision {
+    Open,
+    Survived,
+    Failed,
+    Inconclusive,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum QuestionStatus {
+    Open,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+#[serde(tag = "record_type", rename_all = "SCREAMING_SNAKE_CASE")]
+#[schemars(deny_unknown_fields)]
+pub enum KnowledgeRecord {
+    Question(QuestionRecord),
+    Finding(FindingRecord),
+    Challenge(ChallengeRecord),
+    Knowledge(AcceptedKnowledgeRecord),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
-pub struct KnowledgeRecord {
+#[schemars(deny_unknown_fields)]
+pub struct QuestionRecord {
     pub record_id: String,
-    pub record_type: RecordType,
     pub content: Value,
-    pub status: RecordStatus,
+    pub status: QuestionStatus,
+    pub provenance: Provenance,
+    pub created_utc: String,
+    pub supersedes: Option<String>,
+    pub superseded_by: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+#[schemars(deny_unknown_fields)]
+pub struct FindingRecord {
+    pub record_id: String,
+    pub content: Value,
+    pub status: FindingStatus,
     pub provenance: Provenance,
     pub created_utc: String,
     pub supersedes: Option<String>,
@@ -181,16 +230,29 @@ pub struct KnowledgeRecord {
     pub rejection_reason: Option<RejectionReason>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
-pub enum RecordStatus {
-    Open,
-    Discovery,
-    Candidate,
-    Confirmed,
-    Rejected,
-    Null,
-    Inconclusive,
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+#[schemars(deny_unknown_fields)]
+pub struct ChallengeRecord {
+    pub record_id: String,
+    pub content: Value,
+    pub decision: ChallengeDecision,
+    pub provenance: Provenance,
+    pub created_utc: String,
+    pub supersedes: Option<String>,
+    pub superseded_by: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+#[schemars(deny_unknown_fields)]
+pub struct AcceptedKnowledgeRecord {
+    pub record_id: String,
+    pub content: Value,
+    pub provenance: Provenance,
+    pub created_utc: String,
+    pub supersedes: Option<String>,
+    pub superseded_by: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -198,7 +260,6 @@ pub struct CausalViolation {
     pub anchor_time: i64,
     pub available_time: i64,
 }
-
 impl fmt::Display for CausalViolation {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
@@ -220,7 +281,6 @@ pub fn ensure_causal(anchor_time: i64, available_time: i64) -> Result<(), Causal
         })
     }
 }
-
 pub fn validate_context_available(
     anchor_time: i64,
     context_available_time: i64,
@@ -241,7 +301,24 @@ impl fmt::Display for ContractError {
 }
 impl std::error::Error for ContractError {}
 
+fn validate_scale_scope(scope: &NativeScaleScope) -> Result<(), ContractError> {
+    if let NativeScaleScope::Explicit { scales } = scope {
+        if scales.is_empty() {
+            return Err(ContractError::Invalid(
+                "explicit native scales cannot be empty".into(),
+            ));
+        }
+        if scales.iter().collect::<HashSet<_>>().len() != scales.len() {
+            return Err(ContractError::Invalid(
+                "explicit native scales cannot contain duplicates".into(),
+            ));
+        }
+    }
+    Ok(())
+}
+
 pub fn validate_contract(contract: &ExperimentContract) -> Result<(), ContractError> {
+    validate_scale_scope(&contract.native_scale_scope)?;
     let allowed: HashSet<_> = contract.eligible_context.allowed_detectors.iter().collect();
     if let Some(detector) = contract
         .eligible_context
@@ -257,13 +334,93 @@ pub fn validate_contract(contract: &ExperimentContract) -> Result<(), ContractEr
 }
 
 pub fn validate_knowledge_record(record: &KnowledgeRecord) -> Result<(), ContractError> {
-    if record.record_type == RecordType::Finding
-        && record.status == RecordStatus::Rejected
-        && record.rejection_reason.is_none()
-    {
-        return Err(ContractError::Invalid(
-            "rejected finding requires rejection_reason".into(),
-        ));
+    if let KnowledgeRecord::Finding(finding) = record {
+        match (&finding.status, &finding.rejection_reason) {
+            (FindingStatus::Rejected, Some(_)) => Ok(()),
+            (FindingStatus::Rejected, None) => Err(ContractError::Invalid(
+                "rejected finding requires rejection_reason".into(),
+            )),
+            (_, Some(_)) => Err(ContractError::Invalid(
+                "only rejected findings may have rejection_reason".into(),
+            )),
+            (_, None) => Ok(()),
+        }
+    } else {
+        Ok(())
+    }
+}
+
+pub fn validate_registry(entries: &[DetectorRegistryEntry]) -> Result<(), ContractError> {
+    if entries.len() != 23 {
+        return Err(ContractError::Invalid(format!(
+            "expected 23 detector entries, got {}",
+            entries.len()
+        )));
+    }
+    let ids: HashSet<_> = entries.iter().map(|e| e.detector_id.as_str()).collect();
+    if ids.len() != entries.len() {
+        return Err(ContractError::Invalid("detector IDs must be unique".into()));
+    }
+    let bar_scales = vec![
+        BarScale::S15,
+        BarScale::S30,
+        BarScale::M1,
+        BarScale::M5,
+        BarScale::M15,
+        BarScale::H1,
+        BarScale::H4,
+    ];
+    for entry in entries {
+        if entry.known_surfaces.is_empty() {
+            return Err(ContractError::Invalid(format!(
+                "detector has no known surface: {}",
+                entry.detector_id
+            )));
+        }
+        validate_scale_scope(&entry.native_scales)?;
+        let derives: HashSet<_> = entry.derives_from.iter().collect();
+        if derives.len() != entry.derives_from.len() {
+            return Err(ContractError::Invalid(format!(
+                "duplicate derives_from entry: {}",
+                entry.detector_id
+            )));
+        }
+        if entry
+            .derives_from
+            .iter()
+            .any(|id| !ids.contains(id.as_str()))
+        {
+            return Err(ContractError::Invalid(format!(
+                "unknown derives_from entry: {}",
+                entry.detector_id
+            )));
+        }
+        match entry.domain.as_str() {
+            "bar"
+                if entry.native_scales
+                    == NativeScaleScope::Explicit {
+                        scales: bar_scales.clone(),
+                    } => {}
+            "tick" if entry.native_scales == NativeScaleScope::Tick => {}
+            "bar" => {
+                return Err(ContractError::Invalid(format!(
+                    "bar detector has wrong native scales: {}",
+                    entry.detector_id
+                )))
+            }
+            "tick" => {
+                return Err(ContractError::Invalid(format!(
+                    "tick detector has wrong native scales: {}",
+                    entry.detector_id
+                )))
+            }
+            _ => {
+                return Err(ContractError::Invalid(format!(
+                    "unknown detector domain: {}",
+                    entry.domain
+                )))
+            }
+        }
     }
     Ok(())
 }
@@ -275,42 +432,48 @@ pub fn parse_and_validate_contract(
     validate_contract(&contract)?;
     Ok(contract)
 }
+pub fn parse_and_validate_registry(
+    json: &str,
+) -> Result<Vec<DetectorRegistryEntry>, Box<dyn std::error::Error>> {
+    let entries: Vec<DetectorRegistryEntry> = serde_json::from_str(json)?;
+    validate_registry(&entries)?;
+    Ok(entries)
+}
+pub fn parse_and_validate_knowledge_record(
+    json: &str,
+) -> Result<KnowledgeRecord, Box<dyn std::error::Error>> {
+    let record: KnowledgeRecord = serde_json::from_str(json)?;
+    validate_knowledge_record(&record)?;
+    Ok(record)
+}
+
+pub fn schema_json<T: JsonSchema>() -> String {
+    format!(
+        "{}\n",
+        serde_json::to_string_pretty(&schema_for!(T)).expect("schema serialization is infallible")
+    )
+}
+pub fn generated_schemas() -> [(&'static str, String); 4] {
+    [
+        (
+            "experiment_contract_v1.schema.json",
+            schema_json::<ExperimentContract>(),
+        ),
+        ("run_manifest_v1.schema.json", schema_json::<RunManifest>()),
+        (
+            "detector_registry_entry_v1.schema.json",
+            schema_json::<DetectorRegistryEntry>(),
+        ),
+        (
+            "knowledge_record_v1.schema.json",
+            schema_json::<KnowledgeRecord>(),
+        ),
+    ]
+}
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn contract(
-        exposure_class: ExposureClass,
-        native_scale_scope: NativeScaleScope,
-    ) -> ExperimentContract {
-        ExperimentContract {
-            experiment_id: "AE-001".into(),
-            anchor: Anchor {
-                detector_id: "fvg".into(),
-                lifecycle_state: "formed".into(),
-                anchor_time_semantics: "known_at_anchor".into(),
-            },
-            instrument: "XAUUSD".into(),
-            anchor_time_rule: AnchorTimeRule {
-                source: "known_time".into(),
-                semantics: "causal boundary".into(),
-            },
-            exposure_class,
-            native_scale_scope,
-            eligible_context: EligibleContext {
-                allowed_detectors: vec!["range".into()],
-                requested_detectors: vec!["range".into()],
-            },
-            population: Value::String("all anchors".into()),
-            measurements_and_outcomes: Value::Array(vec![]),
-            controls: Value::Null,
-            development_data_scope: Value::String("development".into()),
-            confirmation_data_scope: Value::String("confirmation".into()),
-            discovery_status: DiscoveryStatus::Predeclared,
-            normalization_basis: "native".into(),
-            created_utc: "2026-09-03T00:00:00Z".into(),
-        }
-    }
     #[test]
     fn causal_boundaries() {
         assert!(ensure_causal(10, 9).is_ok());
@@ -318,13 +481,7 @@ mod tests {
         assert!(ensure_causal(10, 11).is_err());
     }
     #[test]
-    fn exposure_classes_do_not_require_history() {
-        for e in [ExposureClass::E1, ExposureClass::E2, ExposureClass::E3] {
-            assert!(validate_contract(&contract(e, NativeScaleScope::Tick)).is_ok());
-        }
-    }
-    #[test]
-    fn native_scales_parse() {
+    fn native_scale_validation() {
         for json in [
             r#"{"kind":"tick"}"#,
             r#"{"kind":"explicit","scales":["15m"]}"#,
@@ -333,84 +490,66 @@ mod tests {
         ] {
             assert!(serde_json::from_str::<NativeScaleScope>(json).is_ok());
         }
-    }
-    #[test]
-    fn unresolved_detector_is_valid() {
-        assert!(serde_json::from_str::<DetectorRegistryEntry>(r#"{"detector_id":"x","name":"x","description":"unresolved","lifecycle_vocabulary":[],"roles":[],"derives_from":[],"native_scales":{"kind":"tick"},"known_surfaces":[],"semantic_status":"UNRESOLVED","availability_semantics":"UNRESOLVED","domain":"unknown"}"#).is_ok());
-    }
-    #[test]
-    fn execution_identity_stays_out_of_contract() {
-        let c = serde_json::to_value(contract(ExposureClass::E1, NativeScaleScope::Tick)).unwrap();
-        assert!(c.get("researcher_id").is_none());
-        assert!(serde_json::to_value(RunManifest {
-            run_id: "r".into(),
-            experiment_id: "e".into(),
-            researcher_id: "P-01".into(),
-            lab: "lab".into(),
-            code_identity: "sha".into(),
-            contract_hash: "h".into(),
-            input_identity: "i".into(),
-            executed_utc: "t".into(),
-            output_identity: "o".into()
+        assert!(validate_scale_scope(&NativeScaleScope::Explicit { scales: vec![] }).is_err());
+        assert!(validate_scale_scope(&NativeScaleScope::Explicit {
+            scales: vec![BarScale::M1, BarScale::M1]
         })
-        .unwrap()
-        .get("researcher_id")
-        .is_some());
-        assert!(c.get("provider").is_none());
-    }
-    fn finding(status: RecordStatus, reason: Option<RejectionReason>) -> KnowledgeRecord {
-        KnowledgeRecord {
-            record_id: "F-1".into(),
-            record_type: RecordType::Finding,
-            content: Value::Null,
-            status,
-            provenance: Provenance {
-                experiment_id: None,
-                run_id: None,
-                evidence_ids: vec![],
-                code_identity: None,
-                researcher_id: None,
-            },
-            created_utc: "t".into(),
-            supersedes: None,
-            superseded_by: Some("F-2".into()),
-            rejection_reason: reason,
-        }
+        .is_err());
     }
     #[test]
-    fn knowledge_statuses_and_rejections() {
-        for status in ["NULL", "INCONCLUSIVE"] {
-            let json = format!(
-                r#"{{"record_id":"F-1","record_type":"FINDING","content":null,"status":"{status}","provenance":{{"evidence_ids":[]}},"created_utc":"t"}}"#
-            );
-            let record: KnowledgeRecord = serde_json::from_str(&json).unwrap();
-            assert!(validate_knowledge_record(&record).is_ok());
-        }
-        for s in [RecordStatus::Null, RecordStatus::Inconclusive] {
-            assert!(validate_knowledge_record(&finding(s, None)).is_ok());
-        }
+    fn nested_unknown_fields_rejected() {
+        assert!(serde_json::from_str::<Anchor>(r#"{"detector_id":"x","lifecycle_state":"x","anchor_time_semantics":"x","provider":"x"}"#).is_err());
+        assert!(serde_json::from_str::<EligibleContext>(
+            r#"{"allowed_detectors":[],"requested_detectors":[],"provider":"x"}"#
+        )
+        .is_err());
+    }
+    #[test]
+    fn rejected_reason_is_exact() {
+        let finding = |status, reason| {
+            KnowledgeRecord::Finding(FindingRecord {
+                record_id: "F".into(),
+                content: Value::Null,
+                status,
+                provenance: Provenance {
+                    experiment_id: None,
+                    run_id: None,
+                    evidence_ids: vec![],
+                    code_identity: None,
+                    researcher_id: None,
+                },
+                created_utc: "t".into(),
+                supersedes: None,
+                superseded_by: None,
+                rejection_reason: reason,
+            })
+        };
         assert!(validate_knowledge_record(&finding(
-            RecordStatus::Rejected,
+            FindingStatus::Rejected,
             Some(RejectionReason::MethodFailure)
         ))
         .is_ok());
         assert!(validate_knowledge_record(&finding(
-            RecordStatus::Rejected,
+            FindingStatus::Rejected,
             Some(RejectionReason::ConfirmationFailure)
         ))
         .is_ok());
-        assert!(validate_knowledge_record(&finding(RecordStatus::Rejected, None)).is_err());
+        assert!(validate_knowledge_record(&finding(FindingStatus::Rejected, None)).is_err());
+        assert!(validate_knowledge_record(&finding(
+            FindingStatus::Null,
+            Some(RejectionReason::MethodFailure)
+        ))
+        .is_err());
     }
     #[test]
-    fn context_allowlist() {
-        let mut c = contract(ExposureClass::E1, NativeScaleScope::Tick);
-        assert!(validate_contract(&c).is_ok());
-        c.eligible_context.requested_detectors = vec!["fvg".into()];
-        assert!(validate_contract(&c).is_err());
-    }
-    #[test]
-    fn superseded_records_remain_representable() {
-        let r = finding(RecordStatus::Null, None);
-        assert_eq!(r.superseded_by.as_deref(), Some("F-2"));
+    fn tagged_knowledge_variants() {
+        for json in [
+            r#"{"record_type":"QUESTION","record_id":"Q","content":null,"status":"OPEN","provenance":{"evidence_ids":[]},"created_utc":"t"}"#,
+            r#"{"record_type":"FINDING","record_id":"F","content":null,"status":"NULL","provenance":{"evidence_ids":[]},"created_utc":"t"}"#,
+            r#"{"record_type":"CHALLENGE","record_id":"C","content":null,"decision":"SURVIVED","provenance":{"evidence_ids":[]},"created_utc":"t"}"#,
+            r#"{"record_type":"KNOWLEDGE","record_id":"K","content":null,"provenance":{"evidence_ids":[]},"created_utc":"t"}"#,
+        ] {
+            assert!(parse_and_validate_knowledge_record(json).is_ok());
+        }
     }
 }

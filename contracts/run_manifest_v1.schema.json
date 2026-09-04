@@ -1,1 +1,46 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"Run Manifest v1","type":"object","additionalProperties":false,"required":["run_id","experiment_id","researcher_id","lab","code_identity","contract_hash","input_identity","executed_utc","output_identity"],"properties":{"run_id":{"type":"string"},"experiment_id":{"type":"string"},"researcher_id":{"type":"string"},"lab":{"type":"string"},"code_identity":{"type":"string"},"contract_hash":{"type":"string"},"input_identity":{"type":"string"},"executed_utc":{"type":"string"},"output_identity":{"type":"string"}}}
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RunManifest",
+  "type": "object",
+  "required": [
+    "code_identity",
+    "contract_hash",
+    "executed_utc",
+    "experiment_id",
+    "input_identity",
+    "lab",
+    "output_identity",
+    "researcher_id",
+    "run_id"
+  ],
+  "properties": {
+    "code_identity": {
+      "type": "string"
+    },
+    "contract_hash": {
+      "type": "string"
+    },
+    "executed_utc": {
+      "type": "string"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "input_identity": {
+      "type": "string"
+    },
+    "lab": {
+      "type": "string"
+    },
+    "output_identity": {
+      "type": "string"
+    },
+    "researcher_id": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

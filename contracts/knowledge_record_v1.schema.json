@@ -1,1 +1,266 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"Knowledge Record v1","type":"object","additionalProperties":false,"required":["record_id","record_type","content","status","provenance","created_utc"],"properties":{"record_id":{"type":"string"},"record_type":{"enum":["QUESTION","FINDING","CHALLENGE","KNOWLEDGE"]},"content":{},"status":{},"provenance":{"type":"object"},"created_utc":{"type":"string"},"supersedes":{"type":["string","null"]},"superseded_by":{"type":["string","null"]},"rejection_reason":{"enum":["METHOD_FAILURE","CONFIRMATION_FAILURE",null]}}}
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "KnowledgeRecord",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "content",
+        "created_utc",
+        "provenance",
+        "record_id",
+        "record_type",
+        "status"
+      ],
+      "properties": {
+        "content": true,
+        "created_utc": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/definitions/Provenance"
+        },
+        "record_id": {
+          "type": "string"
+        },
+        "record_type": {
+          "type": "string",
+          "enum": [
+            "QUESTION"
+          ]
+        },
+        "status": {
+          "$ref": "#/definitions/QuestionStatus"
+        },
+        "superseded_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supersedes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "content",
+        "created_utc",
+        "provenance",
+        "record_id",
+        "record_type",
+        "status"
+      ],
+      "properties": {
+        "content": true,
+        "created_utc": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/definitions/Provenance"
+        },
+        "record_id": {
+          "type": "string"
+        },
+        "record_type": {
+          "type": "string",
+          "enum": [
+            "FINDING"
+          ]
+        },
+        "rejection_reason": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/RejectionReason"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "$ref": "#/definitions/FindingStatus"
+        },
+        "superseded_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supersedes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "content",
+        "created_utc",
+        "decision",
+        "provenance",
+        "record_id",
+        "record_type"
+      ],
+      "properties": {
+        "content": true,
+        "created_utc": {
+          "type": "string"
+        },
+        "decision": {
+          "$ref": "#/definitions/ChallengeDecision"
+        },
+        "provenance": {
+          "$ref": "#/definitions/Provenance"
+        },
+        "record_id": {
+          "type": "string"
+        },
+        "record_type": {
+          "type": "string",
+          "enum": [
+            "CHALLENGE"
+          ]
+        },
+        "superseded_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supersedes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "content",
+        "created_utc",
+        "provenance",
+        "record_id",
+        "record_type"
+      ],
+      "properties": {
+        "content": true,
+        "created_utc": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/definitions/Provenance"
+        },
+        "record_id": {
+          "type": "string"
+        },
+        "record_type": {
+          "type": "string",
+          "enum": [
+            "KNOWLEDGE"
+          ]
+        },
+        "superseded_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "supersedes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  ],
+  "definitions": {
+    "ChallengeDecision": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "SURVIVED",
+        "FAILED",
+        "INCONCLUSIVE"
+      ]
+    },
+    "FindingStatus": {
+      "type": "string",
+      "enum": [
+        "DISCOVERY",
+        "CANDIDATE",
+        "CONFIRMED",
+        "REJECTED",
+        "NULL",
+        "INCONCLUSIVE"
+      ]
+    },
+    "Provenance": {
+      "type": "object",
+      "required": [
+        "evidence_ids"
+      ],
+      "properties": {
+        "code_identity": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "experiment_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "researcher_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "run_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "QuestionStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN"
+      ]
+    },
+    "RejectionReason": {
+      "type": "string",
+      "enum": [
+        "METHOD_FAILURE",
+        "CONFIRMATION_FAILURE"
+      ]
+    }
+  }
+}

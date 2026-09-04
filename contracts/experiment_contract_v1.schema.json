@@ -1,1 +1,203 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"Experiment Contract v1","type":"object","additionalProperties":false,"required":["experiment_id","anchor","instrument","anchor_time_rule","exposure_class","native_scale_scope","eligible_context","population","measurements_and_outcomes","controls","development_data_scope","confirmation_data_scope","discovery_status","normalization_basis","created_utc"],"properties":{"experiment_id":{"type":"string"},"anchor":{"type":"object","additionalProperties":false,"required":["detector_id","lifecycle_state","anchor_time_semantics"],"properties":{"detector_id":{"type":"string"},"lifecycle_state":{"type":"string"},"anchor_time_semantics":{"type":"string"}}},"instrument":{"type":"string"},"anchor_time_rule":{"type":"object","additionalProperties":false,"required":["source","semantics"],"properties":{"source":{"type":"string"},"semantics":{"type":"string"}}},"exposure_class":{"enum":["E1","E2","E3"]},"native_scale_scope":{"oneOf":[{"type":"object","required":["kind"],"properties":{"kind":{"const":"tick"}}},{"type":"object","required":["kind","scales"],"properties":{"kind":{"const":"explicit"},"scales":{"type":"array","items":{"enum":["15s","30s","1m","5m","15m","1h","4h"]}}}},{"type":"object","required":["kind"],"properties":{"kind":{"const":"all_registered"}}}]},"eligible_context":{"type":"object","additionalProperties":false,"required":["allowed_detectors","requested_detectors"],"properties":{"allowed_detectors":{"type":"array","items":{"type":"string"}},"requested_detectors":{"type":"array","items":{"type":"string"}}}},"population":{},"measurements_and_outcomes":{},"controls":{},"development_data_scope":{},"confirmation_data_scope":{},"discovery_status":{"enum":["predeclared","discovered"]},"normalization_basis":{"type":"string"},"created_utc":{"type":"string"}}}
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExperimentContract",
+  "type": "object",
+  "required": [
+    "anchor",
+    "anchor_time_rule",
+    "confirmation_data_scope",
+    "controls",
+    "created_utc",
+    "development_data_scope",
+    "discovery_status",
+    "eligible_context",
+    "experiment_id",
+    "exposure_class",
+    "instrument",
+    "measurements_and_outcomes",
+    "native_scale_scope",
+    "normalization_basis",
+    "population"
+  ],
+  "properties": {
+    "anchor": {
+      "$ref": "#/definitions/Anchor"
+    },
+    "anchor_time_rule": {
+      "$ref": "#/definitions/AnchorTimeRule"
+    },
+    "confirmation_data_scope": true,
+    "controls": true,
+    "created_utc": {
+      "type": "string"
+    },
+    "development_data_scope": true,
+    "discovery_status": {
+      "$ref": "#/definitions/DiscoveryStatus"
+    },
+    "eligible_context": {
+      "$ref": "#/definitions/EligibleContext"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "exposure_class": {
+      "$ref": "#/definitions/ExposureClass"
+    },
+    "instrument": {
+      "type": "string"
+    },
+    "measurements_and_outcomes": true,
+    "native_scale_scope": {
+      "$ref": "#/definitions/NativeScaleScope"
+    },
+    "normalization_basis": {
+      "type": "string"
+    },
+    "population": true
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "Anchor": {
+      "type": "object",
+      "required": [
+        "anchor_time_semantics",
+        "detector_id",
+        "lifecycle_state"
+      ],
+      "properties": {
+        "anchor_time_semantics": {
+          "type": "string"
+        },
+        "detector_id": {
+          "type": "string"
+        },
+        "lifecycle_state": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AnchorTimeRule": {
+      "type": "object",
+      "required": [
+        "semantics",
+        "source"
+      ],
+      "properties": {
+        "semantics": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "BarScale": {
+      "type": "string",
+      "enum": [
+        "15s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "4h"
+      ]
+    },
+    "DiscoveryStatus": {
+      "type": "string",
+      "enum": [
+        "predeclared",
+        "discovered"
+      ]
+    },
+    "EligibleContext": {
+      "type": "object",
+      "required": [
+        "allowed_detectors",
+        "requested_detectors"
+      ],
+      "properties": {
+        "allowed_detectors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requested_detectors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "ExposureClass": {
+      "type": "string",
+      "enum": [
+        "E1",
+        "E2",
+        "E3"
+      ]
+    },
+    "NativeScaleScope": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "tick"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "scales"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "explicit"
+              ]
+            },
+            "scales": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BarScale"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "all_registered"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}
