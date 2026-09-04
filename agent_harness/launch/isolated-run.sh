@@ -11,9 +11,11 @@ attestation_sink=$(decode "$6")
 launch_id=$(decode "$7")
 manifest_sha=$(decode "$8")
 program_id=$(decode "$9")
-role_id=$(decode "${10}")
-research_base_sha=$(decode "${11}")
+role_id=$(decode "\${10}")
+research_base_sha=$(decode "\${11}")
+launch_purpose=$(decode "\${12}")
 
+case "$launch_purpose" in SMOKE|RESEARCH) ;; *) echo "invalid launch purpose" >&2; exit 1 ;; esac
 mount --make-rprivate /
 mount -t tmpfs -o size=4m,nosuid,nodev,noexec tmpfs /shared
 mkdir -p /workspace /shared/research-program
@@ -21,7 +23,6 @@ mkdir -p /workspace /shared/research-program
 mount_rw_dir() {
   source=$1; target=$2
   [ -d "$source" ] || { echo "missing writable sink: $source" >&2; exit 1; }
-  mkdir -p "$(dirname "$target")"
   mkdir -p "$target"
   mount --bind "$source" "$target"
 }
@@ -55,13 +56,13 @@ recursive_hash() {
   records=''
   while IFS= read -r -d '' file; do
     [ "$(basename "$file")" = 'bundle_manifest.json' ] && continue
-    relative=${file#"$root"/}
+    relative=\${file#"$root"/}
     records+="$relative\t$(sha_file "$file")\n"
   done < <(find "$root" -type f -print0 | sort -z)
   printf '%b' "$records" | sort | sha256sum | awk '{print $1}'
 }
-
 json_escape() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
+
 repo_json=''
 auth_json=''
 assignment_json=''
@@ -91,7 +92,7 @@ while IFS=$'\t' read -r kind source_id mounted_path expected_hash expected_trans
     observed=$(sha_file "$mounted_path")
     match=false; [ "$observed" = "$expected_hash" ] && match=true
     [ "$match" = true ] || all_match=false
-    assignment_json="{\"source_id\":\"assignment\",\"mounted_path\":\"$(json_escape "$mounted_path")\",\"observed_hash\":\"$observed\",\"expected_hash\":\"$expected_hash\",\"match\":$match}"
+    assignment_json="{\"source_id\":\"$source_id\",\"mounted_path\":\"$(json_escape "$mounted_path")\",\"observed_hash\":\"$observed\",\"expected_hash\":\"$expected_hash\",\"match\":$match}"
   fi
 done <<< "$attestation_specs"
 
@@ -117,7 +118,7 @@ for value in "$peer_workspace" "$peer_assignment" "$confirmation" "$legacy" "$ra
   [ "$value" = true ] || all_match=false
 done
 
-attestation="{\n  \"schema_version\": \"trinity.runtime-mount-attestation.v1\",\n  \"launch_id\": \"$(json_escape "$launch_id")\",\n  \"program_id\": \"$(json_escape "$program_id")\",\n  \"role_id\": \"$(json_escape "$role_id")\",\n  \"research_base_sha\": \"$(json_escape "$research_base_sha")\",\n  \"research_input_manifest_sha256\": \"$manifest_sha\",\n  \"observed_repository_sources\": [$repo_json],\n  \"observed_authority_sources\": [$auth_json],\n  \"observed_input_manifest_sha256\": \"$observed_manifest_sha\",\n  \"input_manifest_match\": $manifest_match,\n  \"denial_probes\": {\"peer_workspace\": $peer_workspace, \"peer_assignment\": $peer_assignment, \"confirmation\": $confirmation, \"legacy\": $legacy, \"raw_lake\": $raw_lake, \"provider_mapping\": $provider_mapping, \"windows_mounts\": $windows_mounts},\n  \"all_match\": $all_match\n}\n"
+attestation="{\n  \"schema_version\": \"trinity.runtime-mount-attestation.v1\",\n  \"launch_id\": \"$(json_escape "$launch_id")\",\n  \"launch_purpose\": \"$(json_escape "$launch_purpose")\",\n  \"program_id\": \"$(json_escape "$program_id")\",\n  \"role_id\": \"$(json_escape "$role_id")\",\n  \"research_base_sha\": \"$(json_escape "$research_base_sha")\",\n  \"research_input_manifest_sha256\": \"$manifest_sha\",\n  \"observed_repository_sources\": [$repo_json],\n  \"observed_authority_sources\": [$auth_json],\n  \"observed_assignment\": $assignment_json,\n  \"observed_input_manifest_sha256\": \"$observed_manifest_sha\",\n  \"input_manifest_match\": $manifest_match,\n  \"denial_probes\": {\"peer_workspace\": $peer_workspace, \"peer_assignment\": $peer_assignment, \"confirmation\": $confirmation, \"legacy\": $legacy, \"raw_lake\": $raw_lake, \"provider_mapping\": $provider_mapping, \"windows_mounts\": $windows_mounts},\n  \"all_match\": $all_match\n}\n"
 printf '%b' "$attestation" > /shared/runtime_mount_attestation/runtime_mount_attestation.json
 mount -o remount,bind,ro /shared/runtime_mount_attestation
 

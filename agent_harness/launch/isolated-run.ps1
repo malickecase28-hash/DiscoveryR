@@ -6,7 +6,8 @@ param(
     [string] $RunRoot = 'F:\TrinityR-runs',
     [string] $Distro = 'Ubuntu',
     [ValidatePattern('^[0-9a-fA-F]{40}$')][string] $ResearchBaseSha,
-    [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$')][string] $RuntimeSlot
+    [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$')][string] $RuntimeSlot,
+    [ValidateSet('SMOKE','RESEARCH')][string] $LaunchPurpose = 'RESEARCH'
 )
 $ErrorActionPreference = 'Stop'
 $repoSource = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
@@ -238,20 +239,31 @@ $runtimeAttestationPath = Join-Path $runtimeAttestationDirectory 'runtime_mount_
 New-Item -ItemType Directory -Path $runtimeAttestationDirectory | Out-Null
 $repositorySpecs = @($plannedManifest.repository_surfaces | ForEach-Object { $id = $sourceMap[$_.relative_path]; if ($id) { "REPO`t$id`t/shared/research-program/$($_.relative_path -replace '\\','/')`t$($_.hash)" } })
 $authoritySpecs = @($plannedManifest.authority_sources | ForEach-Object { "AUTH`t$($_.source_id)`t$($_.mount_target)`t$($_.bundle_content_identity)`t$($_.directory_transport_hash)" })
-$attestationSpecs = ($repositorySpecs + $authoritySpecs) -join "`n"
+$assignmentTarget = "/shared/research-program/$($plannedManifest.assignment_path -replace '\\','/')"
+$assignmentSpec = "ASSIGNMENT`tassignment.$($ProgramId.ToLowerInvariant())_$($Role.ToLowerInvariant())`t$assignmentTarget`t$($plannedManifest.assignment_sha256)"
+$attestationSpecs = ($repositorySpecs + $authoritySpecs + $assignmentSpec) -join "`n"
 $manifestHash = (Get-FileHash $manifestPath -Algorithm SHA256).Hash.ToLowerInvariant()
 $launchId = [guid]::NewGuid().ToString('N')
 $mountText = ($mounts | ForEach-Object { "$(B64 $_.source)|$(B64 $_.target)" }) -join "`n"
 $launcher = Join-Path $repo 'agent_harness\launch\isolated-run.sh'
 $bootstrap = B64 ((Get-Content -Raw -LiteralPath $launcher).Replace("`r", ''))
 $safeCommand = $Command.Replace("`r", '')
-$commandLine = "mountpoint -q /mnt/f || mount -t drvfs F: /mnt/f; printf %s $bootstrap | base64 -d > /tmp/trinityr-isolated-run.sh && chmod 700 /tmp/trinityr-isolated-run.sh && unshare --mount --pid --fork --mount-proc --propagation private -- /bin/bash /tmp/trinityr-isolated-run.sh $(B64 (WslPath $workspace)) $(B64 $assignment.access_profile) $(B64 $safeCommand) $(B64 (B64 $mountText)) $(B64 (B64 $attestationSpecs)) $(B64 (WslPath $runtimeAttestationDirectory)) $(B64 $launchId) $(B64 $manifestHash) $(B64 $ProgramId) $(B64 $Role) $(B64 $baseSha)"
+$commandLine = "mountpoint -q /mnt/f || mount -t drvfs F: /mnt/f; printf %s $bootstrap | base64 -d > /tmp/trinityr-isolated-run.sh && chmod 700 /tmp/trinityr-isolated-run.sh && unshare --mount --pid --fork --mount-proc --propagation private -- /bin/bash /tmp/trinityr-isolated-run.sh $(B64 (WslPath $workspace)) $(B64 $assignment.access_profile) $(B64 $safeCommand) $(B64 (B64 $mountText)) $(B64 (B64 $attestationSpecs)) $(B64 (WslPath $runtimeAttestationDirectory)) $(B64 $launchId) $(B64 $manifestHash) $(B64 $ProgramId) $(B64 $Role) $(B64 $baseSha) $(B64 $LaunchPurpose)"
 & wsl.exe --distribution $Distro --user root -- /bin/bash -lc $commandLine
 $workerExit = $LASTEXITCODE
 if (-not (Test-Path -LiteralPath $runtimeAttestationPath -PathType Leaf)) { throw 'Runtime attestation missing.' }
 $runtimeAttestation = Get-Content -Raw -LiteralPath $runtimeAttestationPath | ConvertFrom-Json
-if ($runtimeAttestation.schema_version -ne 'trinity.runtime-mount-attestation.v1' -or $runtimeAttestation.launch_id -ne $launchId -or $runtimeAttestation.program_id -ne $ProgramId -or $runtimeAttestation.role_id -ne $Role -or $runtimeAttestation.research_base_sha -ne $baseSha -or $runtimeAttestation.research_input_manifest_sha256 -ne $manifestHash -or $runtimeAttestation.all_match -ne $true) { throw 'RUNTIME_ATTESTATION_FAIL' }
+if ($runtimeAttestation.schema_version -ne 'trinity.runtime-mount-attestation.v1' -or $runtimeAttestation.launch_id -ne $launchId -or $runtimeAttestation.launch_purpose -ne $LaunchPurpose -or $runtimeAttestation.program_id -ne $ProgramId -or $runtimeAttestation.role_id -ne $Role -or $runtimeAttestation.research_base_sha -ne $baseSha -or $runtimeAttestation.research_input_manifest_sha256 -ne $manifestHash -or $runtimeAttestation.observed_assignment.match -ne $true -or $runtimeAttestation.all_match -ne $true) { throw 'RUNTIME_ATTESTATION_FAIL' }
 Write-Output "RUNTIME_ATTESTATION_PASS launch_id=$launchId sha256=$((Get-FileHash $runtimeAttestationPath -Algorithm SHA256).Hash.ToLowerInvariant()) path=$runtimeAttestationPath"
+if ($LaunchPurpose -eq 'RESEARCH') {
+    $workspaceFiles = @(Get-ChildItem -LiteralPath $workspace -File -Force)
+    if ($workspaceFiles.Count -ne 2 -or @($workspaceFiles | Where-Object { $_.Name -notin @('authority_candidate.json','authority_review.md') }).Count -ne 0) { throw 'Research workspace must contain exactly the two authority artifacts.' }
+    $runtimeHash = (Get-FileHash $runtimeAttestationPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    $receipt = [ordered]@{ schema_version='trinity.run-receipt.v1'; launch_id=$launchId; launch_purpose=$LaunchPurpose; program_id=$ProgramId; role_id=$Role; research_base_sha=$baseSha; research_input_manifest_sha256=$manifestHash; runtime_mount_attestation_sha256=$runtimeHash; worker_exit_code=$workerExit; authority_candidate_sha256=(Get-FileHash (Join-Path $workspace 'authority_candidate.json') -Algorithm SHA256).Hash.ToLowerInvariant(); authority_review_sha256=(Get-FileHash (Join-Path $workspace 'authority_review.md') -Algorithm SHA256).Hash.ToLowerInvariant(); completed_utc=[DateTime]::UtcNow.ToString('o') }
+    $receiptPath = Join-Path $runtimeAttestationDirectory 'run_receipt.json'
+    [IO.File]::WriteAllText($receiptPath, ((($receipt | ConvertTo-Json -Depth 20) + "`n").Replace("`r`n","`n")), [Text.UTF8Encoding]::new($false))
+    Write-Output "RUN_RECEIPT_WRITTEN path=$receiptPath"
+}
 if ($workerExit -ne 0) { exit $workerExit }
 } finally {
     if ($baseTreeAdded) { & git -C $repoSource worktree remove --force $baseTree 2>$null }
