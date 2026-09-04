@@ -56,7 +56,7 @@ recursive_hash() {
   records=''
   while IFS= read -r -d '' file; do
     [ "$(basename "$file")" = 'bundle_manifest.json' ] && continue
-    relative=\${file#"$root"/}
+    relative=${file#"$root"/}
     records+="$relative\t$(sha_file "$file")\n"
   done < <(find "$root" -type f -print0 | sort -z)
   printf '%b' "$records" | sort | sha256sum | awk '{print $1}'
