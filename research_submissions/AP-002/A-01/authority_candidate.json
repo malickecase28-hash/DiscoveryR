@@ -1,0 +1,273 @@
+{
+  "artifact_type": "AUTHORITY_CANDIDATE",
+  "program_id": "AP-002",
+  "role_id": "A-01",
+  "subjects": ["fvg"],
+  "claims": [
+    {
+      "claim_id": "AP002-A01-C001",
+      "claim": "Formation remains unresolved pending source approval.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "unresolved[0]",
+        "evidence_type": "direct_unresolved_marker",
+        "supports": ["UNRESOLVED_PENDING_SOURCE_APPROVAL applies to the authority bundle."]
+      },
+      "counterevidence": [],
+      "future_information_risk": "Approved source evidence could establish or change this topic.",
+      "dependency_implications": ["No formation-dependent authority may be activated."],
+      "notes": "No selected authority is present in the bundle."
+    },
+    {
+      "claim_id": "AP002-A01-C002",
+      "claim": "First touch remains unresolved pending source approval.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "unresolved[0]",
+        "evidence_type": "direct_unresolved_marker",
+        "supports": ["UNRESOLVED_PENDING_SOURCE_APPROVAL applies to the authority bundle."]
+      },
+      "counterevidence": [],
+      "future_information_risk": "Approved source evidence could establish or change this topic.",
+      "dependency_implications": ["No first-touch-dependent authority may be activated."],
+      "notes": "No selected authority is present in the bundle."
+    },
+    {
+      "claim_id": "AP002-A01-C003",
+      "claim": "Fill remains unresolved pending source approval.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "unresolved[0]",
+        "evidence_type": "direct_unresolved_marker",
+        "supports": ["UNRESOLVED_PENDING_SOURCE_APPROVAL applies to the authority bundle."]
+      },
+      "counterevidence": [],
+      "future_information_risk": "Approved source evidence could establish or change this topic.",
+      "dependency_implications": ["No fill-dependent authority may be activated."],
+      "notes": "No ordinary-language meaning is imported."
+    },
+    {
+      "claim_id": "AP002-A01-C004",
+      "claim": "Detection remains unresolved pending source approval.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "unresolved[0]",
+        "evidence_type": "direct_unresolved_marker",
+        "supports": ["UNRESOLVED_PENDING_SOURCE_APPROVAL applies to the authority bundle."]
+      },
+      "counterevidence": [],
+      "future_information_risk": "Approved source evidence could establish or change this topic.",
+      "dependency_implications": ["No detection-dependent authority may be activated."],
+      "notes": "No detector rule is selected."
+    },
+    {
+      "claim_id": "AP002-A01-C005",
+      "claim": "FVG identity remains unresolved pending source approval.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "unresolved[0]",
+        "evidence_type": "direct_unresolved_marker",
+        "supports": ["UNRESOLVED_PENDING_SOURCE_APPROVAL applies to the authority bundle."]
+      },
+      "counterevidence": [],
+      "future_information_risk": "Approved source evidence could establish or change this topic.",
+      "dependency_implications": ["No identity-dependent authority may be activated."],
+      "notes": "No identity mapping is selected."
+    },
+    {
+      "claim_id": "AP002-A01-C006",
+      "claim": "Direction remains unresolved pending source approval.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "unresolved[0]",
+        "evidence_type": "direct_unresolved_marker",
+        "supports": ["UNRESOLVED_PENDING_SOURCE_APPROVAL applies to the authority bundle."]
+      },
+      "counterevidence": [],
+      "future_information_risk": "Approved source evidence could establish or change this topic.",
+      "dependency_implications": ["No direction-dependent authority may be activated."],
+      "notes": "No direction rule is selected."
+    },
+    {
+      "claim_id": "AP002-A01-C007",
+      "claim": "Geometry remains unresolved pending source approval.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "unresolved[0]",
+        "evidence_type": "direct_unresolved_marker",
+        "supports": ["UNRESOLVED_PENDING_SOURCE_APPROVAL applies to the authority bundle."]
+      },
+      "counterevidence": [],
+      "future_information_risk": "Approved source evidence could establish or change this topic.",
+      "dependency_implications": ["No geometry-dependent authority may be activated."],
+      "notes": "No geometry rule is selected."
+    },
+    {
+      "claim_id": "AP002-A01-C008",
+      "claim": "Lifecycle remains unresolved pending source approval.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "unresolved[0]",
+        "evidence_type": "direct_unresolved_marker",
+        "supports": ["UNRESOLVED_PENDING_SOURCE_APPROVAL applies to the authority bundle."]
+      },
+      "counterevidence": [],
+      "future_information_risk": "Approved source evidence could establish or change this topic.",
+      "dependency_implications": ["No lifecycle-dependent authority may be activated."],
+      "notes": "No lifecycle rule is selected."
+    },
+    {
+      "claim_id": "AP002-A01-C009",
+      "claim": "Availability remains unresolved pending source approval.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "unresolved[0]",
+        "evidence_type": "direct_unresolved_marker",
+        "supports": ["UNRESOLVED_PENDING_SOURCE_APPROVAL applies to the authority bundle."]
+      },
+      "counterevidence": [],
+      "future_information_risk": "Approved source evidence could establish or change this topic.",
+      "dependency_implications": ["No availability-dependent authority may be activated."],
+      "notes": "No availability rule is selected."
+    },
+    {
+      "claim_id": "AP002-A01-C010",
+      "claim": "Invalidation remains unresolved pending source approval.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "unresolved[0]",
+        "evidence_type": "direct_unresolved_marker",
+        "supports": ["UNRESOLVED_PENDING_SOURCE_APPROVAL applies to the authority bundle."]
+      },
+      "counterevidence": [],
+      "future_information_risk": "Approved source evidence could establish or change this topic.",
+      "dependency_implications": ["No invalidation-dependent authority may be activated."],
+      "notes": "No invalidation rule is selected."
+    },
+    {
+      "claim_id": "AP002-A01-C011",
+      "claim": "Censoring remains unresolved pending source approval.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "unresolved[0]",
+        "evidence_type": "direct_unresolved_marker",
+        "supports": ["UNRESOLVED_PENDING_SOURCE_APPROVAL applies to the authority bundle."]
+      },
+      "counterevidence": [],
+      "future_information_risk": "Approved source evidence could establish or change this topic.",
+      "dependency_implications": ["No censoring-dependent authority may be activated."],
+      "notes": "No censoring rule is selected."
+    },
+    {
+      "claim_id": "AP002-A01-C012",
+      "claim": "Mutation remains unresolved pending source approval.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "unresolved[0]",
+        "evidence_type": "direct_unresolved_marker",
+        "supports": ["UNRESOLVED_PENDING_SOURCE_APPROVAL applies to the authority bundle."]
+      },
+      "counterevidence": [],
+      "future_information_risk": "Approved source evidence could establish or change this topic.",
+      "dependency_implications": ["No mutation-dependent authority may be activated."],
+      "notes": "No mutation rule is selected."
+    },
+    {
+      "claim_id": "AP002-A01-C013",
+      "claim": "Cross-scale identity remains unresolved pending source approval.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "unresolved[0]",
+        "evidence_type": "direct_unresolved_marker",
+        "supports": ["UNRESOLVED_PENDING_SOURCE_APPROVAL applies to the authority bundle."]
+      },
+      "counterevidence": [],
+      "future_information_risk": "Approved source evidence could establish or change this topic.",
+      "dependency_implications": ["No cross-scale identity authority may be activated."],
+      "notes": "No cross-scale mapping is selected."
+    },
+    {
+      "claim_id": "AP002-A01-C014",
+      "claim": "Physical payload presence is unresolved because approved inventory evidence is not available in the mounted inputs.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "selected, provenance, and status are empty",
+        "evidence_type": "direct_empty_authority_sections",
+        "supports": ["The authority bundle does not establish physical payload presence."]
+      },
+      "counterevidence": ["The manifest declares an inventory surface, but that surface was not mounted at its declared location."],
+      "future_information_risk": "Approved inventory evidence may establish payload presence.",
+      "dependency_implications": ["Payload-dependent authority remains disabled."],
+      "notes": "No payload fact is inferred from names or bundle structure."
+    },
+    {
+      "claim_id": "AP002-A01-C015",
+      "claim": "Native bar scale facts are unresolved because approved inventory evidence is not available in the mounted inputs.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap002",
+        "relative_path": "authority.json",
+        "locator": "selected, provenance, and status are empty",
+        "evidence_type": "direct_empty_authority_sections",
+        "supports": ["The authority bundle does not establish native bar scales."]
+      },
+      "counterevidence": ["The manifest declares an inventory surface, but that surface was not mounted at its declared location."],
+      "future_information_risk": "Approved inventory evidence may establish native bar scales.",
+      "dependency_implications": ["Cross-scale reconstruction cannot be authorized from this evidence set."],
+      "notes": "No scale fact is inferred from field or variant names."
+    }
+  ],
+  "unresolved_questions": [
+    "Which approved source establishes FVG formation, first touch, fill, detection, identity, direction, geometry, lifecycle, availability, invalidation, censoring, mutation, and cross-scale identity?",
+    "Does approved inventory directly establish physical payload presence and native bar scales?",
+    "What source approval event supersedes UNRESOLVED_PENDING_SOURCE_APPROVAL?"
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "xauusd.wave1.ap002",
+      "relative_path": "authority.json",
+      "locator": "whole document",
+      "purpose": "Read the exact authority selection and unresolved marker."
+    },
+    {
+      "source_id": "xauusd.wave1.ap002",
+      "relative_path": "bundle_manifest.json",
+      "locator": "whole document",
+      "purpose": "Verify the bundle file set and content identity."
+    },
+    {
+      "source_id": "assignment.ap-002_a-01",
+      "relative_path": "AP-002/A-01/research_input_manifest.json",
+      "locator": "whole document",
+      "purpose": "Verify declared access boundaries and authority source identity."
+    }
+  ]
+}
