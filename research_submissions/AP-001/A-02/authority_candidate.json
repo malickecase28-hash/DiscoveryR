@@ -1,0 +1,204 @@
+{
+  "artifact_type": "authority_candidate",
+  "program_id": "AP-001",
+  "role_id": "A-02",
+  "subjects": ["drift_burst"],
+  "claims": [
+    {
+      "claim_id": "AP001-A02-C001",
+      "subject": "drift_burst",
+      "topic": "declared_serialization_structure",
+      "claim": "The authority bundle declares drift_burst serialization field paths for drift_burst_completed and drift_burst_state, including event, index, timestamp, price, direction, score, decay, recovery, end, availability-labelled, percentage, authority-scale, operational, milestone, and multiscale paths. The registry declares the detector's known surface as tick and native scale as tick.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.ap001",
+          "relative_path": "XAUUSD/WAVE1_AUTHORITY_V3/AP-001-b485920ff2961a2e995e7ee6b0a74bfcb18bfb826495c6679b32e4e657b29ef5-959f07628fc89dffe5b2183e786129578d0b39a9907271f0de719d67ad4c8168/authority.json",
+          "locator": "/selected/drift_burst/drift_burst_completed/field_paths; /selected/drift_burst/drift_burst_state/field_paths",
+          "evidence_type": "declared_serialization_field_paths",
+          "supports": "The listed paths are present in the selected native detector serialization contract."
+        },
+        {
+          "source_id": "repo.detector_registry",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "/18",
+          "evidence_type": "declared_detector_registry_entry",
+          "supports": "The drift_burst entry declares a tick known surface, tick native scale, and unresolved semantic status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Field additions or contract revisions could change the declared structure.",
+      "dependency_implications": "Downstream consumers may rely on path presence only; lifecycle or scientific use requires separate producer authority.",
+      "notes": "Field paths establish serialization structure only, not the meaning of values."
+    },
+    {
+      "claim_id": "AP001-A02-C002",
+      "subject": "drift_burst",
+      "topic": "lifecycle_semantics",
+      "claim": "The evidence does not establish what lifecycle the detector represents or what any named state means.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Producer documentation or implementation evidence may define lifecycle semantics.",
+      "dependency_implications": "No lifecycle cohort, completion interpretation, or activation rule can be derived.",
+      "notes": "The authority bundle explicitly states lifecycle semantics still require producer authority."
+    },
+    {
+      "claim_id": "AP001-A02-C003",
+      "subject": "drift_burst",
+      "topic": "identity_and_episode_identity",
+      "claim": "The evidence does not establish whether event_id identifies an episode, observation, emission, revision, or another entity, nor how repeated records are grouped.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Producer identity and deduplication rules may resolve event identity.",
+      "dependency_implications": "Episode counts, joins, deduplication, and independence assumptions remain unavailable.",
+      "notes": "The presence of event_id is structural evidence only."
+    },
+    {
+      "claim_id": "AP001-A02-C004",
+      "subject": "drift_burst",
+      "topic": "timing_semantics",
+      "claim": "The evidence does not establish whether origin_ts, weak_ts, online_ts, strong_ts, peak_ts, decay_risk_ts, dying timestamps, or end_ts denote occurrence, detection, confirmation, update, or another time; index units and timestamp units are also unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Producer clock and event-time documentation may define timestamp and index semantics.",
+      "dependency_implications": "Chronology, lag, causality, and timestamp alignment cannot be asserted from names.",
+      "notes": "Protocol chronology rules do not supply detector-specific meaning."
+    },
+    {
+      "claim_id": "AP001-A02-C005",
+      "subject": "drift_burst",
+      "topic": "availability_semantics",
+      "claim": "The evidence does not establish when any field or event becomes available, despite fields named available_after_weak_points, available_after_online_points, available_after_strong_points, available_after_decay_risk_points, and available_after_first_dying_points.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Producer emission and publication rules may define availability.",
+      "dependency_implications": "No causal information set or as-of eligibility rule can be assigned to these fields.",
+      "notes": "Availability-labelled names do not establish availability time or persistence."
+    },
+    {
+      "claim_id": "AP001-A02-C006",
+      "subject": "drift_burst",
+      "topic": "transition_semantics",
+      "claim": "The evidence does not establish transitions among weak, online, strong, peak, decay-risk, dying, recovery, and end-related fields, or whether the named phases are states, milestones, labels, or measurements.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Producer state-machine or transition evidence may resolve ordering and terminal behavior.",
+      "dependency_implications": "State-transition reconstruction and censoring logic are not authorized by the serialization paths.",
+      "notes": "Field ordering in a contract is not transition evidence."
+    },
+    {
+      "claim_id": "AP001-A02-C007",
+      "subject": "drift_burst",
+      "topic": "future_field_semantics",
+      "claim": "The evidence does not establish whether completed, end, decay, dying, recovery, or later milestone fields are future outcomes relative to an earlier observation, nor whether they were known at any earlier time.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "As-of producer records may distinguish later outcomes from contemporaneous fields.",
+      "dependency_implications": "Completed or terminal fields cannot define an earlier-state cohort or be used without leakage analysis.",
+      "notes": "Lifecycle-first protocol rules constrain use but do not establish detector semantics."
+    },
+    {
+      "claim_id": "AP001-A02-C008",
+      "subject": "drift_burst",
+      "topic": "direction_semantics",
+      "claim": "The evidence does not establish what internal_sign, weak_direction, online_direction, strong_direction, milestone direction, or multiscale direction encode or which value domain they use.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Producer value definitions may establish direction domain and reference.",
+      "dependency_implications": "Positive, negative, or directional interpretation cannot be assigned.",
+      "notes": "Names containing direction or sign are not semantic definitions."
+    },
+    {
+      "claim_id": "AP001-A02-C009",
+      "subject": "drift_burst",
+      "topic": "score_semantics",
+      "claim": "The evidence does not establish the formulas, units, normalization, sign convention, thresholds, or interpretation of peak_score, score, z, efficiency, net_log, var_rate, cabs, or burst_points.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Producer algorithms and parameter definitions may resolve score semantics.",
+      "dependency_implications": "No ranking, threshold, magnitude, or statistical meaning may be inferred.",
+      "notes": "Numeric field types and names do not establish formulas or scientific interpretation."
+    },
+    {
+      "claim_id": "AP001-A02-C010",
+      "subject": "drift_burst",
+      "topic": "multiscale_semantics",
+      "claim": "The evidence establishes only that 5s, 15s, 30s, and 60s multiscale paths are declared; it does not establish how they are formed, aligned, synchronized, weighted, or related to the native tick stream.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Producer aggregation and alignment rules may define multiscale construction.",
+      "dependency_implications": "Cross-scale confluence, independence, and causal ordering remain unresolved.",
+      "notes": "Declared scale labels do not establish resampling or statistical semantics."
+    },
+    {
+      "claim_id": "AP001-A02-C011",
+      "subject": "drift_burst",
+      "topic": "censoring_semantics",
+      "claim": "The evidence does not establish whether absent end, completion, dying, recovery, or other fields indicate right censoring, missing data, inapplicability, non-occurrence, or serialization omission.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Producer nullability and incomplete-observation rules may resolve censoring.",
+      "dependency_implications": "Survival, duration, completion, and missingness analyses cannot be specified.",
+      "notes": "No null, omission, or terminal-state semantics are declared in the available evidence."
+    },
+    {
+      "claim_id": "AP001-A02-C012",
+      "subject": "drift_burst",
+      "topic": "segmentation_semantics",
+      "claim": "The evidence does not establish the boundary, merge, split, restart, overlap, or deduplication rules for drift_burst episodes or emitted_events entries.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Producer segmentation and emission rules may define episode boundaries.",
+      "dependency_implications": "Episode duration, recurrence, overlap, and sample-unit definitions remain unresolved.",
+      "notes": "An emitted_events array and event_id paths establish containers and fields only."
+    }
+  ],
+  "unresolved_questions": [
+    "What producer state machine, if any, defines drift_burst lifecycle and transitions?",
+    "What are the as-of availability times for each field and emitted event?",
+    "What identity and segmentation rules define one episode and relate state snapshots to completed events?",
+    "What formulas and units define direction, score, multiscale values, and duration fields?",
+    "How are null, omitted, incomplete, and future fields represented and censored?"
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "xauusd.wave1.ap001",
+      "relative_path": "XAUUSD/WAVE1_AUTHORITY_V3/AP-001-b485920ff2961a2e995e7ee6b0a74bfcb18bfb826495c6679b32e4e657b29ef5-959f07628fc89dffe5b2183e786129578d0b39a9907271f0de719d67ad4c8168/authority.json"
+    },
+    {
+      "source_id": "repo.detector_registry",
+      "relative_path": "registry/detectors_v1.json"
+    },
+    {
+      "source_id": "repo.research_rules",
+      "relative_path": "protocol/RESEARCH_RULES.md"
+    },
+    {
+      "source_id": "repo.detector_registry_schema",
+      "relative_path": "contracts/detector_registry_entry_v1.schema.json"
+    },
+    {
+      "source_id": "repo.assignment",
+      "relative_path": "agent_harness/assignments/AP-001/A-02.json"
+    },
+    {
+      "source_id": "repo.xauusd.source_inventory",
+      "relative_path": "instruments/XAUUSD/source_inventory.json"
+    },
+    {
+      "source_id": "repo.xauusd.instrument_config",
+      "relative_path": "instruments/XAUUSD/instrument_config.json"
+    }
+  ]
+}
