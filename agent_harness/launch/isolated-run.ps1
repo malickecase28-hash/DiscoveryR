@@ -44,6 +44,46 @@ function RecursiveHash([string] $Path) {
     } | Sort-Object
     ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($members -join ''))) | ForEach-Object ToString x2) -join ''
 }
+function MountPath([string] $Path) { if ($Path.StartsWith('/')) { $Path } else { WslPath $Path } }
+function RejectOperationalKeys($Node, [string] $Path = 'assignment') {
+    if ($Node -is [PSCustomObject]) {
+        foreach ($property in $Node.psobject.Properties) {
+            if ($property.Name -match '^(provider|provider_id|provider_identity|model|model_id|model_identity|runtime|runtime_slot|runtime_config|credential|credential_path|secret|token)$') { throw "Operational identity is not allowed: $Path.$($property.Name)" }
+            RejectOperationalKeys $property.Value "$Path.$($property.Name)"
+        }
+    } elseif ($Node -is [System.Collections.IEnumerable] -and $Node -isnot [string]) {
+        foreach ($item in $Node) { RejectOperationalKeys $item $Path }
+    }
+}
+function ValidateAssignmentShape($Assignment) {
+    RejectOperationalKeys $Assignment
+    $common = @('program_id','role_id','phase','access_profile','assignment','authorized_repository_surfaces','authority_source_ids','raw_lake_access','peer_visibility','private_workspace','detector_id','instrument_id','data_scope_id','authority_registry_id')
+    $unknown = @($Assignment.psobject.Properties.Name | Where-Object { $_ -notin $common })
+    if ($unknown.Count) { throw "Unknown assignment fields: $($unknown -join ', ')" }
+    if ($Assignment.phase -eq 'DEVELOPMENT') {
+        if (-not $Assignment.instrument_id -or -not $Assignment.data_scope_id) { throw 'DEVELOPMENT requires instrument_id and data_scope_id.' }
+    } elseif ($Assignment.phase -eq 'AUTHORITY' -and $ProgramId -notin @('AP-001','AP-002','TC-001','BG-001')) {
+        if (-not $Assignment.instrument_id -or -not $Assignment.authority_registry_id) { throw 'New AUTHORITY assignments require instrument_id and authority_registry_id.' }
+    }
+}
+function RuntimeMount($Slot) {
+    if (-not $env:TRINITYR_RUNTIME_CONFIG) { throw 'TRINITYR_RUNTIME_CONFIG is required for RuntimeSlot.' }
+    if (-not (Test-Path -LiteralPath $env:TRINITYR_RUNTIME_CONFIG -PathType Leaf)) { throw 'Runtime config is unavailable.' }
+    $runtimeConfig = Get-Content -Raw -LiteralPath $env:TRINITYR_RUNTIME_CONFIG | ConvertFrom-Json
+    if ($runtimeConfig.schema_version -ne 1 -or @($runtimeConfig.psobject.Properties.Name) | Where-Object { $_ -notin @('schema_version','slots') }) { throw 'Invalid runtime config schema.' }
+    if (-not $runtimeConfig.slots) { throw 'Runtime config has no slots.' }
+    $entry = @($runtimeConfig.slots | Where-Object slot_id -eq $Slot)
+    if ($entry.Count -ne 1) { throw "Runtime slot is not configured: $Slot" }
+    SafeId $entry[0].slot_id 'runtime slot_id'
+    $fields = @('slot_id','broker_socket')
+    $unknown = @($entry[0].psobject.Properties.Name | Where-Object { $_ -notin $fields })
+    if ($unknown.Count) { throw 'Unknown runtime slot fields.' }
+    $socket = [string]$entry[0].broker_socket
+    if ($socket -notmatch '^/(run|tmp)/[A-Za-z0-9._/-]+$' -or $socket -match '\.\.' -or $socket -match '(?i)(provider|model|runtime|token|secret|credential|@|\?)') { throw 'Runtime broker socket is unsafe.' }
+    if (-not (Test-Path -LiteralPath $socket)) { throw 'Runtime broker socket is unavailable.' }
+    NoReparse $socket
+    [PSCustomObject]@{ source = $socket; target = '/run/trinityr/runtime.sock' }
+}
 $runRootFull = SafePath $RunRoot
 New-Item -ItemType Directory -Force -Path $runRootFull | Out-Null
 $assignmentPath = Join-Path $repoFull "agent_harness\assignments\$ProgramId\$Role.json"
@@ -51,12 +91,10 @@ if (-not (Test-Path -LiteralPath $assignmentPath -PathType Leaf)) { throw "Assig
 $assignment = Get-Content -Raw -LiteralPath $assignmentPath | ConvertFrom-Json
 if ($assignment.program_id -ne $ProgramId -or $assignment.role_id -ne $Role) { throw 'Assignment program_id/role_id mismatch.' }
 if ([string]::IsNullOrWhiteSpace($assignment.access_profile)) { throw 'Assignment access_profile is required.' }
-$sensitive = 'provider|model|runtime|credential|secret|token'
-foreach ($property in $assignment.psobject.Properties) {
-    if ($property.Name -match $sensitive -or $property.Name -in @('environment','env','runtime_config')) { throw "Provider/runtime selection is not allowed in scientific assignments: $($property.Name)" }
-}
-SafeId $assignment.program_id 'program_id'; SafeId $assignment.role_id 'role_id'
-if ($assignment.phase -notin @('AUTHORITY','DEVELOPMENT','CONFIRMATION')) { throw "Invalid phase: $($assignment.phase)" }
+ValidateAssignmentShape $assignment
+    SafeId $assignment.program_id 'program_id'; SafeId $assignment.role_id 'role_id'
+    if ($assignment.phase -notin @('AUTHORITY','DEVELOPMENT','CONFIRMATION')) { throw "Invalid phase: $($assignment.phase)" }
+    if ($assignment.phase -ne $assignment.access_profile) { throw 'phase and access_profile must match.' }
 if ($assignment.peer_visibility -ne 'DENY') { throw 'peer_visibility must be DENY.' }
 if (-not $assignment.authorized_repository_surfaces) { throw 'Repository surfaces are required.' }
 $profile = Get-Content -Raw -LiteralPath (Join-Path $repoFull 'agent_harness\access_profiles\default.json') | ConvertFrom-Json
@@ -78,6 +116,9 @@ if ($assignment.access_profile -eq 'DEVELOPMENT') {
     $manifestPath = Join-Path $lake 'view_manifest.json'
     if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) { throw 'Development view_manifest.json is required.' }
     $manifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
+    foreach ($field in @('schema_version','instrument','scope_id','logical_view_identity','builder_code_identity')) {
+        if ([string]::IsNullOrWhiteSpace([string]$manifest.$field)) { throw "Development manifest field missing: $field" }
+    }
     if ($manifest.instrument -ne $assignment.instrument_id -or $manifest.scope_id -ne $assignment.data_scope_id) { throw 'Development view manifest identity mismatch.' }
 }
 $programRoot = Join-Path $runRootFull $ProgramId
@@ -86,15 +127,8 @@ New-Item -ItemType Directory -Force -Path $workspace | Out-Null
 NoReparse $runRootFull; NoReparse $programRoot; NoReparse $workspace
 $mounts = @()
 $runtime = $null
-$runtimeEndpoint = ''
 if ($RuntimeSlot) {
-    if (-not $env:TRINITYR_RUNTIME_CONFIG) { throw 'TRINITYR_RUNTIME_CONFIG is required for RuntimeSlot.' }
-    if (-not (Test-Path -LiteralPath $env:TRINITYR_RUNTIME_CONFIG -PathType Leaf)) { throw 'Runtime config is unavailable.' }
-    $runtimeConfig = Get-Content -Raw -LiteralPath $env:TRINITYR_RUNTIME_CONFIG | ConvertFrom-Json
-    $slot = @($runtimeConfig.slots | Where-Object slot_id -eq $RuntimeSlot)
-    if ($slot.Count -ne 1 -or [string]::IsNullOrWhiteSpace($slot[0].endpoint)) { throw "Runtime slot is not configured: $RuntimeSlot" }
-    # The endpoint is opaque to the assignment and is not mounted or serialized.
-    $runtimeEndpoint = $slot[0].endpoint
+    $runtime = RuntimeMount $RuntimeSlot
 }
 foreach ($surface in @($assignment.authorized_repository_surfaces)) {
     if ([string]::IsNullOrWhiteSpace($surface) -or $surface.StartsWith('/') -or $surface.StartsWith('\') -or $surface -match '(^|[\\/])\.\.([\\/]|$)' -or $surface -match ':') { throw "Unsafe repository surface: $surface" }
@@ -112,6 +146,7 @@ if (-not (Test-Path -LiteralPath $registryFile -PathType Leaf)) {
 }
 $authority = Get-Content -Raw -LiteralPath $registryFile | ConvertFrom-Json
 foreach ($sourceId in @($assignment.authority_source_ids)) {
+    SafeId $sourceId 'authority_source_id'
     $source = @($authority.sources | Where-Object source_id -eq $sourceId)
     if ($source.Count -ne 1) { throw "Unknown authority source: $sourceId" }
     SafeRelative $source[0].relative_path 'authority relative_path'
@@ -128,14 +163,14 @@ foreach ($sourceId in @($assignment.authority_source_ids)) {
     NoReparse $sourcePath
     if ((RecursiveHash $sourcePath) -ne $source[0].hash) { throw "Authority source hash mismatch: $sourceId" }
     if ($source[0].mount_target -notmatch '^/shared/[A-Za-z0-9._/-]+$' -or $source[0].mount_target -match '\.\.') { throw "Unsafe authority mount target: $sourceId" }
-    $mounts += [PSCustomObject]@{ source = (WslPath $sourcePath); target = $source[0].mount_target }
+    $mounts += [PSCustomObject]@{ source = (MountPath $sourcePath); target = $source[0].mount_target }
 }
-if ($lake) { $mounts += [PSCustomObject]@{ source = (WslPath $lake); target = "/shared/data/$($assignment.data_scope_id)/development" } }
+if ($lake) { $mounts += [PSCustomObject]@{ source = (MountPath $lake); target = "/shared/data/$($assignment.data_scope_id)/development" } }
 if ($runtime) { $mounts += $runtime }
 $mountText = ($mounts | ForEach-Object { "$(B64 $_.source)|$(B64 $_.target)" }) -join "`n"
 $launcher = Join-Path $PSScriptRoot 'isolated-run.sh'
 $bootstrap = B64 ((Get-Content -Raw -LiteralPath $launcher).Replace("`r", ''))
 $safeCommand = $Command.Replace("`r", '')
-$commandLine = "printf %s $bootstrap | base64 -d > /tmp/trinityr-isolated-run.sh && chmod 700 /tmp/trinityr-isolated-run.sh && unshare --mount --pid --fork --mount-proc --propagation private -- /bin/bash /tmp/trinityr-isolated-run.sh $(B64 (WslPath $workspace)) $(B64 $assignment.access_profile) $(B64 $safeCommand) $(B64 (B64 $mountText)) $(B64 $runtimeEndpoint)"
+$commandLine = "printf %s $bootstrap | base64 -d > /tmp/trinityr-isolated-run.sh && chmod 700 /tmp/trinityr-isolated-run.sh && unshare --mount --pid --fork --mount-proc --propagation private -- /bin/bash /tmp/trinityr-isolated-run.sh $(B64 (WslPath $workspace)) $(B64 $assignment.access_profile) $(B64 $safeCommand) $(B64 (B64 $mountText))"
 & wsl.exe --distribution $Distro --user root -- /bin/bash -lc $commandLine
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

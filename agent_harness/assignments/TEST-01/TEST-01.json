@@ -3,6 +3,8 @@
   "role_id": "TEST-01",
   "phase": "AUTHORITY",
   "access_profile": "AUTHORITY",
+  "instrument_id": "XAUUSD",
+  "authority_registry_id": "XAUUSD",
   "assignment": "Harmless isolation smoke test only; do not perform market research.",
   "authorized_repository_surfaces": [
     "protocol",
