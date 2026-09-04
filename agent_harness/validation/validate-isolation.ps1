@@ -119,9 +119,9 @@ $badManifest=$bundleManifest.PSObject.Copy();$badManifest.bundle_content_identit
 $badParity=$parity.pairs[0].PSObject.Copy();$badParity.a02_shared_input_fingerprint=('0'*64);MustFail {ValidateParityPair $badParity} 'parity mismatch'
 $manifestCheck=Get-Content -Raw (Join-Path $env:TRINITYR_MANIFEST_ROOT 'AP-001\A-01\research_input_manifest.json')|ConvertFrom-Json;ValidateInputManifest $manifestCheck;$badManifest=$manifestCheck.PSObject.Copy();$badManifest.shared_input_fingerprint=$null;MustFail {ValidateInputManifest $badManifest} 'missing manifest fields'
 $claimFixture=@([pscustomobject]@{claim_id='AP001-A01-C001';status='PROVISIONAL';claim='null model'});ValidateArtifactClaims $claimFixture;$duplicate=@($claimFixture+$claimFixture);MustFail {ValidateArtifactClaims $duplicate} 'duplicate IDs';$invalid=$claimFixture[0].PSObject.Copy();$invalid.status='UNRESOLVED_RELATIONSHIP';MustFail {ValidateArtifactClaims @($invalid)} 'invalid status';$malformed=$claimFixture[0].PSObject.Copy();$malformed.status='AUTHORITATIVE';MustFail {ValidateArtifactClaims @($malformed)} 'malformed AUTHORITATIVE evidence';'NEGATIVE_CONTRACT_TESTS_PASS'
-$glm = Get-Content -Raw (Join-Path $repo 'agent_harness\assignments\TEST-GLM-01\TEST-GLM-01.json') | ConvertFrom-Json
-ValidateAssignment $glm 'TEST-GLM-01/TEST-GLM-01'
-if ($glm.agent_runtime -or $glm.provider -or $glm.model) { throw 'TEST-GLM scientific assignment selects runtime/provider.' }
+$codex = Get-Content -Raw (Join-Path $repo 'agent_harness\assignments\TEST-01\TEST-01.json') | ConvertFrom-Json
+ValidateAssignment $codex 'TEST-01/TEST-01'
+if ($codex.agent_runtime -or $codex.provider -or $codex.model) { throw 'TEST-01 scientific assignment selects runtime/provider.' }
 '{"program_id":"SAFE","role_id":"SAFE","phase":"DEVELOPMENT","access_profile":"DEVELOPMENT","assignment":"x","authorized_repository_surfaces":["protocol"],"authority_source_ids":[],"raw_lake_access":"DENY","peer_visibility":"DENY","instrument_id":"SAFE","data_scope_id":"SAFE","nested":{"ToKeN":"blocked"}}' | ConvertFrom-Json | ForEach-Object { MustFail { ValidateAssignment $_ 'nested-operational-key' } 'recursive operational identity' }
 '{"program_id":"SAFE","role_id":"SAFE","phase":"DEVELOPMENT","access_profile":"DEVELOPMENT","assignment":"x","authorized_repository_surfaces":["protocol"],"authority_source_ids":[],"raw_lake_access":"DENY","peer_visibility":"DENY","instrument_id":"SAFE","data_scope_id":"SAFE","detector_id":"unexpected"}' | ConvertFrom-Json | ForEach-Object { MustFail { ValidateAssignment $_ 'phase-allowlist' } 'phase field allowlist' }
 'OPAQUE_ASSIGNMENT_PASS'
@@ -146,33 +146,9 @@ try {
     $env:TRINITYR_VIEWS_ROOT = $oldViews
     Remove-Item -Recurse -Force -LiteralPath $viewRoot,$devRun -ErrorAction SilentlyContinue
 }
-$runtimeConfig = "F:\trinityr-runtime-$PID.json"
-try {
-    '{"schema_version":1,"slots":[{"slot_id":"slot-07","broker_socket":"http://user:secret@provider.example/run?token=x"}]}' | Set-Content -NoNewline $runtimeConfig
-    $env:TRINITYR_RUNTIME_CONFIG = $runtimeConfig
-    MustFail { & $launcher -ProgramId TEST-GLM-01 -Role TEST-GLM-01 -RuntimeSlot slot-07 -RunRoot 'F:\trinityr-runtime-run' -Command true } 'unsafe runtime config'
-    '{"schema_version":1,"slots":[{"slot_id":"slot-07","broker_socket":"/run/trinityr/missing.sock"}]}' | Set-Content -NoNewline $runtimeConfig
-    MustFail { & $launcher -ProgramId TEST-GLM-01 -Role TEST-GLM-01 -RuntimeSlot slot-07 -RunRoot 'F:\trinityr-runtime-run' -Command true } 'missing runtime broker'
-    $oldErrorAction = $ErrorActionPreference
-    try { $ErrorActionPreference = 'Continue'; $liveSocket = (& wsl.exe --distribution $Distro --user root -- find /tmp -maxdepth 1 -type s -name 'znr-*.sock' -print -quit 2>$null) } finally { $ErrorActionPreference = $oldErrorAction }
-    if ($liveSocket) {
-        @{ schema_version = 1; slots = @(@{ slot_id = 'slot-07'; broker_socket = [string]$liveSocket }) } | ConvertTo-Json -Compress | Set-Content -NoNewline $runtimeConfig
-        $result = & $launcher -ProgramId TEST-GLM-01 -Role TEST-GLM-01 -RuntimeSlot slot-07 -RunRoot 'F:\trinityr-runtime-run' -Distro $Distro -Command 'test -S /run/trinityr/runtime.sock'
-        if ($LASTEXITCODE -ne 0) { throw 'Active neutral runtime socket launch failed.' }
-        'ACTIVE_NEUTRAL_SOCKET_PASS'
-    }
-    $codex = Get-Command codex -ErrorAction SilentlyContinue
-    $oldErrorAction = $ErrorActionPreference
-    try { $ErrorActionPreference = 'Continue'; $zcode = (& wsl.exe --distribution $Distro --user root -- sh -lc 'command -v zcode-cli' 2>$null) } finally { $ErrorActionPreference = $oldErrorAction }
-    if (-not $codex) { 'CODEX_RUNTIME_BLOCKED executable=codex-not-discovered; smallest_fix=provide-approved-runtime-backed-Codex-entrypoint' } else { 'CODEX_RUNTIME_BLOCKED actual-researcher-execution-not-authorized-in-this-validation; smallest_fix=run-test-only-Codex-through-approved-neutral-boundary' }
-    if (-not $zcode) { 'ZCODE_RUNTIME_BLOCKED executable=zcode-cli-not-discovered; smallest_fix=provide-approved-runtime-backed-ZCode-entrypoint' } else { 'ZCODE_RUNTIME_BLOCKED actual-researcher-execution-not-authorized-in-this-validation; smallest_fix=run-test-only-ZCode-through-approved-neutral-boundary' }
-    if (Select-String -Path (Join-Path $repo 'agent_harness\launch\isolated-run.sh') -Pattern 'RUNTIME_ENDPOINT') { throw 'Raw runtime endpoint remains exposed.' }
-    'RUNTIME_OPACITY_BLOCKED'
-} finally {
-    Remove-Item -Force -LiteralPath $runtimeConfig -ErrorAction SilentlyContinue
-    Remove-Item -Recurse -Force -LiteralPath 'F:\trinityr-runtime-run' -ErrorAction SilentlyContinue
-    Remove-Item Env:TRINITYR_RUNTIME_CONFIG -ErrorAction SilentlyContinue
-}
+'CODEX_HOST_MANAGED'
+'ZCODE_RUNTIME_RETIRED'
+'WSL_CODEX_RUNTIME_NOT_REQUIRED'
 $authorityTestRoot = "F:\trinityr-authority-$PID"
 try {
     New-Item -ItemType Directory -Force (Join-Path $authorityTestRoot 'nested') | Out-Null

@@ -17,10 +17,11 @@ CONFIRMATION is always rejected until a separate explicit freeze action is
 implemented.
 
 The harness is an operational boundary, not a provider/model scheduler.
-Provider identity remains in an orchestrator-owned runtime slot configuration
-outside the scientific artifacts. Use `-RuntimeSlot slot-07` with
-`TRINITYR_RUNTIME_CONFIG`; the private mapping is never mounted into the
-research namespace.
+Active workers are host-managed Codex sessions; no Codex executable or model
+broker is required inside WSL. The prior ZCode investigation is historical:
+`ZCODE_RUNTIME_RETIRED` and `WSL_CODEX_RUNTIME_NOT_REQUIRED`. Provider identity
+and credentials remain outside scientific artifacts and are never mounted into
+the research namespace.
 
 Example:
 
