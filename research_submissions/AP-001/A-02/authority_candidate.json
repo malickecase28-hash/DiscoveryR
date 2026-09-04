@@ -1,0 +1,137 @@
+{
+  "artifact_type": "AUTHORITY_CANDIDATE",
+  "program_id": "AP-001",
+  "role_id": "A-02",
+  "subjects": ["drift_burst"],
+  "claims": [
+    {
+      "claim_id": "AP001-A02-C001",
+      "claim": "The declared serialization contract is trinity.research.tick-payload-contract.v1 and its declared source is native_detector_serialization_contract.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap001",
+        "relative_path": "authority.json",
+        "locator": "/provenance[0..1]",
+        "evidence_type": "declared_contract_metadata",
+        "supports": "The contract schema version and source are directly recorded."
+      },
+      "counterevidence": [],
+      "future_information_risk": "The contract declaration does not establish semantic interpretation or availability timing.",
+      "dependency_implications": "Consumers may rely on the declared field surface only; semantic and timing behavior requires separate authority.",
+      "notes": "Structural serialization fact only."
+    },
+    {
+      "claim_id": "AP001-A02-C002",
+      "claim": "A completed drift_burst record declares event, origin, weak, online, strong, peak, decay-risk, dying, end, burst, availability-point, and remaining-percentage field paths.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap001",
+        "relative_path": "authority.json",
+        "locator": "/selected/drift_burst/drift_burst_completed/field_paths",
+        "evidence_type": "declared_field_path_list",
+        "supports": "The listed paths are directly declared for the completed record surface."
+      },
+      "counterevidence": [],
+      "future_information_risk": "Presence of a completed-record field does not establish when it becomes available or whether it is lawful at an earlier state.",
+      "dependency_implications": "Serialization consumers can validate these paths without assigning lifecycle or scientific meaning.",
+      "notes": "Field names and variants are not treated as semantic evidence."
+    },
+    {
+      "claim_id": "AP001-A02-C003",
+      "claim": "A drift_burst state record declares state, event_id, authority score surfaces at 30s and 60s, an operational score surface, weak and online milestone surfaces, multiscale 5s/15s/30s/60s surfaces, and emitted-event field paths.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap001",
+        "relative_path": "authority.json",
+        "locator": "/selected/drift_burst/drift_burst_state/field_paths",
+        "evidence_type": "declared_field_path_list",
+        "supports": "The state and nested field paths are directly declared for the state record surface."
+      },
+      "counterevidence": [],
+      "future_information_risk": "Nested surfaces and update fields do not establish lifecycle transitions, persistence, or timestamp availability.",
+      "dependency_implications": "State serializers may expose the declared paths; downstream lawful-use rules remain unresolved.",
+      "notes": "The authority bundle establishes structural presence only."
+    },
+    {
+      "claim_id": "AP001-A02-C004",
+      "claim": "Lifecycle stage meaning, episode identity, transition rules, persistence, recovery semantics, and completion semantics are UNRESOLVED by this authority bundle.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap001",
+        "relative_path": "authority.json",
+        "locator": "/status[1]",
+        "evidence_type": "authority_scope_statement",
+        "supports": "The bundle directly states that lifecycle semantics still require producer authority."
+      },
+      "counterevidence": [],
+      "future_information_risk": "Treating labels or field order as lifecycle meaning could create false transitions or false episode continuity.",
+      "dependency_implications": "Lifecycle-dependent consumers and E1 cannot be treated as semantically authorized from this bundle alone.",
+      "notes": "No lifecycle meaning is inferred from field or variant names."
+    },
+    {
+      "claim_id": "AP001-A02-C005",
+      "claim": "Availability-clock semantics and the future-information legality of each lifecycle-stage field are UNRESOLVED.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap001",
+        "relative_path": "authority.json",
+        "locator": "/status[1]",
+        "evidence_type": "authority_scope_statement",
+        "supports": "The bundle does not provide producer authority for lifecycle semantics or availability timing."
+      },
+      "counterevidence": [],
+      "future_information_risk": "Completed-record fields and later milestone fields may be unavailable or unlawful relative to an earlier state.",
+      "dependency_implications": "No field may be assumed SAFE_AT_STATE or FUTURE_RELATIVE_TO_STATE from structural presence alone.",
+      "notes": {
+        "lifecycle_stage_future_information_matrix": {
+          "origin": "UNRESOLVED",
+          "weak": "UNRESOLVED",
+          "online": "UNRESOLVED",
+          "strong": "UNRESOLVED",
+          "peak": "UNRESOLVED",
+          "decay_risk": "UNRESOLVED",
+          "first_dying": "UNRESOLVED",
+          "last_dying": "UNRESOLVED",
+          "end_or_completed": "UNRESOLVED"
+        }
+      }
+    },
+    {
+      "claim_id": "AP001-A02-C006",
+      "claim": "Direction, score, recovery, and lawful anchor semantics are UNRESOLVED; E1 remains blocked while lawful anchor semantics are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.ap001",
+        "relative_path": "authority.json",
+        "locator": "/status[1]",
+        "evidence_type": "authority_scope_statement",
+        "supports": "The bundle limits its authority to declared serialization and leaves lifecycle semantics requiring additional authority."
+      },
+      "counterevidence": [],
+      "future_information_risk": "Using direction, score, recovery, or anchor fields before their lawful availability and meaning are established can introduce future information.",
+      "dependency_implications": "No causal legality, directional interpretation, score interpretation, recovery rule, or E1 activation authority follows from this bundle.",
+      "notes": "This is a boundary finding, not a finding that the semantics do not exist."
+    }
+  ],
+  "unresolved_questions": [
+    "What producer-defined lifecycle transitions and episode rules govern the declared stages?",
+    "When does each field become available relative to the state timestamp or index?",
+    "Which fields are lawful anchors for causal use at each state?",
+    "What are the authoritative meanings of direction, score, recovery, completion, and end_reason?",
+    "Does persistence across updates or records have a producer-defined guarantee?"
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "xauusd.wave1.ap001",
+      "relative_path": "authority.json",
+      "locator": "/selected, /provenance, /status",
+      "evidence_type": "authority_bundle"
+    },
+    {
+      "source_id": "authority_bundle_manifest",
+      "relative_path": "bundle_manifest.json",
+      "locator": "/generated_files, /bundle_content_identity",
+      "evidence_type": "bundle_integrity_metadata"
+    }
+  ]
+}
