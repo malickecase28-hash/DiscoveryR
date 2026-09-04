@@ -8,7 +8,8 @@ WSL is retired for this project. Future work uses direct Windows folders on `F:`
 
 These roots were deliberately not moved or deleted:
 
-- `F:\TrinityR-research`
+- `F:\TrinityR-research` — active research/data workspace
+- `F:\TrinityR-runs\wave1-v3-custody` — canonical Git custody repository
 - `F:\TrinityR-authority`
 - `F:\TrinityR-manifests`
 - `F:\TrinityR-runs`
@@ -17,7 +18,7 @@ These roots were deliberately not moved or deleted:
 - `F:\TrinityR-legacy-run`
 - `F:\TrinityR-views`
 
-They contain the canonical repository, authority material, manifests, active runs, research workspaces, or data/history.
+They contain the active research workspace, canonical custody repository, authority material, manifests, active runs, research workspaces, or data/history.
 
 ## Archived staging roots
 
