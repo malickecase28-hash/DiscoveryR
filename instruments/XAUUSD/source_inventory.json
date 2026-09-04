@@ -1,109 +1,629 @@
 {
   "instrument": "XAUUSD",
-  "native_scales": [
-    "15m",
-    "15s",
-    "1h",
-    "1m",
-    "30s",
-    "4h",
-    "5m"
-  ],
-  "bar_parts": [
+  "sources": [
     {
-      "path": "15m/part-00000.parquet",
-      "rows": 4805
+      "scale": {
+        "Bar": "15m"
+      },
+      "parts": [
+        {
+          "path": "15m/part-00000.parquet",
+          "rows": 4805
+        },
+        {
+          "path": "15m/part-00001.parquet",
+          "rows": 3888
+        },
+        {
+          "path": "15m/part-00002.parquet",
+          "rows": 3353
+        },
+        {
+          "path": "15m/part-00003.parquet",
+          "rows": 3082
+        },
+        {
+          "path": "15m/part-00004.parquet",
+          "rows": 3340
+        },
+        {
+          "path": "15m/part-00005.parquet",
+          "rows": 3582
+        }
+      ],
+      "columns": [
+        "instrument_id",
+        "bar_open_ts",
+        "bar_close_ts",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ],
+      "timestamp_fields": [
+        "bar_open_ts",
+        "bar_close_ts",
+        "payload_volume_by_time",
+        "payload_time_context"
+      ],
+      "payload_columns": [
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ]
     },
     {
-      "path": "15m/part-00001.parquet",
-      "rows": 3888
+      "scale": {
+        "Bar": "15s"
+      },
+      "parts": [
+        {
+          "path": "15s/part-00000.parquet",
+          "rows": 287711
+        },
+        {
+          "path": "15s/part-00001.parquet",
+          "rows": 232690
+        },
+        {
+          "path": "15s/part-00002.parquet",
+          "rows": 200997
+        },
+        {
+          "path": "15s/part-00003.parquet",
+          "rows": 184760
+        },
+        {
+          "path": "15s/part-00004.parquet",
+          "rows": 199977
+        },
+        {
+          "path": "15s/part-00005.parquet",
+          "rows": 214700
+        }
+      ],
+      "columns": [
+        "instrument_id",
+        "bar_open_ts",
+        "bar_close_ts",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ],
+      "timestamp_fields": [
+        "bar_open_ts",
+        "bar_close_ts",
+        "payload_volume_by_time",
+        "payload_time_context"
+      ],
+      "payload_columns": [
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ]
     },
     {
-      "path": "15m/part-00002.parquet",
-      "rows": 3353
+      "scale": {
+        "Bar": "1h"
+      },
+      "parts": [
+        {
+          "path": "1h/part-00000.parquet",
+          "rows": 1201
+        },
+        {
+          "path": "1h/part-00001.parquet",
+          "rows": 973
+        },
+        {
+          "path": "1h/part-00002.parquet",
+          "rows": 839
+        },
+        {
+          "path": "1h/part-00003.parquet",
+          "rows": 771
+        },
+        {
+          "path": "1h/part-00004.parquet",
+          "rows": 835
+        },
+        {
+          "path": "1h/part-00005.parquet",
+          "rows": 896
+        }
+      ],
+      "columns": [
+        "instrument_id",
+        "bar_open_ts",
+        "bar_close_ts",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ],
+      "timestamp_fields": [
+        "bar_open_ts",
+        "bar_close_ts",
+        "payload_volume_by_time",
+        "payload_time_context"
+      ],
+      "payload_columns": [
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ]
     },
     {
-      "path": "15m/part-00003.parquet",
-      "rows": 3082
+      "scale": {
+        "Bar": "1m"
+      },
+      "parts": [
+        {
+          "path": "1m/part-00000.parquet",
+          "rows": 72036
+        },
+        {
+          "path": "1m/part-00001.parquet",
+          "rows": 58219
+        },
+        {
+          "path": "1m/part-00002.parquet",
+          "rows": 50258
+        },
+        {
+          "path": "1m/part-00003.parquet",
+          "rows": 46197
+        },
+        {
+          "path": "1m/part-00004.parquet",
+          "rows": 50057
+        },
+        {
+          "path": "1m/part-00005.parquet",
+          "rows": 53691
+        }
+      ],
+      "columns": [
+        "instrument_id",
+        "bar_open_ts",
+        "bar_close_ts",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ],
+      "timestamp_fields": [
+        "bar_open_ts",
+        "bar_close_ts",
+        "payload_volume_by_time",
+        "payload_time_context"
+      ],
+      "payload_columns": [
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ]
     },
     {
-      "path": "15m/part-00004.parquet",
-      "rows": 3340
+      "scale": {
+        "Bar": "30s"
+      },
+      "parts": [
+        {
+          "path": "30s/part-00000.parquet",
+          "rows": 144048
+        },
+        {
+          "path": "30s/part-00001.parquet",
+          "rows": 116417
+        },
+        {
+          "path": "30s/part-00002.parquet",
+          "rows": 100512
+        },
+        {
+          "path": "30s/part-00003.parquet",
+          "rows": 92391
+        },
+        {
+          "path": "30s/part-00004.parquet",
+          "rows": 100110
+        },
+        {
+          "path": "30s/part-00005.parquet",
+          "rows": 107381
+        }
+      ],
+      "columns": [
+        "instrument_id",
+        "bar_open_ts",
+        "bar_close_ts",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ],
+      "timestamp_fields": [
+        "bar_open_ts",
+        "bar_close_ts",
+        "payload_volume_by_time",
+        "payload_time_context"
+      ],
+      "payload_columns": [
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ]
     },
     {
-      "path": "15m/part-00005.parquet",
-      "rows": 3582
+      "scale": {
+        "Bar": "4h"
+      },
+      "parts": [
+        {
+          "path": "4h/part-00000.parquet",
+          "rows": 319
+        },
+        {
+          "path": "4h/part-00001.parquet",
+          "rows": 257
+        },
+        {
+          "path": "4h/part-00002.parquet",
+          "rows": 223
+        },
+        {
+          "path": "4h/part-00003.parquet",
+          "rows": 204
+        },
+        {
+          "path": "4h/part-00004.parquet",
+          "rows": 222
+        },
+        {
+          "path": "4h/part-00005.parquet",
+          "rows": 239
+        }
+      ],
+      "columns": [
+        "instrument_id",
+        "bar_open_ts",
+        "bar_close_ts",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ],
+      "timestamp_fields": [
+        "bar_open_ts",
+        "bar_close_ts",
+        "payload_volume_by_time",
+        "payload_time_context"
+      ],
+      "payload_columns": [
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ]
+    },
+    {
+      "scale": {
+        "Bar": "5m"
+      },
+      "parts": [
+        {
+          "path": "5m/part-00000.parquet",
+          "rows": 14417
+        },
+        {
+          "path": "5m/part-00001.parquet",
+          "rows": 11659
+        },
+        {
+          "path": "5m/part-00002.parquet",
+          "rows": 10059
+        },
+        {
+          "path": "5m/part-00003.parquet",
+          "rows": 9246
+        },
+        {
+          "path": "5m/part-00004.parquet",
+          "rows": 10020
+        },
+        {
+          "path": "5m/part-00005.parquet",
+          "rows": 10746
+        }
+      ],
+      "columns": [
+        "instrument_id",
+        "bar_open_ts",
+        "bar_close_ts",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ],
+      "timestamp_fields": [
+        "bar_open_ts",
+        "bar_close_ts",
+        "payload_volume_by_time",
+        "payload_time_context"
+      ],
+      "payload_columns": [
+        "payload_swings",
+        "payload_raw3",
+        "payload_range",
+        "payload_fvg",
+        "payload_bos_choch",
+        "payload_order_blocks",
+        "payload_local_structure",
+        "payload_volume_by_time",
+        "payload_structural_liquidity",
+        "payload_dealing_range",
+        "payload_micro_liquidity",
+        "payload_micro_liquidity_context",
+        "payload_volume_trend",
+        "payload_auction_context",
+        "payload_time_context",
+        "payload_vwma_atr"
+      ]
+    },
+    {
+      "scale": "Tick",
+      "parts": [
+        {
+          "path": "tick/part-00000.parquet",
+          "rows": 12616326
+        },
+        {
+          "path": "tick/part-00001.parquet",
+          "rows": 11503322
+        },
+        {
+          "path": "tick/part-00002.parquet",
+          "rows": 11228177
+        },
+        {
+          "path": "tick/part-00003.parquet",
+          "rows": 10724905
+        },
+        {
+          "path": "tick/part-00004.parquet",
+          "rows": 11222475
+        },
+        {
+          "path": "tick/part-00005.parquet",
+          "rows": 11150454
+        }
+      ],
+      "columns": [
+        "event_ts_ns",
+        "received_ts_ns",
+        "source_sequence",
+        "bid",
+        "ask",
+        "payload_drift_burst",
+        "payload_spread_state",
+        "payload_quote_dynamics",
+        "payload_quote_arrival",
+        "payload_micro_volatility",
+        "payload_feed_health",
+        "payload_quote_pressure"
+      ],
+      "timestamp_fields": [
+        "event_ts_ns",
+        "received_ts_ns"
+      ],
+      "payload_columns": [
+        "payload_drift_burst",
+        "payload_spread_state",
+        "payload_quote_dynamics",
+        "payload_quote_arrival",
+        "payload_micro_volatility",
+        "payload_feed_health",
+        "payload_quote_pressure"
+      ]
     }
-  ],
-  "tick_parts": [
-    {
-      "path": "tick/part-00000.parquet",
-      "rows": 12616326
-    },
-    {
-      "path": "tick/part-00001.parquet",
-      "rows": 11503322
-    },
-    {
-      "path": "tick/part-00002.parquet",
-      "rows": 11228177
-    },
-    {
-      "path": "tick/part-00003.parquet",
-      "rows": 10724905
-    },
-    {
-      "path": "tick/part-00004.parquet",
-      "rows": 11222475
-    },
-    {
-      "path": "tick/part-00005.parquet",
-      "rows": 11150454
-    }
-  ],
-  "bar_columns": [
-    "instrument_id",
-    "bar_open_ts",
-    "bar_close_ts",
-    "open",
-    "high",
-    "low",
-    "close",
-    "volume",
-    "payload_swings",
-    "payload_raw3",
-    "payload_range",
-    "payload_fvg",
-    "payload_bos_choch",
-    "payload_order_blocks",
-    "payload_local_structure",
-    "payload_volume_by_time",
-    "payload_structural_liquidity",
-    "payload_dealing_range",
-    "payload_micro_liquidity",
-    "payload_micro_liquidity_context",
-    "payload_volume_trend",
-    "payload_auction_context",
-    "payload_time_context",
-    "payload_vwma_atr"
-  ],
-  "payload_columns": [
-    "payload_swings",
-    "payload_raw3",
-    "payload_range",
-    "payload_fvg",
-    "payload_bos_choch",
-    "payload_order_blocks",
-    "payload_local_structure",
-    "payload_volume_by_time",
-    "payload_structural_liquidity",
-    "payload_dealing_range",
-    "payload_micro_liquidity",
-    "payload_micro_liquidity_context",
-    "payload_volume_trend",
-    "payload_auction_context",
-    "payload_time_context",
-    "payload_vwma_atr"
   ],
   "source_manifest_identity": "1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af",
   "payload_manifest_identity": "78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed"

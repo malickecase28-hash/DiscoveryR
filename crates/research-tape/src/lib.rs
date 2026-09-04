@@ -80,6 +80,8 @@ impl HasAvailableTime for ContextObservation {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ContractError {
     MissingAvailabilityTime,
+    MissingCausalTimestamp(String),
+    Authority(String),
     NonMonotonicAnchor,
     UnorderedContext,
     FutureContext {
@@ -244,13 +246,17 @@ pub struct SourcePart {
     pub rows: u64,
 }
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ScaleInventory {
+    pub scale: NativeScale,
+    pub parts: Vec<SourcePart>,
+    pub columns: Vec<String>,
+    pub timestamp_fields: Vec<String>,
+    pub payload_columns: Vec<String>,
+}
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct SourceInventory {
     pub instrument: String,
-    pub native_scales: Vec<String>,
-    pub bar_parts: Vec<SourcePart>,
-    pub tick_parts: Vec<SourcePart>,
-    pub bar_columns: Vec<String>,
-    pub payload_columns: Vec<String>,
+    pub sources: Vec<ScaleInventory>,
     pub source_manifest_identity: String,
     pub payload_manifest_identity: String,
 }
@@ -264,6 +270,8 @@ pub struct TapeManifest {
     pub source_parts: Vec<String>,
     pub anchor_detector: String,
     pub anchor_time_semantics: String,
+    pub availability_semantics_status: String,
+    pub availability_semantics_source: String,
     pub context_contract: String,
     pub row_count: u64,
     pub minimum_anchor_time: Option<i64>,
@@ -277,7 +285,7 @@ pub struct TapeManifest {
 pub struct ScanCounters {
     pub rows: u64,
     pub batches: u64,
-    pub bytes: u64,
+    pub source_file_bytes: u64,
     pub parts: u64,
     pub elapsed_millis: u128,
 }
@@ -323,7 +331,7 @@ impl ProjectedParquetReader {
         Ok(ParquetScan {
             reader,
             counters: ScanCounters {
-                bytes,
+                source_file_bytes: bytes,
                 parts: 1,
                 ..Default::default()
             },
@@ -365,6 +373,12 @@ pub fn batch_i64<'a>(
         .and_then(|array| array.as_any().downcast_ref::<Int64Array>())
         .ok_or(ContractError::InvalidWindow)
 }
+pub fn required_i64(array: &Int64Array, row: usize, field: &str) -> Result<i64, ContractError> {
+    if array.is_null(row) {
+        return Err(ContractError::MissingCausalTimestamp(field.into()));
+    }
+    Ok(array.value(row))
+}
 pub fn batch_string<'a>(
     batch: &'a RecordBatch,
     column: &str,
@@ -382,9 +396,26 @@ impl Default for LogicalOutputHasher {
 }
 impl LogicalOutputHasher {
     pub fn update(&mut self, anchor: &AnchorInstance) {
-        self.0.update(anchor.anchor_id.as_bytes());
+        hash_bytes(&mut self.0, anchor.anchor_id.as_bytes());
+        hash_bytes(&mut self.0, anchor.detector_id.as_bytes());
+        hash_bytes(&mut self.0, anchor.lifecycle_state.as_bytes());
+        hash_scale(&mut self.0, &anchor.native_scale);
         self.0.update(anchor.anchor_time.to_le_bytes());
-        self.0.update(anchor.source.part.as_bytes());
+        match anchor.occur_time {
+            Some(value) => {
+                self.0.update([1]);
+                self.0.update(value.to_le_bytes());
+            }
+            None => self.0.update([0]),
+        }
+        match anchor.object_id.as_deref() {
+            Some(value) => {
+                self.0.update([1]);
+                hash_bytes(&mut self.0, value.as_bytes());
+            }
+            None => self.0.update([0]),
+        }
+        hash_bytes(&mut self.0, anchor.source.part.as_bytes());
         self.0.update(anchor.source.row_index.to_le_bytes());
     }
     pub fn finish(self) -> String {
@@ -409,19 +440,181 @@ pub fn discover_columns(path: impl AsRef<Path>) -> Result<Vec<String>, Box<dyn s
         .collect())
 }
 
+fn hash_bytes(hasher: &mut Sha256, bytes: &[u8]) {
+    hasher.update((bytes.len() as u64).to_le_bytes());
+    hasher.update(bytes);
+}
+fn hash_scale(hasher: &mut Sha256, scale: &NativeScale) {
+    match scale {
+        NativeScale::Tick => hasher.update([0]),
+        NativeScale::Bar(value) => {
+            hasher.update([
+                1,
+                match value {
+                    BarScale::S15 => 0,
+                    BarScale::S30 => 1,
+                    BarScale::M1 => 2,
+                    BarScale::M5 => 3,
+                    BarScale::M15 => 4,
+                    BarScale::H1 => 5,
+                    BarScale::H4 => 6,
+                },
+            ]);
+        }
+    }
+}
 pub fn validate_source_inventory(inventory: &SourceInventory) -> Result<(), ContractError> {
-    if inventory.native_scales.is_empty()
-        || inventory.bar_parts.is_empty()
-        || inventory.bar_columns.is_empty()
+    let expected = [
+        NativeScale::Bar(BarScale::S15),
+        NativeScale::Bar(BarScale::S30),
+        NativeScale::Bar(BarScale::M1),
+        NativeScale::Bar(BarScale::M5),
+        NativeScale::Bar(BarScale::M15),
+        NativeScale::Bar(BarScale::H1),
+        NativeScale::Bar(BarScale::H4),
+        NativeScale::Tick,
+    ];
+    if inventory.sources.len() != expected.len()
+        || inventory.source_manifest_identity.is_empty()
+        || inventory.payload_manifest_identity.is_empty()
+        || expected.iter().any(|scale| {
+            !inventory
+                .sources
+                .iter()
+                .any(|source| &source.scale == scale)
+        })
     {
         return Err(ContractError::InvalidWindow);
     }
+    let mut all_paths = std::collections::HashSet::new();
+    for source in &inventory.sources {
+        if source.parts.is_empty()
+            || source.columns.is_empty()
+            || source.timestamp_fields.is_empty()
+            || source
+                .payload_columns
+                .iter()
+                .any(|column| !source.columns.contains(column))
+        {
+            return Err(ContractError::InvalidWindow);
+        }
+        for part in &source.parts {
+            if part.rows == 0 || part.path.is_empty() || !all_paths.insert(&part.path) {
+                return Err(ContractError::InvalidWindow);
+            }
+        }
+    }
     Ok(())
+}
+
+pub fn verify_row_count(part: &str, declared: u64, actual: u64) -> Result<(), ContractError> {
+    if declared == actual {
+        Ok(())
+    } else {
+        Err(ContractError::Authority(format!(
+            "row count mismatch for {part}: declared {declared}, actual {actual}"
+        )))
+    }
+}
+pub fn validate_manifest_shape(manifest: &serde_json::Value) -> Result<(), ContractError> {
+    let bars = manifest
+        .get("bar_parts")
+        .and_then(serde_json::Value::as_object)
+        .ok_or_else(|| {
+            ContractError::Authority("required object missing or invalid: bar_parts".into())
+        })?;
+    let ticks = manifest
+        .get("tick_parts")
+        .and_then(serde_json::Value::as_array)
+        .ok_or_else(|| {
+            ContractError::Authority("required array missing or invalid: tick_parts".into())
+        })?;
+    for scale in ["15s", "30s", "1m", "5m", "15m", "1h", "4h"] {
+        let parts = bars
+            .get(scale)
+            .and_then(serde_json::Value::as_array)
+            .ok_or_else(|| {
+                ContractError::Authority(format!(
+                    "required source group missing or invalid: {scale}"
+                ))
+            })?;
+        if parts.is_empty() {
+            return Err(ContractError::Authority(format!(
+                "source group has no parts: {scale}"
+            )));
+        }
+    }
+    if ticks.is_empty() {
+        return Err(ContractError::Authority(
+            "source group has no parts: tick".into(),
+        ));
+    }
+    for part in bars
+        .values()
+        .flat_map(serde_json::Value::as_array)
+        .flatten()
+        .chain(ticks)
+    {
+        if part
+            .get("path")
+            .and_then(serde_json::Value::as_str)
+            .filter(|path| !path.is_empty())
+            .is_none()
+            || part
+                .get("rows")
+                .and_then(serde_json::Value::as_u64)
+                .filter(|rows| *rows > 0)
+                .is_none()
+        {
+            return Err(ContractError::Authority(
+                "part requires non-empty path and positive rows".into(),
+            ));
+        }
+    }
+    Ok(())
+}
+pub fn validate_code_identity(value: Option<&str>) -> Result<String, ContractError> {
+    let value = value
+        .filter(|value| value.len() == 40 && value.bytes().all(|byte| byte.is_ascii_hexdigit()))
+        .ok_or_else(|| {
+            ContractError::Authority(
+                "DISCOVERYR_CODE_IDENTITY must be a 40-character Git SHA".into(),
+            )
+        })?;
+    Ok(value.into())
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use arrow_array::StringArray;
+    use arrow_schema::{DataType, Field, Schema};
+    use parquet::arrow::ArrowWriter;
+    use std::sync::Arc;
+    fn fixture_path(name: &str) -> std::path::PathBuf {
+        std::env::temp_dir().join(format!(
+            "research_tape_{name}_{}.parquet",
+            std::process::id()
+        ))
+    }
+    fn write_fixture(path: &std::path::Path, values: &[Option<i64>]) {
+        let schema = Arc::new(Schema::new(vec![
+            Field::new("bar_close_ts", DataType::Int64, true),
+            Field::new("unrelated", DataType::Utf8, true),
+        ]));
+        let batch = RecordBatch::try_new(
+            schema.clone(),
+            vec![
+                Arc::new(Int64Array::from(values.to_vec())),
+                Arc::new(StringArray::from(vec![Some("ignored"); values.len()])),
+            ],
+        )
+        .unwrap();
+        let file = File::create(path).unwrap();
+        let mut writer = ArrowWriter::try_new(file, schema, None).unwrap();
+        writer.write(&batch).unwrap();
+        writer.close().unwrap();
+    }
     fn context(time: i64) -> ContextObservation {
         ContextObservation::try_new(
             "range".into(),
@@ -525,8 +718,8 @@ mod tests {
     }
     #[test]
     fn projected_reader_reads_only_requested_column() {
-        let path = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("../../../analytical_lake/fusion_markets/xauusd/15m/part-00000.parquet");
+        let path = fixture_path("projection");
+        write_fixture(&path, &[Some(10), Some(20)]);
         let reader = ProjectedParquetReader::new(path, vec!["bar_close_ts".into()], 4096).unwrap();
         assert_eq!(reader.columns(), &["bar_close_ts".to_string()]);
         let mut scan = reader.scan().unwrap();
@@ -536,6 +729,53 @@ mod tests {
             batch_i64(&batch, "bar_close_ts").unwrap().len(),
             batch.num_rows()
         );
+        std::fs::remove_file(reader.path).unwrap();
+    }
+    #[test]
+    fn synthetic_parts_preserve_continuity_and_reject_null_timestamps() {
+        let first = fixture_path("part0");
+        let second = fixture_path("part1");
+        write_fixture(&first, &[Some(10), Some(20)]);
+        write_fixture(&second, &[Some(30), Some(40)]);
+        let mut values = Vec::new();
+        for (path, part) in [(&first, "part-00000"), (&second, "part-00001")] {
+            let reader =
+                ProjectedParquetReader::new(path.clone(), vec!["bar_close_ts".into()], 1).unwrap();
+            let mut scan = reader.scan().unwrap();
+            while let Some(batch) = scan.next() {
+                let batch = batch.unwrap();
+                let times = batch_i64(&batch, "bar_close_ts").unwrap();
+                for row in 0..batch.num_rows() {
+                    values.push(
+                        ContextObservation::try_new(
+                            "x".into(),
+                            NativeScale::Bar(BarScale::M1),
+                            Some(required_i64(times, row, "bar_close_ts").unwrap()),
+                            None,
+                            None,
+                            SourceRef {
+                                part: part.into(),
+                                row_index: values.len() as u64,
+                            },
+                        )
+                        .unwrap(),
+                    );
+                }
+            }
+        }
+        let mut cursor = AsOfLatestCursor::new(values.into_iter());
+        assert_eq!(cursor.advance_to(30).unwrap().unwrap().available_time, 30);
+        std::fs::remove_file(first).unwrap();
+        std::fs::remove_file(second).unwrap();
+        let null_path = fixture_path("null");
+        write_fixture(&null_path, &[Some(10), None]);
+        let reader =
+            ProjectedParquetReader::new(null_path.clone(), vec!["bar_close_ts".into()], 2).unwrap();
+        let mut scan = reader.scan().unwrap();
+        let batch = scan.next().unwrap().unwrap();
+        let times = batch_i64(&batch, "bar_close_ts").unwrap();
+        assert!(required_i64(times, 1, "bar_close_ts").is_err());
+        std::fs::remove_file(null_path).unwrap();
     }
     #[test]
     fn duplicate_output_is_deterministic() {
@@ -553,5 +793,61 @@ mod tests {
             },
         }];
         assert_eq!(logical_output_hash(&values), logical_output_hash(&values));
+    }
+    #[test]
+    fn logical_hash_changes_for_each_identity_field() {
+        let base = AnchorInstance {
+            anchor_id: "a".into(),
+            detector_id: "d".into(),
+            lifecycle_state: "s".into(),
+            native_scale: NativeScale::Bar(BarScale::M1),
+            anchor_time: 1,
+            occur_time: None,
+            object_id: None,
+            source: SourceRef {
+                part: "p".into(),
+                row_index: 0,
+            },
+        };
+        let mut changed = base.clone();
+        changed.detector_id = "other".into();
+        assert_ne!(
+            logical_output_hash(&[base.clone()]),
+            logical_output_hash(&[changed])
+        );
+        let mut changed = base.clone();
+        changed.lifecycle_state = "other".into();
+        assert_ne!(
+            logical_output_hash(&[base.clone()]),
+            logical_output_hash(&[changed])
+        );
+        let mut changed = base.clone();
+        changed.native_scale = NativeScale::Tick;
+        assert_ne!(
+            logical_output_hash(&[base.clone()]),
+            logical_output_hash(&[changed])
+        );
+        let mut changed = base.clone();
+        changed.object_id = Some("o".into());
+        assert_ne!(
+            logical_output_hash(&[base.clone()]),
+            logical_output_hash(&[changed])
+        );
+        let mut changed = base;
+        changed.occur_time = Some(1);
+        assert_ne!(
+            logical_output_hash(&[changed.clone()]),
+            logical_output_hash(&[AnchorInstance {
+                occur_time: None,
+                ..changed
+            }])
+        );
+    }
+    #[test]
+    fn authority_and_identity_validation_fail_closed() {
+        assert!(validate_manifest_shape(&serde_json::json!({})).is_err());
+        assert!(verify_row_count("p", 2, 1).is_err());
+        assert!(validate_code_identity(None).is_err());
+        assert!(validate_code_identity(Some("0123456789012345678901234567890123456789")).is_ok());
     }
 }
