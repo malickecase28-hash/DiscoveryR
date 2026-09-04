@@ -64,6 +64,7 @@ test ! -w /shared/research-program/contracts/knowledge_record_v1.schema.json
 printf 'probe' > /workspace/probe.txt; test -s /workspace/probe.txt
 printf 'ISOLATION_PASS __ROLE__\n'
 '@
+$probe = $probe -replace "`r`n", "`n"
 foreach ($role in @('A-01', 'A-02')) {
     $result = & $launcher -ProgramId AP-001 -Role $role -RunRoot $RunRoot -Distro $Distro -Command $probe.Replace('__ROLE__', $role)
     if ($LASTEXITCODE -ne 0 -or ($result -notcontains "ISOLATION_PASS $role")) { throw "Isolation validation failed for $role." }

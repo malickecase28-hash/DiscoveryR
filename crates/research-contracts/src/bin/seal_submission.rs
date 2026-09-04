@@ -12,10 +12,13 @@ fn value(name: &str, args: &mut impl Iterator<Item = String>) -> Result<String, 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = env::args().skip(1);
     if args.next().as_deref() == Some("verify") {
+        let repo = args
+            .next()
+            .ok_or("usage: seal_submission verify <repo> <sealed-dir>")?;
         let dir = args
             .next()
-            .ok_or("usage: seal_submission verify <sealed-dir>")?;
-        verify(PathBuf::from(dir).as_path())?;
+            .ok_or("usage: seal_submission verify <repo> <sealed-dir>")?;
+        verify(PathBuf::from(repo).as_path(), PathBuf::from(dir).as_path())?;
         println!("VERIFIED");
         return Ok(());
     }

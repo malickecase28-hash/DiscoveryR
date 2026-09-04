@@ -1,4 +1,5 @@
-use research_contracts::submission::{seal, SealOptions};
+use research_contracts::submission::{seal, SealOptions, SubmissionManifest};
+use sha2::{Digest, Sha256};
 use std::fs;
 
 fn temp() -> std::path::PathBuf {
@@ -12,6 +13,28 @@ fn unique() -> u128 {
         .duration_since(std::time::UNIX_EPOCH)
         .unwrap()
         .as_nanos()
+}
+
+fn manifest_identity(m: &SubmissionManifest) -> String {
+    let mut h = Sha256::new();
+    for value in [
+        &m.program_id,
+        &m.role_id,
+        &m.scientific_base_sha,
+        &m.assignment_sha256,
+    ] {
+        h.update((value.len() as u64).to_le_bytes());
+        h.update(value.as_bytes());
+    }
+    for f in &m.files {
+        h.update((f.relative_path.len() as u64).to_le_bytes());
+        h.update(f.relative_path.as_bytes());
+        h.update((8u64).to_le_bytes());
+        h.update(f.byte_length.to_le_bytes());
+        h.update((f.sha256.len() as u64).to_le_bytes());
+        h.update(f.sha256.as_bytes());
+    }
+    h.finalize().iter().map(|b| format!("{b:02x}")).collect()
 }
 
 fn git(args: &[&str], cwd: &std::path::Path) -> String {
@@ -185,12 +208,49 @@ fn tamper_and_renamed_directory_fail_verification() {
         .join("AP-001/A-01")
         .join(&manifest.logical_submission_identity);
     fs::write(dir.join("files/answer.md"), "tampered").unwrap();
-    assert!(research_contracts::submission::verify(&dir).is_err());
+    assert!(research_contracts::submission::verify(&opts.repo, &dir).is_err());
     fs::write(dir.join("files/answer.md"), "answer").unwrap();
     let renamed = dir.with_file_name("misleading");
     fs::rename(&dir, &renamed).unwrap();
-    assert!(research_contracts::submission::verify(&renamed).is_err());
+    assert!(research_contracts::submission::verify(&opts.repo, &renamed).is_err());
     let _ = root;
+}
+
+#[cfg(windows)]
+#[test]
+fn nested_reparse_point_is_rejected() {
+    use std::os::windows::fs::symlink_dir;
+    let (root, opts) = fixture();
+    let real = root.join("elsewhere");
+    fs::create_dir_all(&real).unwrap();
+    let nested = opts.workspace_root.join("AP-001/A-01/submission/nested");
+    fs::remove_file(opts.workspace_root.join("AP-001/A-01/submission/answer.md")).unwrap();
+    fs::create_dir(&nested).unwrap();
+    fs::remove_dir(&nested).unwrap();
+    if symlink_dir(&real, &nested).is_err() {
+        return;
+    }
+    assert!(seal(&opts).is_err());
+}
+
+#[test]
+fn forged_manifest_provenance_is_rejected() {
+    let (_, opts) = fixture();
+    let manifest = seal(&opts).unwrap();
+    let dir = opts
+        .output_root
+        .join("AP-001/A-01")
+        .join(&manifest.logical_submission_identity);
+    let mut forged: SubmissionManifest =
+        serde_json::from_slice(&fs::read(dir.join("submission_manifest.json")).unwrap()).unwrap();
+    forged.assignment_sha256 = "0".repeat(64);
+    forged.logical_submission_identity = manifest_identity(&forged);
+    fs::write(
+        dir.join("submission_manifest.json"),
+        serde_json::to_vec_pretty(&forged).unwrap(),
+    )
+    .unwrap();
+    assert!(research_contracts::submission::verify(&opts.repo, &dir).is_err());
 }
 
 #[test]

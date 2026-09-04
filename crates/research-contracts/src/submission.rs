@@ -193,8 +193,8 @@ fn collect(
         let entry = entry?;
         let path = entry.path();
         let meta = fs::symlink_metadata(&path)?;
-        if meta.file_type().is_symlink() {
-            return Err(err("symlinks are not allowed"));
+        if reparse_or_symlink(&meta) {
+            return Err(err("symlinks or reparse points are not allowed"));
         }
         if meta.is_dir() {
             collect(root, &path, out)?;
@@ -341,7 +341,7 @@ pub fn seal(opts: &SealOptions) -> Result<SubmissionManifest, Box<dyn std::error
     fs::create_dir_all(&role_root)?;
     let final_dir = role_root.join(&manifest.logical_submission_identity);
     if final_dir.exists() {
-        verify(&final_dir)?;
+        verify(&repo, &final_dir)?;
         return Ok(manifest);
     }
     let nonce = SystemTime::now().duration_since(UNIX_EPOCH)?.as_nanos();
@@ -385,14 +385,14 @@ pub fn seal(opts: &SealOptions) -> Result<SubmissionManifest, Box<dyn std::error
             Ok(manifest)
         }
         Err(_) if final_dir.exists() => {
-            verify(&final_dir)?;
+            verify(&repo, &final_dir)?;
             Ok(manifest)
         }
         Err(e) => Err(format!("publish {} -> {}: {e}", temp.display(), final_dir.display()).into()),
     }
 }
 
-pub fn verify(dir: &Path) -> Result<(), Box<dyn std::error::Error>> {
+pub fn verify(repo: &Path, dir: &Path) -> Result<(), Box<dyn std::error::Error>> {
     let manifest: SubmissionManifest =
         serde_json::from_slice(&fs::read(dir.join("submission_manifest.json"))?)?;
     if identity(&manifest) != manifest.logical_submission_identity {
@@ -431,6 +431,38 @@ pub fn verify(dir: &Path) -> Result<(), Box<dyn std::error::Error>> {
     {
         return Err(err("invalid sealed manifest metadata"));
     }
+    let repo = fs::canonicalize(repo)?;
+    let resolved_base = String::from_utf8(git_bytes(
+        &repo,
+        &[
+            "rev-parse".into(),
+            "--verify".into(),
+            format!("{}^{{commit}}", manifest.scientific_base_sha),
+        ],
+    )?)?
+    .trim()
+    .to_ascii_lowercase();
+    if resolved_base != manifest.scientific_base_sha.to_ascii_lowercase() {
+        return Err(err("scientific base identity mismatch"));
+    }
+    let assignment = git_bytes(
+        &repo,
+        &[
+            "show".into(),
+            format!(
+                "{}:{}",
+                manifest.scientific_base_sha, manifest.assignment_relative_path
+            ),
+        ],
+    )?;
+    let assignment_value: serde_json::Value = serde_json::from_slice(&assignment)?;
+    if assignment_value.get("program_id").and_then(|v| v.as_str()) != Some(&manifest.program_id)
+        || assignment_value.get("role_id").and_then(|v| v.as_str()) != Some(&manifest.role_id)
+        || sha_bytes(&assignment) != manifest.assignment_sha256
+    {
+        return Err(err("assignment provenance mismatch"));
+    }
+    reject_json(&assignment_value, "assignment")?;
     let root_entries = fs::read_dir(dir)?
         .map(|entry| entry.map(|e| e.file_name().to_string_lossy().into_owned()))
         .collect::<Result<Vec<_>, _>>()?;
