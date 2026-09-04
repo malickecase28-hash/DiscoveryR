@@ -246,11 +246,18 @@ pub struct SourcePart {
     pub rows: u64,
 }
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct PhysicalField {
+    pub name: String,
+    pub data_type: String,
+    pub nullable: bool,
+}
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ScaleInventory {
     pub scale: NativeScale,
     pub parts: Vec<SourcePart>,
-    pub columns: Vec<String>,
-    pub timestamp_fields: Vec<String>,
+    pub physical_schema: Vec<PhysicalField>,
+    pub schema_verified_parts: Vec<String>,
+    pub physical_time_coordinate_fields: Vec<String>,
     pub payload_columns: Vec<String>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -430,14 +437,66 @@ pub fn logical_output_hash(anchors: &[AnchorInstance]) -> String {
     hasher.finish()
 }
 
-pub fn discover_columns(path: impl AsRef<Path>) -> Result<Vec<String>, Box<dyn std::error::Error>> {
+pub fn physical_schema(
+    path: impl AsRef<Path>,
+) -> Result<Vec<PhysicalField>, Box<dyn std::error::Error>> {
     let builder = ParquetRecordBatchReaderBuilder::try_new(File::open(path)?)?;
     Ok(builder
         .schema()
         .fields()
         .iter()
-        .map(|field| field.name().clone())
+        .map(|field| PhysicalField {
+            name: field.name().clone(),
+            data_type: format!("{:?}", field.data_type()),
+            nullable: field.is_nullable(),
+        })
         .collect())
+}
+pub fn verify_physical_schema(
+    scale: &NativeScale,
+    part: &str,
+    expected: &[PhysicalField],
+    actual: &[PhysicalField],
+) -> Result<(), ContractError> {
+    if expected.len() != actual.len() {
+        return Err(ContractError::Authority(format!(
+            "schema mismatch for {scale:?} {part}: field count expected {}, actual {}",
+            expected.len(),
+            actual.len()
+        )));
+    }
+    for (expected, actual) in expected.iter().zip(actual) {
+        if expected != actual {
+            return Err(ContractError::Authority(format!(
+                "schema mismatch for {scale:?} {part} field {}: expected {:?}, actual {:?}",
+                expected.name, expected, actual
+            )));
+        }
+    }
+    Ok(())
+}
+pub fn explicit_time_coordinates(
+    scale: &NativeScale,
+    schema: &[PhysicalField],
+) -> Result<Vec<String>, ContractError> {
+    let expected = match scale {
+        NativeScale::Tick => ["event_ts_ns", "received_ts_ns"].as_slice(),
+        NativeScale::Bar(_) => ["bar_open_ts", "bar_close_ts"].as_slice(),
+    };
+    expected
+        .iter()
+        .map(|name| {
+            schema
+                .iter()
+                .find(|field| field.name == *name)
+                .map(|_| (*name).into())
+                .ok_or_else(|| {
+                    ContractError::Authority(format!(
+                        "physical time coordinate missing for {scale:?}: {name}"
+                    ))
+                })
+        })
+        .collect()
 }
 
 fn hash_bytes(hasher: &mut Sha256, bytes: &[u8]) {
@@ -488,13 +547,32 @@ pub fn validate_source_inventory(inventory: &SourceInventory) -> Result<(), Cont
     }
     let mut all_paths = std::collections::HashSet::new();
     for source in &inventory.sources {
+        let schema_names = source
+            .physical_schema
+            .iter()
+            .map(|field| field.name.as_str())
+            .collect::<std::collections::HashSet<_>>();
         if source.parts.is_empty()
-            || source.columns.is_empty()
-            || source.timestamp_fields.is_empty()
+            || source.physical_schema.is_empty()
+            || source.schema_verified_parts.len() != source.parts.len()
+            || source
+                .parts
+                .iter()
+                .map(|part| &part.path)
+                .ne(source.schema_verified_parts.iter())
+            || source.physical_time_coordinate_fields.is_empty()
             || source
                 .payload_columns
                 .iter()
-                .any(|column| !source.columns.contains(column))
+                .any(|column| !schema_names.contains(column.as_str()))
+            || source
+                .physical_time_coordinate_fields
+                .iter()
+                .any(|column| !schema_names.contains(column.as_str()))
+            || source
+                .payload_columns
+                .iter()
+                .any(|column| source.physical_time_coordinate_fields.contains(column))
         {
             return Err(ContractError::InvalidWindow);
         }
@@ -587,7 +665,7 @@ pub fn validate_code_identity(value: Option<&str>) -> Result<String, ContractErr
 #[cfg(test)]
 mod tests {
     use super::*;
-    use arrow_array::StringArray;
+    use arrow_array::{Int32Array, StringArray};
     use arrow_schema::{DataType, Field, Schema};
     use parquet::arrow::ArrowWriter;
     use std::sync::Arc;
@@ -610,6 +688,35 @@ mod tests {
             ],
         )
         .unwrap();
+        let file = File::create(path).unwrap();
+        let mut writer = ArrowWriter::try_new(file, schema, None).unwrap();
+        writer.write(&batch).unwrap();
+        writer.close().unwrap();
+    }
+    fn write_schema_fixture(
+        path: &std::path::Path,
+        timestamp_type: DataType,
+        include_unrelated: bool,
+        nullable: bool,
+    ) {
+        let mut fields = vec![
+            Field::new("bar_open_ts", timestamp_type.clone(), nullable),
+            Field::new("bar_close_ts", timestamp_type.clone(), nullable),
+        ];
+        if include_unrelated {
+            fields.push(Field::new("unrelated", DataType::Utf8, true));
+        }
+        let schema = Arc::new(Schema::new(fields));
+        let timestamp_array = || match timestamp_type.clone() {
+            DataType::Int64 => Arc::new(Int64Array::from(vec![Some(1)])) as _,
+            DataType::Int32 => Arc::new(Int32Array::from(vec![Some(1)])) as _,
+            _ => panic!("test fixture only supports integer timestamps"),
+        };
+        let mut arrays = vec![timestamp_array(), timestamp_array()];
+        if include_unrelated {
+            arrays.push(Arc::new(StringArray::from(vec![Some("x")])) as _);
+        }
+        let batch = RecordBatch::try_new(schema.clone(), arrays).unwrap();
         let file = File::create(path).unwrap();
         let mut writer = ArrowWriter::try_new(file, schema, None).unwrap();
         writer.write(&batch).unwrap();
@@ -730,6 +837,65 @@ mod tests {
             batch.num_rows()
         );
         std::fs::remove_file(reader.path).unwrap();
+    }
+    #[test]
+    fn physical_schema_uses_explicit_coordinates_and_verifies_parts() {
+        let first = fixture_path("schema-first");
+        let second = fixture_path("schema-second");
+        write_schema_fixture(&first, DataType::Int64, true, false);
+        write_schema_fixture(&second, DataType::Int64, true, false);
+        let expected = physical_schema(&first).unwrap();
+        assert_eq!(
+            explicit_time_coordinates(&NativeScale::Bar(BarScale::M1), &expected).unwrap(),
+            vec!["bar_open_ts", "bar_close_ts"]
+        );
+        let payload_schema = vec![
+            PhysicalField {
+                name: "payload_volume_by_time".into(),
+                data_type: "Float64".into(),
+                nullable: true,
+            },
+            PhysicalField {
+                name: "payload_time_context".into(),
+                data_type: "Utf8".into(),
+                nullable: true,
+            },
+        ];
+        assert!(
+            explicit_time_coordinates(&NativeScale::Bar(BarScale::M1), &payload_schema).is_err()
+        );
+        assert!(verify_physical_schema(
+            &NativeScale::Bar(BarScale::M1),
+            "second",
+            &expected,
+            &physical_schema(&second).unwrap()
+        )
+        .is_ok());
+        std::fs::remove_file(&first).unwrap();
+        std::fs::remove_file(&second).unwrap();
+    }
+    #[test]
+    fn physical_schema_mismatch_fails_closed_for_type_field_and_nullability() {
+        let expected_path = fixture_path("schema-expected");
+        let type_path = fixture_path("schema-type");
+        let field_path = fixture_path("schema-field");
+        let nullability_path = fixture_path("schema-nullability");
+        write_schema_fixture(&expected_path, DataType::Int64, true, false);
+        write_schema_fixture(&type_path, DataType::Int32, true, false);
+        write_schema_fixture(&field_path, DataType::Int64, false, false);
+        write_schema_fixture(&nullability_path, DataType::Int64, true, true);
+        let expected = physical_schema(&expected_path).unwrap();
+        for path in [type_path, field_path, nullability_path] {
+            assert!(verify_physical_schema(
+                &NativeScale::Bar(BarScale::M1),
+                "synthetic",
+                &expected,
+                &physical_schema(&path).unwrap()
+            )
+            .is_err());
+            std::fs::remove_file(path).unwrap();
+        }
+        std::fs::remove_file(expected_path).unwrap();
     }
     #[test]
     fn synthetic_parts_preserve_continuity_and_reject_null_timestamps() {

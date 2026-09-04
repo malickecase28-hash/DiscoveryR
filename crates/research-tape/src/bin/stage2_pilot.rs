@@ -1,9 +1,9 @@
 use research_contracts::BarScale;
 use research_tape::{
-    batch_i64, discover_columns, required_i64, validate_code_identity, validate_manifest_shape,
-    verify_row_count, AnchorInstance, ContractError, InstrumentConfig, LogicalOutputHasher,
-    NativeScale, ProjectedParquetReader, ScaleInventory, ScanCounters, SourceInventory, SourcePart,
-    SourceRef, TapeManifest,
+    batch_i64, explicit_time_coordinates, physical_schema, required_i64, validate_code_identity,
+    validate_manifest_shape, verify_physical_schema, verify_row_count, AnchorInstance,
+    ContractError, InstrumentConfig, LogicalOutputHasher, NativeScale, ProjectedParquetReader,
+    ScaleInventory, ScanCounters, SourceInventory, SourcePart, SourceRef, TapeManifest,
 };
 use serde::Serialize;
 use serde_json::Value;
@@ -114,23 +114,27 @@ fn source_group(
     scale: NativeScale,
     parts: Vec<SourcePart>,
 ) -> Result<ScaleInventory, Box<dyn std::error::Error>> {
-    let first = root.join(&parts[0].path);
-    let columns = discover_columns(first)?;
-    let timestamp_fields = columns
+    let verified_schema = physical_schema(root.join(&parts[0].path))?;
+    for part in parts.iter().skip(1) {
+        verify_physical_schema(
+            &scale,
+            &part.path,
+            &verified_schema,
+            &physical_schema(root.join(&part.path))?,
+        )?;
+    }
+    let physical_time_coordinate_fields = explicit_time_coordinates(&scale, &verified_schema)?;
+    let payload_columns = verified_schema
         .iter()
-        .filter(|column| column.contains("ts") || column.contains("time"))
-        .cloned()
-        .collect();
-    let payload_columns = columns
-        .iter()
-        .filter(|column| column.starts_with("payload_") || *column == "payload_json")
-        .cloned()
+        .map(|field| field.name.clone())
+        .filter(|column| column.starts_with("payload_") || column == "payload_json")
         .collect();
     Ok(ScaleInventory {
         scale,
+        schema_verified_parts: parts.iter().map(|part| part.path.clone()).collect(),
         parts,
-        columns,
-        timestamp_fields,
+        physical_schema: verified_schema,
+        physical_time_coordinate_fields,
         payload_columns,
     })
 }
@@ -282,7 +286,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         .ok_or_else(|| authority_error("tick source group missing"))?;
     let tick_part = &tick_source.parts[0];
     let tick_column = tick_source
-        .timestamp_fields
+        .physical_time_coordinate_fields
         .first()
         .ok_or_else(|| authority_error("tick timestamp field missing"))?;
     let tick_metrics = scan_part(

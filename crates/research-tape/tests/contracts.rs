@@ -24,4 +24,19 @@ fn committed_inventory_is_complete_without_private_lake() {
             .count(),
         1
     );
+    for source in &inventory.sources {
+        assert_eq!(source.parts.len(), source.schema_verified_parts.len());
+        assert!(!source.physical_schema.is_empty());
+        assert!(!source
+            .physical_time_coordinate_fields
+            .iter()
+            .any(|field| field == "payload_volume_by_time" || field == "payload_time_context"));
+        assert!(
+            source
+                .payload_columns
+                .iter()
+                .any(|field| field == "payload_volume_by_time" || field == "payload_time_context")
+                || matches!(source.scale, NativeScale::Tick)
+        );
+    }
 }
