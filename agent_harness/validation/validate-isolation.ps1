@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([string] $RunRoot = 'F:\TrinityR-runs', [string] $Distro = 'Ubuntu')
+param([string] $RunRoot = 'F:\TrinityR-runs', [string] $Distro = 'Ubuntu', [switch] $LocalSynthetic)
 $ErrorActionPreference = 'Stop'
 $launcher = Join-Path $PSScriptRoot '..\launch\isolated-run.ps1'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
@@ -31,6 +31,10 @@ function ValidateAssignment($Assignment, [string] $Name) {
 }
 if (-not (SafeId 'SAFE-INSTRUMENT') -or (SafeId 'unsafe/id')) { throw 'Safe ID validation failed.' }
 'GENERIC_ID_VALIDATION_PASS'
+if ($LocalSynthetic) {
+    $root=Join-Path ([IO.Path]::GetTempPath()) ('i02-local-'+[guid]::NewGuid());New-Item -ItemType Directory -Force (Join-Path $root 'nested')|Out-Null
+    try { 'a'|Set-Content -NoNewline (Join-Path $root 'authority.json');'manifest'|Set-Content -NoNewline (Join-Path $root 'bundle_manifest.json');'b'|Set-Content -NoNewline (Join-Path $root 'nested\child.txt');$records=Get-ChildItem $root -Recurse -File|ForEach-Object{$relative=$_.FullName.Substring($root.Length+1).Replace('\','/');"$relative`t$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())`n"}|Sort-Object;$hash=([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($records -join '')))|ForEach-Object ToString x2)-join '';if($hash.Length -ne 64 -or $records.Count -ne 3){throw 'LOCAL_SYNTHETIC_HASH_FAILED'};'LOCAL_SYNTHETIC_PASS' } finally { Remove-Item -Recurse -Force -LiteralPath $root -ErrorAction SilentlyContinue };exit 0
+}
 function MustFail([scriptblock] $Action, [string] $Name) {
     try { & $Action 2>$null; throw "$Name unexpectedly succeeded" } catch { if ($_.Exception.Message -match 'unexpectedly succeeded') { throw } }
 }

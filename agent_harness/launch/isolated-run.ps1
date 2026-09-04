@@ -174,12 +174,11 @@ foreach ($surface in @($assignment.authorized_repository_surfaces)) {
     if ($surface -match '(^|[\\/])\.\.([\\/]|$)') { throw "Unsafe repository surface: $surface" }
     $mounts += [PSCustomObject]@{ source = (WslPath $source); target = '/shared/research-program/' + ($surface -replace '\\','/') }
 }
+if (-not $assignment.authority_registry_id -and @($assignment.authority_source_ids).Count -gt 0) { throw 'authority_registry_id is required when authority sources are declared.' }
 $registryId = if ($assignment.authority_registry_id) { $assignment.authority_registry_id } else { 'XAUUSD' }
 SafeId $registryId 'authority_registry_id'
 $registryFile = Join-Path $repoFull "agent_harness\authority_sources\$registryId.json"
-if (-not (Test-Path -LiteralPath $registryFile -PathType Leaf)) {
-    if ($registryId -eq 'XAUUSD' -and $assignment.access_profile -eq 'AUTHORITY') { $registryFile = Join-Path $repoFull 'agent_harness\authority_sources\XAUUSD.json' } else { throw "Authority registry not found: $registryId" }
-}
+if (-not (Test-Path -LiteralPath $registryFile -PathType Leaf)) { throw "Authority registry not found: $registryId" }
 $authority = Get-Content -Raw -LiteralPath $registryFile | ConvertFrom-Json
 foreach ($sourceId in @($assignment.authority_source_ids)) {
     SafeId $sourceId 'authority_source_id'
