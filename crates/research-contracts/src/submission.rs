@@ -402,8 +402,12 @@ pub fn verify(repo: &Path, dir: &Path) -> Result<(), Box<dyn std::error::Error>>
     if reparse_or_symlink(&dir_meta) || !dir_meta.is_dir() {
         return Err(err("sealed output root must be a regular directory"));
     }
-    let manifest: SubmissionManifest =
-        serde_json::from_slice(&fs::read(dir.join("submission_manifest.json"))?)?;
+    let manifest_path = dir.join("submission_manifest.json");
+    let manifest_meta = fs::symlink_metadata(&manifest_path)?;
+    if reparse_or_symlink(&manifest_meta) || !manifest_meta.is_file() {
+        return Err(err("submission manifest must be a regular file"));
+    }
+    let manifest: SubmissionManifest = serde_json::from_slice(&fs::read(manifest_path)?)?;
     if identity(&manifest) != manifest.logical_submission_identity {
         return Err(err("logical submission identity mismatch"));
     }

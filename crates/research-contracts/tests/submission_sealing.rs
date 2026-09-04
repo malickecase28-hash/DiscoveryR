@@ -269,6 +269,50 @@ fn sealed_files_root_reparse_is_rejected_when_available() {
     assert!(research_contracts::submission::verify(&opts.repo, &dir).is_err());
 }
 
+#[cfg(unix)]
+#[test]
+fn sealed_manifest_symlink_is_rejected() {
+    use std::os::unix::fs::symlink;
+    let (root, opts) = fixture();
+    let manifest = seal(&opts).unwrap();
+    let dir = opts
+        .output_root
+        .join("AP-001/A-01")
+        .join(&manifest.logical_submission_identity);
+    let external = root.join("external-manifest.json");
+    fs::write(
+        &external,
+        fs::read(dir.join("submission_manifest.json")).unwrap(),
+    )
+    .unwrap();
+    fs::remove_file(dir.join("submission_manifest.json")).unwrap();
+    symlink(external, dir.join("submission_manifest.json")).unwrap();
+    assert!(research_contracts::submission::verify(&opts.repo, &dir).is_err());
+}
+
+#[cfg(windows)]
+#[test]
+fn sealed_manifest_reparse_is_rejected_when_available() {
+    use std::os::windows::fs::symlink_file;
+    let (root, opts) = fixture();
+    let manifest = seal(&opts).unwrap();
+    let dir = opts
+        .output_root
+        .join("AP-001/A-01")
+        .join(&manifest.logical_submission_identity);
+    let external = root.join("external-manifest.json");
+    fs::write(
+        &external,
+        fs::read(dir.join("submission_manifest.json")).unwrap(),
+    )
+    .unwrap();
+    fs::remove_file(dir.join("submission_manifest.json")).unwrap();
+    if symlink_file(external, dir.join("submission_manifest.json")).is_err() {
+        return;
+    }
+    assert!(research_contracts::submission::verify(&opts.repo, &dir).is_err());
+}
+
 #[test]
 fn forged_manifest_provenance_is_rejected() {
     let (_, opts) = fixture();
