@@ -1,39 +1,32 @@
 #!/usr/bin/env bash
 set -eu
-
-decode() {
-    printf '%s' "$1" | base64 -d
-}
-repo=$(decode "$1")
-lake=$(if [ "$2" = "-" ]; then printf ''; else decode "$2"; fi)
-workspace=$(decode "$3")
-command=$(decode "$4")
-
-mkdir -p /shared/research-program /workspace
+decode() { printf '%s' "$1" | base64 -d; }
+workspace=$(decode "$1")
+profile=$(decode "$2")
+command=$(decode "$3")
+mount_specs=$(decode "$(decode "$4")")
+mkdir -p /workspace /shared/research-program
 mount --make-rprivate /
 mount --bind "$workspace" /workspace
 mount_ro() {
-    source=$1
-    target=$2
-    if [ -e "$source" ]; then
-        mkdir -p "$target"
-        mount --bind "$source" "$target"
-        mount -o remount,bind,ro "$target"
-    fi
+  source=$1; target=$2
+  [ -e "$source" ] || { echo "missing source: $source" >&2; exit 1; }
+  if [ -d "$source" ]; then mkdir -p "$target"; else mkdir -p "$(dirname "$target")"; touch "$target"; fi
+  mount --bind "$source" "$target"
+  mount -o remount,bind,ro "$target"
 }
-mount_ro "$repo/contracts" /shared/research-program/contracts
-mount_ro "$repo/registry" /shared/research-program/registry
-mount_ro "$repo/instruments/XAUUSD" /shared/research-program/instruments/XAUUSD
-mount_ro "$repo/agent_harness/assignments/AP-001" /shared/research-program/assignments/AP-001
-if [ -n "$lake" ]; then
-    mkdir -p /shared/lake
-    mount --bind "$lake" /shared/lake
-    mount -o remount,bind,ro /shared/lake
-fi
-umount -l /mnt/f 2>/dev/null || true
-umount -l /mnt/c 2>/dev/null || true
+while IFS='|' read -r source_b64 target_b64; do
+  [ -n "$source_b64" ] || continue
+  mount_ro "$(decode "$source_b64")" "$(decode "$target_b64")"
+done <<< "$mount_specs"
+for mountpoint in /mnt/*; do
+  [ -e "$mountpoint" ] || continue
+  umount -l "$mountpoint" 2>/dev/null || true
+done
+mount -t tmpfs -o size=1m,nosuid,nodev,noexec tmpfs /mnt
+mount -t tmpfs -o size=1m,nosuid,nodev,noexec tmpfs /home
+mount -t tmpfs -o size=1m,nosuid,nodev,noexec tmpfs /root
 cd /workspace
 exec setpriv --reuid=nobody --regid=nogroup --init-groups env -i \
-    HOME=/tmp USER=nobody LOGNAME=nobody \
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
-    /bin/bash --noprofile --norc -c "$command"
+  HOME=/tmp USER=nobody LOGNAME=nobody PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+  /bin/bash --noprofile --norc -c "$command"

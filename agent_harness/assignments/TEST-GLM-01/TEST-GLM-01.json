@@ -1,0 +1,15 @@
+{
+  "program_id": "TEST-GLM-01",
+  "role_id": "TEST-GLM-01",
+  "phase": "AUTHORITY",
+  "access_profile": "AUTHORITY",
+  "assignment": "Disposable GLM isolation smoke test. Read the assignment and protocol, write only the private smoke artifact, and perform no market research.",
+  "authorized_repository_surfaces": [
+    "protocol",
+    "contracts/knowledge_record_v1.schema.json",
+    "agent_harness/assignments/TEST-GLM-01/TEST-GLM-01.json"
+  ],
+  "authority_source_ids": [],
+  "raw_lake_access": "DENY",
+  "peer_visibility": "DENY"
+}

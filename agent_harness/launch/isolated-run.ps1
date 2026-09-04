@@ -1,71 +1,78 @@
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory)]
-    [ValidatePattern('^[A-Z]+-\d{2}$')]
-    [string] $Role,
+    [Parameter(Mandatory)][ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$')][string] $ProgramId,
+    [Parameter(Mandatory)][ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$')][string] $Role,
+    [Parameter(Mandatory)][string] $Command,
     [string] $RunRoot = 'F:\TrinityR-runs',
-    [Parameter(Mandatory)]
-    [string] $Command,
-    [ValidateSet('AUTHORITY', 'DEVELOPMENT', 'CONFIRMATION')]
-    [string] $AccessProfile = 'AUTHORITY',
     [string] $Distro = 'Ubuntu'
 )
-
 $ErrorActionPreference = 'Stop'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $repoFull = [IO.Path]::GetFullPath($repo).TrimEnd('\') + '\'
-$runItem = Get-Item -LiteralPath (New-Item -ItemType Directory -Force -Path $RunRoot).FullName
-if ($runItem.Attributes -band [IO.FileAttributes]::ReparsePoint) {
-    throw 'RunRoot must not be a junction or reparse point.'
+function SafePath([string] $Path) {
+    $full = [IO.Path]::GetFullPath($Path)
+    if ($full.Equals($repo.TrimEnd('\'), [StringComparison]::OrdinalIgnoreCase) -or $full.StartsWith($repoFull, [StringComparison]::OrdinalIgnoreCase)) { throw 'RunRoot must be outside the shared Git repository.' }
+    return $full
 }
-$runFull = [IO.Path]::GetFullPath((Resolve-Path -LiteralPath $runItem.FullName).Path).TrimEnd('\') + '\'
-if ($runFull.StartsWith($repoFull, [StringComparison]::OrdinalIgnoreCase)) {
-    throw 'RunRoot must be outside the shared Git repository.'
-}
-$programRunRoot = Join-Path $runItem.FullName 'AP-001'
-$workspace = Join-Path $programRunRoot $Role
-$programRunItem = Get-Item -LiteralPath (New-Item -ItemType Directory -Force -Path $programRunRoot).FullName
-if ($programRunItem.Attributes -band [IO.FileAttributes]::ReparsePoint) {
-    throw 'AP-001 run root must not be a junction or reparse point.'
-}
-$workspaceItem = Get-Item -LiteralPath (New-Item -ItemType Directory -Force -Path $workspace).FullName
-if ($workspaceItem.Attributes -band [IO.FileAttributes]::ReparsePoint) {
-    throw 'Role workspace must not be a junction or reparse point.'
-}
-$lake = ''
-if ($AccessProfile -eq 'CONFIRMATION') {
-    throw 'CONFIRMATION access is locked until an explicit freeze action.'
-}
-if ($AccessProfile -eq 'DEVELOPMENT') {
-    $lake = Join-Path $RunRoot 'AP-001\development-lake'
-}
-if ($AccessProfile -eq 'DEVELOPMENT' -and -not (Test-Path -LiteralPath $lake -PathType Container)) {
-    throw ('Required lake view not found for {0}: {1}' -f $AccessProfile, $lake)
-}
-$launcher = Join-Path $PSScriptRoot 'isolated-run.sh'
+function B64([string] $Value) { [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($Value)) }
 function WslPath([string] $Path) {
-    if ($Path -notmatch '^([A-Za-z]):\\(.*)$') {
-        throw "Only absolute Windows drive paths are supported: $Path"
+    if ($Path -notmatch '^([A-Za-z]):\\(.*)$') { throw "Only absolute Windows drive paths are supported: $Path" }
+    "/mnt/$($Matches[1].ToLowerInvariant())/$($Matches[2] -replace '\\','/')"
+}
+function NoReparse([string] $Path) {
+    $current = [IO.Path]::GetFullPath($Path)
+    while ($current -and $current -ne [IO.Path]::GetPathRoot($current)) {
+        $item = Get-Item -LiteralPath $current -ErrorAction Stop
+        if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "Reparse points are not allowed: $current" }
+        $current = Split-Path -Parent $current
     }
-    return "/mnt/$($Matches[1].ToLowerInvariant())/$($Matches[2] -replace '\\','/')"
 }
-function Base64([string] $Value) {
-    return [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($Value))
+$runRootFull = SafePath $RunRoot
+New-Item -ItemType Directory -Force -Path $runRootFull | Out-Null
+$assignmentPath = Join-Path $repoFull "agent_harness\assignments\$ProgramId\$Role.json"
+if (-not (Test-Path -LiteralPath $assignmentPath -PathType Leaf)) { throw "Assignment not found: $ProgramId/$Role" }
+$assignment = Get-Content -Raw -LiteralPath $assignmentPath | ConvertFrom-Json
+if ($assignment.program_id -ne $ProgramId -or $assignment.role_id -ne $Role) { throw 'Assignment program_id/role_id mismatch.' }
+if ([string]::IsNullOrWhiteSpace($assignment.access_profile)) { throw 'Assignment access_profile is required.' }
+$profile = Get-Content -Raw -LiteralPath (Join-Path $repoFull 'agent_harness\access_profiles\default.json') | ConvertFrom-Json
+if (-not $profile.profiles.($assignment.access_profile)) { throw "Undeclared access profile: $($assignment.access_profile)" }
+if ($assignment.raw_lake_access -ne 'DENY') { throw 'Only raw_lake_access=DENY is launchable.' }
+$lake = $null
+if ($assignment.access_profile -eq 'CONFIRMATION') { throw 'CONFIRMATION access is locked until an explicit freeze action.' }
+if ($assignment.access_profile -eq 'DEVELOPMENT') {
+    $lake = 'F:\TrinityR-views\XAUUSD\XAUUSD_DATA_SCOPE_V1\development'
+    if (-not (Test-Path -LiteralPath $lake -PathType Container)) { throw "Required instrument-scoped development view not found: $lake" }
+    NoReparse $lake
 }
-$bootstrap = Base64 (Get-Content -Raw -LiteralPath $launcher)
-$commandBase64 = Base64 $Command
-$lakeWsl = if ($lake) { WslPath $lake } else { '' }
-$lakeBase64 = if ($lakeWsl) { Base64 $lakeWsl } else { '-' }
-$commandLine = "printf %s $bootstrap | base64 -d > /tmp/trinityr-isolated-run.sh && chmod 700 /tmp/trinityr-isolated-run.sh && unshare --mount --fork --propagation private -- /bin/bash /tmp/trinityr-isolated-run.sh $(Base64 (WslPath $repo)) $lakeBase64 $(Base64 (WslPath $workspace)) $commandBase64"
-$args = @(
-    '--distribution', $Distro,
-    '--user', 'root',
-    '--',
-    '/bin/bash',
-    '-lc',
-    $commandLine
-)
-& wsl.exe @args
-if ($LASTEXITCODE -ne 0) {
-    exit $LASTEXITCODE
+$programRoot = Join-Path $runRootFull $ProgramId
+$workspace = Join-Path $programRoot $Role
+New-Item -ItemType Directory -Force -Path $workspace | Out-Null
+NoReparse $runRootFull; NoReparse $programRoot; NoReparse $workspace
+$mounts = @()
+foreach ($surface in @($assignment.authorized_repository_surfaces)) {
+    if ([string]::IsNullOrWhiteSpace($surface) -or $surface.StartsWith('/') -or $surface.StartsWith('\') -or $surface -match '(^|[\\/])\.\.([\\/]|$)' -or $surface -match ':') { throw "Unsafe repository surface: $surface" }
+    $source = [IO.Path]::GetFullPath((Join-Path $repoFull ($surface -replace '/','\')))
+    if (-not $source.StartsWith($repoFull, [StringComparison]::OrdinalIgnoreCase) -or -not (Test-Path -LiteralPath $source)) { throw "Unavailable or outside repository surface: $surface" }
+    NoReparse $source
+    $mounts += [PSCustomObject]@{ source = (WslPath $source); target = '/shared/research-program/' + ($surface -replace '\\','/') }
 }
+$authority = Get-Content -Raw -LiteralPath (Join-Path $repoFull 'agent_harness\authority_sources\XAUUSD.json') | ConvertFrom-Json
+foreach ($sourceId in @($assignment.authority_source_ids)) {
+    $source = @($authority.sources | Where-Object source_id -eq $sourceId)
+    if ($source.Count -ne 1) { throw "Unknown authority source: $sourceId" }
+    if ($source[0].root_path -ne 'F:\TrinityR-research') { throw "Unsafe authority root: $sourceId" }
+    $sourcePath = Join-Path $source[0].root_path ($source[0].relative_path -replace '/','\')
+    if (-not (Test-Path -LiteralPath $sourcePath)) { throw "Unavailable authority source: $sourceId" }
+    NoReparse $sourcePath
+    $members = (Get-ChildItem -LiteralPath $sourcePath -File | Sort-Object FullName | ForEach-Object { $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash; "$hash  $($_.Name)" }) -join "`r`n"
+    $digest = ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes($members)) | ForEach-Object ToString x2) -join ''
+    if ($digest -ne $source[0].hash) { throw "Authority source hash mismatch: $sourceId" }
+    $mounts += [PSCustomObject]@{ source = (WslPath $sourcePath); target = $source[0].mount_target }
+}
+if ($lake) { $mounts += [PSCustomObject]@{ source = (WslPath $lake); target = '/shared/data/XAUUSD_DATA_SCOPE_V1/development' } }
+$mountText = ($mounts | ForEach-Object { "$(B64 $_.source)|$(B64 $_.target)" }) -join "`n"
+$launcher = Join-Path $PSScriptRoot 'isolated-run.sh'
+$bootstrap = B64 (Get-Content -Raw -LiteralPath $launcher)
+$commandLine = "printf %s $bootstrap | base64 -d > /tmp/trinityr-isolated-run.sh && chmod 700 /tmp/trinityr-isolated-run.sh && unshare --mount --pid --fork --mount-proc --propagation private -- /bin/bash /tmp/trinityr-isolated-run.sh $(B64 (WslPath $workspace)) $(B64 $assignment.access_profile) $(B64 $Command) $(B64 (B64 $mountText))"
+& wsl.exe --distribution $Distro --user root -- /bin/bash -lc $commandLine
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

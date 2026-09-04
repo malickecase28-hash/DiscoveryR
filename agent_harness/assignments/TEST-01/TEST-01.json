@@ -1,0 +1,15 @@
+{
+  "program_id": "TEST-01",
+  "role_id": "TEST-01",
+  "phase": "AUTHORITY",
+  "access_profile": "AUTHORITY",
+  "assignment": "Harmless isolation smoke test only; do not perform market research.",
+  "authorized_repository_surfaces": [
+    "protocol",
+    "contracts/knowledge_record_v1.schema.json",
+    "agent_harness/assignments/TEST-01/TEST-01.json"
+  ],
+  "authority_source_ids": [],
+  "raw_lake_access": "DENY",
+  "peer_visibility": "DENY"
+}

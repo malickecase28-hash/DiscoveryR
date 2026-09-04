@@ -1,0 +1,14 @@
+{
+  "profile_id": "GENERIC_RESEARCH",
+  "scientific_identity": "role_id_only",
+  "provider_identity_visible_to_agent": false,
+  "live_workspace_root": "F:\\TrinityR-runs\\{program_id}\\{role_id}",
+  "peer_visibility": "DENY",
+  "legacy_visibility": "DENY",
+  "profiles": {
+    "AUTHORITY": {"repository": "READ_ONLY", "lake": "DENY", "confirmation": "DENY"},
+    "DEVELOPMENT": {"repository": "READ_ONLY", "lake": "XAUUSD_DATA_SCOPE_V1_DEVELOPMENT_READ_ONLY", "confirmation": "DENY"},
+    "CONFIRMATION": {"repository": "READ_ONLY", "lake": "DENY", "confirmation": "DENY_UNTIL_EXPLICIT_FREEZE"}
+  },
+  "orchestrator_private": {"provider_map": "external", "agent_visibility": "DENY"}
+}

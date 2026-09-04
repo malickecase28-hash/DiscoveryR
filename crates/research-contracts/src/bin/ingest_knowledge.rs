@@ -6,7 +6,7 @@ use serde_json::Value;
 use std::{
     env,
     fs::{self, OpenOptions},
-    io::{BufRead, BufReader, Write},
+    io::Write,
     path::Path,
     process,
 };
@@ -38,51 +38,46 @@ fn reject_operational_identity(value: &Value) -> Result<(), Box<dyn std::error::
                 reject_operational_identity(value)?;
             }
         }
-        Value::Array(values) => {
-            for value in values {
-                reject_operational_identity(value)?;
-            }
-        }
+        Value::Array(values) => values.iter().try_for_each(reject_operational_identity)?,
         _ => {}
     }
     Ok(())
+}
+
+fn valid_id(id: &str) -> bool {
+    !id.is_empty()
+        && id.len() <= 128
+        && id.bytes().enumerate().all(|(i, byte)| {
+            byte.is_ascii_alphanumeric() || (i > 0 && matches!(byte, b'.' | b'_' | b'-'))
+        })
 }
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = env::args().skip(1);
     let input = args
         .next()
-        .ok_or("usage: ingest_knowledge <record.json> [knowledge/records.jsonl]")?;
-    let store = args
-        .next()
-        .unwrap_or_else(|| "knowledge/records.jsonl".into());
+        .ok_or("usage: ingest_knowledge <record.json> [knowledge/records]")?;
+    let records_dir = args.next().unwrap_or_else(|| "knowledge/records".into());
     if args.next().is_some() {
-        return Err("usage: ingest_knowledge <record.json> [knowledge/records.jsonl]".into());
+        return Err("usage: ingest_knowledge <record.json> [knowledge/records]".into());
     }
-    let record: KnowledgeRecord = serde_json::from_str(&fs::read_to_string(input)?)?;
-    reject_operational_identity(&serde_json::to_value(&record)?)?;
+    let raw: Value = serde_json::from_str(&fs::read_to_string(input)?)?;
+    reject_operational_identity(&raw)?;
+    let record: KnowledgeRecord = serde_json::from_value(raw)?;
     validate_knowledge_record(&record)?;
     let id = record_id(&record);
-    if id.is_empty() {
-        return Err("record_id cannot be empty".into());
+    if !valid_id(id) {
+        return Err("record_id has an unsafe filename grammar".into());
     }
-    if Path::new(&store).exists() {
-        for line in BufReader::new(fs::File::open(&store)?).lines() {
-            let line = line?;
-            if line.trim().is_empty() {
-                continue;
-            }
-            let existing: KnowledgeRecord = serde_json::from_str(&line)?;
-            if record_id(&existing) == id {
-                return Err(format!("record_id already exists: {id}").into());
-            }
-        }
-    } else if let Some(parent) = Path::new(&store).parent() {
-        fs::create_dir_all(parent)?;
-    }
-    let mut output = OpenOptions::new().create(true).append(true).open(&store)?;
-    serde_json::to_writer(&mut output, &record)?;
-    writeln!(output)?;
+    fs::create_dir_all(&records_dir)?;
+    let path = Path::new(&records_dir).join(format!("{id}.json"));
+    let mut output = OpenOptions::new()
+        .write(true)
+        .create_new(true)
+        .open(&path)?;
+    serde_json::to_writer_pretty(&mut output, &record)?;
+    output.write_all(b"\n")?;
+    output.sync_all()?;
     println!("ingested {id}");
     Ok(())
 }

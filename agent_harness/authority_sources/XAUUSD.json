@@ -1,0 +1,15 @@
+{
+  "instrument": "XAUUSD",
+  "sources": [
+    {
+      "source_id": "xauusd.schemas",
+      "root_path": "F:\\TrinityR-research",
+      "relative_path": "schemas",
+      "mount_target": "/shared/authority/xauusd/schemas",
+      "purpose": "Authoritative schema surfaces only",
+      "hash": "33afb9371cd280a2cfc5c7e32d0f967434348fdc26217968246d501f4324ce3c"
+    }
+  ],
+  "excluded": ["config secrets", "Google credentials", ".codex runtime", "research directives", "findings", "DuckDB bytes", "raw outcomes"],
+  "unresolved_semantics_are_reportable": true
+}

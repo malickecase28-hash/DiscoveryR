@@ -3,11 +3,12 @@
 Agent markdown and scratch output are not knowledge records.
 
 Only an explicitly promoted, typed KnowledgeRecord JSON document may enter the
-canonical append-only store:
+canonical immutable record directory:
 
     cargo run -p research-contracts --bin ingest_knowledge -- record.json
 
-The default store is knowledge/records.jsonl. A duplicate record_id or an
-invalid rejected-finding invariant fails without changing the store. Provider
+The default store is knowledge/records/<record_id>.json. A duplicate record_id
+fails atomically via create_new, and an invalid rejected-finding invariant fails
+without changing the store. Provider
 and model identity belong to the orchestrator-private mapping, not these
 scientific records.

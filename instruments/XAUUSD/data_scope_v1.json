@@ -22,7 +22,7 @@
     "status": "LOCKED_UNTIL_EXPLICIT_FREEZE"
   },
   "development_view": {
-    "root": "F:\\TrinityR-runs\\AP-001\\development-lake",
+    "root": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\development",
     "status": "NOT_MATERIALIZED",
     "required_before": "DEVELOPMENT_ACCESS"
   }
