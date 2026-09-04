@@ -1,0 +1,467 @@
+{
+  "program_id": "AP-001",
+  "role_id": "A-02",
+  "artifact_type": "AUTHORITY_CANDIDATE",
+  "subjects": [
+    "drift_burst",
+    "XAUUSD"
+  ],
+  "claims": [
+    {
+      "claim_id": "AP001-A02-C001",
+      "subject": "drift_burst",
+      "topic": "physical_output_family",
+      "precise_claim": "Physical output is nullable LargeUtf8 payload_drift_burst on XAUUSD Tick.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "repo.instrument_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "Tick source physical_schema, physical_time_coordinate_fields, payload_columns",
+          "evidence_type": "inventory",
+          "supports": "Supports physical payload, coordinates, nullable type, and layout only."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C002",
+      "subject": "drift_burst",
+      "topic": "episode_identity_and_id_reuse_persistence",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C003",
+      "subject": "drift_burst",
+      "topic": "birth_origin",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C004",
+      "subject": "drift_burst",
+      "topic": "state_vocabulary_machine_reversions_repeated_states_reentry_recovery_resets",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C005",
+      "subject": "drift_burst",
+      "topic": "weak_online_strong_peak",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C006",
+      "subject": "drift_burst",
+      "topic": "decay_dying_recovery",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C007",
+      "subject": "drift_burst",
+      "topic": "completion_termination_end_reason",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C008",
+      "subject": "drift_burst",
+      "topic": "censoring",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C009",
+      "subject": "drift_burst",
+      "topic": "all_time_fields",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C010",
+      "subject": "drift_burst",
+      "topic": "exact_availability_rule",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C011",
+      "subject": "drift_burst",
+      "topic": "state_stream_vs_completed_records",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C012",
+      "subject": "drift_burst",
+      "topic": "direction",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C013",
+      "subject": "drift_burst",
+      "topic": "strength_score_z_efficiency",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C014",
+      "subject": "drift_burst",
+      "topic": "multiscale_fields",
+      "precise_claim": "Native detector scale is tick; internal multiscale fields and semantics remain unresolved.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C015",
+      "subject": "drift_burst",
+      "topic": "exact_episode_segmentation",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C016",
+      "subject": "drift_burst",
+      "topic": "completed_peak_end_remaining_available_after_total_burst_points_duration_eventual_recovery",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later milestone, peak, end, remaining, available-after, duration, recovery, end reason, or completed summary may leak future information.",
+      "dependency_implications": "No detector-specific mapping may be used until directly evidenced.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C017",
+      "subject": "drift_burst",
+      "topic": "lifecycle_stage_future_information_matrix",
+      "precise_claim": "The general causal rule is authoritative: later-required information is illegal at an earlier anchor. Exact drift_burst mappings for peak, end, remaining, available-after, duration, recovery, and end reason are unresolved.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "repo.protocol",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "section 2 and section 4",
+          "evidence_type": "protocol_rule",
+          "supports": "Supports general causal clock and no later-required information at earlier anchor."
+        },
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "The rule does not prove any stage exists.",
+      "dependency_implications": "Only directly evidenced fields can be SAFE_AT_STATE.",
+      "notes": "Matrix stages: birth/origin, weak, online, strong, peak, decay/dying, recovery, completion/termination, post-completion."
+    },
+    {
+      "claim_id": "AP001-A02-C018",
+      "subject": "drift_burst",
+      "topic": "opaque_payload_inventory_and_e1_gate",
+      "precise_claim": "Opaque payload inventory is engineering inspection, not E1 phenotype research; E1_BLOCKED_PENDING_AUTHORITY=true because identity, state, availability, and transitions are unresolved.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "repo.instrument_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "Tick source physical_schema, physical_time_coordinate_fields, payload_columns",
+          "evidence_type": "inventory",
+          "supports": "Supports physical payload, coordinates, nullable type, and layout only."
+        },
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        },
+        {
+          "source_id": "repo.protocol",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "section 2 and section 4",
+          "evidence_type": "protocol_rule",
+          "supports": "Supports that the E1 block is methodological: lifecycle authority, availability, and transition evidence are required before E1 phenotype research."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Occurrence is not proven emission or availability.",
+      "dependency_implications": "E1 cannot construct lifecycle cohorts or episodes.",
+      "notes": ""
+    },
+    {
+      "claim_id": "AP001-A02-C019",
+      "subject": "drift_burst",
+      "topic": "contradictions_and_coverage",
+      "precise_claim": "Registry authority is limited to tick surface and scale while semantics and availability remain unresolved; six schema-verified tick parts declare 67445659 rows.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detectors",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "drift_burst array entry",
+          "evidence_type": "registry_entry",
+          "supports": "Supports tick surface, native scale kind tick, and unresolved semantic/availability status."
+        },
+        {
+          "source_id": "repo.instrument_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "Tick source physical_schema, physical_time_coordinate_fields, payload_columns",
+          "evidence_type": "inventory",
+          "supports": "Supports physical payload, coordinates, nullable type, and layout only."
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Physical coverage does not establish lifecycle completeness.",
+      "dependency_implications": "Require payload/emitter authority before segmentation.",
+      "notes": ""
+    }
+  ],
+  "unresolved_questions": [
+    "Exact payload schema and emitter timing?",
+    "Stream, snapshot, event, or completed record?",
+    "Identity, reuse, persistence, reset, and segmentation?",
+    "Online versus post-peak/completion fields?",
+    "Availability clock and event versus received relation?",
+    "Vocabulary and transitions?",
+    "Definitions of direction, strength, score, z, efficiency, multiscale values?",
+    "Censoring representation?"
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "repo.protocol",
+      "path_mount": "/shared/research-program/protocol/AGENT_ACCESS.md",
+      "access_result": "MOUNTED_READ_ONLY",
+      "exact_locator": "entire file"
+    },
+    {
+      "source_id": "repo.protocol",
+      "path_mount": "/shared/research-program/protocol/RESEARCH_RULES.md",
+      "access_result": "MOUNTED_READ_ONLY",
+      "exact_locator": "sections 1-6, 8-14"
+    },
+    {
+      "source_id": "repo.detectors",
+      "path_mount": "/shared/research-program/registry/detectors_v1.json",
+      "access_result": "MOUNTED_READ_ONLY",
+      "exact_locator": "drift_burst array entry"
+    },
+    {
+      "source_id": "repo.instrument_inventory",
+      "path_mount": "/shared/research-program/instruments/XAUUSD/source_inventory.json",
+      "access_result": "MOUNTED_READ_ONLY",
+      "exact_locator": "Tick source object and schema"
+    },
+    {
+      "source_id": "repo.instrument_config",
+      "path_mount": "/shared/research-program/instruments/XAUUSD/instrument_config.json",
+      "access_result": "MOUNTED_READ_ONLY",
+      "exact_locator": "entire file"
+    },
+    {
+      "source_id": "xauusd.schemas",
+      "path_mount": "/shared/authority/xauusd/schemas",
+      "access_result": "MOUNTED_READ_ONLY",
+      "exact_locator": "directory listing; no detector-specific payload schema or lifecycle contract; feature_generic_v1.json unavailable: exact failure reason path does not exist in mount"
+    }
+  ]
+}
