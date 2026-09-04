@@ -16,6 +16,7 @@ use std::{
     fs::{self, File},
     io,
     path::Path,
+    process::Command,
     time::Instant,
 };
 
@@ -519,7 +520,30 @@ pub fn validate_code_identity(value: &str) -> Result<&str, Box<dyn std::error::E
             io::Error::other("DISCOVERYR_CODE_IDENTITY must be a 40-character Git SHA").into(),
         );
     }
+    let resolved = String::from_utf8(
+        Command::new("git")
+            .args(["rev-parse", "--verify", &format!("{value}^{{commit}}")])
+            .output()?
+            .stdout,
+    )?
+    .trim()
+    .to_owned();
+    if resolved != value {
+        return Err(io::Error::other("code identity is not the requested Git commit").into());
+    }
     Ok(value)
+}
+
+fn revoked(root: &Path) -> Result<bool, Box<dyn std::error::Error>> {
+    if root.join("REVOKED").exists() {
+        return Ok(true);
+    }
+    let manifest: serde_json::Value =
+        serde_json::from_reader(File::open(root.join("view_manifest.json"))?)?;
+    Ok(
+        manifest.get("revoked").and_then(serde_json::Value::as_bool) == Some(true)
+            || manifest.get("status").and_then(serde_json::Value::as_str) == Some("REVOKED"),
+    )
 }
 
 pub fn verify_view(
@@ -527,7 +551,14 @@ pub fn verify_view(
     manifest: &Manifest,
     batch_size: usize,
 ) -> Result<(), Box<dyn std::error::Error>> {
+    if revoked(root)? {
+        return Err(io::Error::other("development view is revoked").into());
+    }
     let mut expected = BTreeSet::from(["view_manifest.json".to_string()]);
+    let mut paths = Vec::new();
+    let mut stats = Vec::new();
+    let mut hashes = Vec::new();
+    let mut kinds = Vec::new();
     for (group, files) in &manifest.source_groups {
         let gate = if group == "tick" {
             Gate::Tick {
@@ -572,6 +603,32 @@ pub fn verify_view(
                     io::Error::other(format!("gate violation: {}", file.logical_path)).into(),
                 );
             }
+            let hash = file.sha256.as_deref().ok_or_else(|| {
+                io::Error::other(format!("missing payload hash: {}", file.logical_path))
+            })?;
+            if hash_file(&path)? != hash {
+                return Err(io::Error::other(format!(
+                    "payload hash mismatch: {}",
+                    file.logical_path
+                ))
+                .into());
+            }
+            let actual_stats = result.stats;
+            let expected_stats = match (&actual_stats, group == "tick") {
+                (GateStats::Tick { .. }, true) | (GateStats::Bar { .. }, false) => true,
+                _ => false,
+            };
+            if !expected_stats || actual_stats != manifest_stats(file, group == "tick")? {
+                return Err(io::Error::other(format!(
+                    "manifest stats mismatch: {}",
+                    file.logical_path
+                ))
+                .into());
+            }
+            paths.push(file.logical_path.as_str());
+            stats.push(actual_stats);
+            hashes.push(hash);
+            kinds.push(file.materialization_kind.as_str());
         }
     }
     let mut actual = BTreeSet::new();
@@ -583,7 +640,40 @@ pub fn verify_view(
     if actual != expected {
         return Err(io::Error::other("unexpected files or missing manifest entry").into());
     }
+    let identity = hash_view_identity(
+        &manifest.scope_id,
+        &manifest.source_manifest_identity,
+        &manifest.payload_manifest_identity,
+        BOUNDARY_MS,
+        &paths,
+        &stats,
+        &hashes,
+        &kinds,
+        &manifest.builder_code_identity,
+        0,
+    );
+    if identity != manifest.logical_view_identity {
+        return Err(io::Error::other("logical view identity mismatch").into());
+    }
     Ok(())
+}
+
+fn manifest_stats(file: &ManifestFile, tick: bool) -> Result<RowStats, Box<dyn std::error::Error>> {
+    if tick {
+        Ok(GateStats::Tick {
+            rows: file.development_row_count,
+            event_min: file.event_min,
+            event_max: file.event_max,
+            received_min: file.received_min,
+            received_max: file.received_max,
+        })
+    } else {
+        Ok(GateStats::Bar {
+            rows: file.development_row_count,
+            bar_close_min: file.bar_close_min,
+            bar_close_max: file.bar_close_max,
+        })
+    }
 }
 
 fn walk_files(root: &Path) -> Result<Vec<std::path::PathBuf>, Box<dyn std::error::Error>> {
@@ -622,6 +712,9 @@ pub fn materialize(
         &inventory.payload_manifest_identity,
     )?;
     if view_root.exists() {
+        if revoked(view_root)? {
+            return Err(io::Error::other("existing development view is revoked").into());
+        }
         let existing: Manifest =
             serde_json::from_reader(File::open(view_root.join("view_manifest.json"))?)?;
         if existing.scope_id == scope
@@ -691,7 +784,7 @@ pub fn materialize(
                             "HARDLINK_FULL_DEVELOPMENT"
                         }
                         .to_string(),
-                        None,
+                        Some(hash_file(&target)?),
                         result.stats.clone(),
                     )
                 }
