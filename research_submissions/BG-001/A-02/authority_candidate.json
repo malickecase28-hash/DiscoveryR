@@ -1,0 +1,2186 @@
+{
+  "artifact": "authority_candidate",
+  "program_id": "BG-001",
+  "role_id": "A-02",
+  "phase": "AUTHORITY",
+  "detector_id": "bar_lineage",
+  "claim_prefix": "BG001-A02-C",
+  "subjects": [
+    "raw3",
+    "range",
+    "fvg",
+    "bos_choch",
+    "local_structure",
+    "order_blocks",
+    "micro_liquidity",
+    "micro_liquidity_context"
+  ],
+  "status_vocabulary": [
+    "AUTHORITATIVE",
+    "PROVISIONAL",
+    "UNRESOLVED"
+  ],
+  "evidence_type_vocabulary": [
+    "PHYSICAL_SCHEMA",
+    "MANIFEST_IDENTITY_ONLY",
+    "AUTHORIZED_SURFACE_FIELD",
+    "PROTOCOL_RULE",
+    "ASSIGNMENT_DIRECTIVE",
+    "ABSENCE_OF_ARTIFACT"
+  ],
+  "authority_principles": [
+    {
+      "principle_id": "P1",
+      "statement": "A payload_* column is a physical OUTPUT SURFACE, not proof of producer raw input; the source inventory establishes the physical output only, and producer inputs remain unresolved unless directly evidenced.",
+      "origin": "assignment directive for this role",
+      "evidence": [
+        {
+          "source_id": "bg001.assignment",
+          "relative_path": "assignment.json",
+          "locator": "access_profile=AUTHORITY; authority_source_ids=[xauusd.schemas]; raw_lake_access=DENY; peer_visibility=DENY",
+          "evidence_type": "ASSIGNMENT_DIRECTIVE",
+          "supports": "Defines the authorized surfaces, the declared authority source id, and the denial profile for this authority role."
+        }
+      ]
+    },
+    {
+      "principle_id": "P2",
+      "statement": "Accepted graph edges require precise typed relations established directly by authority; absent such authority the graph carries no edges, only relationship questions.",
+      "origin": "assignment directive for this role",
+      "evidence": [
+        {
+          "source_id": "bg001.assignment",
+          "relative_path": "assignment.json",
+          "locator": "access_profile=AUTHORITY; authority_source_ids=[xauusd.schemas]; raw_lake_access=DENY; peer_visibility=DENY",
+          "evidence_type": "ASSIGNMENT_DIRECTIVE",
+          "supports": "Defines the authorized surfaces, the declared authority source id, and the denial profile for this authority role."
+        }
+      ]
+    },
+    {
+      "principle_id": "P3",
+      "statement": "A derived object is not independent evidence from its upstream object; this general rule is authoritative, while specific pair warnings remain unresolved unless directly evidenced.",
+      "origin": "protocol rule 11",
+      "evidence": [
+        {
+          "source_id": "bg001.protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 11",
+          "evidence_type": "PROTOCOL_RULE",
+          "supports": "If a detector derives from another object, the pairing is not automatically independent confluence."
+        }
+      ]
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "node_id": "raw3",
+        "node_kind": "detector_family",
+        "declared_subject": true,
+        "physical_output_surface": {
+          "payload_column": "payload_raw3",
+          "data_type": "LargeUtf8 (nullable)",
+          "scales": [
+            "15s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "1h",
+            "4h"
+          ],
+          "tick_scale_present": false,
+          "status": "AUTHORITATIVE",
+          "claim_id": "BG001-A02-C002"
+        },
+        "lineage_dossier_claim_id": "BG001-A02-C010",
+        "unresolved_aspects": [
+          "duplication_repackaging",
+          "information_ancestry",
+          "known_availability_timestamps",
+          "lifecycle_semantics",
+          "object_ids",
+          "occurrence_timestamps",
+          "producer_raw_inputs",
+          "retained_upstream_source_ids",
+          "unresolved_lineage",
+          "upstream_detector_inputs"
+        ]
+      },
+      {
+        "node_id": "range",
+        "node_kind": "detector_family",
+        "declared_subject": true,
+        "physical_output_surface": {
+          "payload_column": "payload_range",
+          "data_type": "LargeUtf8 (nullable)",
+          "scales": [
+            "15s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "1h",
+            "4h"
+          ],
+          "tick_scale_present": false,
+          "status": "AUTHORITATIVE",
+          "claim_id": "BG001-A02-C003"
+        },
+        "lineage_dossier_claim_id": "BG001-A02-C011",
+        "unresolved_aspects": [
+          "duplication_repackaging",
+          "information_ancestry",
+          "known_availability_timestamps",
+          "lifecycle_semantics",
+          "object_ids",
+          "occurrence_timestamps",
+          "producer_raw_inputs",
+          "retained_upstream_source_ids",
+          "unresolved_lineage",
+          "upstream_detector_inputs"
+        ]
+      },
+      {
+        "node_id": "fvg",
+        "node_kind": "detector_family",
+        "declared_subject": true,
+        "physical_output_surface": {
+          "payload_column": "payload_fvg",
+          "data_type": "LargeUtf8 (nullable)",
+          "scales": [
+            "15s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "1h",
+            "4h"
+          ],
+          "tick_scale_present": false,
+          "status": "AUTHORITATIVE",
+          "claim_id": "BG001-A02-C004"
+        },
+        "lineage_dossier_claim_id": "BG001-A02-C012",
+        "unresolved_aspects": [
+          "duplication_repackaging",
+          "information_ancestry",
+          "known_availability_timestamps",
+          "lifecycle_semantics",
+          "object_ids",
+          "occurrence_timestamps",
+          "producer_raw_inputs",
+          "retained_upstream_source_ids",
+          "unresolved_lineage",
+          "upstream_detector_inputs"
+        ]
+      },
+      {
+        "node_id": "bos_choch",
+        "node_kind": "detector_family",
+        "declared_subject": true,
+        "physical_output_surface": {
+          "payload_column": "payload_bos_choch",
+          "data_type": "LargeUtf8 (nullable)",
+          "scales": [
+            "15s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "1h",
+            "4h"
+          ],
+          "tick_scale_present": false,
+          "status": "AUTHORITATIVE",
+          "claim_id": "BG001-A02-C005"
+        },
+        "lineage_dossier_claim_id": "BG001-A02-C013",
+        "unresolved_aspects": [
+          "duplication_repackaging",
+          "information_ancestry",
+          "known_availability_timestamps",
+          "lifecycle_semantics",
+          "object_ids",
+          "occurrence_timestamps",
+          "producer_raw_inputs",
+          "retained_upstream_source_ids",
+          "unresolved_lineage",
+          "upstream_detector_inputs"
+        ]
+      },
+      {
+        "node_id": "local_structure",
+        "node_kind": "detector_family",
+        "declared_subject": true,
+        "physical_output_surface": {
+          "payload_column": "payload_local_structure",
+          "data_type": "LargeUtf8 (nullable)",
+          "scales": [
+            "15s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "1h",
+            "4h"
+          ],
+          "tick_scale_present": false,
+          "status": "AUTHORITATIVE",
+          "claim_id": "BG001-A02-C006"
+        },
+        "lineage_dossier_claim_id": "BG001-A02-C014",
+        "unresolved_aspects": [
+          "duplication_repackaging",
+          "information_ancestry",
+          "known_availability_timestamps",
+          "lifecycle_semantics",
+          "object_ids",
+          "occurrence_timestamps",
+          "producer_raw_inputs",
+          "retained_upstream_source_ids",
+          "unresolved_lineage",
+          "upstream_detector_inputs"
+        ]
+      },
+      {
+        "node_id": "order_blocks",
+        "node_kind": "detector_family",
+        "declared_subject": true,
+        "physical_output_surface": {
+          "payload_column": "payload_order_blocks",
+          "data_type": "LargeUtf8 (nullable)",
+          "scales": [
+            "15s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "1h",
+            "4h"
+          ],
+          "tick_scale_present": false,
+          "status": "AUTHORITATIVE",
+          "claim_id": "BG001-A02-C007"
+        },
+        "lineage_dossier_claim_id": "BG001-A02-C015",
+        "unresolved_aspects": [
+          "duplication_repackaging",
+          "information_ancestry",
+          "known_availability_timestamps",
+          "lifecycle_semantics",
+          "object_ids",
+          "occurrence_timestamps",
+          "producer_raw_inputs",
+          "retained_upstream_source_ids",
+          "unresolved_lineage",
+          "upstream_detector_inputs"
+        ]
+      },
+      {
+        "node_id": "micro_liquidity",
+        "node_kind": "detector_family",
+        "declared_subject": true,
+        "physical_output_surface": {
+          "payload_column": "payload_micro_liquidity",
+          "data_type": "LargeUtf8 (nullable)",
+          "scales": [
+            "15s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "1h",
+            "4h"
+          ],
+          "tick_scale_present": false,
+          "status": "AUTHORITATIVE",
+          "claim_id": "BG001-A02-C008"
+        },
+        "lineage_dossier_claim_id": "BG001-A02-C016",
+        "unresolved_aspects": [
+          "duplication_repackaging",
+          "information_ancestry",
+          "known_availability_timestamps",
+          "lifecycle_semantics",
+          "object_ids",
+          "occurrence_timestamps",
+          "producer_raw_inputs",
+          "retained_upstream_source_ids",
+          "unresolved_lineage",
+          "upstream_detector_inputs"
+        ]
+      },
+      {
+        "node_id": "micro_liquidity_context",
+        "node_kind": "detector_family",
+        "declared_subject": true,
+        "physical_output_surface": {
+          "payload_column": "payload_micro_liquidity_context",
+          "data_type": "LargeUtf8 (nullable)",
+          "scales": [
+            "15s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "1h",
+            "4h"
+          ],
+          "tick_scale_present": false,
+          "status": "AUTHORITATIVE",
+          "claim_id": "BG001-A02-C009"
+        },
+        "lineage_dossier_claim_id": "BG001-A02-C017",
+        "unresolved_aspects": [
+          "duplication_repackaging",
+          "information_ancestry",
+          "known_availability_timestamps",
+          "lifecycle_semantics",
+          "object_ids",
+          "occurrence_timestamps",
+          "producer_raw_inputs",
+          "retained_upstream_source_ids",
+          "unresolved_lineage",
+          "upstream_detector_inputs"
+        ]
+      }
+    ],
+    "edges": [],
+    "relationship_questions": [
+      {
+        "pair": [
+          "raw3",
+          "range"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "raw3",
+          "fvg"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "raw3",
+          "bos_choch"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "raw3",
+          "local_structure"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "raw3",
+          "order_blocks"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "raw3",
+          "micro_liquidity"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "raw3",
+          "micro_liquidity_context"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "range",
+          "fvg"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "range",
+          "bos_choch"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "range",
+          "order_blocks"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "range",
+          "micro_liquidity"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "bos_choch",
+          "local_structure"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "bos_choch",
+          "order_blocks"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "micro_liquidity",
+          "micro_liquidity_context"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      },
+      {
+        "pair": [
+          "fvg",
+          "order_blocks"
+        ],
+        "relation": "UNRESOLVED_RELATIONSHIP",
+        "origin": "ASSIGNMENT_SPECIAL_REVIEW",
+        "evidence": []
+      }
+    ],
+    "fake_confluence_warnings": [
+      {
+        "warning_id": "BG001-A02-W001",
+        "scope": "program",
+        "status": "AUTHORITATIVE",
+        "statement": "General rule: if a detector derives from another object, the pairing is not automatically independent confluence; scoring a derived object together with its upstream object as two independent signals is prohibited without an approved independence basis.",
+        "authority_evidence": [
+          {
+            "source_id": "bg001.protocol.research_rules",
+            "relative_path": "protocol/RESEARCH_RULES.md",
+            "locator": "rule 11",
+            "evidence_type": "PROTOCOL_RULE",
+            "supports": "If a detector derives from another object, the pairing is not automatically independent confluence."
+          }
+        ]
+      },
+      {
+        "warning_id": "BG001-A02-W002",
+        "scope": "raw3",
+        "status": "UNRESOLVED",
+        "statement": "Pair-level confluence independence for raw3 against any candidate upstream (declared subject or non-subject input) is unresolved; no pair-specific fake-confluence warning is asserted because no lineage edge is established.",
+        "authority_evidence": [
+          {
+            "source_id": "bg001.protocol.research_rules",
+            "relative_path": "protocol/RESEARCH_RULES.md",
+            "locator": "rule 11",
+            "evidence_type": "PROTOCOL_RULE",
+            "supports": "If a detector derives from another object, the pairing is not automatically independent confluence."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "contracts",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "registry",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "authority",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+          }
+        ]
+      },
+      {
+        "warning_id": "BG001-A02-W003",
+        "scope": "range",
+        "status": "UNRESOLVED",
+        "statement": "Pair-level confluence independence for range against any candidate upstream (declared subject or non-subject input) is unresolved; no pair-specific fake-confluence warning is asserted because no lineage edge is established.",
+        "authority_evidence": [
+          {
+            "source_id": "bg001.protocol.research_rules",
+            "relative_path": "protocol/RESEARCH_RULES.md",
+            "locator": "rule 11",
+            "evidence_type": "PROTOCOL_RULE",
+            "supports": "If a detector derives from another object, the pairing is not automatically independent confluence."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "contracts",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "registry",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "authority",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+          }
+        ]
+      },
+      {
+        "warning_id": "BG001-A02-W004",
+        "scope": "fvg",
+        "status": "UNRESOLVED",
+        "statement": "Pair-level confluence independence for fvg against any candidate upstream (declared subject or non-subject input) is unresolved; no pair-specific fake-confluence warning is asserted because no lineage edge is established.",
+        "authority_evidence": [
+          {
+            "source_id": "bg001.protocol.research_rules",
+            "relative_path": "protocol/RESEARCH_RULES.md",
+            "locator": "rule 11",
+            "evidence_type": "PROTOCOL_RULE",
+            "supports": "If a detector derives from another object, the pairing is not automatically independent confluence."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "contracts",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "registry",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "authority",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+          }
+        ]
+      },
+      {
+        "warning_id": "BG001-A02-W005",
+        "scope": "bos_choch",
+        "status": "UNRESOLVED",
+        "statement": "Pair-level confluence independence for bos_choch against any candidate upstream (declared subject or non-subject input) is unresolved; no pair-specific fake-confluence warning is asserted because no lineage edge is established.",
+        "authority_evidence": [
+          {
+            "source_id": "bg001.protocol.research_rules",
+            "relative_path": "protocol/RESEARCH_RULES.md",
+            "locator": "rule 11",
+            "evidence_type": "PROTOCOL_RULE",
+            "supports": "If a detector derives from another object, the pairing is not automatically independent confluence."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "contracts",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "registry",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "authority",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+          }
+        ]
+      },
+      {
+        "warning_id": "BG001-A02-W006",
+        "scope": "local_structure",
+        "status": "UNRESOLVED",
+        "statement": "Pair-level confluence independence for local_structure against any candidate upstream (declared subject or non-subject input) is unresolved; no pair-specific fake-confluence warning is asserted because no lineage edge is established.",
+        "authority_evidence": [
+          {
+            "source_id": "bg001.protocol.research_rules",
+            "relative_path": "protocol/RESEARCH_RULES.md",
+            "locator": "rule 11",
+            "evidence_type": "PROTOCOL_RULE",
+            "supports": "If a detector derives from another object, the pairing is not automatically independent confluence."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "contracts",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "registry",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "authority",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+          }
+        ]
+      },
+      {
+        "warning_id": "BG001-A02-W007",
+        "scope": "order_blocks",
+        "status": "UNRESOLVED",
+        "statement": "Pair-level confluence independence for order_blocks against any candidate upstream (declared subject or non-subject input) is unresolved; no pair-specific fake-confluence warning is asserted because no lineage edge is established.",
+        "authority_evidence": [
+          {
+            "source_id": "bg001.protocol.research_rules",
+            "relative_path": "protocol/RESEARCH_RULES.md",
+            "locator": "rule 11",
+            "evidence_type": "PROTOCOL_RULE",
+            "supports": "If a detector derives from another object, the pairing is not automatically independent confluence."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "contracts",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "registry",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "authority",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+          }
+        ]
+      },
+      {
+        "warning_id": "BG001-A02-W008",
+        "scope": "micro_liquidity",
+        "status": "UNRESOLVED",
+        "statement": "Pair-level confluence independence for micro_liquidity against any candidate upstream (declared subject or non-subject input) is unresolved; no pair-specific fake-confluence warning is asserted because no lineage edge is established.",
+        "authority_evidence": [
+          {
+            "source_id": "bg001.protocol.research_rules",
+            "relative_path": "protocol/RESEARCH_RULES.md",
+            "locator": "rule 11",
+            "evidence_type": "PROTOCOL_RULE",
+            "supports": "If a detector derives from another object, the pairing is not automatically independent confluence."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "contracts",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "registry",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "authority",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+          }
+        ]
+      },
+      {
+        "warning_id": "BG001-A02-W009",
+        "scope": "micro_liquidity_context",
+        "status": "UNRESOLVED",
+        "statement": "Pair-level confluence independence for micro_liquidity_context against any candidate upstream (declared subject or non-subject input) is unresolved; no pair-specific fake-confluence warning is asserted because no lineage edge is established.",
+        "authority_evidence": [
+          {
+            "source_id": "bg001.protocol.research_rules",
+            "relative_path": "protocol/RESEARCH_RULES.md",
+            "locator": "rule 11",
+            "evidence_type": "PROTOCOL_RULE",
+            "supports": "If a detector derives from another object, the pairing is not automatically independent confluence."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "contracts",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "registry",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+          },
+          {
+            "source_id": "bg001.authority_surface",
+            "relative_path": "authority",
+            "locator": "directory listing",
+            "evidence_type": "ABSENCE_OF_ARTIFACT",
+            "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+          }
+        ]
+      }
+    ]
+  },
+  "edge_time_semantics": {
+    "applies_to": "any future accepted edge",
+    "required_distinctions": [
+      "upstream_occurrence_ts",
+      "upstream_known_ts",
+      "downstream_known_ts"
+    ],
+    "rule": "Occurrence time is provenance, not availability; a downstream known time must be independently evidenced and must never default to an upstream occurrence time. With edges=[], this template is currently vacuous."
+  },
+  "future_information_matrix": {
+    "scope": "Bar-scale payload families (the eight declared subjects)",
+    "authoritative_anchors": [
+      {
+        "anchor": "bar row time coordinates",
+        "fields": [
+          "bar_open_ts",
+          "bar_close_ts"
+        ],
+        "claim_id": "BG001-A02-C018"
+      },
+      {
+        "anchor": "no availability field on the Bar row surface",
+        "claim_id": "BG001-A02-C019"
+      },
+      {
+        "anchor": "causal clock rule",
+        "claim_id": "BG001-A02-C021"
+      },
+      {
+        "anchor": "lifecycle-first rule",
+        "claim_id": "BG001-A02-C022"
+      }
+    ],
+    "rows": [
+      {
+        "subject": "raw3",
+        "occurrence_time": "UNRESOLVED",
+        "known_time": "UNRESOLVED",
+        "bar_field_to_known_time_mapping": "UNRESOLVED",
+        "lifecycle_completion_to_earlier_state": "UNRESOLVED",
+        "upstream_id_retention": "UNRESOLVED",
+        "cross_scale_aggregation": "UNRESOLVED",
+        "dossier_claim_id": "BG001-A02-C010"
+      },
+      {
+        "subject": "range",
+        "occurrence_time": "UNRESOLVED",
+        "known_time": "UNRESOLVED",
+        "bar_field_to_known_time_mapping": "UNRESOLVED",
+        "lifecycle_completion_to_earlier_state": "UNRESOLVED",
+        "upstream_id_retention": "UNRESOLVED",
+        "cross_scale_aggregation": "UNRESOLVED",
+        "dossier_claim_id": "BG001-A02-C011"
+      },
+      {
+        "subject": "fvg",
+        "occurrence_time": "UNRESOLVED",
+        "known_time": "UNRESOLVED",
+        "bar_field_to_known_time_mapping": "UNRESOLVED",
+        "lifecycle_completion_to_earlier_state": "UNRESOLVED",
+        "upstream_id_retention": "UNRESOLVED",
+        "cross_scale_aggregation": "UNRESOLVED",
+        "dossier_claim_id": "BG001-A02-C012"
+      },
+      {
+        "subject": "bos_choch",
+        "occurrence_time": "UNRESOLVED",
+        "known_time": "UNRESOLVED",
+        "bar_field_to_known_time_mapping": "UNRESOLVED",
+        "lifecycle_completion_to_earlier_state": "UNRESOLVED",
+        "upstream_id_retention": "UNRESOLVED",
+        "cross_scale_aggregation": "UNRESOLVED",
+        "dossier_claim_id": "BG001-A02-C013"
+      },
+      {
+        "subject": "local_structure",
+        "occurrence_time": "UNRESOLVED",
+        "known_time": "UNRESOLVED",
+        "bar_field_to_known_time_mapping": "UNRESOLVED",
+        "lifecycle_completion_to_earlier_state": "UNRESOLVED",
+        "upstream_id_retention": "UNRESOLVED",
+        "cross_scale_aggregation": "UNRESOLVED",
+        "dossier_claim_id": "BG001-A02-C014"
+      },
+      {
+        "subject": "order_blocks",
+        "occurrence_time": "UNRESOLVED",
+        "known_time": "UNRESOLVED",
+        "bar_field_to_known_time_mapping": "UNRESOLVED",
+        "lifecycle_completion_to_earlier_state": "UNRESOLVED",
+        "upstream_id_retention": "UNRESOLVED",
+        "cross_scale_aggregation": "UNRESOLVED",
+        "dossier_claim_id": "BG001-A02-C015"
+      },
+      {
+        "subject": "micro_liquidity",
+        "occurrence_time": "UNRESOLVED",
+        "known_time": "UNRESOLVED",
+        "bar_field_to_known_time_mapping": "UNRESOLVED",
+        "lifecycle_completion_to_earlier_state": "UNRESOLVED",
+        "upstream_id_retention": "UNRESOLVED",
+        "cross_scale_aggregation": "UNRESOLVED",
+        "dossier_claim_id": "BG001-A02-C016"
+      },
+      {
+        "subject": "micro_liquidity_context",
+        "occurrence_time": "UNRESOLVED",
+        "known_time": "UNRESOLVED",
+        "bar_field_to_known_time_mapping": "UNRESOLVED",
+        "lifecycle_completion_to_earlier_state": "UNRESOLVED",
+        "upstream_id_retention": "UNRESOLVED",
+        "cross_scale_aggregation": "UNRESOLVED",
+        "dossier_claim_id": "BG001-A02-C017"
+      }
+    ],
+    "statement": "Specific bar-field future mappings remain unresolved without direct lifecycle authority.",
+    "notes": [
+      "Occurrence time is provenance and must not be treated as availability (BG001-A02-C021).",
+      "Future completion or termination of an object must not define an earlier-state cohort (BG001-A02-C022)."
+    ]
+  },
+  "claims": [
+    {
+      "claim_id": "BG001-A02-C001",
+      "subject": "program",
+      "claim_type": "AUTHORITY_SURFACE",
+      "statement": "Authorized and inspected surfaces for this role: protocol/RESEARCH_RULES.md, instruments/XAUUSD/instrument_config.json, and instruments/XAUUSD/source_inventory.json; the declared authority source id is xauusd.schemas; the contracts, registry, and authority surfaces contain no artifacts; raw-lake access and peer visibility are denied.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.assignment",
+          "relative_path": "assignment.json",
+          "locator": "access_profile=AUTHORITY; authority_source_ids=[xauusd.schemas]; raw_lake_access=DENY; peer_visibility=DENY",
+          "evidence_type": "ASSIGNMENT_DIRECTIVE",
+          "supports": "Defines the authorized surfaces, the declared authority source id, and the denial profile for this authority role."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "contracts",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "registry",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "authority",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C002",
+      "subject": "raw3",
+      "claim_type": "PHYSICAL_OUTPUT_SURFACE",
+      "statement": "Physical output surface of raw3: payload_raw3 is a nullable LargeUtf8 column present on Bar streams at scales 15s, 30s, 1m, 5m, 15m, 1h, 4h, with the schema verified across all 6 parts of each scale, and absent from the Tick source.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[Bar={15s,30s,1m,5m,15m,1h,4h}].physical_schema[name=payload_raw3] and .payload_columns; schema_verified_parts covers all 6 parts of each scale; sources[Tick].physical_schema contains no payload_raw3",
+          "evidence_type": "PHYSICAL_SCHEMA",
+          "supports": "payload_raw3 is a nullable LargeUtf8 output column present on all seven Bar scales and absent from the Tick source."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C003",
+      "subject": "range",
+      "claim_type": "PHYSICAL_OUTPUT_SURFACE",
+      "statement": "Physical output surface of range: payload_range is a nullable LargeUtf8 column present on Bar streams at scales 15s, 30s, 1m, 5m, 15m, 1h, 4h, with the schema verified across all 6 parts of each scale, and absent from the Tick source.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[Bar={15s,30s,1m,5m,15m,1h,4h}].physical_schema[name=payload_range] and .payload_columns; schema_verified_parts covers all 6 parts of each scale; sources[Tick].physical_schema contains no payload_range",
+          "evidence_type": "PHYSICAL_SCHEMA",
+          "supports": "payload_range is a nullable LargeUtf8 output column present on all seven Bar scales and absent from the Tick source."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C004",
+      "subject": "fvg",
+      "claim_type": "PHYSICAL_OUTPUT_SURFACE",
+      "statement": "Physical output surface of fvg: payload_fvg is a nullable LargeUtf8 column present on Bar streams at scales 15s, 30s, 1m, 5m, 15m, 1h, 4h, with the schema verified across all 6 parts of each scale, and absent from the Tick source.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[Bar={15s,30s,1m,5m,15m,1h,4h}].physical_schema[name=payload_fvg] and .payload_columns; schema_verified_parts covers all 6 parts of each scale; sources[Tick].physical_schema contains no payload_fvg",
+          "evidence_type": "PHYSICAL_SCHEMA",
+          "supports": "payload_fvg is a nullable LargeUtf8 output column present on all seven Bar scales and absent from the Tick source."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C005",
+      "subject": "bos_choch",
+      "claim_type": "PHYSICAL_OUTPUT_SURFACE",
+      "statement": "Physical output surface of bos_choch: payload_bos_choch is a nullable LargeUtf8 column present on Bar streams at scales 15s, 30s, 1m, 5m, 15m, 1h, 4h, with the schema verified across all 6 parts of each scale, and absent from the Tick source.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[Bar={15s,30s,1m,5m,15m,1h,4h}].physical_schema[name=payload_bos_choch] and .payload_columns; schema_verified_parts covers all 6 parts of each scale; sources[Tick].physical_schema contains no payload_bos_choch",
+          "evidence_type": "PHYSICAL_SCHEMA",
+          "supports": "payload_bos_choch is a nullable LargeUtf8 output column present on all seven Bar scales and absent from the Tick source."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C006",
+      "subject": "local_structure",
+      "claim_type": "PHYSICAL_OUTPUT_SURFACE",
+      "statement": "Physical output surface of local_structure: payload_local_structure is a nullable LargeUtf8 column present on Bar streams at scales 15s, 30s, 1m, 5m, 15m, 1h, 4h, with the schema verified across all 6 parts of each scale, and absent from the Tick source.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[Bar={15s,30s,1m,5m,15m,1h,4h}].physical_schema[name=payload_local_structure] and .payload_columns; schema_verified_parts covers all 6 parts of each scale; sources[Tick].physical_schema contains no payload_local_structure",
+          "evidence_type": "PHYSICAL_SCHEMA",
+          "supports": "payload_local_structure is a nullable LargeUtf8 output column present on all seven Bar scales and absent from the Tick source."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C007",
+      "subject": "order_blocks",
+      "claim_type": "PHYSICAL_OUTPUT_SURFACE",
+      "statement": "Physical output surface of order_blocks: payload_order_blocks is a nullable LargeUtf8 column present on Bar streams at scales 15s, 30s, 1m, 5m, 15m, 1h, 4h, with the schema verified across all 6 parts of each scale, and absent from the Tick source.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[Bar={15s,30s,1m,5m,15m,1h,4h}].physical_schema[name=payload_order_blocks] and .payload_columns; schema_verified_parts covers all 6 parts of each scale; sources[Tick].physical_schema contains no payload_order_blocks",
+          "evidence_type": "PHYSICAL_SCHEMA",
+          "supports": "payload_order_blocks is a nullable LargeUtf8 output column present on all seven Bar scales and absent from the Tick source."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C008",
+      "subject": "micro_liquidity",
+      "claim_type": "PHYSICAL_OUTPUT_SURFACE",
+      "statement": "Physical output surface of micro_liquidity: payload_micro_liquidity is a nullable LargeUtf8 column present on Bar streams at scales 15s, 30s, 1m, 5m, 15m, 1h, 4h, with the schema verified across all 6 parts of each scale, and absent from the Tick source.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[Bar={15s,30s,1m,5m,15m,1h,4h}].physical_schema[name=payload_micro_liquidity] and .payload_columns; schema_verified_parts covers all 6 parts of each scale; sources[Tick].physical_schema contains no payload_micro_liquidity",
+          "evidence_type": "PHYSICAL_SCHEMA",
+          "supports": "payload_micro_liquidity is a nullable LargeUtf8 output column present on all seven Bar scales and absent from the Tick source."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C009",
+      "subject": "micro_liquidity_context",
+      "claim_type": "PHYSICAL_OUTPUT_SURFACE",
+      "statement": "Physical output surface of micro_liquidity_context: payload_micro_liquidity_context is a nullable LargeUtf8 column present on Bar streams at scales 15s, 30s, 1m, 5m, 15m, 1h, 4h, with the schema verified across all 6 parts of each scale, and absent from the Tick source.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[Bar={15s,30s,1m,5m,15m,1h,4h}].physical_schema[name=payload_micro_liquidity_context] and .payload_columns; schema_verified_parts covers all 6 parts of each scale; sources[Tick].physical_schema contains no payload_micro_liquidity_context",
+          "evidence_type": "PHYSICAL_SCHEMA",
+          "supports": "payload_micro_liquidity_context is a nullable LargeUtf8 output column present on all seven Bar scales and absent from the Tick source."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C010",
+      "subject": "raw3",
+      "claim_type": "FAMILY_LINEAGE_DOSSIER",
+      "statement": "All lineage aspects of raw3 beyond its physical output surface are unresolved on the authorized surfaces: producer raw inputs, upstream detector inputs, object ids, retained upstream/source ids, occurrence timestamps, known/availability timestamps, lifecycle semantics, content-level duplication or repackaging, and information ancestry.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.assignment",
+          "relative_path": "assignment.json",
+          "locator": "access_profile=AUTHORITY; authority_source_ids=[xauusd.schemas]; raw_lake_access=DENY; peer_visibility=DENY",
+          "evidence_type": "ASSIGNMENT_DIRECTIVE",
+          "supports": "Defines the authorized surfaces, the declared authority source id, and the denial profile for this authority role."
+        },
+        {
+          "source_id": "bg001.protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "PROTOCOL_RULE",
+          "supports": "At anchor time t only information actually available by t is eligible; occurrence and origin timestamps remain provenance."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "contracts",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "registry",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "authority",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+        },
+        {
+          "source_id": "xauusd.instrument_config",
+          "relative_path": "instruments/XAUUSD/instrument_config.json",
+          "locator": "manifest; payload_manifest",
+          "evidence_type": "AUTHORIZED_SURFACE_FIELD",
+          "supports": "The instrument configuration references a source manifest and a payload manifest by filename; the content of neither manifest is present on authorized surfaces."
+        },
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "source_manifest_identity; payload_manifest_identity",
+          "evidence_type": "MANIFEST_IDENTITY_ONLY",
+          "supports": "Only content-hash identities of the source manifest and the payload manifest are available; payload object content schemas are not available on authorized surfaces."
+        }
+      ],
+      "aspects": {
+        "producer_raw_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority on any authorized surface establishes the raw inputs consumed by the raw3 producer; the payload column proves the output surface only (principle P1)."
+        },
+        "upstream_detector_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether the raw3 producer consumes outputs of other detector families; candidate upstreams inside and outside the declared subject set are equally unevidenced."
+        },
+        "object_ids": {
+          "status": "UNRESOLVED",
+          "note": "The object identifier scheme for raw3 objects inside the payload content is not available on authorized surfaces; only the physical column and manifest identity hashes exist."
+        },
+        "retained_upstream_source_ids": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether raw3 objects retain upstream or source identifiers inside the payload content."
+        },
+        "occurrence_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "Only the physical row coordinates bar_open_ts and bar_close_ts exist on the Bar surface (BG001-A02-C018); per-object occurrence semantics for raw3 inside the payload content are unresolved; occurrence time is provenance, not availability."
+        },
+        "known_availability_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "No availability or known-at field exists on the Bar row surface (BG001-A02-C019); the known-time semantics of raw3 objects are unresolved."
+        },
+        "lifecycle_semantics": {
+          "status": "UNRESOLVED",
+          "note": "The raw3 lifecycle semantics needed for lineage (formation, activation, invalidation, completion, termination) are unresolved; the lifecycle-first rule binds any future reconstruction (BG001-A02-C022)."
+        },
+        "duplication_repackaging": {
+          "status": "UNRESOLVED",
+          "note": "Surface-level duplication of payload_raw3 across the seven Bar scales is authoritative (BG001-A02-C026); whether content is independently computed, shared, or repackaged within or across scales is unresolved; within-row object multiplicity is unresolved."
+        },
+        "information_ancestry": {
+          "status": "UNRESOLVED",
+          "note": "The only ancestry directly evidenced for raw3 is physical serialization into its own payload column on a bar row; all informational ancestry is unresolved (BG001-A02-C024)."
+        },
+        "unresolved_lineage": {
+          "status": "UNRESOLVED",
+          "note": "All typed lineage relations for raw3 are unresolved and are recorded as relationship questions; candidate upstreams outside the declared subject set are not representable as graph nodes or pairs and remain unresolved."
+        }
+      }
+    },
+    {
+      "claim_id": "BG001-A02-C011",
+      "subject": "range",
+      "claim_type": "FAMILY_LINEAGE_DOSSIER",
+      "statement": "All lineage aspects of range beyond its physical output surface are unresolved on the authorized surfaces: producer raw inputs, upstream detector inputs, object ids, retained upstream/source ids, occurrence timestamps, known/availability timestamps, lifecycle semantics, content-level duplication or repackaging, and information ancestry.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.assignment",
+          "relative_path": "assignment.json",
+          "locator": "access_profile=AUTHORITY; authority_source_ids=[xauusd.schemas]; raw_lake_access=DENY; peer_visibility=DENY",
+          "evidence_type": "ASSIGNMENT_DIRECTIVE",
+          "supports": "Defines the authorized surfaces, the declared authority source id, and the denial profile for this authority role."
+        },
+        {
+          "source_id": "bg001.protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "PROTOCOL_RULE",
+          "supports": "At anchor time t only information actually available by t is eligible; occurrence and origin timestamps remain provenance."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "contracts",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "registry",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "authority",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+        },
+        {
+          "source_id": "xauusd.instrument_config",
+          "relative_path": "instruments/XAUUSD/instrument_config.json",
+          "locator": "manifest; payload_manifest",
+          "evidence_type": "AUTHORIZED_SURFACE_FIELD",
+          "supports": "The instrument configuration references a source manifest and a payload manifest by filename; the content of neither manifest is present on authorized surfaces."
+        },
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "source_manifest_identity; payload_manifest_identity",
+          "evidence_type": "MANIFEST_IDENTITY_ONLY",
+          "supports": "Only content-hash identities of the source manifest and the payload manifest are available; payload object content schemas are not available on authorized surfaces."
+        }
+      ],
+      "aspects": {
+        "producer_raw_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority on any authorized surface establishes the raw inputs consumed by the range producer; the payload column proves the output surface only (principle P1)."
+        },
+        "upstream_detector_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether the range producer consumes outputs of other detector families; candidate upstreams inside and outside the declared subject set are equally unevidenced."
+        },
+        "object_ids": {
+          "status": "UNRESOLVED",
+          "note": "The object identifier scheme for range objects inside the payload content is not available on authorized surfaces; only the physical column and manifest identity hashes exist."
+        },
+        "retained_upstream_source_ids": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether range objects retain upstream or source identifiers inside the payload content."
+        },
+        "occurrence_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "Only the physical row coordinates bar_open_ts and bar_close_ts exist on the Bar surface (BG001-A02-C018); per-object occurrence semantics for range inside the payload content are unresolved; occurrence time is provenance, not availability."
+        },
+        "known_availability_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "No availability or known-at field exists on the Bar row surface (BG001-A02-C019); the known-time semantics of range objects are unresolved."
+        },
+        "lifecycle_semantics": {
+          "status": "UNRESOLVED",
+          "note": "The range lifecycle semantics needed for lineage (formation, activation, invalidation, completion, termination) are unresolved; the lifecycle-first rule binds any future reconstruction (BG001-A02-C022)."
+        },
+        "duplication_repackaging": {
+          "status": "UNRESOLVED",
+          "note": "Surface-level duplication of payload_range across the seven Bar scales is authoritative (BG001-A02-C026); whether content is independently computed, shared, or repackaged within or across scales is unresolved; within-row object multiplicity is unresolved."
+        },
+        "information_ancestry": {
+          "status": "UNRESOLVED",
+          "note": "The only ancestry directly evidenced for range is physical serialization into its own payload column on a bar row; all informational ancestry is unresolved (BG001-A02-C024)."
+        },
+        "unresolved_lineage": {
+          "status": "UNRESOLVED",
+          "note": "All typed lineage relations for range are unresolved and are recorded as relationship questions; candidate upstreams outside the declared subject set are not representable as graph nodes or pairs and remain unresolved."
+        }
+      }
+    },
+    {
+      "claim_id": "BG001-A02-C012",
+      "subject": "fvg",
+      "claim_type": "FAMILY_LINEAGE_DOSSIER",
+      "statement": "All lineage aspects of fvg beyond its physical output surface are unresolved on the authorized surfaces: producer raw inputs, upstream detector inputs, object ids, retained upstream/source ids, occurrence timestamps, known/availability timestamps, lifecycle semantics, content-level duplication or repackaging, and information ancestry.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.assignment",
+          "relative_path": "assignment.json",
+          "locator": "access_profile=AUTHORITY; authority_source_ids=[xauusd.schemas]; raw_lake_access=DENY; peer_visibility=DENY",
+          "evidence_type": "ASSIGNMENT_DIRECTIVE",
+          "supports": "Defines the authorized surfaces, the declared authority source id, and the denial profile for this authority role."
+        },
+        {
+          "source_id": "bg001.protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "PROTOCOL_RULE",
+          "supports": "At anchor time t only information actually available by t is eligible; occurrence and origin timestamps remain provenance."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "contracts",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "registry",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "authority",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+        },
+        {
+          "source_id": "xauusd.instrument_config",
+          "relative_path": "instruments/XAUUSD/instrument_config.json",
+          "locator": "manifest; payload_manifest",
+          "evidence_type": "AUTHORIZED_SURFACE_FIELD",
+          "supports": "The instrument configuration references a source manifest and a payload manifest by filename; the content of neither manifest is present on authorized surfaces."
+        },
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "source_manifest_identity; payload_manifest_identity",
+          "evidence_type": "MANIFEST_IDENTITY_ONLY",
+          "supports": "Only content-hash identities of the source manifest and the payload manifest are available; payload object content schemas are not available on authorized surfaces."
+        }
+      ],
+      "aspects": {
+        "producer_raw_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority on any authorized surface establishes the raw inputs consumed by the fvg producer; the payload column proves the output surface only (principle P1)."
+        },
+        "upstream_detector_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether the fvg producer consumes outputs of other detector families; candidate upstreams inside and outside the declared subject set are equally unevidenced."
+        },
+        "object_ids": {
+          "status": "UNRESOLVED",
+          "note": "The object identifier scheme for fvg objects inside the payload content is not available on authorized surfaces; only the physical column and manifest identity hashes exist."
+        },
+        "retained_upstream_source_ids": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether fvg objects retain upstream or source identifiers inside the payload content."
+        },
+        "occurrence_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "Only the physical row coordinates bar_open_ts and bar_close_ts exist on the Bar surface (BG001-A02-C018); per-object occurrence semantics for fvg inside the payload content are unresolved; occurrence time is provenance, not availability."
+        },
+        "known_availability_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "No availability or known-at field exists on the Bar row surface (BG001-A02-C019); the known-time semantics of fvg objects are unresolved."
+        },
+        "lifecycle_semantics": {
+          "status": "UNRESOLVED",
+          "note": "The fvg lifecycle semantics needed for lineage (formation, activation, invalidation, completion, termination) are unresolved; the lifecycle-first rule binds any future reconstruction (BG001-A02-C022)."
+        },
+        "duplication_repackaging": {
+          "status": "UNRESOLVED",
+          "note": "Surface-level duplication of payload_fvg across the seven Bar scales is authoritative (BG001-A02-C026); whether content is independently computed, shared, or repackaged within or across scales is unresolved; within-row object multiplicity is unresolved."
+        },
+        "information_ancestry": {
+          "status": "UNRESOLVED",
+          "note": "The only ancestry directly evidenced for fvg is physical serialization into its own payload column on a bar row; all informational ancestry is unresolved (BG001-A02-C024)."
+        },
+        "unresolved_lineage": {
+          "status": "UNRESOLVED",
+          "note": "All typed lineage relations for fvg are unresolved and are recorded as relationship questions; candidate upstreams outside the declared subject set are not representable as graph nodes or pairs and remain unresolved."
+        }
+      }
+    },
+    {
+      "claim_id": "BG001-A02-C013",
+      "subject": "bos_choch",
+      "claim_type": "FAMILY_LINEAGE_DOSSIER",
+      "statement": "All lineage aspects of bos_choch beyond its physical output surface are unresolved on the authorized surfaces: producer raw inputs, upstream detector inputs, object ids, retained upstream/source ids, occurrence timestamps, known/availability timestamps, lifecycle semantics, content-level duplication or repackaging, and information ancestry.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.assignment",
+          "relative_path": "assignment.json",
+          "locator": "access_profile=AUTHORITY; authority_source_ids=[xauusd.schemas]; raw_lake_access=DENY; peer_visibility=DENY",
+          "evidence_type": "ASSIGNMENT_DIRECTIVE",
+          "supports": "Defines the authorized surfaces, the declared authority source id, and the denial profile for this authority role."
+        },
+        {
+          "source_id": "bg001.protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "PROTOCOL_RULE",
+          "supports": "At anchor time t only information actually available by t is eligible; occurrence and origin timestamps remain provenance."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "contracts",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "registry",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "authority",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+        },
+        {
+          "source_id": "xauusd.instrument_config",
+          "relative_path": "instruments/XAUUSD/instrument_config.json",
+          "locator": "manifest; payload_manifest",
+          "evidence_type": "AUTHORIZED_SURFACE_FIELD",
+          "supports": "The instrument configuration references a source manifest and a payload manifest by filename; the content of neither manifest is present on authorized surfaces."
+        },
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "source_manifest_identity; payload_manifest_identity",
+          "evidence_type": "MANIFEST_IDENTITY_ONLY",
+          "supports": "Only content-hash identities of the source manifest and the payload manifest are available; payload object content schemas are not available on authorized surfaces."
+        }
+      ],
+      "aspects": {
+        "producer_raw_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority on any authorized surface establishes the raw inputs consumed by the bos_choch producer; the payload column proves the output surface only (principle P1)."
+        },
+        "upstream_detector_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether the bos_choch producer consumes outputs of other detector families; candidate upstreams inside and outside the declared subject set are equally unevidenced."
+        },
+        "object_ids": {
+          "status": "UNRESOLVED",
+          "note": "The object identifier scheme for bos_choch objects inside the payload content is not available on authorized surfaces; only the physical column and manifest identity hashes exist."
+        },
+        "retained_upstream_source_ids": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether bos_choch objects retain upstream or source identifiers inside the payload content."
+        },
+        "occurrence_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "Only the physical row coordinates bar_open_ts and bar_close_ts exist on the Bar surface (BG001-A02-C018); per-object occurrence semantics for bos_choch inside the payload content are unresolved; occurrence time is provenance, not availability."
+        },
+        "known_availability_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "No availability or known-at field exists on the Bar row surface (BG001-A02-C019); the known-time semantics of bos_choch objects are unresolved."
+        },
+        "lifecycle_semantics": {
+          "status": "UNRESOLVED",
+          "note": "The bos_choch lifecycle semantics needed for lineage (formation, activation, invalidation, completion, termination) are unresolved; the lifecycle-first rule binds any future reconstruction (BG001-A02-C022)."
+        },
+        "duplication_repackaging": {
+          "status": "UNRESOLVED",
+          "note": "Surface-level duplication of payload_bos_choch across the seven Bar scales is authoritative (BG001-A02-C026); whether content is independently computed, shared, or repackaged within or across scales is unresolved; within-row object multiplicity is unresolved."
+        },
+        "information_ancestry": {
+          "status": "UNRESOLVED",
+          "note": "The only ancestry directly evidenced for bos_choch is physical serialization into its own payload column on a bar row; all informational ancestry is unresolved (BG001-A02-C024)."
+        },
+        "unresolved_lineage": {
+          "status": "UNRESOLVED",
+          "note": "All typed lineage relations for bos_choch are unresolved and are recorded as relationship questions; candidate upstreams outside the declared subject set are not representable as graph nodes or pairs and remain unresolved."
+        }
+      }
+    },
+    {
+      "claim_id": "BG001-A02-C014",
+      "subject": "local_structure",
+      "claim_type": "FAMILY_LINEAGE_DOSSIER",
+      "statement": "All lineage aspects of local_structure beyond its physical output surface are unresolved on the authorized surfaces: producer raw inputs, upstream detector inputs, object ids, retained upstream/source ids, occurrence timestamps, known/availability timestamps, lifecycle semantics, content-level duplication or repackaging, and information ancestry.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.assignment",
+          "relative_path": "assignment.json",
+          "locator": "access_profile=AUTHORITY; authority_source_ids=[xauusd.schemas]; raw_lake_access=DENY; peer_visibility=DENY",
+          "evidence_type": "ASSIGNMENT_DIRECTIVE",
+          "supports": "Defines the authorized surfaces, the declared authority source id, and the denial profile for this authority role."
+        },
+        {
+          "source_id": "bg001.protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "PROTOCOL_RULE",
+          "supports": "At anchor time t only information actually available by t is eligible; occurrence and origin timestamps remain provenance."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "contracts",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "registry",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "authority",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+        },
+        {
+          "source_id": "xauusd.instrument_config",
+          "relative_path": "instruments/XAUUSD/instrument_config.json",
+          "locator": "manifest; payload_manifest",
+          "evidence_type": "AUTHORIZED_SURFACE_FIELD",
+          "supports": "The instrument configuration references a source manifest and a payload manifest by filename; the content of neither manifest is present on authorized surfaces."
+        },
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "source_manifest_identity; payload_manifest_identity",
+          "evidence_type": "MANIFEST_IDENTITY_ONLY",
+          "supports": "Only content-hash identities of the source manifest and the payload manifest are available; payload object content schemas are not available on authorized surfaces."
+        }
+      ],
+      "aspects": {
+        "producer_raw_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority on any authorized surface establishes the raw inputs consumed by the local_structure producer; the payload column proves the output surface only (principle P1)."
+        },
+        "upstream_detector_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether the local_structure producer consumes outputs of other detector families; candidate upstreams inside and outside the declared subject set are equally unevidenced."
+        },
+        "object_ids": {
+          "status": "UNRESOLVED",
+          "note": "The object identifier scheme for local_structure objects inside the payload content is not available on authorized surfaces; only the physical column and manifest identity hashes exist."
+        },
+        "retained_upstream_source_ids": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether local_structure objects retain upstream or source identifiers inside the payload content."
+        },
+        "occurrence_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "Only the physical row coordinates bar_open_ts and bar_close_ts exist on the Bar surface (BG001-A02-C018); per-object occurrence semantics for local_structure inside the payload content are unresolved; occurrence time is provenance, not availability."
+        },
+        "known_availability_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "No availability or known-at field exists on the Bar row surface (BG001-A02-C019); the known-time semantics of local_structure objects are unresolved."
+        },
+        "lifecycle_semantics": {
+          "status": "UNRESOLVED",
+          "note": "The local_structure lifecycle semantics needed for lineage (formation, activation, invalidation, completion, termination) are unresolved; the lifecycle-first rule binds any future reconstruction (BG001-A02-C022)."
+        },
+        "duplication_repackaging": {
+          "status": "UNRESOLVED",
+          "note": "Surface-level duplication of payload_local_structure across the seven Bar scales is authoritative (BG001-A02-C026); whether content is independently computed, shared, or repackaged within or across scales is unresolved; within-row object multiplicity is unresolved."
+        },
+        "information_ancestry": {
+          "status": "UNRESOLVED",
+          "note": "The only ancestry directly evidenced for local_structure is physical serialization into its own payload column on a bar row; all informational ancestry is unresolved (BG001-A02-C024)."
+        },
+        "unresolved_lineage": {
+          "status": "UNRESOLVED",
+          "note": "All typed lineage relations for local_structure are unresolved and are recorded as relationship questions; candidate upstreams outside the declared subject set are not representable as graph nodes or pairs and remain unresolved."
+        }
+      }
+    },
+    {
+      "claim_id": "BG001-A02-C015",
+      "subject": "order_blocks",
+      "claim_type": "FAMILY_LINEAGE_DOSSIER",
+      "statement": "All lineage aspects of order_blocks beyond its physical output surface are unresolved on the authorized surfaces: producer raw inputs, upstream detector inputs, object ids, retained upstream/source ids, occurrence timestamps, known/availability timestamps, lifecycle semantics, content-level duplication or repackaging, and information ancestry.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.assignment",
+          "relative_path": "assignment.json",
+          "locator": "access_profile=AUTHORITY; authority_source_ids=[xauusd.schemas]; raw_lake_access=DENY; peer_visibility=DENY",
+          "evidence_type": "ASSIGNMENT_DIRECTIVE",
+          "supports": "Defines the authorized surfaces, the declared authority source id, and the denial profile for this authority role."
+        },
+        {
+          "source_id": "bg001.protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "PROTOCOL_RULE",
+          "supports": "At anchor time t only information actually available by t is eligible; occurrence and origin timestamps remain provenance."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "contracts",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "registry",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "authority",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+        },
+        {
+          "source_id": "xauusd.instrument_config",
+          "relative_path": "instruments/XAUUSD/instrument_config.json",
+          "locator": "manifest; payload_manifest",
+          "evidence_type": "AUTHORIZED_SURFACE_FIELD",
+          "supports": "The instrument configuration references a source manifest and a payload manifest by filename; the content of neither manifest is present on authorized surfaces."
+        },
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "source_manifest_identity; payload_manifest_identity",
+          "evidence_type": "MANIFEST_IDENTITY_ONLY",
+          "supports": "Only content-hash identities of the source manifest and the payload manifest are available; payload object content schemas are not available on authorized surfaces."
+        }
+      ],
+      "aspects": {
+        "producer_raw_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority on any authorized surface establishes the raw inputs consumed by the order_blocks producer; the payload column proves the output surface only (principle P1)."
+        },
+        "upstream_detector_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether the order_blocks producer consumes outputs of other detector families; candidate upstreams inside and outside the declared subject set are equally unevidenced."
+        },
+        "object_ids": {
+          "status": "UNRESOLVED",
+          "note": "The object identifier scheme for order_blocks objects inside the payload content is not available on authorized surfaces; only the physical column and manifest identity hashes exist."
+        },
+        "retained_upstream_source_ids": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether order_blocks objects retain upstream or source identifiers inside the payload content."
+        },
+        "occurrence_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "Only the physical row coordinates bar_open_ts and bar_close_ts exist on the Bar surface (BG001-A02-C018); per-object occurrence semantics for order_blocks inside the payload content are unresolved; occurrence time is provenance, not availability."
+        },
+        "known_availability_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "No availability or known-at field exists on the Bar row surface (BG001-A02-C019); the known-time semantics of order_blocks objects are unresolved."
+        },
+        "lifecycle_semantics": {
+          "status": "UNRESOLVED",
+          "note": "The order_blocks lifecycle semantics needed for lineage (formation, activation, invalidation, completion, termination) are unresolved; the lifecycle-first rule binds any future reconstruction (BG001-A02-C022)."
+        },
+        "duplication_repackaging": {
+          "status": "UNRESOLVED",
+          "note": "Surface-level duplication of payload_order_blocks across the seven Bar scales is authoritative (BG001-A02-C026); whether content is independently computed, shared, or repackaged within or across scales is unresolved; within-row object multiplicity is unresolved."
+        },
+        "information_ancestry": {
+          "status": "UNRESOLVED",
+          "note": "The only ancestry directly evidenced for order_blocks is physical serialization into its own payload column on a bar row; all informational ancestry is unresolved (BG001-A02-C024)."
+        },
+        "unresolved_lineage": {
+          "status": "UNRESOLVED",
+          "note": "All typed lineage relations for order_blocks are unresolved and are recorded as relationship questions; candidate upstreams outside the declared subject set are not representable as graph nodes or pairs and remain unresolved."
+        }
+      }
+    },
+    {
+      "claim_id": "BG001-A02-C016",
+      "subject": "micro_liquidity",
+      "claim_type": "FAMILY_LINEAGE_DOSSIER",
+      "statement": "All lineage aspects of micro_liquidity beyond its physical output surface are unresolved on the authorized surfaces: producer raw inputs, upstream detector inputs, object ids, retained upstream/source ids, occurrence timestamps, known/availability timestamps, lifecycle semantics, content-level duplication or repackaging, and information ancestry.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.assignment",
+          "relative_path": "assignment.json",
+          "locator": "access_profile=AUTHORITY; authority_source_ids=[xauusd.schemas]; raw_lake_access=DENY; peer_visibility=DENY",
+          "evidence_type": "ASSIGNMENT_DIRECTIVE",
+          "supports": "Defines the authorized surfaces, the declared authority source id, and the denial profile for this authority role."
+        },
+        {
+          "source_id": "bg001.protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "PROTOCOL_RULE",
+          "supports": "At anchor time t only information actually available by t is eligible; occurrence and origin timestamps remain provenance."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "contracts",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "registry",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "authority",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+        },
+        {
+          "source_id": "xauusd.instrument_config",
+          "relative_path": "instruments/XAUUSD/instrument_config.json",
+          "locator": "manifest; payload_manifest",
+          "evidence_type": "AUTHORIZED_SURFACE_FIELD",
+          "supports": "The instrument configuration references a source manifest and a payload manifest by filename; the content of neither manifest is present on authorized surfaces."
+        },
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "source_manifest_identity; payload_manifest_identity",
+          "evidence_type": "MANIFEST_IDENTITY_ONLY",
+          "supports": "Only content-hash identities of the source manifest and the payload manifest are available; payload object content schemas are not available on authorized surfaces."
+        }
+      ],
+      "aspects": {
+        "producer_raw_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority on any authorized surface establishes the raw inputs consumed by the micro_liquidity producer; the payload column proves the output surface only (principle P1)."
+        },
+        "upstream_detector_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether the micro_liquidity producer consumes outputs of other detector families; candidate upstreams inside and outside the declared subject set are equally unevidenced."
+        },
+        "object_ids": {
+          "status": "UNRESOLVED",
+          "note": "The object identifier scheme for micro_liquidity objects inside the payload content is not available on authorized surfaces; only the physical column and manifest identity hashes exist."
+        },
+        "retained_upstream_source_ids": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether micro_liquidity objects retain upstream or source identifiers inside the payload content."
+        },
+        "occurrence_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "Only the physical row coordinates bar_open_ts and bar_close_ts exist on the Bar surface (BG001-A02-C018); per-object occurrence semantics for micro_liquidity inside the payload content are unresolved; occurrence time is provenance, not availability."
+        },
+        "known_availability_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "No availability or known-at field exists on the Bar row surface (BG001-A02-C019); the known-time semantics of micro_liquidity objects are unresolved."
+        },
+        "lifecycle_semantics": {
+          "status": "UNRESOLVED",
+          "note": "The micro_liquidity lifecycle semantics needed for lineage (formation, activation, invalidation, completion, termination) are unresolved; the lifecycle-first rule binds any future reconstruction (BG001-A02-C022)."
+        },
+        "duplication_repackaging": {
+          "status": "UNRESOLVED",
+          "note": "Surface-level duplication of payload_micro_liquidity across the seven Bar scales is authoritative (BG001-A02-C026); whether content is independently computed, shared, or repackaged within or across scales is unresolved; within-row object multiplicity is unresolved."
+        },
+        "information_ancestry": {
+          "status": "UNRESOLVED",
+          "note": "The only ancestry directly evidenced for micro_liquidity is physical serialization into its own payload column on a bar row; all informational ancestry is unresolved (BG001-A02-C024)."
+        },
+        "unresolved_lineage": {
+          "status": "UNRESOLVED",
+          "note": "All typed lineage relations for micro_liquidity are unresolved and are recorded as relationship questions; candidate upstreams outside the declared subject set are not representable as graph nodes or pairs and remain unresolved."
+        }
+      }
+    },
+    {
+      "claim_id": "BG001-A02-C017",
+      "subject": "micro_liquidity_context",
+      "claim_type": "FAMILY_LINEAGE_DOSSIER",
+      "statement": "All lineage aspects of micro_liquidity_context beyond its physical output surface are unresolved on the authorized surfaces: producer raw inputs, upstream detector inputs, object ids, retained upstream/source ids, occurrence timestamps, known/availability timestamps, lifecycle semantics, content-level duplication or repackaging, and information ancestry.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.assignment",
+          "relative_path": "assignment.json",
+          "locator": "access_profile=AUTHORITY; authority_source_ids=[xauusd.schemas]; raw_lake_access=DENY; peer_visibility=DENY",
+          "evidence_type": "ASSIGNMENT_DIRECTIVE",
+          "supports": "Defines the authorized surfaces, the declared authority source id, and the denial profile for this authority role."
+        },
+        {
+          "source_id": "bg001.protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "PROTOCOL_RULE",
+          "supports": "At anchor time t only information actually available by t is eligible; occurrence and origin timestamps remain provenance."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "contracts",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "registry",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "authority",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+        },
+        {
+          "source_id": "xauusd.instrument_config",
+          "relative_path": "instruments/XAUUSD/instrument_config.json",
+          "locator": "manifest; payload_manifest",
+          "evidence_type": "AUTHORIZED_SURFACE_FIELD",
+          "supports": "The instrument configuration references a source manifest and a payload manifest by filename; the content of neither manifest is present on authorized surfaces."
+        },
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "source_manifest_identity; payload_manifest_identity",
+          "evidence_type": "MANIFEST_IDENTITY_ONLY",
+          "supports": "Only content-hash identities of the source manifest and the payload manifest are available; payload object content schemas are not available on authorized surfaces."
+        }
+      ],
+      "aspects": {
+        "producer_raw_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority on any authorized surface establishes the raw inputs consumed by the micro_liquidity_context producer; the payload column proves the output surface only (principle P1)."
+        },
+        "upstream_detector_inputs": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether the micro_liquidity_context producer consumes outputs of other detector families; candidate upstreams inside and outside the declared subject set are equally unevidenced."
+        },
+        "object_ids": {
+          "status": "UNRESOLVED",
+          "note": "The object identifier scheme for micro_liquidity_context objects inside the payload content is not available on authorized surfaces; only the physical column and manifest identity hashes exist."
+        },
+        "retained_upstream_source_ids": {
+          "status": "UNRESOLVED",
+          "note": "No authority establishes whether micro_liquidity_context objects retain upstream or source identifiers inside the payload content."
+        },
+        "occurrence_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "Only the physical row coordinates bar_open_ts and bar_close_ts exist on the Bar surface (BG001-A02-C018); per-object occurrence semantics for micro_liquidity_context inside the payload content are unresolved; occurrence time is provenance, not availability."
+        },
+        "known_availability_timestamps": {
+          "status": "UNRESOLVED",
+          "note": "No availability or known-at field exists on the Bar row surface (BG001-A02-C019); the known-time semantics of micro_liquidity_context objects are unresolved."
+        },
+        "lifecycle_semantics": {
+          "status": "UNRESOLVED",
+          "note": "The micro_liquidity_context lifecycle semantics needed for lineage (formation, activation, invalidation, completion, termination) are unresolved; the lifecycle-first rule binds any future reconstruction (BG001-A02-C022)."
+        },
+        "duplication_repackaging": {
+          "status": "UNRESOLVED",
+          "note": "Surface-level duplication of payload_micro_liquidity_context across the seven Bar scales is authoritative (BG001-A02-C026); whether content is independently computed, shared, or repackaged within or across scales is unresolved; within-row object multiplicity is unresolved."
+        },
+        "information_ancestry": {
+          "status": "UNRESOLVED",
+          "note": "The only ancestry directly evidenced for micro_liquidity_context is physical serialization into its own payload column on a bar row; all informational ancestry is unresolved (BG001-A02-C024)."
+        },
+        "unresolved_lineage": {
+          "status": "UNRESOLVED",
+          "note": "All typed lineage relations for micro_liquidity_context are unresolved and are recorded as relationship questions; candidate upstreams outside the declared subject set are not representable as graph nodes or pairs and remain unresolved."
+        }
+      }
+    },
+    {
+      "claim_id": "BG001-A02-C018",
+      "subject": "program",
+      "claim_type": "PHYSICAL_TIME_COORDINATES",
+      "statement": "Bar rows carry exactly two physical time coordinate fields, bar_open_ts and bar_close_ts, at every Bar scale (15s, 30s, 1m, 5m, 15m, 1h, 4h).",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[Bar=*].physical_time_coordinate_fields",
+          "evidence_type": "PHYSICAL_SCHEMA",
+          "supports": "bar_open_ts and bar_close_ts are the only physical time coordinate fields on Bar rows."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C019",
+      "subject": "program",
+      "claim_type": "AVAILABILITY_FIELD_ABSENCE",
+      "statement": "No known-at, available-at, receipt-time, or other availability field exists anywhere in the Bar-row physical schema; the two time coordinate fields are the complete set of physical time fields.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[Bar=*].physical_time_coordinate_fields and .physical_schema",
+          "evidence_type": "PHYSICAL_SCHEMA",
+          "supports": "The enumerated time coordinate fields are exactly two and the physical schema lists every column; no known-at, available-at, or receipt-time field exists."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C020",
+      "subject": "program",
+      "claim_type": "TICK_TIME_COORDINATES",
+      "statement": "The Tick source carries exactly two physical time coordinate fields, event_ts_ns and received_ts_ns; received_ts_ns is the only physical receipt-time coordinate on any authorized surface.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[Tick].physical_time_coordinate_fields",
+          "evidence_type": "PHYSICAL_SCHEMA",
+          "supports": "event_ts_ns and received_ts_ns are the only physical time coordinate fields on Tick events."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C021",
+      "subject": "program",
+      "claim_type": "CAUSAL_CLOCK_RULE",
+      "statement": "One causal information clock: at anchor time t only information actually available by t is eligible; occurrence and origin timestamps remain provenance and are not availability.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "PROTOCOL_RULE",
+          "supports": "At anchor time t only information actually available by t is eligible; occurrence and origin timestamps remain provenance."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C022",
+      "subject": "program",
+      "claim_type": "LIFECYCLE_FIRST_RULE",
+      "statement": "Lifecycle-first: future completion or termination of an object cannot define an earlier-state cohort; completed status may only be a later outcome or a later anchor.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 4",
+          "evidence_type": "PROTOCOL_RULE",
+          "supports": "Future completion or termination cannot define an earlier-state cohort; completed may only be a later outcome or a later anchor."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C023",
+      "subject": "program",
+      "claim_type": "INDEPENDENCE_RULE",
+      "statement": "If a detector derives from another object, the pairing is not automatically independent confluence; a derived object plus its upstream object must not be scored as two independent signals without an approved independence basis.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 11",
+          "evidence_type": "PROTOCOL_RULE",
+          "supports": "If a detector derives from another object, the pairing is not automatically independent confluence."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C024",
+      "subject": "program",
+      "claim_type": "SCHEMA_COLOCATION",
+      "statement": "Schema-level co-location: on every Bar scale the studied payload columns are serialized on the same physical bar row as the identity, time-coordinate, and OHLCV fields; co-location of output surfaces establishes no object-level lineage, no object-level co-occurrence, and no confluence, and no accepted edge type expresses co-location.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[Bar=15m].physical_schema (identical arrangement at all seven Bar scales)",
+          "evidence_type": "PHYSICAL_SCHEMA",
+          "supports": "The payload columns are serialized on the same physical bar row as instrument_id, bar_open_ts, bar_close_ts, and the OHLCV fields."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C025",
+      "subject": "program",
+      "claim_type": "EDGE_DECISION",
+      "statement": "Edge decision: no typed relationship between any pair of declared subjects is directly established by authority on the authorized surfaces; graph.edges is empty and every candidate lineage pair is recorded as an UNRESOLVED_RELATIONSHIP question.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.assignment",
+          "relative_path": "assignment.json",
+          "locator": "access_profile=AUTHORITY; authority_source_ids=[xauusd.schemas]; raw_lake_access=DENY; peer_visibility=DENY",
+          "evidence_type": "ASSIGNMENT_DIRECTIVE",
+          "supports": "Defines the authorized surfaces, the declared authority source id, and the denial profile for this authority role."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "contracts",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "registry",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "authority",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+        }
+      ],
+      "depends_on": [
+        "BG001-A02-C023",
+        "BG001-A02-C024"
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C026",
+      "subject": "program",
+      "claim_type": "CROSS_SCALE_SURFACE_DUPLICATION",
+      "statement": "Cross-scale surface duplication: each of the eight payload families exists under one identical column name at all seven Bar scales; the duplication of the output surface across scales is a physical fact only and implies no content-level sharing or repackaging.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[Bar=*].payload_columns (identical lists across scales)",
+          "evidence_type": "PHYSICAL_SCHEMA",
+          "supports": "The payload_columns list is identical across the seven Bar scales; each family appears under one identical column name at every Bar scale."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C027",
+      "subject": "program",
+      "claim_type": "EPISODE_IDENTITY",
+      "statement": "Episode and object identity semantics inside payload contents (identifier scheme, object multiplicity per row, upstream identifier retention, episode open/close identity) are unresolved; only content-hash identities of the payload manifest are available on authorized surfaces.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "contracts",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "registry",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "authority",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+        },
+        {
+          "source_id": "xauusd.instrument_config",
+          "relative_path": "instruments/XAUUSD/instrument_config.json",
+          "locator": "manifest; payload_manifest",
+          "evidence_type": "AUTHORIZED_SURFACE_FIELD",
+          "supports": "The instrument configuration references a source manifest and a payload manifest by filename; the content of neither manifest is present on authorized surfaces."
+        },
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "source_manifest_identity; payload_manifest_identity",
+          "evidence_type": "MANIFEST_IDENTITY_ONLY",
+          "supports": "Only content-hash identities of the source manifest and the payload manifest are available; payload object content schemas are not available on authorized surfaces."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C028",
+      "subject": "program",
+      "claim_type": "FUTURE_INFORMATION_MATRIX",
+      "statement": "Every specific bar-field to known-time mapping for the eight families is unresolved without direct lifecycle authority.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "PROTOCOL_RULE",
+          "supports": "At anchor time t only information actually available by t is eligible; occurrence and origin timestamps remain provenance."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "contracts",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "registry",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "authority",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+        }
+      ]
+    },
+    {
+      "claim_id": "BG001-A02-C029",
+      "subject": "program",
+      "claim_type": "PROGRAM_BLOCKER",
+      "statement": "BG-001 E3 lineage-dependent research is BLOCKED pending approved lineage authority.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "bg001.assignment",
+          "relative_path": "assignment.json",
+          "locator": "access_profile=AUTHORITY; authority_source_ids=[xauusd.schemas]; raw_lake_access=DENY; peer_visibility=DENY",
+          "evidence_type": "ASSIGNMENT_DIRECTIVE",
+          "supports": "Defines the authorized surfaces, the declared authority source id, and the denial profile for this authority role."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "contracts",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No detector contract artifacts exist on the contracts surface; no producer-input, lifecycle, or object-identity authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "registry",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No registry entries exist on the registry surface; no registered lineage or detector-registration authority is available there."
+        },
+        {
+          "source_id": "bg001.authority_surface",
+          "relative_path": "authority",
+          "locator": "directory listing",
+          "evidence_type": "ABSENCE_OF_ARTIFACT",
+          "supports": "No approved authority artifacts exist on the authority surface; no approved lineage authority is available there."
+        }
+      ]
+    }
+  ],
+  "blockers": [
+    "BG-001 E3 lineage-dependent research is BLOCKED pending approved lineage authority."
+  ],
+  "unresolved_summary": [
+    "producer raw inputs: unresolved for all 8 families",
+    "upstream detector inputs: unresolved for all 8 families",
+    "object id scheme inside payload contents: unresolved for all 8 families",
+    "retained upstream/source ids: unresolved for all 8 families",
+    "occurrence-time semantics inside payload contents: unresolved for all 8 families",
+    "known/availability semantics: unresolved for all 8 families (no availability field exists on the Bar row surface)",
+    "family lifecycle semantics: unresolved for all 8 families",
+    "content-level duplication or repackaging within and across scales: unresolved for all 8 families",
+    "information ancestry beyond physical serialization: unresolved for all 8 families",
+    "all 15 candidate lineage pairs: recorded as UNRESOLVED_RELATIONSHIP questions",
+    "episode and object identity semantics: unresolved (manifest content hashes only)",
+    "bar-field future mappings: unresolved without direct lifecycle authority"
+  ]
+}
