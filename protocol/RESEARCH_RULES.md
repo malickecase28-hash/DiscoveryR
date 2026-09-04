@@ -24,7 +24,11 @@
    construction belongs to a later separate program.
 14. Agents may research, toolsmith, and review within assignment; scientific
    promotion/freeze remains governed by the human research director.
+15. Submission lifecycle: agents leave exactly the required artifacts in their
+   private workspace; host orchestration validates and publishes them only as
+   an explicit, reviewable action on a dedicated branch.
 
 All work preserves chronology, separates raw observations from derived findings,
 reports unresolved semantics and missing data, does not infer provider/model/
 peer/orchestrator identity, and writes only to the assigned private workspace.
+Agents do not receive Git credentials or remote-publication authority.

@@ -32,3 +32,21 @@ Run the adversarial checks with:
 
 The command fails closed when WSL2 is unavailable or the run root is inside
 the repository.
+
+## Submission lifecycle
+
+Researcher completion is not a Git operation. The agent leaves its two required
+artifacts in the private workspace and stops. A host operator then validates and
+publishes them with `publish-submission.ps1`, which creates a dedicated review
+branch and pushes only when `-Push` is supplied.
+
+Examples:
+
+    .\agent_harness\publication\publish-submission.ps1 `
+      -ProgramId BG-001 -Role A-02 `
+      -SubmissionPath '\\wsl.localhost\<distro>\home\glm\workspace' `
+      -Push
+
+Codex run roots and WSL workspaces are both accepted as submission paths. The
+publisher rejects extra files, identity mismatches, and forbidden operational
+identity terms before creating the branch.
