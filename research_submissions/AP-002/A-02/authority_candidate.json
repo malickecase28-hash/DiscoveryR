@@ -1,0 +1,831 @@
+{
+  "program_id": "AP-002",
+  "role_id": "A-02",
+  "artifact_type": "AUTHORITY_CANDIDATE",
+  "detector_id": "fvg",
+  "phase": "AUTHORITY",
+  "access_profile": "AUTHORITY",
+  "created_utc": "2026-09-04T14:21:14Z",
+  "scope_statement": "Blind authority research only. Reconstructs what the authorized repository surfaces establish about detector fvg semantics and causal authority across native bar scales. No behavioral research, no fill-rate analysis, no prediction testing, no strategy research, no raw-lake access, no peer inspection, and no shared-file edits were performed. Meaning is never inferred from names. Matters without direct supporting authority are marked UNRESOLVED. FORMATION, FIRST_TOUCH, and FILL are treated as requested concepts, not authoritative lifecycle states, because no authorized source directly establishes them as states.",
+  "inventory_index_map": {
+    "$.sources[0]": "Bar 15m",
+    "$.sources[1]": "Bar 15s",
+    "$.sources[2]": "Bar 1h",
+    "$.sources[3]": "Bar 1m",
+    "$.sources[4]": "Bar 30s",
+    "$.sources[5]": "Bar 4h",
+    "$.sources[6]": "Bar 5m",
+    "$.sources[7]": "Tick"
+  },
+  "subjects": [
+    {
+      "subject_id": "fvg.payload_column",
+      "label": "Physical storage of detector fvg output",
+      "description": "The physical column, type, nullability, and record placement of the detector fvg payload on bar records.",
+      "resolution_summary": "AUTHORITATIVE: payload_fvg, LargeUtf8, nullable=true on all seven Bar scales; absent from Tick."
+    },
+    {
+      "subject_id": "fvg.record_structure",
+      "label": "Record variants carrying the fvg payload",
+      "description": "Whether fvg output exists as separate record types or only as a per-row column, and schema consistency across parts.",
+      "resolution_summary": "AUTHORITATIVE (inventory scope): per-row nullable column only; one verified schema per scale across all listed parts."
+    },
+    {
+      "subject_id": "fvg.object_identity",
+      "label": "Stable fvg object identity",
+      "description": "Whether an fvg object or episode has a stable identifier across rows, updates, and its lifetime.",
+      "resolution_summary": "UNRESOLVED."
+    },
+    {
+      "subject_id": "fvg.formation_detection",
+      "label": "Formation and detection semantics",
+      "description": "Exact formation rule, exact detection rule, occurrence versus detection, lawful availability timestamp, and whether detection may refer to earlier bars.",
+      "resolution_summary": "UNRESOLVED."
+    },
+    {
+      "subject_id": "fvg.geometry",
+      "label": "fvg geometry and direction",
+      "description": "Near edge, far edge, high/low boundaries, midpoint, gap width, and direction semantics.",
+      "resolution_summary": "UNRESOLVED."
+    },
+    {
+      "subject_id": "fvg.lifecycle",
+      "label": "fvg lifecycle",
+      "description": "Lifecycle vocabulary, persistence after formation, invalidation/removal, terminal conditions, objects open at corpus end, right censoring, mutation versus new records, multiple touches.",
+      "resolution_summary": "UNRESOLVED. FORMATION, FIRST_TOUCH, and FILL are requested concepts only."
+    },
+    {
+      "subject_id": "fvg.first_touch",
+      "label": "First touch (requested concept)",
+      "description": "Definition of first touch and whether it is an event, a state, or a retrospective annotation.",
+      "resolution_summary": "UNRESOLVED."
+    },
+    {
+      "subject_id": "fvg.fill",
+      "label": "Fill (requested concept)",
+      "description": "Fill definition, fill basis and modes, and fill timestamp availability.",
+      "resolution_summary": "UNRESOLVED."
+    },
+    {
+      "subject_id": "fvg.cross_scale",
+      "label": "Native-scale and cross-scale identity",
+      "description": "Whether fvg objects are identified within each native scale only or share identity across 15s, 30s, 1m, 5m, 15m, 1h, and 4h.",
+      "resolution_summary": "Column presence across scales AUTHORITATIVE; object-level identity UNRESOLVED."
+    },
+    {
+      "subject_id": "fvg.causality",
+      "label": "Causal availability and future-information risk",
+      "description": "Lawful availability timestamps, causal fields by lifecycle stage, retrospective fields, and future-information exposure of payload_fvg fields.",
+      "resolution_summary": "General causal clock rule AUTHORITATIVE (protocol); fvg-specific mapping UNRESOLVED."
+    },
+    {
+      "subject_id": "fvg.provenance",
+      "label": "Provenance timestamps",
+      "description": "Occurrence/origin timestamps for fvg objects and the documented physical time coordinate fields.",
+      "resolution_summary": "Physical bar time coordinates AUTHORITATIVE (unit/epoch undocumented); fvg occurrence provenance UNRESOLVED."
+    },
+    {
+      "subject_id": "fvg.episode_e1",
+      "label": "E1 PHENOTYPE episode reconstruction",
+      "description": "Exact object/episode reconstruction rule for exposure class E1 from payload_fvg.",
+      "resolution_summary": "UNRESOLVED; reconstruction BLOCKED."
+    },
+    {
+      "subject_id": "fvg.producer_dependencies",
+      "label": "Declared producer dependencies",
+      "description": "Lake root, relative path, manifest declarations, and manifest identity digests visible in approved sources; absence of any derives_from declaration.",
+      "resolution_summary": "Declared dependencies AUTHORITATIVE; producer implementation and derivation independence UNRESOLVED."
+    },
+    {
+      "subject_id": "registry.detector_fvg",
+      "label": "Registry status for detector fvg",
+      "description": "Detector registry content relevant to fvg.",
+      "resolution_summary": "Registry surface is empty; no registry claims possible."
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "AP002-A02-C001",
+      "task_question_refs": [1],
+      "subject": "fvg.payload_column",
+      "statement": "The detector fvg physical payload column is named payload_fvg with data_type LargeUtf8 and nullable=true, and it is present in the physical_schema of every Bar scale source in the inventory: 15m, 15s, 1h, 1m, 30s, 4h, and 5m.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "Establishes name, declared type, and nullability only. It does not establish any content semantics of the serialized value.",
+      "evidence": [
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[0].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 15m: name=payload_fvg, data_type=LargeUtf8, nullable=true"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[1].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 15s: name=payload_fvg, data_type=LargeUtf8, nullable=true"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[2].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 1h: name=payload_fvg, data_type=LargeUtf8, nullable=true"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[3].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 1m: name=payload_fvg, data_type=LargeUtf8, nullable=true"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[4].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 30s: name=payload_fvg, data_type=LargeUtf8, nullable=true"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[5].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 4h: name=payload_fvg, data_type=LargeUtf8, nullable=true"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[6].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 5m: name=payload_fvg, data_type=LargeUtf8, nullable=true"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C002",
+      "task_question_refs": [1],
+      "subject": "fvg.payload_column",
+      "statement": "payload_fvg is registered in the payload_columns manifest list of every Bar scale source entry, at position 4 (zero-based index 3) of that list.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "The payload_columns list is a manifest-level enumeration of payload columns per source; it carries no semantics.",
+      "evidence": [
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[0].payload_columns[3]", "evidence_type": "MANIFEST_COLUMN_LIST", "supports": "Bar 15m payload_columns includes payload_fvg at index 3"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[1].payload_columns[3]", "evidence_type": "MANIFEST_COLUMN_LIST", "supports": "Bar 15s payload_columns includes payload_fvg at index 3"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[2].payload_columns[3]", "evidence_type": "MANIFEST_COLUMN_LIST", "supports": "Bar 1h payload_columns includes payload_fvg at index 3"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[3].payload_columns[3]", "evidence_type": "MANIFEST_COLUMN_LIST", "supports": "Bar 1m payload_columns includes payload_fvg at index 3"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[4].payload_columns[3]", "evidence_type": "MANIFEST_COLUMN_LIST", "supports": "Bar 30s payload_columns includes payload_fvg at index 3"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[5].payload_columns[3]", "evidence_type": "MANIFEST_COLUMN_LIST", "supports": "Bar 4h payload_columns includes payload_fvg at index 3"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[6].payload_columns[3]", "evidence_type": "MANIFEST_COLUMN_LIST", "supports": "Bar 5m payload_columns includes payload_fvg at index 3"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C003",
+      "task_question_refs": [1],
+      "subject": "fvg.record_structure",
+      "statement": "Within the inventory, detector fvg output exists only as a per-row nullable column on Bar records; no separate fvg output record type, table, or stream is declared. The Tick source carries a different payload set and no fvg payload column.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "Inventory-scope fact. Whether any surface outside the inventory carries fvg output cannot be verified because raw-lake access is denied and the lake manifests were not readable under this access profile.",
+      "evidence": [
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources", "evidence_type": "INVENTORY_STRUCTURE", "supports": "Exactly 8 source entries: 7 Bar scales (15m, 15s, 1h, 1m, 30s, 4h, 5m) and Tick; each entry has keys scale, parts, physical_schema, schema_verified_parts, physical_time_coordinate_fields, payload_columns; no separate fvg output source exists in the inventory"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[7].physical_schema", "evidence_type": "SCHEMA_FIELD", "supports": "Tick physical_schema contains 12 fields (event_ts_ns, received_ts_ns, source_sequence, bid, ask, payload_drift_burst, payload_spread_state, payload_quote_dynamics, payload_quote_arrival, payload_micro_volatility, payload_feed_health, payload_quote_pressure); payload_fvg is absent"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C004",
+      "task_question_refs": [1],
+      "subject": "fvg.record_structure",
+      "statement": "Every Bar scale source declares all six of its parts in schema_verified_parts, so the single declared physical schema per scale is verified across all listed parts; no variant record shapes are declared within the inventory.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "Applies to the six listed parts per scale. Parts outside the inventory cannot be ruled in or out under this access profile.",
+      "evidence": [
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[0].schema_verified_parts", "evidence_type": "SCHEMA_VERIFIED_PARTS", "supports": "Bar 15m: all 6 parts (part-00000..part-00005) verified against the declared schema"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[1].schema_verified_parts", "evidence_type": "SCHEMA_VERIFIED_PARTS", "supports": "Bar 15s: all 6 parts verified against the declared schema"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[2].schema_verified_parts", "evidence_type": "SCHEMA_VERIFIED_PARTS", "supports": "Bar 1h: all 6 parts verified against the declared schema"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[3].schema_verified_parts", "evidence_type": "SCHEMA_VERIFIED_PARTS", "supports": "Bar 1m: all 6 parts verified against the declared schema"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[4].schema_verified_parts", "evidence_type": "SCHEMA_VERIFIED_PARTS", "supports": "Bar 30s: all 6 parts verified against the declared schema"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[5].schema_verified_parts", "evidence_type": "SCHEMA_VERIFIED_PARTS", "supports": "Bar 4h: all 6 parts verified against the declared schema"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[6].schema_verified_parts", "evidence_type": "SCHEMA_VERIFIED_PARTS", "supports": "Bar 5m: all 6 parts verified against the declared schema"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C005",
+      "task_question_refs": [27],
+      "subject": "fvg.provenance",
+      "statement": "The documented physical time coordinate fields are bar_open_ts and bar_close_ts (both Int64, nullable=false) for every Bar scale, and event_ts_ns and received_ts_ns (both Int64, nullable=false) for Tick. The inventory does not document the unit, epoch, or timezone of these integers, nor any fvg-specific occurrence or origin timestamp field.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "Establishes which time coordinate fields physically exist per record class and their declared types only. Units, epochs, and fvg occurrence provenance remain UNRESOLVED (see AP002-A02-C034).",
+      "evidence": [
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[0].physical_time_coordinate_fields", "evidence_type": "TIME_COORDINATE_FIELD", "supports": "Bar 15m physical time coordinates: bar_open_ts, bar_close_ts"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[0].physical_schema[1]", "evidence_type": "SCHEMA_FIELD", "supports": "bar_open_ts: Int64, nullable=false"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[0].physical_schema[2]", "evidence_type": "SCHEMA_FIELD", "supports": "bar_close_ts: Int64, nullable=false"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[7].physical_time_coordinate_fields", "evidence_type": "TIME_COORDINATE_FIELD", "supports": "Tick physical time coordinates: event_ts_ns, received_ts_ns"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C006",
+      "task_question_refs": [30],
+      "subject": "fvg.producer_dependencies",
+      "statement": "The approved sources directly declare these producer-side dependencies: a lake root environment variable TRINITYR_ANALYTICAL_LAKE, a relative path fusion_markets/xauusd, a manifest file named manifest.json, a payload manifest file named payload_manifest.json, and two manifest identity digests (source_manifest_identity and payload_manifest_identity) recorded in the source inventory.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "These are declarations visible in approved sources. The manifest files themselves reside in the raw lake and were not readable under the access profile; no producing implementation, library, or tool is named anywhere in the approved sources.",
+      "evidence": [
+        {"source_id": "xauusd.instrument_config", "relative_path": "instruments/XAUUSD/instrument_config.json", "locator": "$.instrument", "evidence_type": "CONFIG_DECLARATION", "supports": "instrument is XAUUSD"},
+        {"source_id": "xauusd.instrument_config", "relative_path": "instruments/XAUUSD/instrument_config.json", "locator": "$.lake_root_env", "evidence_type": "CONFIG_DECLARATION", "supports": "lake root is referenced through environment variable TRINITYR_ANALYTICAL_LAKE"},
+        {"source_id": "xauusd.instrument_config", "relative_path": "instruments/XAUUSD/instrument_config.json", "locator": "$.relative_path", "evidence_type": "CONFIG_DECLARATION", "supports": "relative path fusion_markets/xauusd beneath the lake root"},
+        {"source_id": "xauusd.instrument_config", "relative_path": "instruments/XAUUSD/instrument_config.json", "locator": "$.manifest", "evidence_type": "CONFIG_DECLARATION", "supports": "manifest file name manifest.json"},
+        {"source_id": "xauusd.instrument_config", "relative_path": "instruments/XAUUSD/instrument_config.json", "locator": "$.payload_manifest", "evidence_type": "CONFIG_DECLARATION", "supports": "payload manifest file name payload_manifest.json"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.source_manifest_identity", "evidence_type": "MANIFEST_IDENTITY", "supports": "source manifest identity digest 1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.payload_manifest_identity", "evidence_type": "MANIFEST_IDENTITY", "supports": "payload manifest identity digest 78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C007",
+      "task_question_refs": [30],
+      "subject": "fvg.producer_dependencies",
+      "statement": "No approved source names a producing implementation, library, tool, or derivation for payload_fvg, and no derives_from declaration exists in any authorized surface. Consequently, independence of detector fvg from other detectors cannot be established: an absent or empty derives_from declaration does not prove independence.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "This is a negative-existence claim scoped to the authorized repository surfaces as inspected on 2026-09-04. The independence question itself is carried as UNRESOLVED in unresolved_questions.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract content exists that could declare a derivation or producing implementation"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry exists that could declare a derivation or producing implementation"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note exists that could declare a derivation or producing implementation"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources", "evidence_type": "INVENTORY_STRUCTURE", "supports": "source entry keys (scale, parts, physical_schema, schema_verified_parts, physical_time_coordinate_fields, payload_columns) include no producing implementation or derivation field"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C008",
+      "task_question_refs": [30],
+      "subject": "registry.detector_fvg",
+      "statement": "The authorized registry surface contains no files, so no detector registry entry for fvg exists to consult. The assignment designates exactly one authority source id, xauusd.schemas, and also lists agent_harness/assignments/AP-002/A-02.json as an authorized surface, but no agent_harness path exists in the repository.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "Cited separately from the source-inventory claims, as required. All registry-derived fvg semantics are UNRESOLVED as a consequence; see unresolved_questions.",
+      "evidence": [
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no detector registry entry for fvg is available in the authorized repository"},
+        {"source_id": "assignment.ap002.a02", "relative_path": "assignment.json", "locator": "$.authority_source_ids", "evidence_type": "ASSIGNMENT_DECLARATION", "supports": "authority source ids for this role: exactly [\"xauusd.schemas\"]"},
+        {"source_id": "assignment.ap002.a02", "relative_path": "assignment.json", "locator": "$.authorized_repository_surfaces", "evidence_type": "ASSIGNMENT_DECLARATION", "supports": "authorized surfaces include agent_harness/assignments/AP-002/A-02.json, which is not present anywhere in the repository root (verified 2026-09-04)"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C009",
+      "task_question_refs": [2],
+      "subject": "fvg.object_identity",
+      "statement": "Whether detector fvg objects carry a stable identity (an identifier persisting across rows, updates, or the lifetime of the object) is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "The inventory documents only the physical column (name, type, nullability). No contract, registry, or authority note exists that could define an object identifier.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines fvg object identity"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines fvg object identity"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[0].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "documents only name, data_type, and nullability of the column; no identifier field or content schema is documented"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C010",
+      "task_question_refs": [3],
+      "subject": "fvg.formation_detection",
+      "statement": "The exact formation rule for detector fvg (the bar-to-bar relationships under which an fvg object comes into existence) is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "No contract, registry, or authority note exists. The column name payload_fvg does not establish formation semantics.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines an fvg formation rule"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines an fvg formation rule"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry defines an fvg formation rule"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C011",
+      "task_question_refs": [4],
+      "subject": "fvg.formation_detection",
+      "statement": "The exact detection rule for detector fvg (the computational predicate and its parameters that mark an fvg as detected) is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "Detection is also not separable from formation on any available authority; both remain open.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines an fvg detection rule"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines an fvg detection rule"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry defines an fvg detection rule"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C012",
+      "task_question_refs": [5],
+      "subject": "fvg.formation_detection",
+      "statement": "An occurrence-versus-detection distinction for detector fvg (whether the origin of an fvg precedes, coincides with, or follows its detection, and which timestamp records each) is not established for fvg by any authorized source. The protocol establishes only the general rule that occurrence/origin timestamps remain provenance under the single causal information clock.",
+      "status": "UNRESOLVED",
+      "scope_notes": "The general provenance rule is protocol rule 2 (AUTHORITATIVE, see AP002-A02-C037); no fvg-specific mapping exists.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract distinguishes fvg occurrence from detection"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note distinguishes fvg occurrence from detection"},
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 2, lines 5-6", "evidence_type": "PROTOCOL_RULE", "supports": "general rule only: occurrence/origin timestamps remain provenance; no fvg-specific occurrence/detection mapping is provided"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C013",
+      "task_question_refs": [6],
+      "subject": "fvg.causality",
+      "statement": "The lawful availability timestamp of a detector fvg object (the time from which the object is eligible at an anchor under the causal information clock) is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "The general causal clock rule is protocol rule 2 (AUTHORITATIVE, see AP002-A02-C037), but it does not map fvg objects to availability times. Absent that mapping, no payload_fvg-derived field can be asserted eligible at any anchor.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines fvg availability timestamps"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines fvg availability timestamps"},
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 2, lines 5-6", "evidence_type": "PROTOCOL_RULE", "supports": "general causal clock rule applies to all anchors; it does not supply the missing fvg availability mapping"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C014",
+      "task_question_refs": [7],
+      "subject": "fvg.formation_detection",
+      "statement": "Whether detection of a detector fvg may refer to bars earlier than the detection-time bar (back-reference or look-back in the emitted record) is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "This materially affects which bar's payload would carry the object and cannot be inferred from the physical column layout.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract constrains the bar reference of fvg detection"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note constrains the bar reference of fvg detection"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry constrains the bar reference of fvg detection"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C015",
+      "task_question_refs": [8],
+      "subject": "fvg.geometry",
+      "statement": "Direction semantics for detector fvg objects (any polarity or direction encoding, and its values) are not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "No direction field, enumeration, or convention is documented anywhere in the approved sources.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines fvg direction semantics"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines fvg direction semantics"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry defines fvg direction semantics"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C016",
+      "task_question_refs": [9],
+      "subject": "fvg.geometry",
+      "statement": "The geometry of detector fvg objects — near edge, far edge, which bar high/low defines each boundary, whether a midpoint exists, and how gap width is computed, including units and precision — is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "None of these geometric quantities appears in any authorized surface; they cannot be inferred from the column name or physical type.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines fvg geometry"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines fvg geometry"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry defines fvg geometry"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C017",
+      "task_question_refs": [10],
+      "subject": "fvg.lifecycle",
+      "statement": "A lifecycle vocabulary for detector fvg objects (a named set of lifecycle states and transitions) is not established by any authorized source. FORMATION, FIRST_TOUCH, and FILL are therefore carried as requested concepts from the tasking, not as authoritative lifecycle states.",
+      "status": "UNRESOLVED",
+      "scope_notes": "No authorized source names any fvg lifecycle state. The requested-concept treatment applies unless a future authority directly establishes the states.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract names any fvg lifecycle state"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note names any fvg lifecycle state"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry names any fvg lifecycle state"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C018",
+      "task_question_refs": [11],
+      "subject": "fvg.lifecycle",
+      "statement": "Whether a detector fvg object persists after formation (over how many rows or how long, and under what continuation rule) is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "The per-row placement of the payload column leaves open whether each row re-states the object, and for how long.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines fvg persistence after formation"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines fvg persistence after formation"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry defines fvg persistence after formation"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C019",
+      "task_question_refs": [12],
+      "subject": "fvg.first_touch",
+      "statement": "A definition of first touch for detector fvg objects (which price level is touched, with what bar relationship and tolerance) is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "FIRST_TOUCH is a requested concept only; no state or definition authority exists.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines first touch for fvg"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines first touch for fvg"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry defines first touch for fvg"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C020",
+      "task_question_refs": [13],
+      "subject": "fvg.first_touch",
+      "statement": "Whether first touch for a detector fvg object is an event, a state, or a retrospective annotation is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "Until an authority resolves this, first-touch-derived fields must be presumed ineligible at anchors earlier than their availability is established (protocol rule 2).",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract classifies first touch as event, state, or retrospective annotation"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note classifies first touch as event, state, or retrospective annotation"},
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 2, lines 5-6", "evidence_type": "PROTOCOL_RULE", "supports": "general causal clock rule: without an availability mapping, first-touch-derived information cannot be asserted eligible at an anchor"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C021",
+      "task_question_refs": [14],
+      "subject": "fvg.fill",
+      "statement": "A definition of fill for detector fvg objects is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "FILL is a requested concept only; no state or definition authority exists.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines fill for fvg"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines fill for fvg"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry defines fill for fvg"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C022",
+      "task_question_refs": [15],
+      "subject": "fvg.fill",
+      "statement": "The basis and modes of fill for detector fvg objects (which price basis applies, and whether distinct fill modes exist at all) are not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "No enumeration of fill modes exists anywhere in the approved sources; none is assumed.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines fill basis or modes for fvg"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines fill basis or modes for fvg"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry defines fill basis or modes for fvg"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C023",
+      "task_question_refs": [16],
+      "subject": "fvg.fill",
+      "statement": "The availability timestamp of a fill of a detector fvg object (when fill information becomes lawful at an anchor) is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "Protocol rule 2 governs anchors generally but supplies no fill mapping.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines fill timestamp availability for fvg"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines fill timestamp availability for fvg"},
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 2, lines 5-6", "evidence_type": "PROTOCOL_RULE", "supports": "general causal clock rule applies; it does not supply a fill availability mapping"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C024",
+      "task_question_refs": [17],
+      "subject": "fvg.lifecycle",
+      "statement": "Invalidation and removal semantics for detector fvg objects (whether an object can be invalidated, retracted, or removed, and with what effect on earlier records) are not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "This includes whether removal rewrites history in already-published rows, which cannot be assessed without contract or authority content.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines fvg invalidation or removal"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines fvg invalidation or removal"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry defines fvg invalidation or removal"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C025",
+      "task_question_refs": [18],
+      "subject": "fvg.lifecycle",
+      "statement": "Terminal conditions for detector fvg objects (whether terminal states exist, what they are, and what terminates an object) are not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "No terminal vocabulary exists in any approved source.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines fvg terminal conditions"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines fvg terminal conditions"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry defines fvg terminal conditions"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C026",
+      "task_question_refs": [19],
+      "subject": "fvg.lifecycle",
+      "statement": "Whether detector fvg objects can remain unresolved (still open) at the end of the corpus, and what states such objects would be in, is not established by any authorized source. The inventory enumerates parts and row counts but documents no time coverage, so the corpus end time is itself not determinable from approved sources.",
+      "status": "UNRESOLVED",
+      "scope_notes": "Corpus extent (row counts per part) is an inventory fact (see AP002-A02-C041); the temporal end of the corpus and the state of open objects are not.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines end-of-corpus fvg object states"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines end-of-corpus fvg object states"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[*].parts", "evidence_type": "INVENTORY_STRUCTURE", "supports": "parts carry path and row counts only; no time coverage or corpus end timestamp is documented"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C027",
+      "task_question_refs": [20],
+      "subject": "fvg.lifecycle",
+      "statement": "Right-censoring semantics for detector fvg objects at the corpus boundary (how open objects are represented or truncated at the last available data) are not established by any authorized source. The protocol establishes only the general lifecycle-first rule that future completion or termination cannot define an earlier-state cohort.",
+      "status": "UNRESOLVED",
+      "scope_notes": "The protocol rule is AUTHORITATIVE as a program constraint (see AP002-A02-C039) but does not resolve how payload_fvg represents censored objects.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines fvg right censoring"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines fvg right censoring"},
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 4, lines 9-10", "evidence_type": "PROTOCOL_RULE", "supports": "general rule only: future completion/termination cannot define an earlier-state cohort; no fvg censoring representation is specified"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C028",
+      "task_question_refs": [21],
+      "subject": "fvg.lifecycle",
+      "statement": "Whether repeated interactions with a detector fvg object (multiple touches or repeated interactions across rows) belong to the same object identity or create new records is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "Depends on the unresolved object-identity and mutation questions (AP002-A02-C009, AP002-A02-C029).",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines repeated-interaction identity for fvg"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines repeated-interaction identity for fvg"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry defines repeated-interaction identity for fvg"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C029",
+      "task_question_refs": [22],
+      "subject": "fvg.lifecycle",
+      "statement": "Whether a detector fvg object is mutated in place across rows or re-emitted as new records as it evolves is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "The per-row nullable LargeUtf8 column is compatible with both possibilities; no authority discriminates between them.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines fvg mutation versus new-record emission"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines fvg mutation versus new-record emission"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[0].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "per-row nullable column placement alone cannot distinguish mutation from re-emission"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C030",
+      "task_question_refs": [23],
+      "subject": "fvg.cross_scale",
+      "statement": "The payload_fvg column is physically present with the identical declared type (LargeUtf8, nullable=true) on all seven native Bar scales: 15s, 30s, 1m, 5m, 15m, 1h, and 4h.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "Physical column presence only. Whether fvg objects share identity across these scales is a separate UNRESOLVED matter (AP002-A02-C031). Native scale remains attached per protocol rule 3.",
+      "evidence": [
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[1].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 15s: payload_fvg, LargeUtf8, nullable=true"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[4].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 30s: payload_fvg, LargeUtf8, nullable=true"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[3].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 1m: payload_fvg, LargeUtf8, nullable=true"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[6].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 5m: payload_fvg, LargeUtf8, nullable=true"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[0].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 15m: payload_fvg, LargeUtf8, nullable=true"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[2].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 1h: payload_fvg, LargeUtf8, nullable=true"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[5].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "Bar 4h: payload_fvg, LargeUtf8, nullable=true"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C031",
+      "task_question_refs": [23, 24],
+      "subject": "fvg.cross_scale",
+      "statement": "Whether detector fvg objects are identified within each native scale only, or share a cross-scale identity (the same object recognized across 15s, 30s, 1m, 5m, 15m, 1h, and 4h), is not established by any authorized source. The protocol establishes only that native scale remains attached and that scales are not statistically identical under a shared causal clock.",
+      "status": "UNRESOLVED",
+      "scope_notes": "The protocol rule (AUTHORITATIVE, see AP002-A02-C038) constrains any cross-scale treatment but does not create or deny cross-scale object identity.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines cross-scale fvg identity"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines cross-scale fvg identity"},
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 3, lines 7-8", "evidence_type": "PROTOCOL_RULE", "supports": "general rule only: native scale remains attached; scales are not statistically identical under a shared clock"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources", "evidence_type": "INVENTORY_STRUCTURE", "supports": "each scale is a separate source entry with its own parts and schema; no cross-scale linkage field is documented"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C032",
+      "task_question_refs": [25],
+      "subject": "fvg.causality",
+      "statement": "Which payload_fvg fields are causal at which lifecycle stage (the field-by-stage availability map) is not established by any authorized source; the content fields of payload_fvg are not documented at all.",
+      "status": "UNRESOLVED",
+      "scope_notes": "Prerequisite for any stage-wise causal field map is a content schema, which does not exist in any approved source.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract maps fvg fields to lifecycle stages"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note maps fvg fields to lifecycle stages"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry maps fvg fields to lifecycle stages"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C033",
+      "task_question_refs": [26],
+      "subject": "fvg.causality",
+      "statement": "Whether any payload_fvg field is retrospective (computed after the fact relative to the row it appears on) is not established by any authorized source.",
+      "status": "UNRESOLVED",
+      "scope_notes": "Under protocol rule 2, any field whose availability cannot be established must be treated as ineligible at anchors before that availability is demonstrated; this is a posture, not a finding that such fields exist.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract identifies retrospective fvg fields"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note identifies retrospective fvg fields"},
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 2, lines 5-6", "evidence_type": "PROTOCOL_RULE", "supports": "general causal clock rule: eligibility requires demonstrated availability by the anchor time"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C034",
+      "task_question_refs": [27],
+      "subject": "fvg.provenance",
+      "statement": "Provenance timestamps specific to detector fvg objects (occurrence/origin times) are not established by any authorized source. The only documented time coordinates are the physical bar columns bar_open_ts and bar_close_ts (Int64), whose unit, epoch, and timezone the inventory does not document.",
+      "status": "UNRESOLVED",
+      "scope_notes": "Physical existence of the bar time coordinate fields is AUTHORITATIVE (AP002-A02-C005); fvg occurrence provenance and the integer unit/epoch are not.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines fvg occurrence/origin timestamps"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines fvg occurrence/origin timestamps"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[0].physical_schema[1]", "evidence_type": "SCHEMA_FIELD", "supports": "bar_open_ts is Int64 with no documented unit, epoch, or timezone"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C035",
+      "task_question_refs": [28],
+      "subject": "fvg.causality",
+      "statement": "A field-by-field future-information risk assessment of payload_fvg (which fields, if consumed at a given anchor, would leak information arising later) is not possible from authorized sources, because no content schema or availability mapping exists. The program-level constraints are authoritative: only information available by the anchor time is eligible, and future completion or termination cannot define an earlier-state cohort.",
+      "status": "UNRESOLVED",
+      "scope_notes": "Protocol rules 2 and 4 are AUTHORITATIVE as constraints (AP002-A02-C037, AP002-A02-C039); the fvg-specific exposure map is UNRESOLVED. See the future-information matrix.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract enables a field-level future-information assessment for fvg"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note enables a field-level future-information assessment for fvg"},
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 2, lines 5-6", "evidence_type": "PROTOCOL_RULE", "supports": "only information available by the anchor time is eligible"},
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 4, lines 9-10", "evidence_type": "PROTOCOL_RULE", "supports": "future completion/termination cannot define an earlier-state cohort"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C036",
+      "task_question_refs": [29],
+      "subject": "fvg.episode_e1",
+      "statement": "The exact object/episode reconstruction rule for exposure class E1 (PHENOTYPE) from payload_fvg is not established by any authorized source, and E1 reconstruction is BLOCKED: with no content schema for payload_fvg, no object identity rule, no availability mapping, and raw-lake access denied, no lawful E1 object or episode can be reconstructed from approved sources in this phase.",
+      "status": "UNRESOLVED",
+      "scope_notes": "E1 PHENOTYPE is named as an information-permission class by protocol rule 5; naming the class does not supply a reconstruction rule. Blockers are enumerated in the e1_reconstruction block.",
+      "evidence": [
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract supplies an E1 fvg reconstruction rule"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note supplies an E1 fvg reconstruction rule"},
+        {"source_id": "repository.registry", "relative_path": "registry", "locator": "directory registry/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no registry entry supplies an E1 fvg reconstruction rule"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[0].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "only the physical column is documented; without a content schema no object or episode can be reconstructed"},
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 5, lines 11-12", "evidence_type": "PROTOCOL_RULE", "supports": "E1 PHENOTYPE is an information-permission class, not a reconstruction rule"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C037",
+      "task_question_refs": [5, 6, 13, 16, 26, 28],
+      "subject": "fvg.causality",
+      "statement": "Program rule (protocol rule 2): there is one causal information clock; at anchor time t, only information actually available by t is eligible, and occurrence/origin timestamps remain provenance. This rule is authoritative as a general constraint for all detectors and scales.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "General rule only. It does not by itself resolve any fvg-specific availability question (AP002-A02-C013, AP002-A02-C020, AP002-A02-C023, AP002-A02-C033, AP002-A02-C035).",
+      "evidence": [
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 2, lines 5-6", "evidence_type": "PROTOCOL_RULE", "supports": "one causal information clock; eligibility at anchor t requires availability by t; occurrence/origin timestamps remain provenance"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C038",
+      "task_question_refs": [23, 24],
+      "subject": "fvg.cross_scale",
+      "statement": "Program rule (protocol rule 3): native scale preservation — a shared causal clock does not make 15s, 1m, 4h, and tick objects statistically identical; native scale remains attached. This rule is authoritative as a general constraint.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "General rule only. It constrains cross-scale comparisons but neither creates nor denies cross-scale fvg object identity (AP002-A02-C031).",
+      "evidence": [
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 3, lines 7-8", "evidence_type": "PROTOCOL_RULE", "supports": "native scale remains attached; scales are not statistically identical under a shared causal clock"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C039",
+      "task_question_refs": [20, 28],
+      "subject": "fvg.lifecycle",
+      "statement": "Program rule (protocol rule 4): lifecycle-first — future completion or termination cannot define an earlier-state cohort; completed may be a later outcome or later anchor. This rule is authoritative as a general constraint.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "General rule only. It bounds cohort construction for all detectors but does not resolve fvg terminal or censoring semantics (AP002-A02-C025, AP002-A02-C027).",
+      "evidence": [
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 4, lines 9-10", "evidence_type": "PROTOCOL_RULE", "supports": "future completion/termination cannot define an earlier-state cohort; completed may be a later outcome or later anchor"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C040",
+      "task_question_refs": [30],
+      "subject": "fvg.producer_dependencies",
+      "statement": "Program rule (protocol rule 11): if detector B derives from detector A, A+B is not automatically independent confluence. This rule is authoritative as a general constraint and reinforces that independence of detector fvg cannot be presumed absent a derivation declaration.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "General rule only. Combined with the absence of any derives_from declaration (AP002-A02-C007), independence of fvg remains UNRESOLVED.",
+      "evidence": [
+        {"source_id": "protocol.research_rules", "relative_path": "protocol/RESEARCH_RULES.md", "locator": "rule 11, line 20", "evidence_type": "PROTOCOL_RULE", "supports": "derivation between detectors does not create automatic independent confluence"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C041",
+      "task_question_refs": [19, 20],
+      "subject": "fvg.record_structure",
+      "statement": "The inventory enumerates exactly eight sources for the instrument: seven Bar scales (15m, 15s, 1h, 1m, 30s, 4h, 5m), each with six parts, and Tick with six parts, with row counts per part as recorded in the corpus_extent block. No time coverage is documented for any source.",
+      "status": "AUTHORITATIVE",
+      "scope_notes": "Extent facts from the inventory only; they do not establish corpus temporal boundaries (see AP002-A02-C026).",
+      "evidence": [
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources", "evidence_type": "INVENTORY_STRUCTURE", "supports": "eight source entries with scale, parts, and per-part row counts"},
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[0].parts", "evidence_type": "INVENTORY_STRUCTURE", "supports": "Bar 15m: six parts, e.g. 15m/part-00000.parquet with 4805 rows"}
+      ]
+    },
+    {
+      "claim_id": "AP002-A02-C042",
+      "task_question_refs": [1, 25],
+      "subject": "fvg.payload_column",
+      "statement": "The denotation of a null payload_fvg value (no objects present on the row versus payload not computed versus other) is not established by any authorized source; only the fact of nullability is documented.",
+      "status": "UNRESOLVED",
+      "scope_notes": "Nullable=true is an AUTHORITATIVE physical fact (AP002-A02-C001); its meaning is not.",
+      "evidence": [
+        {"source_id": "xauusd.schemas", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "$.sources[0].physical_schema[11]", "evidence_type": "SCHEMA_FIELD", "supports": "nullable=true is documented; no denotation of null is documented"},
+        {"source_id": "repository.contracts", "relative_path": "contracts", "locator": "directory contracts/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no contract defines the null denotation of payload_fvg"},
+        {"source_id": "repository.authority", "relative_path": "authority", "locator": "directory authority/ — 0 entries (verified empty 2026-09-04)", "evidence_type": "ABSENCE_INSPECTION", "supports": "no authority note defines the null denotation of payload_fvg"}
+      ]
+    }
+  ],
+  "future_information_matrix": {
+    "basis": "Protocol rule 2 (one causal information clock; eligibility at anchor t requires availability by t; occurrence/origin timestamps remain provenance) and protocol rule 4 (future completion/termination cannot define an earlier-state cohort) are authoritative as general constraints. No authorized source maps any FORMATION, FIRST_TOUCH, or FILL concept to detector fvg fields or availability times.",
+    "general_posture": "Because no availability mapping exists for any requested concept, every payload_fvg-derived field must be treated as NOT eligible at any anchor until its availability is established by direct authority. This is a conservative application of protocol rule 2, not a finding that the fields are retrospective.",
+    "rows": [
+      {
+        "concept": "FORMATION",
+        "classification": "REQUESTED_CONCEPT_ONLY",
+        "authoritative_lifecycle_state": false,
+        "definition_authority": "UNRESOLVED (no source defines fvg formation)",
+        "availability_timestamp_authority": "UNRESOLVED (no source defines when a formed fvg becomes available)",
+        "retrospective_risk": "UNASSESSABLE — must be presumed ineligible at all anchors until availability is established by direct authority",
+        "e1_usable_now": false,
+        "claim_refs": ["AP002-A02-C010", "AP002-A02-C013", "AP002-A02-C017"]
+      },
+      {
+        "concept": "FIRST_TOUCH",
+        "classification": "REQUESTED_CONCEPT_ONLY",
+        "authoritative_lifecycle_state": false,
+        "definition_authority": "UNRESOLVED (no source defines first touch for fvg)",
+        "availability_timestamp_authority": "UNRESOLVED (no source defines first-touch availability; event/state/retrospective classification also unresolved)",
+        "retrospective_risk": "UNASSESSABLE — first touch could be a retrospective annotation; must be presumed ineligible at anchors before availability is demonstrated",
+        "e1_usable_now": false,
+        "claim_refs": ["AP002-A02-C019", "AP002-A02-C020", "AP002-A02-C017"]
+      },
+      {
+        "concept": "FILL",
+        "classification": "REQUESTED_CONCEPT_ONLY",
+        "authoritative_lifecycle_state": false,
+        "definition_authority": "UNRESOLVED (no source defines fill for fvg; basis and modes unresolved)",
+        "availability_timestamp_authority": "UNRESOLVED (no source defines fill timestamp availability)",
+        "retrospective_risk": "UNASSESSABLE — fill is definitionally a later outcome relative to formation, so under protocol rule 4 it cannot define an earlier-state cohort, and under rule 2 it is ineligible at anchors before its availability is established",
+        "e1_usable_now": false,
+        "claim_refs": ["AP002-A02-C021", "AP002-A02-C022", "AP002-A02-C023", "AP002-A02-C039"]
+      }
+    ]
+  },
+  "e1_reconstruction": {
+    "status": "BLOCKED",
+    "question": "Exact object/episode reconstruction rule for exposure class E1 (PHENOTYPE) from payload_fvg",
+    "blockers": [
+      "No content schema for payload_fvg exists in any authorized source; only the physical column (name, type, nullability) is documented (instruments/XAUUSD/source_inventory.json $.sources[0].physical_schema[11] and equivalents).",
+      "No object identity rule exists (claim AP002-A02-C009), so objects cannot be segmented into episodes.",
+      "No lawful availability timestamp mapping exists (claim AP002-A02-C013), so no field can be asserted eligible at any anchor.",
+      "The registry, contracts, and authority surfaces are empty (verified 2026-09-04), and raw-lake access is denied, so no payload sample or manifest can be inspected.",
+      "The authorized surface agent_harness/assignments/AP-002/A-02.json listed in the assignment is not present in the repository."
+    ],
+    "claim_refs": ["AP002-A02-C036"]
+  },
+  "unresolved_questions": [
+    "What content schema governs the serialized payload_fvg value, and how is it parsed?",
+    "What does a null payload_fvg value denote (no objects, not computed, or otherwise)?",
+    "What is the stable identity of an fvg object or episode, and does it persist across rows and updates?",
+    "What is the exact formation rule for detector fvg?",
+    "What is the exact detection rule for detector fvg, including parameters and detection latency?",
+    "How do occurrence and detection differ for detector fvg, and which timestamp records each?",
+    "What is the lawful availability timestamp of an fvg object at its native scale?",
+    "May detection of an fvg refer to bars earlier than the detection-time bar?",
+    "What are the direction semantics of fvg objects, and how is polarity encoded?",
+    "What are the near edge, far edge, defining high/low boundaries, midpoint, and gap width of an fvg, with what units and precision?",
+    "What lifecycle vocabulary and state set apply to fvg objects (FORMATION, FIRST_TOUCH, and FILL remain requested concepts, not established states)?",
+    "Does an fvg object persist after formation, and under what continuation rule?",
+    "What is the definition of first touch for an fvg object?",
+    "Is first touch an event, a state, or a retrospective annotation?",
+    "What is the definition of fill for an fvg object?",
+    "What fill basis applies, and do distinct fill modes exist?",
+    "When does fill information become lawfully available at an anchor?",
+    "What invalidation or removal semantics apply to fvg objects, and can published history change?",
+    "What terminal conditions and final states apply to fvg objects?",
+    "Can fvg objects remain unresolved at the end of the corpus, and in what state?",
+    "What right-censoring representation applies to fvg objects at the corpus boundary, and what is the corpus end time (no time coverage is documented for any source)?",
+    "Do multiple touches or repeated interactions belong to the same fvg object identity or create new records?",
+    "Is an fvg object mutated in place across rows or re-emitted as new records?",
+    "Do fvg objects share identity across the 15s, 30s, 1m, 5m, 15m, 1h, and 4h scales, or is identity native per scale?",
+    "What cross-scale alignment or identity rules apply, if any?",
+    "Which payload_fvg fields are causal at which lifecycle stage?",
+    "Are any payload_fvg fields retrospective relative to the row on which they appear?",
+    "What provenance (occurrence/origin) timestamps do fvg objects carry, and what are the unit, epoch, and timezone of the bar_open_ts and bar_close_ts integers?",
+    "What is the field-by-field future-information exposure of payload_fvg at a given anchor?",
+    "Is detector fvg independent of other detectors, given that no derives_from declaration exists in any authorized surface (absence does not prove independence)?",
+    "Do any surfaces outside the eight inventory entries carry fvg payloads, given that raw-lake access is denied and the lake manifests were not readable under this access profile?",
+    "What exact object/episode reconstruction rule applies for exposure class E1 (reconstruction is BLOCKED in this phase)?"
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "xauusd.schemas",
+      "relative_path": "instruments/XAUUSD/source_inventory.json",
+      "kind": "source inventory with physical schemas",
+      "status": "READ_FULL",
+      "designation": "sole authority source id designated by the assignment ($.authority_source_ids)",
+      "notes": "Physical schema, payload column lists, schema-verified parts, time coordinate fields, parts and row counts, and manifest identity digests for 15m, 15s, 1h, 1m, 30s, 4h, 5m, and Tick."
+    },
+    {
+      "source_id": "xauusd.instrument_config",
+      "relative_path": "instruments/XAUUSD/instrument_config.json",
+      "kind": "instrument configuration",
+      "status": "READ_FULL",
+      "designation": "authorized repository surface per assignment $.authorized_repository_surfaces",
+      "notes": "Declares instrument, lake root environment variable, relative path, manifest, and payload manifest names."
+    },
+    {
+      "source_id": "protocol.research_rules",
+      "relative_path": "protocol/RESEARCH_RULES.md",
+      "kind": "program research rules",
+      "status": "READ_FULL",
+      "designation": "authorized repository surface protocol/RESEARCH_RULES.md",
+      "notes": "14 program rules; rules 2, 3, 4, 5, and 11 cited in claims."
+    },
+    {
+      "source_id": "assignment.ap002.a02",
+      "relative_path": "assignment.json",
+      "kind": "role assignment",
+      "status": "READ_FULL",
+      "designation": "tasking document read first, as instructed",
+      "notes": "Confirms program_id AP-002, role_id A-02, detector_id fvg, AUTHORITY phase, access profile, authority source ids, and denial of raw-lake access and peer visibility."
+    },
+    {
+      "source_id": "repository.contracts",
+      "relative_path": "contracts",
+      "kind": "contracts surface",
+      "status": "EMPTY",
+      "designation": "authorized repository surface contracts/",
+      "notes": "0 entries, verified 2026-09-04. No contract content available."
+    },
+    {
+      "source_id": "repository.registry",
+      "relative_path": "registry",
+      "kind": "detector registry surface",
+      "status": "EMPTY",
+      "designation": "authorized repository surface registry/",
+      "notes": "0 entries, verified 2026-09-04. No detector registry entry for fvg available; registry claims are cited separately in AP002-A02-C008."
+    },
+    {
+      "source_id": "repository.authority",
+      "relative_path": "authority",
+      "kind": "authority notes surface",
+      "status": "EMPTY",
+      "designation": "authorized repository surface authority/",
+      "notes": "0 entries, verified 2026-09-04. No authority notes available."
+    },
+    {
+      "source_id": "agent_harness.assignment",
+      "relative_path": "agent_harness/assignments/AP-002/A-02.json",
+      "kind": "assignment mirror listed as authorized surface",
+      "status": "NOT_FOUND",
+      "designation": "listed in assignment $.authorized_repository_surfaces",
+      "notes": "No agent_harness path exists anywhere in the repository root (verified 2026-09-04); this surface could not be consulted."
+    }
+  ],
+  "corpus_extent": {
+    "note": "Row counts recorded in the inventory per part (inventory facts only; no time coverage documented). Claimed in AP002-A02-C041.",
+    "rows_by_scale": {
+      "15m": 22050,
+      "15s": 1320835,
+      "1h": 5515,
+      "1m": 330458,
+      "30s": 660859,
+      "4h": 1464,
+      "5m": 66147,
+      "Tick": 68445659
+    }
+  }
+}
