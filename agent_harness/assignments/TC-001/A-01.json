@@ -6,7 +6,7 @@
   "detector_id": "tick_conditioning",
   "assignment": "Reconstruct tick-conditioning lineage and availability semantics independently.",
   "authorized_repository_surfaces": ["protocol", "contracts", "registry", "instruments/XAUUSD/instrument_config.json", "instruments/XAUUSD/source_inventory.json", "agent_harness/assignments/TC-001/A-01.json"],
-  "authority_source_ids": ["xauusd.wave1.tc001"],
+  "authority_source_ids": ["xauusd.schemas"],
   "raw_lake_access": "DENY",
   "peer_visibility": "DENY"
 }
