@@ -45,6 +45,7 @@ Examples:
     .\agent_harness\publication\publish-submission.ps1 `
       -ProgramId BG-001 -Role A-02 `
       -BaseRef <immutable-commit-sha> -ResearchBaseSha <same-commit-sha> `
+      -PublicationBranch reports/bg-001-a-02-authority-v2 `
       -SubmissionPath '\\wsl.localhost\<distro>\home\glm\workspace' `
       -Push
 

@@ -6,6 +6,7 @@ param(
     [Parameter(Mandatory)][ValidatePattern('^[0-9a-fA-F]{40}$')][string] $BaseRef,
     [string] $ResearchBaseSha,
     [Parameter(Mandatory)][string] $InputManifestPath,
+    [string] $PublicationBranch,
     [switch] $DryRun,
     [switch] $Push
 )
@@ -38,7 +39,7 @@ $manifest=Get-Content -Raw -LiteralPath (Resolve-Path $InputManifestPath) | Conv
 $baseCommit=(& git -C $repo rev-parse $BaseRef).Trim(); if ($baseCommit -ne $ResearchBaseSha.ToLowerInvariant()) { throw 'BaseRef does not resolve to immutable ResearchBaseSha.' }; $inputManifestHash=if($InputManifestPath){(Get-FileHash (Resolve-Path $InputManifestPath) -Algorithm SHA256).Hash.ToLowerInvariant()}
 if ($DryRun) { [pscustomobject]@{Validated=$true;ProgramId=$ProgramId;Role=$Role;ResearchBaseSha=$ResearchBaseSha.ToLowerInvariant();InputManifestSha256=$inputManifestHash;ClaimCount=@($candidate.claims).Count} | Format-List; return }
 
-$branch = "reports/$($ProgramId.ToLowerInvariant())-$($Role.ToLowerInvariant())-authority"
+$branch = if ([string]::IsNullOrWhiteSpace($PublicationBranch)) { "reports/$($ProgramId.ToLowerInvariant())-$($Role.ToLowerInvariant())-authority-v2" } else { if ($PublicationBranch -notmatch '^[A-Za-z0-9][A-Za-z0-9._/-]{0,127}$' -or $PublicationBranch -match '(^|/)\.\.($|/)' -or $PublicationBranch.EndsWith('/')) { throw 'Unsafe publication branch.' }; $PublicationBranch }
 $worktree = Join-Path ([IO.Path]::GetTempPath()) ("trinityr-publish-" + [guid]::NewGuid().ToString('N'))
 $added = $false
 try {
