@@ -1,0 +1,28 @@
+# External analytical data
+analytical_lake/
+**/*.parquet
+**/*.duckdb
+**/*.duckdb.*
+
+# Build and local artifacts
+target/
+**/target/
+*.log
+*.tmp
+scratch/
+agent-scratch/
+model-cache/
+
+# Secrets and local credentials
+.env
+.env.*
+!.env.example
+**/*credentials*.json
+**/*service-account*.json
+**/*private-key*.json
+**/*secret*.json
+**/*token*.json
+
+# OS files
+.DS_Store
+Thumbs.db

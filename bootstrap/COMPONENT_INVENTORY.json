@@ -1,0 +1,96 @@
+{
+  "root": "F:\\TrinityR-research",
+  "observed_utc": "2026-09-03",
+  "components": [
+    {
+      "path": "Research Program",
+      "type": "research_workspace",
+      "status": "active",
+      "git_repo": true,
+      "contains_rust": false,
+      "contains_sensitive_config": false,
+      "candidate_role": "reference",
+      "notes": ["Bootstrap-only repository; architecture intentionally not frozen."]
+    },
+    {
+      "path": "analytical_lake",
+      "type": "data",
+      "status": "data",
+      "git_repo": false,
+      "contains_rust": false,
+      "contains_sensitive_config": false,
+      "candidate_role": "reference",
+      "notes": ["Frozen external input.", "XAUUSD observed at tick, 15s, 30s, 1m, 5m, 15m, 1h, and 4h with six Parquet parts per resolution.", "Instrument manifests observed at fusion_markets/xauusd/manifest.json and payload_manifest.json."]
+    },
+    {
+      "path": "Research Directive",
+      "type": "research_methodology_and_tooling",
+      "status": "historical",
+      "git_repo": true,
+      "contains_rust": true,
+      "contains_sensitive_config": false,
+      "candidate_role": "selective_migration",
+      "notes": ["Legacy Git repository on main tracking origin/main.", "Untracked .serena/ and reports/ were observed and left unchanged.", "Contains Rust Serde validators and six-gate/timeframe-specific protocol material."]
+    },
+    {
+      "path": "schemas",
+      "type": "schema_and_contract_material",
+      "status": "unknown",
+      "git_repo": false,
+      "contains_rust": false,
+      "contains_sensitive_config": false,
+      "candidate_role": "reference",
+      "notes": ["JSON schemas include bars, manifests, experiments, hypotheses, metrics, studies, and strategy records."]
+    },
+    {
+      "path": "duckdb",
+      "type": "database_and_sql_tooling",
+      "status": "unknown",
+      "git_repo": false,
+      "contains_rust": false,
+      "contains_sensitive_config": false,
+      "candidate_role": "reference",
+      "notes": ["Contains a DuckDB database, SQL files, and a Python initialization script.", "Database bytes were not opened or copied."]
+    },
+    {
+      "path": "config",
+      "type": "configuration",
+      "status": "config",
+      "git_repo": false,
+      "contains_rust": false,
+      "contains_sensitive_config": true,
+      "candidate_role": "exclude",
+      "notes": ["Credential-related template and state/manifest JSON observed.", "Credential values were not read or exposed."]
+    },
+    {
+      "path": "google_service",
+      "type": "external_service_integration",
+      "status": "active",
+      "git_repo": false,
+      "contains_rust": false,
+      "contains_sensitive_config": true,
+      "candidate_role": "selective_migration",
+      "notes": ["Python Google Drive, ledger, book, export, and authentication modules observed.", "Authentication boundaries require later review; no secret values were read."]
+    },
+    {
+      "path": ".codex-openrouter",
+      "type": "agent_and_harness_runtime",
+      "status": "active",
+      "git_repo": false,
+      "contains_rust": false,
+      "contains_sensitive_config": true,
+      "candidate_role": "exclude",
+      "notes": ["Runtime state, sandbox directories, sandbox-secrets, local databases, sessions, logs, skills, and plugin cache observed.", "Not suitable for versioning in the research repository."]
+    },
+    {
+      "path": "All Read.md",
+      "type": "launch_instruction_document",
+      "status": "historical",
+      "git_repo": false,
+      "contains_rust": false,
+      "contains_sensitive_config": false,
+      "candidate_role": "archive",
+      "notes": ["Instructs an XAUUSD native-stream launch under the legacy protocol.", "Authority for the new program is unresolved."]
+    }
+  ]
+}
