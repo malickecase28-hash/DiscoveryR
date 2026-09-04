@@ -35,7 +35,7 @@ function MustFail([scriptblock] $Action, [string] $Name) {
     try { & $Action 2>$null; throw "$Name unexpectedly succeeded" } catch { if ($_.Exception.Message -match 'unexpectedly succeeded') { throw } }
 }
 function ValidateBundleIdentity($Record,$Manifest) { foreach($field in 'bundle_content_identity','directory_transport_hash'){ if($Record.$field -notmatch '^[0-9a-fA-F]{64}$' -or $Record.$field -ne $Manifest.$field){throw "Bundle identity mismatch: $field"} } }
-function ValidateInputManifest($Manifest) { foreach($field in 'schema_version','program_id','role_id','phase','research_base_sha','assignment_path','assignment_sha256','access_profile','raw_lake_access','repository_surfaces','authority_sources','shared_input_fingerprint'){$value=$Manifest.PSObject.Properties[$field].Value;if($null -eq $value -or ($value -is [string] -and [string]::IsNullOrWhiteSpace($value)) -or ($value -is [Collections.IEnumerable] -and $value -isnot [string] -and @($value).Count -eq 0)){throw "Input manifest field missing: $field"}} }
+function ValidateInputManifest($Manifest) { if($Manifest.schema_version -ne 'trinity.research-input-manifest.v2'){throw 'Input manifest schema version mismatch.'};foreach($field in 'schema_version','program_id','role_id','phase','research_base_sha','assignment_path','assignment_sha256','access_profile','raw_lake_access','repository_surfaces','repository_source_hashes','authority_sources','mount_attestation_sha256','shared_input_fingerprint'){$value=$Manifest.PSObject.Properties[$field].Value;if($null -eq $value -or ($value -is [string] -and [string]::IsNullOrWhiteSpace($value)) -or ($value -is [Collections.IEnumerable] -and $value -isnot [string] -and @($value).Count -eq 0)){throw "Input manifest field missing: $field"}} }
 function ValidateParityPair($Pair) { if($Pair.a01_shared_input_fingerprint -notmatch '^[0-9a-fA-F]{64}$' -or $Pair.a02_shared_input_fingerprint -notmatch '^[0-9a-fA-F]{64}$' -or $Pair.a01_shared_input_fingerprint -ne $Pair.a02_shared_input_fingerprint -or $Pair.match -ne $true){throw 'parity mismatch'} }
 function ValidateArtifactClaims($Claims) { $seen=@{};foreach($claim in @($Claims)){if($claim.claim_id -notmatch '^[A-Z]{2}\d{3}-A-?\d{2}-C\d{3,}$' -or $seen[$claim.claim_id]){throw 'duplicate or invalid claim id'};$seen[$claim.claim_id]=$true;if($claim.status -notin @('AUTHORITATIVE','PROVISIONAL','UNRESOLVED')){throw 'invalid status'};$e=$claim.evidence;$ae=$claim.authority_evidence;if($claim.status -eq 'AUTHORITATIVE' -and (($null -eq $e -or @($e).Count -eq 0) -and ($null -eq $ae -or @($ae).Count -eq 0))){throw 'malformed AUTHORITATIVE evidence'}}}
 MustFail { & $launcher -ProgramId DOES-NOT-EXIST -Role A-01 -Command true } 'missing program'
@@ -63,9 +63,12 @@ $digest = ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]:
  $bundleManifest=Get-Content -Raw (Join-Path $sourcePath 'bundle_manifest.json')|ConvertFrom-Json; ValidateBundleIdentity $authoritySource $bundleManifest
 }
 'AUTHORITY_RECURSIVE_HASH_PASS'
-$apAuthority=Get-Content -Raw 'F:\TrinityR-authority\XAUUSD\WAVE1_AUTHORITY_V1\AP-001\authority.json'|ConvertFrom-Json
-$tcAuthority=Get-Content -Raw 'F:\TrinityR-authority\XAUUSD\WAVE1_AUTHORITY_V1\TC-001\authority.json'|ConvertFrom-Json
-$ap2Authority=Get-Content -Raw 'F:\TrinityR-authority\XAUUSD\WAVE1_AUTHORITY_V1\AP-002\authority.json'|ConvertFrom-Json
+$apPath=Join-Path $env:TRINITYR_AUTHORITY_ROOT ((@($authority.sources|Where-Object source_id -eq 'xauusd.wave1.ap001')[0]).relative_path -replace '/','\')
+$tcPath=Join-Path $env:TRINITYR_AUTHORITY_ROOT ((@($authority.sources|Where-Object source_id -eq 'xauusd.wave1.tc001')[0]).relative_path -replace '/','\')
+$ap2Path=Join-Path $env:TRINITYR_AUTHORITY_ROOT ((@($authority.sources|Where-Object source_id -eq 'xauusd.wave1.ap002')[0]).relative_path -replace '/','\')
+$apAuthority=Get-Content -Raw (Join-Path $apPath 'authority.json')|ConvertFrom-Json
+$tcAuthority=Get-Content -Raw (Join-Path $tcPath 'authority.json')|ConvertFrom-Json
+$ap2Authority=Get-Content -Raw (Join-Path $ap2Path 'authority.json')|ConvertFrom-Json
 if (@($apAuthority.selected.PSObject.Properties).Count -eq 0 -or @($apAuthority.provenance).Count -eq 0 -or @($tcAuthority.selected.PSObject.Properties).Count -eq 0 -or @($tcAuthority.provenance).Count -eq 0) { throw 'Declared serialization authority is empty.' }
 if (@($ap2Authority.selected.PSObject.Properties).Count -ne 0 -or @($ap2Authority.unresolved) -notcontains 'UNRESOLVED_PENDING_SOURCE_APPROVAL') { throw 'AP-002 source-approval state changed.' }
 if (($apAuthority|ConvertTo-Json -Depth 40) -match 'market_samples|performance' -or ($tcAuthority|ConvertTo-Json -Depth 40) -match 'market_samples|performance') { throw 'Behavioral payload content leaked into authority bundle.' }
@@ -94,16 +97,12 @@ foreach ($slot in @(
 }
 'PAIR_INPUT_PARITY_PASS'
 $parityRoot = $env:TRINITYR_MANIFEST_ROOT; New-Item -ItemType Directory -Force $parityRoot | Out-Null
-$parity = [ordered]@{ schema_version='trinity.pair-input-parity.v1'; pairs=@() }
+$parity = [ordered]@{ schema_version='trinity.pair-input-parity.v2'; research_base_sha=$env:TRINITYR_RESEARCH_BASE_SHA; pairs=@() }
 foreach ($program in @('AP-001','AP-002','TC-001','BG-001')) {
-    $a = Get-Content -Raw (Join-Path $repo "agent_harness\assignments\$program\A-01.json") | ConvertFrom-Json
-    $b = Get-Content -Raw (Join-Path $repo "agent_harness\assignments\$program\A-02.json") | ConvertFrom-Json
-    $shared = [ordered]@{ program_id=$a.program_id; detector_id=$a.detector_id; assignment=$a.assignment; authorized_repository_surfaces=@($a.authorized_repository_surfaces | Where-Object { $_ -notmatch '^agent_harness/assignments/' } | Sort-Object); authority_source_ids=@($a.authority_source_ids | Sort-Object); authority_bundle_identities=@($a.authority_source_ids | ForEach-Object { $s=(@($authority.sources | Where-Object source_id -eq $_))[0]; "$($s.bundle_content_identity):$($s.directory_transport_hash)" } | Sort-Object); raw_lake_access=$a.raw_lake_access; peer_visibility=$a.peer_visibility }
-    $other = [ordered]@{ program_id=$b.program_id; detector_id=$b.detector_id; assignment=$b.assignment; authorized_repository_surfaces=@($b.authorized_repository_surfaces | Where-Object { $_ -notmatch '^agent_harness/assignments/' } | Sort-Object); authority_source_ids=@($b.authority_source_ids | Sort-Object); authority_bundle_identities=@($b.authority_source_ids | ForEach-Object { $s=(@($authority.sources | Where-Object source_id -eq $_))[0]; "$($s.bundle_content_identity):$($s.directory_transport_hash)" } | Sort-Object); raw_lake_access=$b.raw_lake_access; peer_visibility=$b.peer_visibility }
-    if (($shared | ConvertTo-Json -Compress -Depth 10) -cne ($other | ConvertTo-Json -Compress -Depth 10)) { throw "Pair input mismatch: $program" }
-    $aFingerprint = ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($shared|ConvertTo-Json -Compress -Depth 10))) | ForEach-Object ToString x2) -join ''
-    $bFingerprint = ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($other|ConvertTo-Json -Compress -Depth 10))) | ForEach-Object ToString x2) -join ''
-    $parity.pairs += [ordered]@{ program_id=$program; a01_shared_input_fingerprint=$aFingerprint; a02_shared_input_fingerprint=$bFingerprint; match=($aFingerprint -eq $bFingerprint) }
+    $a = Get-Content -Raw (Join-Path $parityRoot "$program\A-01\research_input_manifest.json") | ConvertFrom-Json
+    $b = Get-Content -Raw (Join-Path $parityRoot "$program\A-02\research_input_manifest.json") | ConvertFrom-Json
+    if($a.research_base_sha -ne $parity.research_base_sha -or $b.research_base_sha -ne $parity.research_base_sha){throw "Manifest base mismatch: $program"}
+    $parity.pairs += [ordered]@{ program_id=$program; a01_shared_input_fingerprint=$a.shared_input_fingerprint; a02_shared_input_fingerprint=$b.shared_input_fingerprint; match=($a.shared_input_fingerprint -eq $b.shared_input_fingerprint) }
     ValidateParityPair $parity.pairs[-1]
 }
 $parityPath=Join-Path $parityRoot 'pair_input_parity.json'; $parityJson=($parity|ConvertTo-Json -Depth 20)+[Environment]::NewLine
