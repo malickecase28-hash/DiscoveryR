@@ -1,67 +1,45 @@
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory)][ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$')][string] $ProgramId,
-    [Parameter(Mandatory)][ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$')][string] $Role,
-    [Parameter(Mandatory)][string] $SubmissionPath,
-    [Parameter(Mandatory)][ValidatePattern('^[0-9a-fA-F]{40}$')][string] $BaseRef,
-    [string] $ResearchBaseSha,
-    [Parameter(Mandatory)][string] $InputManifestPath,
-    [switch] $DryRun,
-    [switch] $Push
+    [Parameter(Mandatory)][ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$')][string]$ProgramId,
+    [Parameter(Mandatory)][ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$')][string]$Role,
+    [Parameter(Mandatory)][string]$SubmissionPath,
+    [Parameter(Mandatory)][ValidatePattern('^[0-9a-fA-F]{40}$')][string]$BaseRef,
+    [string]$ResearchBaseSha,
+    [Parameter(Mandatory)][string]$InputManifestPath,
+    [switch]$DryRun,
+    [switch]$Push
 )
-$ErrorActionPreference = 'Stop'
-$repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
-$source = (Resolve-Path -LiteralPath $SubmissionPath).Path
-if ($source.StartsWith(([IO.Path]::GetFullPath($repo).TrimEnd('\') + '\'), [StringComparison]::OrdinalIgnoreCase)) { throw 'Submission must be outside the Git worktree.' }
 
-$expected = @('authority_candidate.json', 'authority_review.md')
-$files = @(Get-ChildItem -LiteralPath $source -Force)
-if ($files.Count -ne $expected.Count -or @($files | Where-Object { $_.PSIsContainer -or $_.Name -notin $expected }).Count -or @($expected | Where-Object { -not (Test-Path -LiteralPath (Join-Path $source $_) -PathType Leaf) }).Count) { throw 'Submission must contain exactly authority_candidate.json and authority_review.md.' }
-foreach ($file in $files) { if ($file.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "Reparse point is not allowed: $($file.Name)" } }
-
-$candidate = Get-Content -Raw -LiteralPath (Join-Path $source 'authority_candidate.json') | ConvertFrom-Json
-if ($candidate.program_id -ne $ProgramId -or $candidate.role_id -ne $Role -or ($candidate.identity -and ($candidate.identity.program_id -ne $ProgramId -or $candidate.identity.role_id -ne $Role))) { throw 'Submission identity does not match ProgramId/Role.' }
-if ($candidate.artifact_type -ne 'AUTHORITY_CANDIDATE' -or -not $candidate.claims -or @($candidate.claims).Count -eq 0) { throw 'Invalid authority artifact type or empty claims.' }
-$assignmentPath=Join-Path $repo "agent_harness\assignments\$ProgramId\$Role.json"; $assignment=Get-Content -Raw $assignmentPath|ConvertFrom-Json
-$registry=Get-Content -Raw (Join-Path $repo 'agent_harness\authority_sources\XAUUSD.json')|ConvertFrom-Json
-$authorized=@($assignment.authority_source_ids) + "assignment.$($ProgramId.ToLowerInvariant())_$($Role.ToLowerInvariant())", 'protocol.research_rules'; $ids=@{}
-foreach($claim in @($candidate.claims)) {
-    if ($claim.claim_id -notmatch '^[A-Z]{2}\d{3}-A-?\d{2}-C\d{3,}$' -or $ids[$claim.claim_id]) { throw "Invalid or duplicate claim id: $($claim.claim_id)" }; $ids[$claim.claim_id]=$true
-    if ($claim.status -notin @('AUTHORITATIVE','PROVISIONAL','UNRESOLVED') -or [string]::IsNullOrWhiteSpace([string]$claim.claim)) { throw "Invalid claim status or claim text: $($claim.claim_id)" }
-    $evidence=$claim.authority_evidence; if ($claim.status -eq 'AUTHORITATIVE' -and ($null -eq $evidence -or @($evidence).Count -eq 0)) { throw "AUTHORITATIVE claim lacks authority_evidence: $($claim.claim_id)" }
-    foreach($e in $evidence) { foreach($field in @('source_id','relative_path','locator','evidence_type','supports')) { if ([string]::IsNullOrWhiteSpace([string]$e.$field)) { throw "Malformed evidence: $($claim.claim_id)" } }; if ($e.source_id -notin $authorized -and $e.source_id -notin @($registry.sources.source_id)) { throw "Unauthorized evidence source: $($e.source_id)" } }
-}
-function RejectOperationalIdentity($Node,[string]$Path='artifact') { if($Node -is [PSCustomObject]) { foreach($p in $Node.psobject.Properties) { if($p.Name -match '^(provider|provider_id|provider_identity|model_id|model_provider|model_name|model_identity|runtime_provider|runtime_slot|runtime_config|vendor|credential|credential_path|secret|token)$'){throw "Operational identity field: $Path.$($p.Name)"}; RejectOperationalIdentity $p.Value "$Path.$($p.Name)" } } elseif($Node -is [Collections.IEnumerable] -and $Node -isnot [string]) { foreach($i in $Node){RejectOperationalIdentity $i $Path} } }
-RejectOperationalIdentity $candidate
-foreach ($file in $files) { if ([regex]::IsMatch((Get-Content -Raw -LiteralPath $file.FullName), '(?i)\b(glm|codex|gemini|claude)\b')) { throw "Explicit operational identity name in $($file.Name)." } }
-$manifest=Get-Content -Raw -LiteralPath (Resolve-Path $InputManifestPath) | ConvertFrom-Json; foreach($field in 'schema_version','program_id','role_id','phase','research_base_sha','assignment_path','assignment_sha256','access_profile','raw_lake_access','repository_surfaces','authority_sources','shared_input_fingerprint'){$value=$manifest.PSObject.Properties[$field].Value;if($null -eq $value -or ($value -is [string] -and [string]::IsNullOrWhiteSpace($value)) -or ($value -is [Collections.IEnumerable] -and $value -isnot [string] -and @($value).Count -eq 0)){throw "Input manifest field missing: $field"}}; if($manifest.program_id -ne $ProgramId -or $manifest.role_id -ne $Role -or @($manifest.repository_surfaces|Where-Object{$null -eq $_.relative_path}).Count){throw 'Input manifest identity or surfaces invalid.'}; $assignmentHash=(Get-FileHash $assignmentPath -Algorithm SHA256).Hash.ToLowerInvariant(); if($manifest.assignment_sha256 -ne $assignmentHash){throw 'Input manifest assignment hash mismatch.'}; foreach($sourceId in @($assignment.authority_source_ids)){$s=@($registry.sources|Where-Object source_id -eq $sourceId)[0];foreach($field in 'bundle_content_identity','directory_transport_hash'){if($s.$field -notmatch '^[0-9a-fA-F]{64}$'){throw "Authority identity missing: $sourceId/$field"}}}; if ([string]::IsNullOrWhiteSpace($ResearchBaseSha)) { $ResearchBaseSha=$manifest.research_base_sha }; if ($ResearchBaseSha -notmatch '^[0-9a-fA-F]{40}$' -or $manifest.research_base_sha -ne $ResearchBaseSha.ToLowerInvariant()) { throw 'ResearchBaseSha or manifest-derived SHA is required and must match the manifest.' }
-$baseCommit=(& git -C $repo rev-parse $BaseRef).Trim(); if ($baseCommit -ne $ResearchBaseSha.ToLowerInvariant()) { throw 'BaseRef does not resolve to immutable ResearchBaseSha.' }; $inputManifestHash=if($InputManifestPath){(Get-FileHash (Resolve-Path $InputManifestPath) -Algorithm SHA256).Hash.ToLowerInvariant()}
-if ($DryRun) { [pscustomobject]@{Validated=$true;ProgramId=$ProgramId;Role=$Role;ResearchBaseSha=$ResearchBaseSha.ToLowerInvariant();InputManifestSha256=$inputManifestHash;ClaimCount=@($candidate.claims).Count} | Format-List; return }
-
-$branch = "reports/$($ProgramId.ToLowerInvariant())-$($Role.ToLowerInvariant())-authority"
-$worktree = Join-Path ([IO.Path]::GetTempPath()) ("trinityr-publish-" + [guid]::NewGuid().ToString('N'))
-$added = $false
-try {
-    & git -C $repo worktree add -b $branch $worktree $BaseRef
-    if ($LASTEXITCODE -ne 0) { throw 'Unable to create publication worktree.' }
-    $added = $true
-    $destination = Join-Path $worktree "research_submissions\$ProgramId\$Role"
-    New-Item -ItemType Directory -Force -Path $destination | Out-Null
-    Copy-Item -LiteralPath (Join-Path $source 'authority_candidate.json'),(Join-Path $source 'authority_review.md') -Destination $destination
-    $authorityIdentities=@($assignment.authority_source_ids|ForEach-Object{$s=@($registry.sources|Where-Object source_id -eq $_)[0];[ordered]@{source_id=$s.source_id;bundle_content_identity=$s.bundle_content_identity;directory_transport_hash=$s.directory_transport_hash}})
-    $submissionManifest=[ordered]@{schema_version='trinity.submission-manifest.v1';program_id=$ProgramId;role_id=$Role;research_base_sha=$ResearchBaseSha.ToLowerInvariant();research_input_manifest_sha256=$inputManifestHash;assignment_sha256=$assignmentHash;shared_input_fingerprint=$manifest.shared_input_fingerprint;authority_source_ids=@($assignment.authority_source_ids);authority_bundle_hashes=$authorityIdentities;authority_candidate_sha256=(Get-FileHash (Join-Path $source 'authority_candidate.json') -Algorithm SHA256).Hash.ToLowerInvariant();authority_review_sha256=(Get-FileHash (Join-Path $source 'authority_review.md') -Algorithm SHA256).Hash.ToLowerInvariant();published_utc=[DateTime]::UtcNow.ToString('o')}
-    ($submissionManifest|ConvertTo-Json -Depth 20)+[Environment]::NewLine | Set-Content -NoNewline -Encoding utf8 (Join-Path $destination 'submission_manifest.json')
-    & git -C $worktree add -- research_submissions/$ProgramId/$Role/authority_candidate.json research_submissions/$ProgramId/$Role/authority_review.md research_submissions/$ProgramId/$Role/submission_manifest.json
-    & git -C $worktree diff --cached --check
-    if ($LASTEXITCODE -ne 0) { throw 'Publication diff check failed.' }
-    & git -C $worktree commit -m "Publish $ProgramId $Role authority submission"
-    if ($LASTEXITCODE -ne 0) { throw 'Publication commit failed.' }
-    if ($Push) {
-        & git -C $worktree push -u origin $branch
-        if ($LASTEXITCODE -ne 0) { throw 'Publication push failed.' }
-    }
-    [pscustomobject]@{ Branch = $branch; Commit = (& git -C $worktree rev-parse HEAD); Pushed = [bool]$Push; Path = "research_submissions/$ProgramId/$Role" } | Format-List
-} finally {
-    if ($added) { & git -C $repo worktree remove --force $worktree 2>$null }
-    if (Test-Path -LiteralPath $worktree) { Remove-Item -LiteralPath $worktree -Recurse -Force -ErrorAction SilentlyContinue }
-}
+$ErrorActionPreference='Stop'
+$repo=(Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+$source=(Resolve-Path -LiteralPath $SubmissionPath).Path
+$baseSha=if($ResearchBaseSha){$ResearchBaseSha.ToLowerInvariant()}else{$BaseRef.ToLowerInvariant()}
+if($baseSha -ne $BaseRef.ToLowerInvariant()){throw 'BaseRef and ResearchBaseSha must be identical.'}
+function Sha([byte[]]$Bytes){(([Security.Cryptography.SHA256]::Create().ComputeHash($Bytes))|ForEach-Object ToString x2)-join ''}
+function FileSha([string]$Path){Sha ([IO.File]::ReadAllBytes($Path))}
+function GitText([string]$Path){$text=& git -C $repo show "$baseSha`:$Path";if($LASTEXITCODE -ne 0){throw "Frozen source missing: $Path"};($text -join "`n")}
+function GitJson([string]$Path){GitText $Path|ConvertFrom-Json}
+function DirectoryHash([string]$BundleRoot){$rootItem=Get-Item -LiteralPath $BundleRoot -Force;if(-not(Test-Path -LiteralPath $BundleRoot -PathType Container)-or($rootItem.Attributes-band[IO.FileAttributes]::ReparsePoint)){throw "Invalid external source root: $BundleRoot"};$prefix=[IO.Path]::GetFullPath($BundleRoot).TrimEnd('\')+'\';$records=@();foreach($item in Get-ChildItem -LiteralPath $BundleRoot -Recurse -Force){if($item.Attributes-band[IO.FileAttributes]::ReparsePoint){throw "External source reparse point: $($item.FullName)"};if(-not $item.PSIsContainer -and $item.Name -ne 'bundle_manifest.json'){$relative=$item.FullName.Substring($prefix.Length).Replace('\','/');$records+="$relative`t$(FileSha $item.FullName)`n"}};$records=@($records|Sort-Object);Sha ([Text.UTF8Encoding]::new($false).GetBytes(($records-join '')))}
+function RejectIdentity($Node,[string]$Path='artifact'){if($Node-is[PSCustomObject]){foreach($p in $Node.psobject.Properties){if($p.Name-match'^(provider|provider_id|provider_identity|model_id|model_provider|model_name|model_identity|runtime_provider|runtime_slot|runtime_config|vendor|credential|credential_path|secret|token)$'){throw "Operational identity field: $Path.$($p.Name)"};RejectIdentity $p.Value "$Path.$($p.Name)"}}elseif($Node-is[Collections.IEnumerable]-and$Node-isnot[string]){foreach($i in $Node){RejectIdentity $i $Path}}}
+if($source.StartsWith(([IO.Path]::GetFullPath($repo).TrimEnd('\')+'\'),[StringComparison]::OrdinalIgnoreCase)){throw 'Submission must be outside the Git worktree.'}
+$files=@(Get-ChildItem -LiteralPath $source -Force);$expected=@('authority_candidate.json','authority_review.md');if($files.Count-ne 2-or@($files|Where-Object{$_.PSIsContainer-or$_.Name-notin$expected}).Count-or@($expected|Where-Object{-not(Test-Path -LiteralPath(Join-Path $source $_)-PathType Leaf)}).Count){throw 'Submission must contain exactly the two required artifacts.'}
+if(@($files|Where-Object{$_.Attributes-band[IO.FileAttributes]::ReparsePoint}).Count){throw 'Submission reparse point rejected.'}
+$candidate=Get-Content -Raw -LiteralPath(Join-Path $source 'authority_candidate.json')|ConvertFrom-Json;RejectIdentity $candidate
+if($candidate.artifact_type-ne'AUTHORITY_CANDIDATE'-or$candidate.program_id-ne$ProgramId-or$candidate.role_id-ne$Role-or-not$candidate.claims){throw 'Candidate identity or shape invalid.'}
+$ids=@{};foreach($claim in @($candidate.claims)){if($claim.claim_id-notmatch'^[A-Z]{2}\d{3}-A-?\d{2}-C\d{3,}$'-or$ids[$claim.claim_id]){throw "Invalid or duplicate claim id: $($claim.claim_id)"};$ids[$claim.claim_id]=$true;if($claim.status-notin@('AUTHORITATIVE','PROVISIONAL','UNRESOLVED')-or[string]::IsNullOrWhiteSpace([string]$claim.claim)){throw "Invalid claim: $($claim.claim_id)"};if($claim.status-eq'AUTHORITATIVE'-and@($claim.authority_evidence).Count-eq0){throw "AUTHORITATIVE claim lacks evidence: $($claim.claim_id)"};foreach($e in @($claim.authority_evidence)){foreach($field in 'source_id','relative_path','locator','evidence_type','supports'){if([string]::IsNullOrWhiteSpace([string]$e.$field)){throw "Malformed evidence: $($claim.claim_id)"}}}}
+foreach($file in $files){if([regex]::IsMatch((Get-Content -Raw $file.FullName),'(?i)\b(glm|codex|gemini|claude)\b')){throw "Explicit runtime identity in $($file.Name)"}}
+$manifest=Get-Content -Raw -LiteralPath(Resolve-Path $InputManifestPath)|ConvertFrom-Json;foreach($field in 'schema_version','program_id','role_id','phase','research_base_sha','assignment_path','assignment_sha256','access_profile','raw_lake_access','repository_surfaces','repository_source_hashes','authority_sources','mount_attestation_sha256','shared_input_fingerprint'){if($null-eq$manifest.PSObject.Properties[$field]){throw "Input manifest field missing: $field"}}
+if($manifest.program_id-ne$ProgramId-or$manifest.role_id-ne$Role-or$manifest.research_base_sha-ne$baseSha){throw 'Input manifest identity/base mismatch.'}
+$assignment=GitJson $manifest.assignment_path;if($assignment.program_id-ne$ProgramId-or$assignment.role_id-ne$Role){throw 'Frozen assignment identity mismatch.'};$assignmentHash=Sha([Text.Encoding]::UTF8.GetBytes((GitText $manifest.assignment_path)));if($manifest.assignment_sha256-ne$assignmentHash){throw 'Frozen assignment hash mismatch.'}
+$registry=GitJson 'agent_harness/authority_sources/XAUUSD.json';$allowed=@($assignment.authority_source_ids)+'assignment.'+$ProgramId.ToLowerInvariant()+'_'+$Role.ToLowerInvariant()+'','protocol.research_rules';$allowed+=@($manifest.repository_source_hashes.PSObject.Properties.Name)
+foreach($claim in @($candidate.claims)){foreach($e in @($claim.authority_evidence)){if($e.source_id-notin$allowed){throw "Unauthorized evidence source: $($e.source_id)"}}}
+$baseTree=Join-Path ([IO.Path]::GetTempPath()) ('trinityr-base-'+[guid]::NewGuid().ToString('N'));$added=$false
+try{
+    & git -C $repo worktree add --detach $baseTree $baseSha|Out-Null;if($LASTEXITCODE-ne0){throw 'Unable to materialize frozen research base.'};$added=$true
+    foreach($surface in @($manifest.repository_surfaces)){$path=Join-Path $baseTree($surface.relative_path-replace'/','\');if(-not(Test-Path -LiteralPath$path)){throw "Frozen repository surface missing: $($surface.relative_path)"};$actual=if((Get-Item$path).PSIsContainer){DirectoryHash $path}else{FileSha $path};if($actual-ne$surface.hash){throw "Frozen repository source hash mismatch: $($surface.relative_path)"}}
+    $attestationPath=Join-Path (Split-Path(Resolve-Path $InputManifestPath).Path) 'mount_attestation.json';if(-not(Test-Path -LiteralPath$attestationPath)){throw 'Mount attestation missing.'};if((FileSha $attestationPath)-ne$manifest.mount_attestation_sha256){throw 'Mount attestation hash mismatch.'}
+    foreach($as in @($manifest.authority_sources)){$entry=@($registry.sources|Where-Object source_id-eq$as.source_id)[0];if($null-eq$entry){throw "Frozen authority source missing: $($as.source_id)"};if($entry.relative_path-ne$as.relative_path-or$entry.bundle_content_identity-ne$as.bundle_content_identity-or$entry.directory_transport_hash-ne$as.directory_transport_hash){throw "Frozen authority source manifest mismatch: $($as.source_id)"};$external=Join-Path $env:TRINITYR_AUTHORITY_ROOT($as.relative_path-replace'/','\');if(-not(Test-Path -LiteralPath$external)){throw "Authority bundle unavailable: $($as.source_id)"};$content=FileSha(Join-Path$external 'authority.json');$transport=DirectoryHash $external;$bm=Get-Content -Raw(Join-Path$external 'bundle_manifest.json')|ConvertFrom-Json;if($content-ne$as.bundle_content_identity-or$transport-ne$as.directory_transport_hash-or$bm.bundle_content_identity-ne$content-or$bm.directory_transport_hash-ne$transport){throw "Authority bundle hash mismatch: $($as.source_id)"}}
+    if($DryRun){[pscustomobject]@{Validated=$true;ProgramId=$ProgramId;Role=$Role;ResearchBaseSha=$baseSha;ClaimCount=@($candidate.claims).Count;InputManifestSha256=(FileSha(Resolve-Path $InputManifestPath))}|Format-List;return}
+    $branch="reports/$($ProgramId.ToLowerInvariant())-$($Role.ToLowerInvariant())-authority-v3";$destination=Join-Path $baseTree "research_submissions\$ProgramId\$Role";New-Item -ItemType Directory -Force $destination|Out-Null;Copy-Item -LiteralPath(Join-Path $source 'authority_candidate.json'),(Join-Path $source 'authority_review.md') -Destination$destination
+    $authorityIdentities=@($manifest.authority_sources|ForEach-Object{[ordered]@{source_id=$_.source_id;relative_path=$_.relative_path;bundle_content_identity=$_.bundle_content_identity;directory_transport_hash=$_.directory_transport_hash}});$sub=[ordered]@{schema_version='trinity.submission-manifest.v2';program_id=$ProgramId;role_id=$Role;research_base_sha=$baseSha;research_input_manifest_sha256=(FileSha(Resolve-Path $InputManifestPath));assignment_sha256=$assignmentHash;shared_input_fingerprint=$manifest.shared_input_fingerprint;repository_source_hashes=$manifest.repository_source_hashes;mount_attestation_sha256=$manifest.mount_attestation_sha256;authority_source_ids=@($assignment.authority_source_ids);authority_bundle_hashes=$authorityIdentities;authority_candidate_sha256=FileSha(Join-Path $source 'authority_candidate.json');authority_review_sha256=FileSha(Join-Path $source 'authority_review.md');published_utc=[DateTime]::UtcNow.ToString('o')};[IO.File]::WriteAllText((Join-Path $destination 'submission_manifest.json'),(($sub|ConvertTo-Json -Depth 30)+[Environment]::NewLine),[Text.UTF8Encoding]::new($false));& git -C $baseTree add -- research_submissions/$ProgramId/$Role;& git -C $baseTree diff --cached --check;if($LASTEXITCODE-ne0){throw 'Publication diff check failed.'};& git -C $baseTree commit -m "Publish $ProgramId $Role authority submission"|Out-Null;if($LASTEXITCODE-ne0){throw 'Publication commit failed.'};if($Push){& git -C $baseTree push -u origin $branch;if($LASTEXITCODE-ne0){throw 'Publication push failed.'}};[pscustomobject]@{Branch=$branch;Commit=(& git -C $baseTree rev-parse HEAD);Pushed=[bool]$Push;Path="research_submissions/$ProgramId/$Role"}|Format-List
+}finally{if($added){& git -C $repo worktree remove --force $baseTree 2>$null};if(Test-Path -LiteralPath$baseTree){[IO.Directory]::Delete($baseTree,$true)}}

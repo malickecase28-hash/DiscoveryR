@@ -5,6 +5,7 @@ param(
     [Parameter(Mandatory)][string] $Command,
     [string] $RunRoot = 'F:\TrinityR-runs',
     [string] $Distro = 'Ubuntu',
+    [ValidatePattern('^[0-9a-fA-F]{40}$')][string] $ResearchBaseSha,
     [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$')][string] $RuntimeSlot
 )
 $ErrorActionPreference = 'Stop'
@@ -49,22 +50,30 @@ function RecursiveHash([string] $Path) {
     ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($members -join ''))) | ForEach-Object ToString x2) -join ''
 }
 function ShaText([string] $Value) { ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes($Value)) | ForEach-Object ToString x2) -join '' }
-function SharedInputFingerprint($Assignment, $Authority) {
+function SharedInputFingerprint($Assignment, $Authority, $RepositorySourceHashes) {
     $shared = [ordered]@{
         program_id = $Assignment.program_id; detector_id = $Assignment.detector_id; assignment = $Assignment.assignment
         authorized_repository_surfaces = @($Assignment.authorized_repository_surfaces | Where-Object { $_ -notmatch '^agent_harness/assignments/' } | Sort-Object)
         authority_source_ids = @($Assignment.authority_source_ids | Sort-Object)
-        authority_bundle_identities = @($Assignment.authority_source_ids | ForEach-Object { $s=(@($Authority.sources | Where-Object source_id -eq $_))[0]; "$($s.bundle_content_identity):$($s.directory_transport_hash)" } | Sort-Object)
+        authority_bundle_identities = @($Assignment.authority_source_ids | ForEach-Object { $s=(@($Authority.sources | Where-Object source_id -eq $_))[0]; "$($s.source_id):$($s.relative_path):$($s.bundle_content_identity):$($s.directory_transport_hash)" } | Sort-Object)
+        repository_source_hashes = $RepositorySourceHashes
         raw_lake_access = $Assignment.raw_lake_access; peer_visibility = $Assignment.peer_visibility
     }
     ShaText (($shared | ConvertTo-Json -Compress -Depth 10))
 }
 function WriteInputManifest($Assignment, $Authority, [string] $ManifestRoot, [string] $BaseSha) {
-    $pair = SharedInputFingerprint $Assignment $Authority
-    $surfaces=@($Assignment.authorized_repository_surfaces|Sort-Object|ForEach-Object{$p=Join-Path $repoFull ($_ -replace '/','\');[ordered]@{relative_path=$_;identity=if((Get-Item $p).PSIsContainer){RecursiveHash $p}else{(Get-FileHash $p -Algorithm SHA256).Hash.ToLowerInvariant()};hash=if((Get-Item $p).PSIsContainer){RecursiveHash $p}else{(Get-FileHash $p -Algorithm SHA256).Hash.ToLowerInvariant()}}})
-    $manifest = [ordered]@{ schema_version='trinity.research-input-manifest.v1'; program_id=$Assignment.program_id; role_id=$Assignment.role_id; phase=$Assignment.phase; research_base_sha=$BaseSha; assignment_path=("agent_harness/assignments/$($Assignment.program_id)/$($Assignment.role_id).json"); assignment_sha256=(Get-FileHash $assignmentPath -Algorithm SHA256).Hash.ToLowerInvariant(); access_profile=$Assignment.access_profile; raw_lake_access=$Assignment.raw_lake_access; repository_surfaces=$surfaces; authority_sources=@($Assignment.authority_source_ids | ForEach-Object { $s=@($Authority.sources | Where-Object source_id -eq $_)[0]; [ordered]@{source_id=$s.source_id;bundle_content_identity=$s.bundle_content_identity;directory_transport_hash=$s.directory_transport_hash} }); shared_input_fingerprint=$pair }
+    $surfaces=@($Assignment.authorized_repository_surfaces|Sort-Object|ForEach-Object{$p=Join-Path $repoFull ($_ -replace '/','\');$item=Get-Item $p;[ordered]@{relative_path=$_;identity=if($item.PSIsContainer){RecursiveHash $p}else{(Get-FileHash $p -Algorithm SHA256).Hash.ToLowerInvariant()};hash=if($item.PSIsContainer){RecursiveHash $p}else{(Get-FileHash $p -Algorithm SHA256).Hash.ToLowerInvariant()}}})
+    $sourceMap=@{'protocol'='repo.protocol';'contracts'='repo.contracts';'registry'='repo.detector_registry';'instruments/XAUUSD/instrument_config.json'='repo.xauusd.instrument_config';'instruments/XAUUSD/source_inventory.json'='repo.xauusd.source_inventory'}
+    $repositorySourceHashes=[ordered]@{}
+    foreach($surface in $surfaces){$id=$sourceMap[$surface.relative_path];if($id){$repositorySourceHashes[$id]=$surface.hash}}
+    $authoritySources=@($Assignment.authority_source_ids | ForEach-Object { $s=@($Authority.sources | Where-Object source_id -eq $_)[0]; [ordered]@{source_id=$s.source_id;relative_path=$s.relative_path;mount_target=$s.mount_target;hash=$s.hash;bundle_content_identity=$s.bundle_content_identity;directory_transport_hash=$s.directory_transport_hash} })
+    $pair = SharedInputFingerprint $Assignment $Authority $repositorySourceHashes
     New-Item -ItemType Directory -Force -Path $ManifestRoot | Out-Null
-    $path=Join-Path $ManifestRoot 'research_input_manifest.json'; if (Test-Path -LiteralPath $path) { $old=Get-Content -Raw $path; $new=($manifest|ConvertTo-Json -Depth 20)+[Environment]::NewLine; if ($old -ne $new) { throw 'Immutable research input manifest conflict.' } } else { ($manifest|ConvertTo-Json -Depth 20)+[Environment]::NewLine | Set-Content -NoNewline -Encoding utf8 $path }
+    $attestation=[ordered]@{schema_version='trinity.mount-attestation.v1';research_base_sha=$BaseSha;program_id=$Assignment.program_id;role_id=$Assignment.role_id;repository_source_hashes=$repositorySourceHashes;authority_sources=$authoritySources}
+    $attestationJson=($attestation|ConvertTo-Json -Depth 20)+[Environment]::NewLine;$attestationHash=ShaText $attestationJson;$attestationPath=Join-Path $ManifestRoot 'mount_attestation.json'
+    if(Test-Path -LiteralPath $attestationPath){if((Get-FileHash $attestationPath -Algorithm SHA256).Hash.ToLowerInvariant() -ne $attestationHash -or (Get-Content -Raw $attestationPath) -ne $attestationJson){throw 'Immutable mount attestation conflict.'}}else{[IO.File]::WriteAllText($attestationPath,$attestationJson,[Text.UTF8Encoding]::new($false))}
+    $manifest = [ordered]@{ schema_version='trinity.research-input-manifest.v2'; program_id=$Assignment.program_id; role_id=$Assignment.role_id; phase=$Assignment.phase; research_base_sha=$BaseSha; assignment_path=("agent_harness/assignments/$($Assignment.program_id)/$($Assignment.role_id).json"); assignment_sha256=(Get-FileHash $assignmentPath -Algorithm SHA256).Hash.ToLowerInvariant(); access_profile=$Assignment.access_profile; raw_lake_access=$Assignment.raw_lake_access; repository_surfaces=$surfaces; repository_source_hashes=$repositorySourceHashes; authority_sources=$authoritySources; mount_attestation_sha256=$attestationHash; shared_input_fingerprint=$pair }
+    $path=Join-Path $ManifestRoot 'research_input_manifest.json'; if (Test-Path -LiteralPath $path) { $old=Get-Content -Raw $path; $new=($manifest|ConvertTo-Json -Depth 20)+[Environment]::NewLine; if ($old -ne $new) { throw 'Immutable research input manifest conflict.' } } else { [IO.File]::WriteAllText($path,(($manifest|ConvertTo-Json -Depth 20)+[Environment]::NewLine),[Text.UTF8Encoding]::new($false)) }
     return $path
 }
 function MountPath([string] $Path) { if ($Path.StartsWith('/')) { $Path } else { WslPath $Path } }
@@ -206,9 +215,12 @@ foreach ($sourceId in @($assignment.authority_source_ids)) {
 }
 if ($lake) { $mounts += [PSCustomObject]@{ source = (MountPath $lake); target = "/shared/data/$($assignment.data_scope_id)/development" } }
 if ($runtime) { $mounts += $runtime }
-$baseSha = (& git -C $repo rev-parse HEAD).Trim()
-if ($baseSha -notmatch '^[0-9a-f]{40}$') { throw 'Unable to establish immutable research base SHA.' }
-$manifestRootInput = if ($env:TRINITYR_MANIFEST_ROOT) { $env:TRINITYR_MANIFEST_ROOT } else { 'F:\TrinityR-manifests\wave1-v2' }
+$baseSha = if ($ResearchBaseSha) { $ResearchBaseSha.ToLowerInvariant() } elseif ($env:TRINITYR_RESEARCH_BASE_SHA) { $env:TRINITYR_RESEARCH_BASE_SHA.ToLowerInvariant() } else { throw 'ResearchBaseSha is required; launch from the frozen research base.' }
+if ($baseSha -notmatch '^[0-9a-f]{40}$') { throw 'Invalid immutable research base SHA.' }
+$actualHead = (& git -C $repo rev-parse HEAD).Trim().ToLowerInvariant()
+if ($actualHead -ne $baseSha) { throw 'Repository HEAD does not match ResearchBaseSha.' }
+if (@(& git -C $repo status --porcelain --untracked-files=all).Count -ne 0) { throw 'Research base worktree must be clean.' }
+$manifestRootInput = if ($env:TRINITYR_MANIFEST_ROOT) { $env:TRINITYR_MANIFEST_ROOT } else { 'F:\TrinityR-manifests\wave1-v3' }
 $manifestRoot = ManifestRoot $manifestRootInput
 $manifestPath = WriteInputManifest $assignment $authority (Join-Path $manifestRoot "$ProgramId\$Role") $baseSha
 $mounts += [PSCustomObject]@{ source = (MountPath $manifestPath); target = '/shared/research_input_manifest.json' }
