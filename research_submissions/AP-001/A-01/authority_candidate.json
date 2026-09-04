@@ -1,0 +1,1172 @@
+{
+  "program_id": "AP-001",
+  "role_id": "A-01",
+  "artifact_type": "AUTHORITY_CANDIDATE",
+  "detector_id": "drift_burst",
+  "instrument": "XAUUSD",
+  "access_profile": "AUTHORITY",
+  "generated_date": "2026-09-04",
+  "claim_prefix": "AP001-A01-C###",
+  "e1_blocked_pending_authority": true,
+  "scope_statement": "Blind authority reconstruction of drift_burst lifecycle, availability, and episode identity semantics from authorized surfaces only. No behavioral, strategy, raw-lake, confirmation, development, or cross-workspace research was performed. Meanings are not inferred from field names; unsupported matters are marked UNRESOLVED.",
+  "subjects": [
+    {
+      "subject_id": "drift_burst",
+      "designation": "Detector assigned to this role by the assignment record",
+      "description": "The detector whose lifecycle, availability, and episode identity semantics this candidate reconstructs.",
+      "authority_status": "Physical output surface anchored; internal semantics UNRESOLVED"
+    },
+    {
+      "subject_id": "drift_burst.output_payload",
+      "designation": "payload_drift_burst",
+      "description": "Per-row nullable serialized-text payload column (LargeUtf8, nullable=true) carried only on the XAUUSD tick-scale stream within the accessible corpus inventory; present in all six schema-verified tick parts.",
+      "authority_status": "AUTHORITATIVE as physical schema; internal record structure UNRESOLVED"
+    },
+    {
+      "subject_id": "xauusd.tick_stream",
+      "designation": "Tick scale, XAUUSD, fusion_markets/xauusd",
+      "description": "Carrier stream for payload_drift_burst: 6 parts, all schema-verified, 68,445,659 rows; physical time coordinates event_ts_ns and received_ts_ns (Int64, non-nullable), sequence key source_sequence (Int64, non-nullable), quote coordinates bid and ask (Float64, non-nullable), and seven payload columns.",
+      "authority_status": "AUTHORITATIVE as physical schema; temporal coverage of the corpus UNRESOLVED"
+    },
+    {
+      "subject_id": "drift_burst.lifecycle",
+      "designation": "Lifecycle, availability, and episode identity semantics of drift_burst",
+      "description": "Reconstruction target covering birth/origin, state vocabulary and transitions, weak/online/strong semantics, peak, decay-risk/dying/recovery, completion/termination, censoring, timestamp families, per-stage lawful availability, and retrospective completed-record fields.",
+      "authority_status": "UNRESOLVED in full; no payload-internal authority is accessible"
+    },
+    {
+      "subject_id": "program.causal_clock",
+      "designation": "Single causal information clock and lifecycle-first rules",
+      "description": "Program law: at anchor time t only information actually available by t is eligible; occurrence/origin timestamps remain provenance; future completion/termination cannot define an earlier-state cohort; completed may be a later outcome or later anchor; native scale remains attached.",
+      "authority_status": "AUTHORITATIVE program-level rule binding all drift_burst semantics"
+    },
+    {
+      "subject_id": "xauusd.corpus",
+      "designation": "XAUUSD corpus inventory, fusion_markets/xauusd",
+      "description": "Eight sources (seven bar scales: 15s, 30s, 1m, 5m, 15m, 1h, 4h; one tick scale), each with 6 parts, all 48 parts schema-verified; 70,852,987 total rows; source and payload manifest identities recorded.",
+      "authority_status": "AUTHORITATIVE inventory facts; corpus time coverage UNRESOLVED"
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "AP001-A01-C001",
+      "topics": [],
+      "subject": "program.identity_and_access",
+      "statement": "This reconstruction is conducted under program AP-001, role A-01, phase AUTHORITY, access profile AUTHORITY, for detector drift_burst on instrument XAUUSD; raw lake access is denied; cross-workspace and behavioral materials are out of scope; the designated authority source id for schema-level authority is xauusd.schemas.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.ap001_a01",
+          "relative_path": "assignment.json",
+          "locator": "root:program_id, root:role_id, root:phase, root:access_profile, root:detector_id, root:raw_lake_access, root:cross-workspace visibility denial, root:authority_source_ids",
+          "evidence_type": "identity_record",
+          "supports": "Identity, access profile, denial of raw lake access, and designation of xauusd.schemas as authority source"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C002",
+      "topics": [],
+      "subject": "authority.source_mapping",
+      "statement": "The authority source id xauusd.schemas designates the XAUUSD source inventory (physical schemas, parts, row counts, payload columns, schema verification coverage, and manifest identities) as the schema-level authority available to this reconstruction; no other schema-level authority for payload structure is accessible.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.ap001_a01",
+          "relative_path": "assignment.json",
+          "locator": "root:authority_source_ids == [\"xauusd.schemas\"], root:authorized_repository_surfaces",
+          "evidence_type": "designation_record",
+          "supports": "Designation of the source inventory as the authority source"
+        },
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources[0..7] (scales Bar:15m, Bar:15s, Bar:1h, Bar:1m, Bar:30s, Bar:4h, Bar:5m, Tick), root:source_manifest_identity, root:payload_manifest_identity",
+          "evidence_type": "inventory_enumeration",
+          "supports": "The inventory enumerates physical schemas and corpus accounting; it contains no payload-internal record schema"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C003",
+      "topics": [1],
+      "subject": "drift_burst.output_payload",
+      "statement": "Physical output family: within the accessible corpus inventory, drift_burst output persists as a single per-row nullable serialized-text payload column named payload_drift_burst (data type LargeUtf8, nullable=true) carried only on the tick-scale stream; the column appears in the physical schema of all six tick parts and in the tick payload_columns enumeration, all six tick parts being schema-verified; none of the seven bar scales (15s, 30s, 1m, 5m, 15m, 1h, 4h) carries any drift_burst payload column. Nullability is a schema permission; whether null rows occur and what a null row denotes are UNRESOLVED.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_drift_burst] (LargeUtf8, nullable=true)",
+          "evidence_type": "physical_schema_field",
+          "supports": "Physical existence, serialized-text type, and nullability permission of the drift_burst payload column"
+        },
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].payload_columns; sources[scale=Tick].schema_verified_parts (6 of 6 parts)",
+          "evidence_type": "inventory_enumeration",
+          "supports": "Column is enumerated for the tick scale and verified across all tick parts"
+        },
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Bar:15m].payload_columns and the six sibling bar scales (Bar:15s, Bar:1h, Bar:1m, Bar:30s, Bar:4h, Bar:5m).payload_columns",
+          "evidence_type": "inventory_enumeration",
+          "supports": "Absence of any drift_burst payload column on every bar scale"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C004",
+      "topics": [1],
+      "subject": "drift_burst.output_payload",
+      "statement": "Whether payload_drift_burst encodes per-tick state records, discrete event records, completed records, or a mixture of record variants, and how variants would be distinguished, is not documented in any accessible source. The physical schema exposes only the column name, serialized-text type, and nullability; no internal record structure, field list, or record-variant vocabulary is available. State stream versus completed records is therefore UNRESOLVED.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_drift_burst] — no internal field or record-variant definitions accompany the column",
+          "evidence_type": "observation_of_absence",
+          "supports": "The only schema-level authority documents no internal record structure for the payload"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "contracts",
+          "locator": "directory listing 2026-09-04: 0 files; likewise registry: 0 files and authority: 0 files",
+          "evidence_type": "observation_of_absence",
+          "supports": "No contract, registry, or authority documents are present in the accessible environment"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C005",
+      "topics": [2],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Episode identity for drift_burst — the identifier scheme, whether event or episode identifiers persist across rows, whether identifiers are reused after an episode ends, and how state-stream rows link to completed records — is not documented in any accessible source. UNRESOLVED.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema — columns are stream coordinates (event_ts_ns, received_ts_ns, source_sequence, bid, ask) plus seven opaque payload columns; no episode identifier field exists at stream level",
+          "evidence_type": "observation_of_absence",
+          "supports": "No episode identifier is exposed at the stream level; any identity scheme would live inside the payload text, which is not documented"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "authority",
+          "locator": "directory listing 2026-09-04: 0 files; likewise contracts and registry: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No authority document defines episode identity semantics"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C006",
+      "topics": [3, 13, 14],
+      "subject": "program.causal_clock",
+      "statement": "Program law fixes the causal-clock relationship for all drift_burst timestamp semantics: there is one causal information clock, and at anchor time t only information actually available by t is eligible; occurrence and origin timestamps remain provenance rather than eligibility clocks. This rule is authoritative regardless of how the detector's internal timestamps are later documented.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "RESEARCH_RULES.md rule 2 (\"One causal information clock: at anchor time t, only information actually available by t is eligible. Occurrence/origin timestamps remain provenance.\")",
+          "evidence_type": "protocol_rule",
+          "supports": "The general causal rule binding occurrence/origin time to provenance and availability to the causal clock"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C007",
+      "topics": [3],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Birth/origin semantics for drift_burst — what constitutes episode birth, whether birth is an event or a state, and the meaning of any origin timestamp carried in the payload — is not documented in any accessible source. UNRESOLVED. The general rule that origin timestamps remain provenance (claim AP001-A01-C006) is authoritative; the detector-specific mapping is not.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_drift_burst] — no birth/origin field definitions are documented",
+          "evidence_type": "observation_of_absence",
+          "supports": "No origin or birth semantics exist in any accessible schema"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "registry",
+          "locator": "directory listing 2026-09-04: 0 files; likewise contracts and authority: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No registry or authority document defines birth/origin semantics"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C008",
+      "topics": [4],
+      "subject": "drift_burst.lifecycle",
+      "statement": "The source-supported state vocabulary for drift_burst is UNRESOLVED: no accessible source enumerates states, status values, or any vocabulary of lifecycle conditions for the detector. No state terms are inferred from the payload column name or from any other field name.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — the inventory enumerates column names and physical types only; no enumerated value sets or vocabularies appear anywhere in the file",
+          "evidence_type": "observation_of_absence",
+          "supports": "No state vocabulary is documented at any level of the inventory"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "contracts",
+          "locator": "directory listing 2026-09-04: 0 files; likewise registry and authority: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No contract document supplies a state vocabulary"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C009",
+      "topics": [5],
+      "subject": "drift_burst.lifecycle",
+      "statement": "The transition semantics for drift_burst — legal transitions, illegal transitions, reversions, repeats, re-entry, recovery, and resets — are not documented in any accessible source. UNRESOLVED in full.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — no transition tables, state graphs, or transition rules appear in the inventory",
+          "evidence_type": "observation_of_absence",
+          "supports": "No transition semantics exist in the accessible schema authority"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "authority",
+          "locator": "directory listing 2026-09-04: 0 files; likewise contracts and registry: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No authority document defines transition legality"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C010",
+      "topics": [6],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Weak semantics for drift_burst — whether a weak condition exists as a state or event, its first-known time, its persistence, and its disappearance — is not documented in any accessible source. UNRESOLVED.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — no weak-state field, enumeration, or definition appears in any physical schema",
+          "evidence_type": "observation_of_absence",
+          "supports": "No weak semantics exist in the accessible schema authority"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "contracts",
+          "locator": "directory listing 2026-09-04: 0 files; likewise registry and authority: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No contract document defines weak semantics"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C011",
+      "topics": [7],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Online semantics for drift_burst — whether an online condition exists as a state or event, its first-known time, its persistence, and its disappearance — is not documented in any accessible source. UNRESOLVED.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — no online-state field, enumeration, or definition appears in any physical schema",
+          "evidence_type": "observation_of_absence",
+          "supports": "No online semantics exist in the accessible schema authority"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "registry",
+          "locator": "directory listing 2026-09-04: 0 files; likewise contracts and authority: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No registry document defines online semantics"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C012",
+      "topics": [8],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Strong semantics for drift_burst — whether a strong condition exists as a state or event, its first-known time, its persistence, and its disappearance — is not documented in any accessible source. UNRESOLVED.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — no strong-state field, enumeration, or definition appears in any physical schema",
+          "evidence_type": "observation_of_absence",
+          "supports": "No strong semantics exist in the accessible schema authority"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "authority",
+          "locator": "directory listing 2026-09-04: 0 files; likewise contracts and registry: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No authority document defines strong semantics"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C013",
+      "topics": [9],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Whether a peak in the drift_burst lifecycle is a contemporaneous state or a retrospective maximum is UNRESOLVED. No accessible source exposes a peak field or its computation. Under the future-information firewall (claim AP001-A01-C023), peak must not be classified as retrospective or future merely from its name; under protocol rule 4, future completion cannot define an earlier-state cohort. Either interpretation requires direct payload-internal evidence that does not exist in accessible sources.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — no peak field or extremum-computation definition appears in any physical schema",
+          "evidence_type": "observation_of_absence",
+          "supports": "No peak semantics exist in the accessible schema authority"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "RESEARCH_RULES.md rule 4 (\"Lifecycle-first: future completion/termination cannot define an earlier-state cohort. Completed may be a later outcome or later anchor.\")",
+          "evidence_type": "protocol_rule",
+          "supports": "The lifecycle-first constraint that bounds any retrospective interpretation of peak"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C014",
+      "topics": [10],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Decay-risk, dying, and recovery semantics for drift_burst — whether each is an event or a state, its persistence, its re-entry behavior, and its availability — are not documented in any accessible source. UNRESOLVED in full.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — no decay-risk, dying, or recovery fields or definitions appear in any physical schema",
+          "evidence_type": "observation_of_absence",
+          "supports": "No decay or recovery semantics exist in the accessible schema authority"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "contracts",
+          "locator": "directory listing 2026-09-04: 0 files; likewise registry and authority: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No contract document defines decay-risk, dying, or recovery semantics"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C015",
+      "topics": [11],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Completion and termination semantics for drift_burst — the end_reason vocabulary, terminal conditions, treatment of incomplete episodes, and whether termination is an event or a state — are not documented in any accessible source. UNRESOLVED in full.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — no completion, termination, or end_reason fields or definitions appear in any physical schema",
+          "evidence_type": "observation_of_absence",
+          "supports": "No termination semantics exist in the accessible schema authority"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "authority",
+          "locator": "directory listing 2026-09-04: 0 files; likewise contracts and registry: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No authority document defines completion or termination semantics"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C016",
+      "topics": [11, 15, 16],
+      "subject": "program.causal_clock",
+      "statement": "Program law is lifecycle-first: future completion or termination cannot define an earlier-state cohort; completed may be a later outcome or a later anchor. This rule is authoritative for every drift_burst lifecycle stage and binds any future completed-record cohort definition, independently of the unresolved detector-specific completion semantics.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "RESEARCH_RULES.md rule 4 (\"Lifecycle-first: future completion/termination cannot define an earlier-state cohort. Completed may be a later outcome or later anchor.\")",
+          "evidence_type": "protocol_rule",
+          "supports": "The lifecycle-first rule governing completion-relative cohort construction"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C017",
+      "topics": [12],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Censoring and corpus-boundary representation for drift_burst — whether episodes crossing part boundaries, payload nulls, or the end of the corpus are marked censored, truncated, or otherwise represented — is not documented in any accessible source. UNRESOLVED. The physical corpus is partitioned into six tick parts with no documented temporal ranges; even the corpus time coverage (start and end of the tick stream) is not stated in the inventory, so boundary analysis cannot begin from the accessible sources.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources[scale=Tick].parts (6 parts with row counts only) — no temporal ranges, boundary markers, or censoring flags are documented",
+          "evidence_type": "observation_of_absence",
+          "supports": "No censoring or corpus-boundary semantics and no corpus time coverage exist in the accessible inventory"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "registry",
+          "locator": "directory listing 2026-09-04: 0 files; likewise contracts and authority: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No registry document defines censoring or boundary representation"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C018",
+      "topics": [13],
+      "subject": "xauusd.tick_stream",
+      "statement": "The tick stream exposes exactly two physical time-coordinate fields, event_ts_ns and received_ts_ns (both Int64, non-nullable), and one sequence key, source_sequence (Int64, non-nullable); together with bid and ask (Float64, non-nullable) these are the only stream-level coordinates on which drift_burst payload rows ride. Field names are recorded here as physical designations; no semantic role (market/event versus received versus occurrence) is assigned from the names, and the mapping of any timestamp family onto these fields is UNRESOLVED (claim AP001-A01-C019).",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=event_ts_ns, received_ts_ns, source_sequence, bid, ask] (Int64/Int64/Int64/Float64/Float64, all nullable=false); sources[scale=Tick].physical_time_coordinate_fields == [event_ts_ns, received_ts_ns]",
+          "evidence_type": "physical_schema_field",
+          "supports": "The exact set and physical types of stream-level time and ordering coordinates"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C019",
+      "topics": [13],
+      "subject": "drift_burst.lifecycle",
+      "statement": "The mapping of the mandated timestamp families — occurrence, evaluation, milestone, emission/known, market/event, received, and completion — onto drift_burst lifecycle stages, onto the carrier-stream coordinates (event_ts_ns, received_ts_ns, source_sequence), or onto timestamps carried inside the payload text is not documented in any accessible source. UNRESOLVED in full.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — no timestamp-family definitions or mappings appear anywhere in the inventory",
+          "evidence_type": "observation_of_absence",
+          "supports": "No timestamp-family semantics exist in the accessible schema authority"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "contracts",
+          "locator": "directory listing 2026-09-04: 0 files; likewise registry and authority: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No contract document defines the timestamp families"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C020",
+      "topics": [14],
+      "subject": "drift_burst.lifecycle",
+      "statement": "The exact lawful availability timestamp for each lifecycle stage of drift_burst is UNRESOLVED: no accessible source defines when any stage's information becomes available. The general constraints are authoritative (claim AP001-A01-C006: single causal clock, availability only by anchor time t, origin timestamps as provenance; claim AP001-A01-C023: name-based future classification prohibited), but every stage-specific availability timestamp requires payload-internal evidence that does not exist in accessible sources.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — no availability, emission, or known-time definitions appear anywhere in the inventory",
+          "evidence_type": "observation_of_absence",
+          "supports": "No per-stage availability semantics exist in the accessible schema authority"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "RESEARCH_RULES.md rule 2",
+          "evidence_type": "protocol_rule",
+          "supports": "The general availability constraint (information eligible only by anchor time) that any future stage-specific answer must satisfy"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C021",
+      "topics": [15],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Whether any completed drift_burst record fields summarize earlier events retrospectively (for example summary, extremum, duration, or outcome fields computed at or after completion) is not documented in any accessible source. UNRESOLVED in full. Under claim AP001-A01-C023 no such field may be presumed retrospective from its name; under claim AP001-A01-C016 completed records remain a later outcome or later anchor and cannot define earlier-state cohorts.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — no completed-record field definitions of any kind appear in the inventory",
+          "evidence_type": "observation_of_absence",
+          "supports": "No completed-record structure exists in the accessible schema authority"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "RESEARCH_RULES.md rule 4",
+          "evidence_type": "protocol_rule",
+          "supports": "The lifecycle-first constraint governing how any retrospective summary field could be used"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C022",
+      "topics": [16],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Lifecycle-stage field classification: with zero detector-defined fields exposed by any accessible source, no drift_burst field can today be classified SAFE_AT_STATE or FUTURE_RELATIVE_TO_STATE; every field-level lifecycle matter for every stage is UNRESOLVED. The lifecycle-stage future-information matrix in this artifact records this state stage by stage; cells will be populated only on direct payload-internal evidence, and absence of classification must not be read as a finding that any field is future-relative-to-state.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema — the only drift_burst-bearing schema exposes one opaque serialized-text column and zero named detector fields",
+          "evidence_type": "observation_of_absence",
+          "supports": "Zero detector fields are exposed, so no field-level classification is possible"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "authority",
+          "locator": "directory listing 2026-09-04: 0 files; likewise contracts and registry: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No authority document exposes lifecycle fields for classification"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C023",
+      "topics": [9, 10, 11, 14, 15, 16],
+      "subject": "program.causal_clock",
+      "statement": "Future-information firewall, adopted as an operating rule of this candidate: classification of any field as FUTURE_RELATIVE_TO_STATE requires direct evidence that the field's value is computed from information not available at the state's anchor time; fields whose names evoke peak, end, remaining, duration, recovery, or available-after concepts must not be classified as future merely from their names; the general causal rule (single clock, lifecycle-first) is authoritative, while the exact detector-field mapping remains UNRESOLVED without direct evidence.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "RESEARCH_RULES.md rule 2 (single causal information clock) and rule 4 (lifecycle-first; completed as later outcome or later anchor)",
+          "evidence_type": "protocol_rule",
+          "supports": "The general causal rule from which the name-prohibition follows: names cannot establish what information was available at an anchor time"
+        },
+        {
+          "source_id": "assignment.ap001_a01",
+          "relative_path": "assignment.json",
+          "locator": "root:assignment == \"Independently reconstruct drift_burst lifecycle, availability, and episode identity semantics.\"; root:phase == \"AUTHORITY\"",
+          "evidence_type": "designation_record",
+          "supports": "The reconstruction mandate under which the firewall is adopted as this candidate's classification rule"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C024",
+      "topics": [17],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Direction and sign semantics for drift_burst (orientation of any signed quantity, and the meaning of positive versus negative values) are not documented in any accessible source. UNRESOLVED in full.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — no signed quantity, direction, or sign-convention definitions appear in the inventory",
+          "evidence_type": "observation_of_absence",
+          "supports": "No direction or sign semantics exist in the accessible schema authority"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "contracts",
+          "locator": "directory listing 2026-09-04: 0 files; likewise registry and authority: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No contract document defines direction or sign conventions"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C025",
+      "topics": [18],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Strength, score, z, and efficiency semantics for drift_burst — whether such quantities exist, their units, normalization basis, and interpretation — are not documented in any accessible source. UNRESOLVED in full. If such quantities are later documented, protocol rule 10 (preserve raw value, normalized value, and basis) governs their representation.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — no strength, score, z, or efficiency fields or definitions appear in the inventory",
+          "evidence_type": "observation_of_absence",
+          "supports": "No strength or score semantics exist in the accessible schema authority"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "RESEARCH_RULES.md rule 10 (\"When normalizing, preserve the raw value, normalized value, and basis.\")",
+          "evidence_type": "protocol_rule",
+          "supports": "The representation rule any future strength/score/normalization documentation must satisfy"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C026",
+      "topics": [19],
+      "subject": "xauusd.corpus",
+      "statement": "Corpus-level multiscale fact: exactly one of the eight corpus scales carries a drift_burst payload column (the tick scale); the seven bar scales carry none. Concurrent cross-scale drift_burst measurements therefore do not exist in this corpus, and no drift_burst phenotype data can be drawn from any bar-scale stream. Whether the detector computes at multiple internal horizons or scales is a separate question and is UNRESOLVED (claim AP001-A01-C027).",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — payload_columns of all eight sources; payload_drift_burst appears only under scale=Tick",
+          "evidence_type": "inventory_enumeration",
+          "supports": "The single-scale presence of the drift_burst payload across the entire corpus inventory"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "RESEARCH_RULES.md rule 3 (\"Native scale preservation: a shared causal clock does not make 15s, 1m, 4h, and tick objects statistically identical; native scale remains attached.\")",
+          "evidence_type": "protocol_rule",
+          "supports": "The native-scale rule that keeps the tick scale attached to any drift_burst measurement"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C027",
+      "topics": [19],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Whether the drift_burst detector computes at multiple internal horizons, windows, or scales (and whether any such multiscale structure would surface as concurrent measurements or lifecycle fields inside the payload) is not documented in any accessible source. UNRESOLVED.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources — no horizon, window, or internal-scale definitions appear in the inventory",
+          "evidence_type": "observation_of_absence",
+          "supports": "No internal multiscale structure is documented"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "authority",
+          "locator": "directory listing 2026-09-04: 0 files; likewise contracts and registry: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "No authority document defines internal multiscale computation"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C028",
+      "topics": [20],
+      "subject": "drift_burst.lifecycle",
+      "statement": "The exact episode segmentation rule for a future E1 scanner (how to partition the tick stream into drift_burst episodes: boundary conditions, overlap handling, identifier threading, and treatment of null payload rows) is not derivable from any accessible source. UNRESOLVED in full. E1 phenotype work is blocked pending this authority: E1_BLOCKED_PENDING_AUTHORITY=true. Under protocol rule 5, E1 PHENOTYPE is an information-permission class, not a progression gate; the block here is an authority-availability block, not a class-progression requirement.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick] — the carrier stream exposes one opaque payload column; no segmentation, boundary, or identifier rules are documented",
+          "evidence_type": "observation_of_absence",
+          "supports": "No segmentation rule exists in the accessible schema authority"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "RESEARCH_RULES.md rule 5 (\"Exposure classes: E1 PHENOTYPE, E2 SAME_DOMAIN, and E3 CROSS_DOMAIN are information-permission classes, not mandatory progression gates.\") and rule 1 (\"Scientific unit: the anchor phenomenon/lifecycle is the research unit; a timeframe stream is not the research universe.\")",
+          "evidence_type": "protocol_rule",
+          "supports": "The class semantics and the lifecycle-as-research-unit rule that a future E1 scanner must honor"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C029",
+      "topics": [],
+      "subject": "xauusd.corpus",
+      "statement": "Corpus accounting from the accessible inventory: eight sources (Bar:15m, Bar:15s, Bar:1h, Bar:1m, Bar:30s, Bar:4h, Bar:5m, Tick), each with exactly 6 parts, all 48 parts schema-verified; row totals — 15m: 22,050; 15s: 1,320,835; 1h: 5,515; 1m: 330,458; 30s: 660,859; 4h: 1,464; 5m: 66,147; tick: 68,445,659; corpus total 70,852,987 rows. The inventory records a source manifest identity (1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af) and a payload manifest identity (78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed). No temporal coverage (start or end timestamps) is stated anywhere in the inventory.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "root:sources[*].parts[*].rows, root:sources[*].schema_verified_parts, root:source_manifest_identity, root:payload_manifest_identity",
+          "evidence_type": "corpus_accounting_record",
+          "supports": "Exact part counts, row totals, verification coverage, and manifest identity hashes"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C030",
+      "topics": [],
+      "subject": "authority.surface_availability",
+      "statement": "The instrument configuration references two lake manifests (manifest.json and payload_manifest.json) under lake root environment TRINITYR_ANALYTICAL_LAKE at relative path fusion_markets/xauusd. Their contents are outside this assignment's access profile (raw lake access denied), so any payload-internal schema they may carry — including drift_burst record structure, state vocabulary, and timestamp semantics — is unavailable by design of the access profile. The references themselves are authoritative; the manifest contents are UNRESOLVED.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.instrument_config",
+          "relative_path": "instruments/XAUUSD/instrument_config.json",
+          "locator": "root:lake_root_env == \"TRINITYR_ANALYTICAL_LAKE\", root:relative_path == \"fusion_markets/xauusd\", root:manifest == \"manifest.json\", root:payload_manifest == \"payload_manifest.json\"",
+          "evidence_type": "config_reference",
+          "supports": "Existence by reference of the payload manifest that would ordinarily carry payload-internal schema"
+        },
+        {
+          "source_id": "assignment.ap001_a01",
+          "relative_path": "assignment.json",
+          "locator": "root:raw_lake_access == \"DENY\"",
+          "evidence_type": "access_denial_record",
+          "supports": "The access denial that makes manifest contents unavailable to this reconstruction"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C031",
+      "topics": [],
+      "subject": "authority.surface_availability",
+      "statement": "Observed environment state: the contracts, registry, and authority directories are present and contain zero files each. This reconstruction therefore has no payload-internal authority to consult. This is a statement about the accessible environment only; it is not evidence that no authority documents exist elsewhere, and it is consistent with deliberate withholding for blind authority work.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "contracts",
+          "locator": "directory listing 2026-09-04: 0 files",
+          "evidence_type": "observation_of_absence",
+          "supports": "contracts is empty"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "registry",
+          "locator": "directory listing 2026-09-04: 0 files",
+          "evidence_type": "observation_of_absence",
+          "supports": "registry is empty"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "authority",
+          "locator": "directory listing 2026-09-04: 0 files",
+          "evidence_type": "observation_of_absence",
+          "supports": "authority is empty"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C032",
+      "topics": [],
+      "subject": "authority.surface_availability",
+      "statement": "Provisional expectation: detector architecture and semantics may be exposed when authorized (protocol rule 12), the instrument configuration references a payload manifest that would ordinarily document payload-internal schema, and the authority surfaces of this environment are empty. It is provisionally concluded that drift_burst payload-internal authority exists or will exist outside the current blind-authority access profile, and that this candidate must be revised when such surfaces are released. This expectation is provisional because the existence of releasable documents is not directly evidenced in accessible sources.",
+      "status": "PROVISIONAL",
+      "authority_evidence": [
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "RESEARCH_RULES.md rule 12 (\"Detector architecture/semantics may be exposed when authorized; prior behavioral winners must not contaminate blind question/authority work.\")",
+          "evidence_type": "protocol_rule",
+          "supports": "The program contemplates authorized exposure of detector semantics"
+        },
+        {
+          "source_id": "xauusd.instrument_config",
+          "relative_path": "instruments/XAUUSD/instrument_config.json",
+          "locator": "root:payload_manifest == \"payload_manifest.json\"",
+          "evidence_type": "config_reference",
+          "supports": "A payload manifest is referenced, indicating payload-internal documentation exists at the lake layer"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "authority",
+          "locator": "directory listing 2026-09-04: 0 files; likewise contracts and registry: 0 files each",
+          "evidence_type": "observation_of_absence",
+          "supports": "The local authority surfaces are empty, consistent with withholding rather than absence"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C033",
+      "topics": [13, 14],
+      "subject": "drift_burst.lifecycle",
+      "statement": "Provisional structural constraint: any drift_burst availability anchor must ultimately be expressed either against the carrier stream's coordinates (event_ts_ns, received_ts_ns, source_sequence) or against timestamps carried inside the payload text itself; no third clock is visible in the accessible schema. Which of the two applies, and how, is UNRESOLVED. Provisional because the payload may carry its own clock fields that would collapse or refine this dichotomy.",
+      "status": "PROVISIONAL",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.schemas",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_time_coordinate_fields == [event_ts_ns, received_ts_ns] plus source_sequence; sources[scale=Tick].physical_schema[name=payload_drift_burst] (opaque serialized text)",
+          "evidence_type": "physical_schema_field",
+          "supports": "The complete set of visible clock candidates: two stream coordinates, one sequence key, and any timestamp the payload text may itself carry"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "RESEARCH_RULES.md rule 2",
+          "evidence_type": "protocol_rule",
+          "supports": "The single-clock rule any availability anchor must satisfy"
+        }
+      ]
+    },
+    {
+      "claim_id": "AP001-A01-C034",
+      "topics": [],
+      "subject": "program.blind_work_compliance",
+      "statement": "Blind-work compliance: this candidate was produced exclusively from the four accessible files and three observed-empty directories recorded in sources_consulted; no behavioral, strategy, raw-lake, confirmation, development, or cross-workspace research was performed; no shared files were modified. Engineering inspection is not E1 phenotype research; E1 phenotype work on drift_burst is blocked pending payload-internal authority (E1_BLOCKED_PENDING_AUTHORITY=true). Under protocol rule 13, this program characterizes detector, lifecycle, and context behavior; strategy construction belongs to a later separate program.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "RESEARCH_RULES.md rule 12 (blind question/authority work), rule 13 (program scope), rule 14 (writes only to the assigned private workspace)",
+          "evidence_type": "protocol_rule",
+          "supports": "The blind-work, scope, and workspace rules this candidate complies with"
+        },
+        {
+          "source_id": "assignment.ap001_a01",
+          "relative_path": "assignment.json",
+          "locator": "root:raw_lake_access == \"DENY\", root:cross-workspace visibility denial == \"DENY\", root:access_profile == \"AUTHORITY\"",
+          "evidence_type": "access_denial_record",
+          "supports": "The access denials that define the blind perimeter"
+        },
+        {
+          "source_id": "env.surface_observation",
+          "relative_path": "contracts",
+          "locator": "directory listing 2026-09-04: 0 files; likewise registry and authority: 0 files each; no other workspace files were opened",
+          "evidence_type": "observation_of_absence",
+          "supports": "The accessed surface set is fully accounted for in sources_consulted"
+        }
+      ]
+    }
+  ],
+  "lifecycle_future_information_matrix": {
+    "anchor_rule": "Single causal information clock: at anchor time t only information actually available by t is eligible; occurrence/origin timestamps remain provenance (protocol rule 2; claim AP001-A01-C006).",
+    "lifecycle_first_rule": "Future completion/termination cannot define an earlier-state cohort; completed may be a later outcome or later anchor (protocol rule 4; claim AP001-A01-C016).",
+    "classification_rule": "FUTURE_RELATIVE_TO_STATE requires direct evidence that a field's value is computed from information not available at the state's anchor time; name-based classification is prohibited (claim AP001-A01-C023).",
+    "exposed_detector_fields": 0,
+    "cell_population_policy": "Cells are populated only from direct payload-internal evidence. With zero exposed detector fields, every safe_at_state and future_relative_to_state cell is empty because nothing is classifiable — not because fields were judged future.",
+    "stages": [
+      {
+        "stage": "birth/origin",
+        "mandated_topics": [3],
+        "documented_in_sources": false,
+        "fields_exposed": 0,
+        "safe_at_state": [],
+        "future_relative_to_state": [],
+        "unresolved_matters": "Existence and definition of birth; event versus state; origin timestamp semantics; first-known time at birth.",
+        "lawful_availability_timestamp": "UNRESOLVED",
+        "authoritative_constraints": ["Origin timestamps remain provenance, not eligibility clocks (rule 2)."]
+      },
+      {
+        "stage": "weak",
+        "mandated_topics": [6],
+        "documented_in_sources": false,
+        "fields_exposed": 0,
+        "safe_at_state": [],
+        "future_relative_to_state": [],
+        "unresolved_matters": "Whether weak exists; first-known time; persistence; disappearance.",
+        "lawful_availability_timestamp": "UNRESOLVED",
+        "authoritative_constraints": ["Availability is bounded by the causal clock (rule 2)."]
+      },
+      {
+        "stage": "online",
+        "mandated_topics": [7],
+        "documented_in_sources": false,
+        "fields_exposed": 0,
+        "safe_at_state": [],
+        "future_relative_to_state": [],
+        "unresolved_matters": "Whether online exists; first-known time; persistence; disappearance.",
+        "lawful_availability_timestamp": "UNRESOLVED",
+        "authoritative_constraints": ["Availability is bounded by the causal clock (rule 2)."]
+      },
+      {
+        "stage": "strong",
+        "mandated_topics": [8],
+        "documented_in_sources": false,
+        "fields_exposed": 0,
+        "safe_at_state": [],
+        "future_relative_to_state": [],
+        "unresolved_matters": "Whether strong exists; first-known time; persistence; disappearance.",
+        "lawful_availability_timestamp": "UNRESOLVED",
+        "authoritative_constraints": ["Availability is bounded by the causal clock (rule 2)."]
+      },
+      {
+        "stage": "peak",
+        "mandated_topics": [9],
+        "documented_in_sources": false,
+        "fields_exposed": 0,
+        "safe_at_state": [],
+        "future_relative_to_state": [],
+        "unresolved_matters": "Contemporaneous state versus retrospective maximum; availability time of a peak value.",
+        "lawful_availability_timestamp": "UNRESOLVED",
+        "authoritative_constraints": ["Peak must not be classified retrospective or future from its name (firewall, claim AP001-A01-C023).", "Future completion cannot define an earlier-state cohort (rule 4)."]
+      },
+      {
+        "stage": "decay-risk / dying",
+        "mandated_topics": [10],
+        "documented_in_sources": false,
+        "fields_exposed": 0,
+        "safe_at_state": [],
+        "future_relative_to_state": [],
+        "unresolved_matters": "Event versus state; persistence; re-entry; availability.",
+        "lawful_availability_timestamp": "UNRESOLVED",
+        "authoritative_constraints": ["Name-based future classification prohibited (firewall)."]
+      },
+      {
+        "stage": "recovery",
+        "mandated_topics": [10],
+        "documented_in_sources": false,
+        "fields_exposed": 0,
+        "safe_at_state": [],
+        "future_relative_to_state": [],
+        "unresolved_matters": "Event versus state; persistence; re-entry; availability.",
+        "lawful_availability_timestamp": "UNRESOLVED",
+        "authoritative_constraints": ["Name-based future classification prohibited (firewall)."]
+      },
+      {
+        "stage": "completion / termination",
+        "mandated_topics": [11],
+        "documented_in_sources": false,
+        "fields_exposed": 0,
+        "safe_at_state": [],
+        "future_relative_to_state": [],
+        "unresolved_matters": "End_reason vocabulary; terminal conditions; incomplete episodes; event versus state.",
+        "lawful_availability_timestamp": "UNRESOLVED",
+        "authoritative_constraints": ["Completed may be a later outcome or later anchor; completion cannot define earlier cohorts (rule 4)."]
+      },
+      {
+        "stage": "completed-record / post-terminal",
+        "mandated_topics": [11, 15],
+        "documented_in_sources": false,
+        "fields_exposed": 0,
+        "safe_at_state": [],
+        "future_relative_to_state": [],
+        "unresolved_matters": "Which fields, if any, summarize earlier events retrospectively; linkage to state-stream rows.",
+        "lawful_availability_timestamp": "UNRESOLVED",
+        "authoritative_constraints": ["Retrospective character of any field requires direct evidence, not name inference (firewall).", "Completed-record cohorts are later outcomes or later anchors (rule 4)."]
+      }
+    ],
+    "summary": "Zero detector-defined fields are exposed by any accessible source. For every lifecycle stage: no field is classifiable SAFE_AT_STATE; no field is classifiable FUTURE_RELATIVE_TO_STATE; all field-level matters are UNRESOLVED pending payload-internal authority. The only authoritative availability content is program-level: the single causal clock (rule 2), lifecycle-first cohort rule (rule 4), and the name-based classification prohibition."
+  },
+  "unresolved_questions": [
+    {
+      "id": "UQ-01",
+      "question": "What internal record structure does payload_drift_burst encode (field names, nesting, serialization convention)?",
+      "mandated_topics": [1],
+      "related_claims": ["AP001-A01-C003", "AP001-A01-C004"]
+    },
+    {
+      "id": "UQ-02",
+      "question": "Does payload_drift_burst carry per-tick state, discrete events, completed records, or a mixture, and how are record variants distinguished?",
+      "mandated_topics": [1],
+      "related_claims": ["AP001-A01-C004"]
+    },
+    {
+      "id": "UQ-03",
+      "question": "What is the episode identity scheme: identifier assignment, persistence across rows, reuse after termination, and linkage between state-stream rows and completed records?",
+      "mandated_topics": [2],
+      "related_claims": ["AP001-A01-C005"]
+    },
+    {
+      "id": "UQ-04",
+      "question": "What constitutes drift_burst episode birth, and what are the origin timestamp semantics?",
+      "mandated_topics": [3],
+      "related_claims": ["AP001-A01-C006", "AP001-A01-C007"]
+    },
+    {
+      "id": "UQ-05",
+      "question": "What is the authoritative state vocabulary for drift_burst?",
+      "mandated_topics": [4],
+      "related_claims": ["AP001-A01-C008"]
+    },
+    {
+      "id": "UQ-06",
+      "question": "What is the transition table: legal and illegal transitions, reversions, repeats, re-entry, recovery, and resets?",
+      "mandated_topics": [5],
+      "related_claims": ["AP001-A01-C009"]
+    },
+    {
+      "id": "UQ-07",
+      "question": "Do weak semantics exist, and what are their first-known time, persistence, and disappearance?",
+      "mandated_topics": [6],
+      "related_claims": ["AP001-A01-C010"]
+    },
+    {
+      "id": "UQ-08",
+      "question": "Do online semantics exist, and what are their first-known time, persistence, and disappearance?",
+      "mandated_topics": [7],
+      "related_claims": ["AP001-A01-C011"]
+    },
+    {
+      "id": "UQ-09",
+      "question": "Do strong semantics exist, and what are their first-known time, persistence, and disappearance?",
+      "mandated_topics": [8],
+      "related_claims": ["AP001-A01-C012"]
+    },
+    {
+      "id": "UQ-10",
+      "question": "Is peak a contemporaneous state or a retrospective maximum, and when does a peak value become available?",
+      "mandated_topics": [9],
+      "related_claims": ["AP001-A01-C013", "AP001-A01-C023"]
+    },
+    {
+      "id": "UQ-11",
+      "question": "Are decay-risk, dying, and recovery events or states, and what are their persistence, re-entry, and availability semantics?",
+      "mandated_topics": [10],
+      "related_claims": ["AP001-A01-C014"]
+    },
+    {
+      "id": "UQ-12",
+      "question": "What are the completion and termination semantics: end_reason vocabulary, terminal conditions, and treatment of incomplete episodes?",
+      "mandated_topics": [11],
+      "related_claims": ["AP001-A01-C015", "AP001-A01-C016"]
+    },
+    {
+      "id": "UQ-13",
+      "question": "How are censoring and corpus-boundary cases represented (episodes crossing part boundaries, payload nulls, end-of-corpus truncation)?",
+      "mandated_topics": [12],
+      "related_claims": ["AP001-A01-C017"]
+    },
+    {
+      "id": "UQ-14",
+      "question": "Which timestamp families exist for drift_burst (occurrence, evaluation, milestone, emission/known, market/event, received, completion) and how do they map onto stream coordinates or payload-internal fields?",
+      "mandated_topics": [13],
+      "related_claims": ["AP001-A01-C018", "AP001-A01-C019", "AP001-A01-C033"]
+    },
+    {
+      "id": "UQ-15",
+      "question": "What is the exact lawful availability timestamp for each lifecycle stage?",
+      "mandated_topics": [14],
+      "related_claims": ["AP001-A01-C020", "AP001-A01-C006"]
+    },
+    {
+      "id": "UQ-16",
+      "question": "Which completed-record fields, if any, summarize earlier events retrospectively?",
+      "mandated_topics": [15],
+      "related_claims": ["AP001-A01-C021", "AP001-A01-C016"]
+    },
+    {
+      "id": "UQ-17",
+      "question": "What direction and sign semantics apply to any signed drift_burst quantities?",
+      "mandated_topics": [17],
+      "related_claims": ["AP001-A01-C024"]
+    },
+    {
+      "id": "UQ-18",
+      "question": "Do strength, score, z, or efficiency quantities exist, and what are their units, normalization basis, and interpretation?",
+      "mandated_topics": [18],
+      "related_claims": ["AP001-A01-C025"]
+    },
+    {
+      "id": "UQ-19",
+      "question": "Does the detector compute at multiple internal horizons or scales, and would that surface as concurrent measurements or lifecycle fields?",
+      "mandated_topics": [19],
+      "related_claims": ["AP001-A01-C026", "AP001-A01-C027"]
+    },
+    {
+      "id": "UQ-20",
+      "question": "What is the exact episode segmentation rule for a future E1 scanner (boundaries, overlap handling, identifier threading, null-row treatment)?",
+      "mandated_topics": [20],
+      "related_claims": ["AP001-A01-C028"]
+    },
+    {
+      "id": "UQ-21",
+      "question": "Do null rows occur in payload_drift_burst, and what does a null row denote?",
+      "mandated_topics": [1],
+      "related_claims": ["AP001-A01-C003"]
+    },
+    {
+      "id": "UQ-22",
+      "question": "What is the temporal coverage of the tick stream (start and end), and how do the six tick parts partition it in time?",
+      "mandated_topics": [12],
+      "related_claims": ["AP001-A01-C017", "AP001-A01-C029"]
+    },
+    {
+      "id": "UQ-23",
+      "question": "Does drift_burst derive from the sibling tick payloads or from the stream coordinates, and if so, would combined use constitute independent confluence under the derivation rule?",
+      "mandated_topics": [],
+      "related_claims": ["AP001-A01-C030"]
+    }
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "assignment.ap001_a01",
+      "relative_path": "assignment.json",
+      "media": "file",
+      "bytes": 653,
+      "sha256": "3ae786516b2906ff70d67f65a6b3550759c8a6b7e8451ed88dce0e194fdae513",
+      "access": "read",
+      "designation": "Identity gate and access profile; designates xauusd.schemas as authority source",
+      "notes": "Confirmed program_id AP-001, role_id A-01, detector_id drift_burst, phase AUTHORITY before proceeding."
+    },
+    {
+      "source_id": "protocol.research_rules",
+      "relative_path": "protocol/RESEARCH_RULES.md",
+      "media": "file",
+      "bytes": 1908,
+      "sha256": "9fad8a804de44595d51b08ed564a3780014beed1ec862ee34313bcbe951f88d4",
+      "access": "read",
+      "designation": "Program-level causal, lifecycle, exposure-class, and blind-work rules (14 rules)",
+      "notes": "Rules 2, 3, 4, 5, 10, 12, 13, 14 are cited by claims in this candidate."
+    },
+    {
+      "source_id": "xauusd.instrument_config",
+      "relative_path": "instruments/XAUUSD/instrument_config.json",
+      "media": "file",
+      "bytes": 198,
+      "sha256": "879378d5df956cd70ac9c8cc699d488ff260f689d8c97754ca9f45a7e6e8f6da",
+      "access": "read",
+      "designation": "Instrument lake reference: lake root environment, relative path, manifest and payload manifest file names",
+      "notes": "Referenced manifests were not accessed (raw lake access denied)."
+    },
+    {
+      "source_id": "xauusd.schemas",
+      "relative_path": "instruments/XAUUSD/source_inventory.json",
+      "media": "file",
+      "bytes": 33963,
+      "sha256": "62838cf49e4df5fa301cc7263eab55dfa1684b029344f0bb9ea61f87696503ef",
+      "access": "read",
+      "designation": "Designated authority source (authority_source_ids): physical schemas, parts, row counts, payload columns, schema verification, manifest identities",
+      "notes": "The only schema-level authority accessible to this reconstruction; contains no payload-internal record schema."
+    },
+    {
+      "source_id": "env.surface_observation",
+      "relative_path": "contracts",
+      "media": "directory",
+      "access": "observed-empty",
+      "designation": "Authorized read surface",
+      "notes": "0 files observed on 2026-09-04."
+    },
+    {
+      "source_id": "env.surface_observation",
+      "relative_path": "registry",
+      "media": "directory",
+      "access": "observed-empty",
+      "designation": "Authorized read surface",
+      "notes": "0 files observed on 2026-09-04."
+    },
+    {
+      "source_id": "env.surface_observation",
+      "relative_path": "authority",
+      "media": "directory",
+      "access": "observed-empty",
+      "designation": "Authorized read surface",
+      "notes": "0 files observed on 2026-09-04."
+    }
+  ],
+  "source_accounting": {
+    "files_read": 4,
+    "directories_observed_empty": 3,
+    "authorized_but_not_available": [
+      {
+        "relative_path": "agent_harness/assignments/AP-001/A-01.json",
+        "reason": "Listed as an authorized repository surface in assignment.json; not present among the accessible read surfaces of this environment; not consulted."
+      },
+      {
+        "relative_path": "fusion_markets/xauusd/manifest.json",
+        "reason": "Referenced by instrument_config.json; raw lake access denied by assignment (raw_lake_access=DENY)."
+      },
+      {
+        "relative_path": "fusion_markets/xauusd/payload_manifest.json",
+        "reason": "Referenced by instrument_config.json; raw lake access denied by assignment (raw_lake_access=DENY). This is the surface that would ordinarily carry payload-internal schema."
+      }
+    ],
+    "denied_by_assignment": [
+      "raw lake access",
+      "cross-workspace visibility",
+      "behavioral, strategy, confirmation, and development research"
+    ],
+    "claim_counts": {
+      "total": 34,
+      "authoritative": 12,
+      "provisional": 2,
+      "unresolved": 20
+    },
+    "mandated_topic_coverage": "Topics 1 through 20 are each covered by at least one claim; topic 20 (episode segmentation) and topics 2 through 12 and 14 through 18 are UNRESOLVED in their detector-specific content; topics 1, 3, 13, and 19 carry partial authoritative physical content."
+  }
+}
