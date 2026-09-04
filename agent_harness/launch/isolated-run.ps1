@@ -251,7 +251,7 @@ $workerExit = $LASTEXITCODE
 if (-not (Test-Path -LiteralPath $runtimeAttestationPath -PathType Leaf)) { throw 'Runtime attestation missing.' }
 $runtimeAttestation = Get-Content -Raw -LiteralPath $runtimeAttestationPath | ConvertFrom-Json
 if ($runtimeAttestation.schema_version -ne 'trinity.runtime-mount-attestation.v1' -or $runtimeAttestation.launch_id -ne $launchId -or $runtimeAttestation.program_id -ne $ProgramId -or $runtimeAttestation.role_id -ne $Role -or $runtimeAttestation.research_base_sha -ne $baseSha -or $runtimeAttestation.research_input_manifest_sha256 -ne $manifestHash -or $runtimeAttestation.all_match -ne $true) { throw 'RUNTIME_ATTESTATION_FAIL' }
-Write-Output "RUNTIME_ATTESTATION_PASS launch_id=$launchId sha256=$((Get-FileHash $runtimeAttestationPath -Algorithm SHA256).Hash.ToLowerInvariant())"
+Write-Output "RUNTIME_ATTESTATION_PASS launch_id=$launchId sha256=$((Get-FileHash $runtimeAttestationPath -Algorithm SHA256).Hash.ToLowerInvariant()) path=$runtimeAttestationPath"
 if ($workerExit -ne 0) { exit $workerExit }
 } finally {
     if ($baseTreeAdded) { & git -C $repoSource worktree remove --force $baseTree 2>$null }

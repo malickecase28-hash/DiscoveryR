@@ -64,6 +64,7 @@ recursive_hash() {
 json_escape() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
 repo_json=''
 auth_json=''
+assignment_json=''
 all_match=true
 while IFS=$'\t' read -r kind source_id mounted_path expected_hash expected_transport; do
   [ -n "$kind" ] || continue
@@ -86,6 +87,11 @@ while IFS=$'\t' read -r kind source_id mounted_path expected_hash expected_trans
     [ "$match" = true ] || all_match=false
     [ -n "$auth_json" ] && auth_json+=','
     auth_json+="{\"source_id\":\"$(json_escape "$source_id")\",\"mounted_path\":\"$(json_escape "$mounted_path")\",\"observed_bundle_content_identity\":\"$observed_content\",\"observed_directory_transport_hash\":\"$observed_transport\",\"expected_bundle_content_identity\":\"$expected_hash\",\"expected_directory_transport_hash\":\"$expected_transport\",\"match\":$match}"
+  elif [ "$kind" = 'ASSIGNMENT' ]; then
+    observed=$(sha_file "$mounted_path")
+    match=false; [ "$observed" = "$expected_hash" ] && match=true
+    [ "$match" = true ] || all_match=false
+    assignment_json="{\"source_id\":\"assignment\",\"mounted_path\":\"$(json_escape "$mounted_path")\",\"observed_hash\":\"$observed\",\"expected_hash\":\"$expected_hash\",\"match\":$match}"
   fi
 done <<< "$attestation_specs"
 
