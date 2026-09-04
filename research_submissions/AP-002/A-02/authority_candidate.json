@@ -1,0 +1,150 @@
+{
+  "artifact_type": "authority_candidate",
+  "program_id": "AP-002",
+  "role_id": "A-02",
+  "subjects": ["fvg"],
+  "claims": [
+    {
+      "claim_id": "AP002-A02-C001",
+      "subject": "fvg",
+      "topic": "physical_output_surface",
+      "claim": "The declared XAUUSD bar physical schema contains a nullable LargeUtf8 field named payload_fvg at the registered native bar scales 15s, 30s, 1m, 5m, 15m, 1h, and 4h.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "repo.xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "each bar-scale physical_schema and payload_columns entry for payload_fvg; scales 15s, 30s, 1m, 5m, 15m, 1h, 4h",
+          "evidence_type": "declared_serialization_schema",
+          "supports": "physical presence, declared type, nullability, and listed native scales only"
+        },
+        {
+          "source_id": "repo.detector_registry",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "detector_id=fvg",
+          "evidence_type": "detector_surface_registration",
+          "supports": "fvg is registered as an authoritative bar surface with explicit native scales"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "The serialized field may be absent or null for a record; no occurrence or availability behavior is established.",
+      "dependency_implications": "Any downstream use must treat the field as a physical payload surface and preserve native scale; no lifecycle consumer is authorized by this claim.",
+      "notes": "This claim does not assign meaning to the field or its values."
+    },
+    {
+      "claim_id": "AP002-A02-C002",
+      "subject": "fvg",
+      "topic": "detector_registration_and_status",
+      "claim": "The fvg detector is registered on the bar surface with semantic_status UNRESOLVED, empty lifecycle_vocabulary, empty roles, empty derives_from, and unresolved availability_semantics.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "repo.detector_registry",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "detector_id=fvg",
+          "evidence_type": "registry_record",
+          "supports": "the declared registration fields and their explicit unresolved values"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A later approved authority source may define lifecycle vocabulary, roles, derivation, or availability.",
+      "dependency_implications": "No lifecycle-state, structural-object, directional-evidence, or temporal-context behavior should be derived from the registration alone.",
+      "notes": "Registration is direct evidence of declared status, not evidence of detector behavior."
+    },
+    {
+      "claim_id": "AP002-A02-C003",
+      "subject": "fvg",
+      "topic": "lifecycle_semantics",
+      "claim": "The supplied evidence does not establish FVG lifecycle states, lifecycle transitions, completion, mitigation, invalidation, termination, or any ordering among such states.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["The registry lifecycle_vocabulary for fvg is empty; the authority bundle selected and status arrays are empty."],
+      "future_information_risk": "Source approval and a semantic authority definition are required before lifecycle claims can be made.",
+      "dependency_implications": "Lifecycle cohorts, transition metrics, and completion-based labels must remain undefined.",
+      "notes": "Do not infer lifecycle meaning from the field name or payload serialization."
+    },
+    {
+      "claim_id": "AP002-A02-C004",
+      "subject": "fvg",
+      "topic": "availability_and_causal_clock",
+      "claim": "The supplied evidence does not establish when an FVG value becomes available, whether availability differs from occurrence, or which information clock governs eligibility.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["The registry availability_semantics for fvg is explicitly unresolved; serialization fields provide no availability rule."],
+      "future_information_risk": "A future source may distinguish event occurrence time, computation time, publication time, and receipt time.",
+      "dependency_implications": "No causal timestamp, as-of rule, leakage rule, or activation timestamp can be assigned to FVG output.",
+      "notes": "bar_open_ts and bar_close_ts are physical time coordinates, not proof of FVG availability."
+    },
+    {
+      "claim_id": "AP002-A02-C005",
+      "subject": "fvg",
+      "topic": "occurrence_and_persistence",
+      "claim": "The supplied evidence does not establish FVG occurrence time, persistence across bars, overwrite behavior, storage duration, or whether repeated payload values represent one episode or multiple episodes.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["The physical schema declares payload placement only and contains no lifecycle or persistence contract."],
+      "future_information_risk": "Payload examples or an approved semantic contract could establish occurrence and persistence rules later.",
+      "dependency_implications": "Episode grouping, deduplication, survival, and persistence calculations are not defined.",
+      "notes": "A nullable serialized field does not establish event occurrence or storage lifecycle."
+    },
+    {
+      "claim_id": "AP002-A02-C006",
+      "subject": "fvg",
+      "topic": "episode_identity",
+      "claim": "The supplied evidence does not establish an FVG episode identifier, identity key, merge/split rule, direction identity, or cross-scale identity relation.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["No lifecycle vocabulary or identity field/rule is declared for fvg."],
+      "future_information_risk": "An approved authority definition may supply identity and cross-scale correspondence rules.",
+      "dependency_implications": "Episode-level joins, parent-child mapping, and cross-timeframe deduplication must not be implemented as authority.",
+      "notes": "Native scale registration does not imply that objects are identical across scales."
+    },
+    {
+      "claim_id": "AP002-A02-C007",
+      "subject": "fvg",
+      "topic": "causality_and_scientific_interpretation",
+      "claim": "The supplied evidence does not establish that FVG output is causal, predictive, directional, imbalance-related, gap-related, executable, or scientifically interpretable beyond its physical serialization surface.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["The registry description states that semantics are unresolved and assigns no roles."],
+      "future_information_risk": "Behavioral research or approved semantic evidence would be required for interpretation; neither is present in this authority set.",
+      "dependency_implications": "No strategy, outcome, predictive, or execution conclusion may depend on FVG semantics from this artifact.",
+      "notes": "No behavioral research or outcomes were inspected."
+    },
+    {
+      "claim_id": "AP002-A02-C008",
+      "subject": "fvg",
+      "topic": "authority_state",
+      "claim": "The program authority bundle is structurally present for AP-002/fvg but contains no selected authority, no provenance, no status entries, and the unresolved marker UNRESOLVED_PENDING_SOURCE_APPROVAL.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.ap002",
+          "relative_path": "XAUUSD/WAVE1_AUTHORITY_V3/AP-002-b9c57bb2b211e09d8b68342dd2892834fd46afea8dbe5934afed2726c5abf715-f97f522ab621bb79904f5df40a7916d3d7de4805c593372ac2f44f5a5412f80f/authority.json",
+          "locator": "selected=[], provenance=[], status=[], unresolved[0]",
+          "evidence_type": "authority_bundle_state",
+          "supports": "the bundle's empty authority sections and preserved unresolved source-approval marker"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Explicit source approval and a replacement or augmented authority bundle could change semantic status.",
+      "dependency_implications": "Scientific promotion or lifecycle authority remains blocked; physical schema facts remain separate from semantic authority.",
+      "notes": "The marker is preserved verbatim as an unresolved relationship/state note, not used as a claim status."
+    }
+  ],
+  "unresolved_questions": [
+    "What event or object, if any, does a non-null payload_fvg represent?",
+    "What are the FVG lifecycle states and transition rules?",
+    "What is the occurrence time and what is the availability time under the causal information clock?",
+    "How are FVG episodes identified, persisted, merged, split, invalidated, or related across native scales?",
+    "What scientific interpretation, if any, is authorized after source approval?",
+    "UNRESOLVED_PENDING_SOURCE_APPROVAL"
+  ],
+  "sources_consulted": [
+    "repo.xauusd.source_inventory",
+    "repo.detector_registry",
+    "repo.protocol",
+    "repo.contracts",
+    "xauusd.wave1.ap002"
+  ]
+}
