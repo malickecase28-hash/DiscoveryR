@@ -1,11 +1,11 @@
 # Agent harness status
 
-The WSL-based agent harness is retired on the direct-Windows branch.
+The WSL-based agent harness is retired on the direct-Windows branch. The
+PowerShell launcher is retained only as a fail-closed guard: it reports
+`CODEX_HARD_RUNTIME_BLOCKED` and starts no process. The former shell launcher
+is removed.
 
-Do not launch `agent_harness/launch/isolated-run.ps1` or
-`agent_harness/launch/isolated-run.sh`, reinstall WSL distributions, or create
-`F:\TrinityR-runs`. Those files remain in Git history for auditability only;
-they are not the active execution path.
+Do not reinstall WSL distributions or create `F:\TrinityR-runs`.
 
 ## Active workflow
 
@@ -18,6 +18,10 @@ they are not the active execution path.
   artifacts, manifests/receipts, and reusable scripts; delete the temporary
   workspace.
 - Do not create disposable top-level folders under `F:\`.
+
+Run the read-only policy, assignment, and pair-parity checks with:
+
+    .\agent_harness\validation\validate-isolation.ps1
 
 See `docs/operations/WORKSPACE_INDEX.md` and `protocol/RESEARCH_RULES.md` for
 the active layout and lifecycle rules.
