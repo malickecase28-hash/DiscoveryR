@@ -1,0 +1,684 @@
+{
+  "artifact_type": "AUTHORITY_CANDIDATE",
+  "program_id": "BG-001",
+  "role_id": "A-02",
+  "subjects": [
+    "bar_lineage"
+  ],
+  "claims": [
+    {
+      "claim_id": "BG001-A02-C001",
+      "subject": "xauusd.wave1.bg001 authority bundle",
+      "topic": "authority_bundle_identity",
+      "claim": "The mounted authority bundle for authorized source xauusd.wave1.bg001 (program BG-001, bundle subject_id bar_dependency_lineage, instrument XAUUSD) is internally identity-consistent: the sha256 of authority/authority.json computed over mounted bytes equals 92dc60d4454a5c8687dbb9eb63d1e413f5d312676f7bab1ee4b9332798797288, which equals authority/bundle_manifest.json generated_files[0].sha256 and that manifest's bundle_content_identity; the bundle's only generated file is authority.json. The role assignment authorizes authority source xauusd.wave1.bg001.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "authority/authority.json",
+          "locator": "whole file",
+          "evidence_type": "computed_hash_match",
+          "supports": "sha256 computed over mounted bytes equals 92dc60d4454a5c8687dbb9eb63d1e413f5d312676f7bab1ee4b9332798797288"
+        },
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "authority/bundle_manifest.json",
+          "locator": "/generated_files[0], /bundle_content_identity",
+          "evidence_type": "bundle_manifest_declaration",
+          "supports": "declared authority.json sha256 and bundle content identity equal the computed hash"
+        },
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authority_source_ids",
+          "evidence_type": "assignment_field",
+          "supports": "authorizes authority source xauusd.wave1.bg001 for this role"
+        }
+      ],
+      "counterevidence": "None observed. A hash mismatch between the mounted file and the bundle manifest's declaration would refute this claim; no such mismatch exists.",
+      "future_information_risk": "None identified for the identity match itself; republication of the bundle under a new content identity would supersede this claim and require re-verification.",
+      "dependency_implications": "All claims citing the bundle (BG001-A02-C002 to BG001-A02-C005) inherit this identity anchor; if the bundle identity changed, those claims would need re-verification.",
+      "notes": "Hash comparison performed against mounted bytes; no transformation or inference applied. The cross-check of the computed hash against the input manifest that declares authority source identities is not asserted here: that surface has no authorized source ID."
+    },
+    {
+      "claim_id": "BG001-A02-C002",
+      "subject": "CanonicalBarsSchema (trinity.research.bars.canonical.v1)",
+      "topic": "canonical_bar_schema",
+      "claim": "The authority bundle selects exactly one schema: title 'CanonicalBarsSchema', schema_id 'trinity.research.bars.canonical.v1', description 'Canonical replay-aggregated bars schema stored in Parquet lake'. Its provenance block cites source_id 'bars_canonical_v1.json' (source_sha256 629adbb5545d99d68d241bb930593946928ed8d6a83815777a825da5c7db146f) at json pointers /title, /schema_id, /description, /columns, /hive_partitions. The bundle establishes canonical bar physical-schema facts only; it establishes no lineage, producer, or derivation facts.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "authority/authority.json",
+          "locator": "/selected",
+          "evidence_type": "authority_bundle_field",
+          "supports": "single selected schema with exact title, schema_id, and description"
+        },
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "authority/authority.json",
+          "locator": "/provenance",
+          "evidence_type": "authority_bundle_field",
+          "supports": "provenance pointers to bars_canonical_v1.json at the five listed json pointers"
+        },
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/detector_id",
+          "evidence_type": "assignment_field",
+          "supports": "assignment subject/detector bar_lineage for this candidate"
+        }
+      ],
+      "counterevidence": "None observed; the bundle selects exactly one schema and carries no second candidate.",
+      "future_information_risk": "A revised authority bundle selecting additional schemas, or approval of lineage sources, could extend or supersede the selection.",
+      "dependency_implications": "Bounds the canonical column and partition claims (BG001-A02-C003, BG001-A02-C004) and frames the canonical-to-physical mapping question (BG001-A02-C006).",
+      "notes": "Bundle subject_id is bar_dependency_lineage; the assignment subject is bar_lineage. The description 'replay-aggregated' is preserved as description text and is not treated as a derivation fact (see BG001-A02-C019)."
+    },
+    {
+      "claim_id": "BG001-A02-C003",
+      "subject": "CanonicalBarsSchema (trinity.research.bars.canonical.v1)",
+      "topic": "canonical_bar_schema",
+      "claim": "CanonicalBarsSchema declares exactly 8 columns, every one non-nullable: instrument_id (UTF-8), start_ts_ms (int64), end_ts_ms (int64), open (float64), high (float64), low (float64), close (float64), activity_volume (float64).",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "authority/authority.json",
+          "locator": "/selected/columns",
+          "evidence_type": "authority_bundle_field",
+          "supports": "exact column names, types, and nullability flags"
+        }
+      ],
+      "counterevidence": "None observed; the column list is exhaustive within the bundle and the provenance pointer covers /columns.",
+      "future_information_risk": "A superseding canonical schema version would replace the column set.",
+      "dependency_implications": "The canonical column names are one side of the canonical-to-physical divergence recorded in BG001-A02-C006.",
+      "notes": "Non-nullability here is a canonical-schema fact; it says nothing about physical lake nullability (BG001-A02-C008, BG001-A02-C013)."
+    },
+    {
+      "claim_id": "BG001-A02-C004",
+      "subject": "CanonicalBarsSchema (trinity.research.bars.canonical.v1)",
+      "topic": "canonical_bar_schema",
+      "claim": "CanonicalBarsSchema declares hive partitions: timeframe, year, month.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "authority/authority.json",
+          "locator": "/selected/hive_partitions",
+          "evidence_type": "authority_bundle_field",
+          "supports": "exact hive partition list"
+        }
+      ],
+      "counterevidence": "None observed; the partition list is exhaustive within the bundle.",
+      "future_information_risk": "A superseding canonical schema version would replace the partition set.",
+      "dependency_implications": "The canonical partition scheme is part of the canonical-to-physical divergence recorded in BG001-A02-C006; no mounted surface declares physical layout by these partitions.",
+      "notes": "Canonical-schema claims cover the canonical object only, not any physical source."
+    },
+    {
+      "claim_id": "BG001-A02-C005",
+      "subject": "xauusd.wave1.bg001 authority bundle",
+      "topic": "authority_bundle_identity",
+      "claim": "The authority bundle's status array is empty and its unresolved array contains exactly 'lineage: UNRESOLVED_PENDING_SOURCE_APPROVAL'. The approved authority bundle therefore carries no lineage content and itself flags lineage as unresolved pending source approval.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "authority/authority.json",
+          "locator": "/status, /unresolved",
+          "evidence_type": "authority_bundle_field",
+          "supports": "empty status array and single unresolved lineage flag"
+        }
+      ],
+      "counterevidence": "None observed; the lineage flag is the bundle's only unresolved entry.",
+      "future_information_risk": "A later authority action approving lineage sources would resolve or replace this flag.",
+      "dependency_implications": "Direct ground for the research block recorded in BG001-A02-C027; no lineage claim may be advanced as approved while this flag stands.",
+      "notes": "The flag is quoted verbatim from the bundle; its semantics are not inferred beyond the text."
+    },
+    {
+      "claim_id": "BG001-A02-C006",
+      "subject": "CanonicalBarsSchema and physical XAUUSD bar sources",
+      "topic": "object_source_identity",
+      "claim": "Object/source identity between CanonicalBarsSchema and the physical XAUUSD bar sources is not established: the canonical column names (start_ts_ms, end_ts_ms, activity_volume; hive partitions timeframe/year/month) differ from the physical bar column names (bar_open_ts, bar_close_ts, volume; per-scale part directories), and no mounted surface declares a mapping, transformation, or equivalence between the canonical schema and any lake source.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "authority/authority.json",
+          "locator": "/selected/columns, /selected/hive_partitions",
+          "evidence_type": "authority_bundle_field",
+          "supports": "canonical column and partition names; the bundle declares no mapping to any physical source"
+        },
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "the physical source inventory is an authorized reading surface whose declared column names cannot be cited under an authorized source ID, so the mapping question remains unresolved"
+        }
+      ],
+      "counterevidence": "No mounted surface asserts equivalence; the differing column-name sets are the affirmative reason a mapping cannot be assumed.",
+      "future_information_risk": "Mounting a schema-mapping or ingest specification under an authorized source ID, or approving lineage sources, could establish or refute equivalence.",
+      "dependency_implications": "Canonical-schema-based work must not be pointed at physical lake sources, or vice versa, without an approved mapping.",
+      "notes": "relation = UNRESOLVED_RELATIONSHIP between CanonicalBarsSchema and each physical bar source. Grouped over all 7 bar scales."
+    },
+    {
+      "claim_id": "BG001-A02-C007",
+      "subject": "XAUUSD physical lake sources",
+      "topic": "physical_lake_manifest",
+      "claim": "repository/instruments/XAUUSD/source_inventory.json declares 8 XAUUSD sources: bar sources at scales 15s, 30s, 1m, 5m, 15m, 1h, 4h and one tick source. Each source has exactly 6 parquet parts (48 parts total), every part appears in that source's schema_verified_parts, and an exact row count is declared for every part. This inventory is a declaration of the physical lake layout; it is not itself lineage evidence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "instruments/XAUUSD/source_inventory.json is an authorized reading surface for this assignment; its declared content is not representable under an authorized source ID, so the layout declaration is held UNRESOLVED rather than relabeled"
+        }
+      ],
+      "counterevidence": "None observed within the declared layout; the limitation is provenance, not content.",
+      "future_information_risk": "An authorized source ID covering the physical source inventory, or ingestion of its content into the authority bundle, would allow this claim to be reasserted with citable provenance.",
+      "dependency_implications": "The physical-schema and payload-column findings (BG001-A02-C008, BG001-A02-C009, BG001-A02-C011 to BG001-A02-C013) share this provenance limitation.",
+      "notes": "Grounding surface: repository/instruments/XAUUSD/source_inventory.json (read under the assignment's authorization). Previously AUTHORITATIVE; downgraded to UNRESOLVED under the provenance-only correction because the grounding surface has no authorized source ID. Content preserved unchanged."
+    },
+    {
+      "claim_id": "BG001-A02-C008",
+      "subject": "XAUUSD physical lake bar sources",
+      "topic": "physical_lake_manifest",
+      "claim": "All 7 bar sources declare the same non-payload physical schema, verified on all 6 parts of each scale: instrument_id (Utf8, non-nullable), bar_open_ts (Int64, non-nullable), bar_close_ts (Int64, non-nullable), open (Float64, non-nullable), high (Float64, non-nullable), low (Float64, non-nullable), close (Float64, non-nullable), volume (Float64, non-nullable), plus 16 nullable LargeUtf8 payload columns (BG001-A02-C011). Designated physical_time_coordinate_fields: bar_open_ts, bar_close_ts. The physical bar surfaces declare no receipt-time field and no sequence field.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "instruments/XAUUSD/source_inventory.json is an authorized reading surface for this assignment; its declared content is not representable under an authorized source ID, so this physical-schema finding is held UNRESOLVED rather than relabeled"
+        }
+      ],
+      "counterevidence": "None observed within the declared schema; the limitation is provenance, not content.",
+      "future_information_risk": "An authorized source ID covering the physical source inventory would allow this physical bar-schema finding to be reasserted as AUTHORITATIVE.",
+      "dependency_implications": "Bar payload availability and known-time questions (BG001-A02-C016, BG001-A02-C021) rely on these physical fields; the absence of a bar-surface receipt-time field is load-bearing for BG001-A02-C021.",
+      "notes": "Grounding surface: repository/instruments/XAUUSD/source_inventory.json. Uniformity was verified at read time by exact comparison of the non-payload schema across the 7 bar-scale sources. Previously AUTHORITATIVE; downgraded to UNRESOLVED under the provenance-only correction. Content preserved unchanged."
+    },
+    {
+      "claim_id": "BG001-A02-C009",
+      "subject": "XAUUSD physical lake tick source",
+      "topic": "physical_lake_manifest",
+      "claim": "The tick source declares physical schema, verified on all 6 parts: event_ts_ns (Int64, non-nullable), received_ts_ns (Int64, non-nullable), source_sequence (Int64, non-nullable), bid (Float64, non-nullable), ask (Float64, non-nullable), plus 7 nullable LargeUtf8 payload columns (BG001-A02-C012). Designated physical_time_coordinate_fields: event_ts_ns, received_ts_ns. The tick surface therefore physically distinguishes event (occurrence) time from receipt time and carries a source sequence; the bar surfaces declare no such distinction (BG001-A02-C008).",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "instruments/XAUUSD/source_inventory.json is an authorized reading surface for this assignment; its declared content is not representable under an authorized source ID, so this tick-schema finding is held UNRESOLVED rather than relabeled"
+        }
+      ],
+      "counterevidence": "None observed within the declared schema; the limitation is provenance, not content.",
+      "future_information_risk": "An authorized source ID covering the physical source inventory would allow this finding to be reasserted as AUTHORITATIVE.",
+      "dependency_implications": "The physical event/receipt distinction on tick is the contrast that sharpens, but does not resolve, the known-time question for bar payloads (BG001-A02-C021).",
+      "notes": "Grounding surface: repository/instruments/XAUUSD/source_inventory.json. The existence of two tick time fields is a physical fact; any semantics assigned to them beyond the field names is unresolved. Previously AUTHORITATIVE; downgraded under the provenance-only correction. Content preserved unchanged."
+    },
+    {
+      "claim_id": "BG001-A02-C010",
+      "subject": "detector registry (23 entries)",
+      "topic": "registry_declaration",
+      "claim": "repository/registry/detectors_v1.json declares exactly 23 detectors: 16 bar-domain (swings, raw3, range, fvg, bos_choch, order_blocks, local_structure, volume_by_time, structural_liquidity, dealing_range, micro_liquidity, micro_liquidity_context, volume_trend, auction_context, time_context, vwma_atr) each with known_surfaces ['bar'] and native_scales {kind: 'explicit', scales: ['15s','30s','1m','5m','15m','1h','4h']}; and 7 tick-domain (drift_burst, spread_state, quote_dynamics, quote_arrival, micro_volatility, feed_health, quote_pressure) each with known_surfaces ['tick'] and native_scales {kind: 'tick'}. No entry uses native_scales kind 'all_registered'. The explicit bar scale set coincides exactly with the BarScale enum in contracts/detector_registry_entry_v1.schema.json and with the inventory's 7 bar source scales.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "repository/registry and repository/contracts are authorized reading surfaces for this assignment; their declared content is not representable under an authorized source ID, so this registry finding is held UNRESOLVED rather than relabeled"
+        }
+      ],
+      "counterevidence": "None observed within the declared registry; the limitation is provenance, not content.",
+      "future_information_risk": "An authorized source ID covering the detector registry would allow this finding to be reasserted as AUTHORITATIVE.",
+      "dependency_implications": "Defines the detector endpoint set over which the grouped unresolved relationship claims span (BG001-A02-C016 to BG001-A02-C021, BG001-A02-C025); that set is itself provenance-unresolved.",
+      "notes": "Grounding surfaces: repository/registry/detectors_v1.json and repository/contracts/detector_registry_entry_v1.schema.json. Previously AUTHORITATIVE; downgraded under the provenance-only correction. Content preserved unchanged."
+    },
+    {
+      "claim_id": "BG001-A02-C011",
+      "subject": "16 bar-domain registry detectors",
+      "topic": "physical_output_surface",
+      "claim": "Physical output-surface column evidence, bar domain: for each of the 16 bar-domain registry detector_ids there is a same-named physical column payload_<detector_id> (data type LargeUtf8, nullable) present in the physical schema of every schema-verified part of every bar-scale source. The 16 bar payload column names (payload_swings, payload_raw3, payload_range, payload_fvg, payload_bos_choch, payload_order_blocks, payload_local_structure, payload_volume_by_time, payload_structural_liquidity, payload_dealing_range, payload_micro_liquidity, payload_micro_liquidity_context, payload_volume_trend, payload_auction_context, payload_time_context, payload_vwma_atr) correspond one-to-one with the 16 bar detector_ids. This establishes the exact physical schema of the per-detector payload columns; it does not by itself declare producer ownership (BG001-A02-C014) or any input relationship (BG001-A02-C017 to BG001-A02-C019).",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "the physical source inventory and the detector registry are authorized reading surfaces for this assignment; their declared content is not representable under an authorized source ID, so this correspondence finding is held UNRESOLVED rather than relabeled"
+        }
+      ],
+      "counterevidence": "No mounted surface contradicts the correspondence; the limitation is provenance, not content, and the correspondence remains a name-level identity rather than a producer declaration (BG001-A02-C014).",
+      "future_information_risk": "Authorized source IDs covering the inventory and registry, or a producer manifest, would allow this finding to be reasserted with citable provenance.",
+      "dependency_implications": "Grounds the output-surface identification question (BG001-A02-C014) and bounds the co-location facts (BG001-A02-C013).",
+      "notes": "Grounding surfaces: repository/instruments/XAUUSD/source_inventory.json and repository/registry/detectors_v1.json; the one-to-one name correspondence was verified at read time by exact set comparison (16 to 16, no remainder on either side). Previously AUTHORITATIVE; downgraded under the provenance-only correction. Content preserved unchanged."
+    },
+    {
+      "claim_id": "BG001-A02-C012",
+      "subject": "7 tick-domain registry detectors",
+      "topic": "physical_output_surface",
+      "claim": "Physical output-surface column evidence, tick domain: for each of the 7 tick-domain registry detector_ids there is a same-named physical column payload_<detector_id> (data type LargeUtf8, nullable) present in the physical schema of every schema-verified tick part. The 7 tick payload column names (payload_drift_burst, payload_spread_state, payload_quote_dynamics, payload_quote_arrival, payload_micro_volatility, payload_feed_health, payload_quote_pressure) correspond one-to-one with the 7 tick detector_ids. Producer ownership is not declared (BG001-A02-C014).",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "the physical source inventory and the detector registry are authorized reading surfaces for this assignment; their declared content is not representable under an authorized source ID, so this correspondence finding is held UNRESOLVED rather than relabeled"
+        }
+      ],
+      "counterevidence": "No mounted surface contradicts the correspondence; the same name-level caveat as the bar domain applies (BG001-A02-C014).",
+      "future_information_risk": "Authorized source IDs covering the inventory and registry, or a producer manifest, would allow this finding to be reasserted with citable provenance.",
+      "dependency_implications": "Grounds the output-surface identification question (BG001-A02-C014) for the tick domain.",
+      "notes": "Grounding surfaces as BG001-A02-C011; the one-to-one name correspondence was verified at read time by exact set comparison (7 to 7, no remainder on either side). Previously AUTHORITATIVE; downgraded under the provenance-only correction. Content preserved unchanged."
+    },
+    {
+      "claim_id": "BG001-A02-C013",
+      "subject": "detector payload columns (all 23)",
+      "topic": "physical_output_surface",
+      "claim": "Detector payload columns are physically co-located with the base bar columns (time coordinates and OHLCV) in the same parquet parts at each detector's declared scale; the inventory declares no separate detector-output source or store beyond these co-located payload columns and the base columns. All payload columns are declared nullable, so the physical schema does not guarantee a payload value on any given row or part.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "the physical source inventory is an authorized reading surface for this assignment; its declared content is not representable under an authorized source ID, so this co-location and nullability finding is held UNRESOLVED rather than relabeled"
+        }
+      ],
+      "counterevidence": "None observed within the declared schema; the limitation is provenance, not content.",
+      "future_information_risk": "An authorized source ID covering the physical source inventory would allow this finding to be reasserted as AUTHORITATIVE.",
+      "dependency_implications": "Nullability leaves per-row payload existence open, which is why the availability question (BG001-A02-C016) remains unresolved.",
+      "notes": "Grounding surface: repository/instruments/XAUUSD/source_inventory.json. Co-location is a physical layout fact; it is not evidence that any producer reads the base columns (BG001-A02-C017). Previously AUTHORITATIVE; downgraded under the provenance-only correction. Content preserved unchanged."
+    },
+    {
+      "claim_id": "BG001-A02-C014",
+      "subject": "all 23 registry detectors",
+      "topic": "physical_output_surface",
+      "claim": "Identification of payload_<detector_id> as the physical output surface of detector <detector_id> rests on the exact, systematic one-to-one naming correspondence with registry detector_ids across all 23 detectors and both domains (BG001-A02-C011, BG001-A02-C012) together with surface agreement with registry known_surfaces. No mounted producer manifest declares that any detector's producer writes its payload column. The identification implies nothing about producer raw inputs, upstream detector inputs, computation timing, or known-time availability.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "the surfaces whose declared content grounds the naming correspondence are authorized reading surfaces not representable under an authorized source ID, so the identification is held UNRESOLVED rather than relabeled"
+        },
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/raw_lake_access",
+          "evidence_type": "assignment_field",
+          "supports": "raw lake access denied; no producer manifest is obtainable to confirm the write relationship"
+        }
+      ],
+      "counterevidence": "No producer manifest declares the write relationship, and the naming correspondence itself rests on surfaces whose content cannot be cited under an authorized source ID.",
+      "future_information_risk": "A producer manifest or lineage approval under authorized source IDs could promote this identification; until then it remains unresolved.",
+      "dependency_implications": "If refuted for any detector, downstream work assuming that detector's payload column is its output surface would be invalid; producer-input and derivation questions (BG001-A02-C017 to BG001-A02-C019) are unaffected either way.",
+      "notes": "Grouped over all 23 detectors. Previously PROVISIONAL on the strength of the read-time naming correspondence; downgraded to UNRESOLVED under the provenance-only correction because the grounding surfaces have no authorized source IDs."
+    },
+    {
+      "claim_id": "BG001-A02-C015",
+      "subject": "all 23 registry detectors",
+      "topic": "availability_semantics",
+      "claim": "Every one of the 23 registry entries declares availability_semantics 'UNRESOLVED; authoritative manifest surface only.' and semantic_status 'UNRESOLVED'. Every entry also declares an empty lifecycle_vocabulary and empty roles. The registry itself therefore declares availability and semantics unresolved for all detectors, and declares no lifecycle or role vocabulary for any detector.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "repository/registry is an authorized reading surface for this assignment; its declared content is not representable under an authorized source ID, so this registry-declaration finding is held UNRESOLVED rather than relabeled"
+        }
+      ],
+      "counterevidence": "None observed within the declared registry; the limitation is provenance, not content.",
+      "future_information_risk": "An authorized source ID covering the detector registry would allow this finding to be reasserted as AUTHORITATIVE.",
+      "dependency_implications": "The registry's own unresolved declaration is the registry-side ground for the availability question (BG001-A02-C016).",
+      "notes": "Grounding surface: repository/registry/detectors_v1.json; field values were compared across all 23 entries at read time. Previously AUTHORITATIVE; downgraded under the provenance-only correction. Content preserved unchanged."
+    },
+    {
+      "claim_id": "BG001-A02-C016",
+      "subject": "detector payload values (all 23 detectors)",
+      "topic": "availability_semantics",
+      "claim": "Substantive availability semantics of detector payload values are not established by any mounted surface for any of the 23 detectors: which rows or parts carry non-null payload values, and at what known-time a payload value is available relative to the anchor clock (protocol rule 2, BG001-A02-C026), are undeclared. Payload nullability (BG001-A02-C013) leaves per-row existence open.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "the surfaces that would declare availability semantics are authorized reading surfaces not representable under authorized source IDs, so availability remains unresolved"
+        }
+      ],
+      "counterevidence": "No mounted surface asserts availability semantics; payload nullability affirmatively leaves existence per row open.",
+      "future_information_risk": "Availability specifications, payload population audits, or approved lineage authority could resolve this question.",
+      "dependency_implications": "Anchor-time eligibility judgments under protocol rule 2 cannot be made for payload values until known-time semantics are resolved.",
+      "notes": "relation = UNRESOLVED_RELATIONSHIP between each payload value occurrence and its known-time. Grouped over all 23 detectors. The bounding observations (payload nullability, registry availability text) come from surfaces without authorized source IDs and are retained as content, not citable evidence."
+    },
+    {
+      "claim_id": "BG001-A02-C017",
+      "subject": "detector producers (all 23 detectors)",
+      "topic": "producer_raw_inputs",
+      "claim": "No mounted surface declares the raw inputs consumed by any detector's producer; raw lake access is denied for this role and no producer manifest is among the authorized surfaces. For all 23 detectors, producer_raw_inputs is UNRESOLVED. Physical co-location of payload_<detector_id> with base columns (BG001-A02-C013) is not evidence that the producer reads those columns.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/raw_lake_access",
+          "evidence_type": "assignment_field",
+          "supports": "raw lake access denied for this role"
+        },
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "no producer manifest is among the authorized repository surfaces"
+        }
+      ],
+      "counterevidence": "No mounted surface declares producer inputs; the access denial and the absence of producer manifests among authorized surfaces affirmatively prevent establishment on this evidence base.",
+      "future_information_risk": "Producer manifests or approved lineage authority would resolve this question; unapproved inspection of the lake would not legitimize a claim.",
+      "dependency_implications": "No detector may be described as deriving from any raw input object without approved lineage authority.",
+      "notes": "relation = UNRESOLVED_RELATIONSHIP between each detector producer and any raw input object. Grouped over all 23 detectors."
+    },
+    {
+      "claim_id": "BG001-A02-C018",
+      "subject": "all 23 registry detectors",
+      "topic": "upstream_detector_inputs",
+      "claim": "Every registry entry declares derives_from: []. For all 23 detectors no registry derivation edge is currently declared. A missing or empty derives_from declaration means only that no registry edge is declared; it does not prove input independence. All upstream_detector_inputs relationships are UNRESOLVED.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "repository/registry is an authorized reading surface for this assignment; its declared derives_from content is not representable under an authorized source ID, so the upstream-input question is held UNRESOLVED rather than relabeled"
+        }
+      ],
+      "counterevidence": "The empty derives_from arrays are the only related declaration and are explicitly non-probative: no registry edge is declared, which is not evidence of independence.",
+      "future_information_risk": "Registry edits adding derives_from edges, or an approved lineage authority, would resolve specific relationships.",
+      "dependency_implications": "Confluence construction must not treat any detector pair as independent on this evidence base (BG001-A02-C025).",
+      "notes": "relation = UNRESOLVED_RELATIONSHIP between every ordered pair of registry detectors. Grouped over all 23 detectors; the 23-by-22 ordered-pair space is spanned by this single claim. The derives_from observations come from a surface without an authorized source ID and are retained as content, not citable evidence."
+    },
+    {
+      "claim_id": "BG001-A02-C019",
+      "subject": "detector pairs and bar/tick objects",
+      "topic": "derivation_relationships",
+      "claim": "No derivation relationship is established between any pair of detectors, or between bar and tick objects. The canonical schema description 'replay-aggregated' (BG001-A02-C002) does not establish aggregation inputs: whether canonical or physical bars derive from the tick source, from an external feed, or otherwise is declared by no mounted surface; the lake manifests that could declare it are not accessible (BG001-A02-C020). No derivation edge is declared or established, so any downstream graph built from this candidate must carry zero edges.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "authority/authority.json",
+          "locator": "/selected/description, /unresolved",
+          "evidence_type": "authority_bundle_field",
+          "supports": "description names replay-aggregation without naming aggregation inputs; bundle flags lineage unresolved"
+        }
+      ],
+      "counterevidence": "No mounted surface asserts any derivation; the canonical description names an aggregation character without naming aggregation inputs.",
+      "future_information_risk": "Approved lineage authority or mounted lineage declarations would resolve this question; the unmounted lake manifests are the likeliest declarative source.",
+      "dependency_implications": "No derivation edge may be drawn in any downstream graph built from this candidate; confluence work cannot assume derivation or its absence.",
+      "notes": "relation = UNRESOLVED_RELATIONSHIP for all derivation candidate pairs, including tick-to-bar. The registry-side derives_from observation is retained as content from a surface without an authorized source ID."
+    },
+    {
+      "claim_id": "BG001-A02-C020",
+      "subject": "canonical schema, physical sources, and registry detectors",
+      "topic": "object_source_identity",
+      "claim": "Object/source identity beyond the declared naming correspondences is unresolved: (a) canonical schema to physical bar sources (BG001-A02-C006); (b) registry detector objects to physical payload columns beyond the name correspondence (BG001-A02-C014); (c) the instrument configuration declares lake_root_env TRINITYR_ANALYTICAL_LAKE, relative_path fusion_markets/xauusd, and manifest files manifest.json and payload_manifest.json, none of which is a mounted surface (raw lake access denied), so the relationship between the inventory's declared source_manifest_identity (1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af) and payload_manifest_identity (78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed) and any actual manifest content is unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "the instrument configuration and physical source inventory are authorized reading surfaces for this assignment; their declared content is not representable under an authorized source ID, so the identity question is held UNRESOLVED rather than relabeled"
+        },
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/raw_lake_access",
+          "evidence_type": "assignment_field",
+          "supports": "lake manifests are not obtainable for this role"
+        }
+      ],
+      "counterevidence": "The naming correspondences (BG001-A02-C011, BG001-A02-C012) are the only identity signals; the referenced lake manifests are affirmatively absent from the mounted surfaces.",
+      "future_information_risk": "Mounting the lake manifests under an authorized source ID, or approving lineage sources, would allow identity resolution.",
+      "dependency_implications": "Downstream work must not treat canonical objects, physical sources, and registry detectors as identical without an approved mapping.",
+      "notes": "relation = UNRESOLVED_RELATIONSHIP. Grouped over the canonical schema, the physical sources, and all 23 detectors. The instrument-configuration and manifest-identity observations are retained as content from surfaces without authorized source IDs."
+    },
+    {
+      "claim_id": "BG001-A02-C021",
+      "subject": "detector payload values (all 23 detectors)",
+      "topic": "occurrence_known_time_lineage",
+      "claim": "Occurrence/known-time lineage of detector payload values is not established for any of the 23 detectors: no mounted surface declares which time coordinate (bar_open_ts, bar_close_ts, event_ts_ns, received_ts_ns) governs the known-time of a payload value, whether payload values are computed at replay time or materialized at storage time, or how receipt time (physically represented only on the tick surface, BG001-A02-C009) relates to bar payload availability. Protocol rule 2 (BG001-A02-C026) constrains but does not supply these semantics.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "repository/protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "protocol_text",
+          "supports": "occurrence/origin timestamps remain provenance; single causal information clock constrains eligibility"
+        },
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "the surface declaring the physical time coordinate fields is an authorized reading surface not representable under an authorized source ID, so known-time lineage remains unresolved"
+        }
+      ],
+      "counterevidence": "No surface declares known-time semantics; the tick surface's physical event/receipt distinction has no bar-surface counterpart, which sharpens rather than resolves the gap.",
+      "future_information_risk": "Availability or replay specifications, or approved lineage authority, could resolve this question.",
+      "dependency_implications": "Anchor-time eligibility judgments at anchor time t are blocked for payload values until resolved (see BG001-A02-C016).",
+      "notes": "relation = UNRESOLVED_RELATIONSHIP between each payload value occurrence and its known-time. Grouped over all 23 detectors. The physical time-coordinate-field observations are retained as content from a surface without an authorized source ID."
+    },
+    {
+      "claim_id": "BG001-A02-C022",
+      "subject": "detector registry contract vocabulary",
+      "topic": "episode_identity",
+      "claim": "The detector registry contract defines a role vocabulary (DetectorRole enum: directional_evidence, state_regime, structural_object, temporal_context, data_quality, lifecycle_state, normalization_reference) and a semantic-status vocabulary (AUTHORITATIVE, PROVISIONAL, UNRESOLVED), but no registry entry instantiates any role or lifecycle term: lifecycle_vocabulary and roles are empty for all 23 detectors, and no mounted surface declares any episode or lifecycle-state vocabulary for bar objects or detector payload values.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "assignment.bg-001_a-02",
+          "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+          "locator": "/authorized_repository_surfaces",
+          "evidence_type": "assignment_field",
+          "supports": "repository/contracts and repository/registry are authorized reading surfaces for this assignment; their declared content is not representable under an authorized source ID, so this vocabulary finding is held UNRESOLVED rather than relabeled"
+        }
+      ],
+      "counterevidence": "None observed within the declared vocabulary; the limitation is provenance, not content.",
+      "future_information_risk": "An authorized source ID covering the contracts and registry would allow this finding to be reasserted as AUTHORITATIVE.",
+      "dependency_implications": "The defined-but-uninstantiated vocabulary is why episode identity (BG001-A02-C023) is a semantics gap rather than a vocabulary gap.",
+      "notes": "Grounding surfaces: repository/contracts/detector_registry_entry_v1.schema.json and repository/registry/detectors_v1.json; emptiness was compared across all 23 entries at read time. Previously AUTHORITATIVE; downgraded under the provenance-only correction. Content preserved unchanged."
+    },
+    {
+      "claim_id": "BG001-A02-C023",
+      "subject": "bar objects and detector payload values",
+      "topic": "episode_identity",
+      "claim": "Episode identity semantics are not established by any mounted surface: how an episode, anchor, or lifecycle state is identified, bounded, or attributed for bar objects or for detector payload values is undeclared. Protocol rule 4 (lifecycle-first: future completion/termination cannot define an earlier-state cohort) and the experiment contract's anchor fields (anchor_time_semantics, lifecycle_state) define where such semantics must be declared, but no mounted surface instantiates them.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "repository/protocol/RESEARCH_RULES.md",
+          "locator": "rule 4",
+          "evidence_type": "protocol_text",
+          "supports": "lifecycle-first constraint on any future episode semantics"
+        }
+      ],
+      "counterevidence": "No mounted surface asserts episode identity semantics; the contract defines where they must be declared, affirmatively not their content.",
+      "future_information_risk": "Lifecycle specifications or detector registry updates instantiating lifecycle_vocabulary would resolve this question.",
+      "dependency_implications": "Lifecycle-first cohorting under protocol rule 4 cannot be operationalized for bar objects or payload values until resolved.",
+      "notes": "Semantics gap rather than a pairwise relationship; accordingly no relationship marker is attached to this claim. The experiment-contract reference is retained as content from a surface without an authorized source ID."
+    },
+    {
+      "claim_id": "BG001-A02-C024",
+      "subject": "detector confluence (general rule)",
+      "topic": "protocol_rule",
+      "claim": "Direct protocol evidence, repository/protocol/RESEARCH_RULES.md rule 11: 'If detector B derives from A, A+B is not automatically independent confluence.' The general fake-confluence rule is protocol text and is AUTHORITATIVE as a rule; it does not identify any specific detector pair.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "repository/protocol/RESEARCH_RULES.md",
+          "locator": "rule 11",
+          "evidence_type": "protocol_text",
+          "supports": "quoted general fake-confluence rule"
+        }
+      ],
+      "counterevidence": "None observed; the rule is quoted protocol text.",
+      "future_information_risk": "A protocol revision could restate the rule; the quoted text governs this run.",
+      "dependency_implications": "Bars any confluence claim that assumes independence where derivation exists; pairs with the pair-level unresolved claim (BG001-A02-C025).",
+      "notes": "The rule is general; no pair-specific content is read into it."
+    },
+    {
+      "claim_id": "BG001-A02-C025",
+      "subject": "detector pairs (all pairs of the 23 registry detectors)",
+      "topic": "upstream_detector_inputs",
+      "claim": "Specific detector-pair independence: for every pair of the 23 registry detectors, independence or dependence is UNRESOLVED. No derivation edges are declared (BG001-A02-C018), no derivation evidence is mounted (BG001-A02-C019), and neither exploratory discovery nor a method challenge constitutes confirmation or replication (protocol rules 6 and 7). No independence warning may be issued for any specific detector pair on this evidence base.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "repository/protocol/RESEARCH_RULES.md",
+          "locator": "rules 6, 7, 11",
+          "evidence_type": "protocol_text",
+          "supports": "discovery and method challenge are not confirmation or replication; fake-confluence rule"
+        }
+      ],
+      "counterevidence": "No mounted surface asserts independence or dependence for any specific pair; protocol rules 6 and 7 bar promotion of discovery or challenge to confirmation.",
+      "future_information_risk": "Approved lineage authority resolving derivation relationships would resolve specific pairs.",
+      "dependency_implications": "No pair-specific independence warning may be issued on this evidence base; confluence framing must remain unresolved until lineage authority exists.",
+      "notes": "relation = UNRESOLVED_RELATIONSHIP for every detector pair. One grouped claim spanning all pairs of the 23-detector set; the set itself is provenance-unresolved (BG001-A02-C010)."
+    },
+    {
+      "claim_id": "BG001-A02-C026",
+      "subject": "bar lineage semantics (protocol rules 1-4)",
+      "topic": "protocol_rule",
+      "claim": "Direct protocol evidence bearing on bar lineage semantics, repository/protocol/RESEARCH_RULES.md: rule 1, the anchor phenomenon/lifecycle is the research unit and a timeframe stream is not the research universe; rule 2, one causal information clock, at anchor time t only information actually available by t is eligible, and occurrence/origin timestamps remain provenance; rule 3, native scale preservation, a shared causal clock does not make 15s, 1m, 4h, and tick objects statistically identical; rule 4, lifecycle-first, future completion/termination cannot define an earlier-state cohort.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "repository/protocol/RESEARCH_RULES.md",
+          "locator": "rules 1-4",
+          "evidence_type": "protocol_text",
+          "supports": "quoted research-unit, causal-clock, native-scale, and lifecycle-first rules"
+        }
+      ],
+      "counterevidence": "None observed; the rules are quoted protocol text.",
+      "future_information_risk": "A protocol revision would supersede; the quoted text governs this run.",
+      "dependency_implications": "Constrains the interpretation of all lineage, availability, and episode claims in this candidate (BG001-A02-C016, BG001-A02-C021, BG001-A02-C023).",
+      "notes": "Rules are constraints on interpretation, not substantive lineage facts."
+    },
+    {
+      "claim_id": "BG001-A02-C027",
+      "subject": "BG-001 lineage-dependent E3 research",
+      "topic": "research_impediment",
+      "claim": "BG-001 lineage-dependent E3 research is BLOCKED pending approved lineage authority. Grounds: the approved authority bundle itself declares 'lineage: UNRESOLVED_PENDING_SOURCE_APPROVAL' (BG001-A02-C005); no producer raw inputs, upstream detector inputs, or derivation relationships are established (BG001-A02-C017 to BG001-A02-C019); and E3 CROSS_DOMAIN exposure work (protocol rule 5 defines E1 PHENOTYPE, E2 SAME_DOMAIN, and E3 CROSS_DOMAIN as information-permission classes) that depends on derivation relationships, including any tick-to-bar cross-domain lineage, cannot be advanced on this evidence base. This block is procedural, not a negative finding; it persists until lineage authority is approved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.wave1.bg001",
+          "relative_path": "authority/authority.json",
+          "locator": "/unresolved",
+          "evidence_type": "authority_bundle_field",
+          "supports": "bundle flags lineage as UNRESOLVED_PENDING_SOURCE_APPROVAL"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "repository/protocol/RESEARCH_RULES.md",
+          "locator": "rule 5",
+          "evidence_type": "protocol_text",
+          "supports": "E1 PHENOTYPE, E2 SAME_DOMAIN, and E3 CROSS_DOMAIN defined as information-permission classes, not mandatory progression gates"
+        }
+      ],
+      "counterevidence": "No mounted surface grants lineage authority; the block is the consistent consequence of BG001-A02-C005 and BG001-A02-C017 to BG001-A02-C019, not a contested finding.",
+      "future_information_risk": "An explicit lineage authority approval would lift the block and unblock E3 work dependent on resolved derivation relationships.",
+      "dependency_implications": "All lineage-dependent E3 CROSS_DOMAIN exposure work, including any tick-to-bar lineage, is blocked; exposure-class work not dependent on lineage relationships is outside the scope of this block.",
+      "notes": "Procedural block, not a negative finding; no evidence state (REJECTED/NULL) is implied for any dependent research direction."
+    }
+  ],
+  "unresolved_questions": [
+    {
+      "question_id": "UQ-001",
+      "question": "What raw inputs does each detector's producer consume, and is there any producer manifest that declares the write relationship to each payload column?",
+      "related_claim_ids": ["BG001-A02-C014", "BG001-A02-C017"]
+    },
+    {
+      "question_id": "UQ-002",
+      "question": "Do any upstream detector input relationships exist between the registry detectors, given that derives_from is empty for all entries and emptiness does not prove independence?",
+      "related_claim_ids": ["BG001-A02-C018", "BG001-A02-C025"]
+    },
+    {
+      "question_id": "UQ-003",
+      "question": "What derivation relationships, if any, exist between detectors or between bar and tick objects, including the aggregation inputs of the replay-aggregated bars?",
+      "related_claim_ids": ["BG001-A02-C019"]
+    },
+    {
+      "question_id": "UQ-004",
+      "question": "What mapping, if any, relates CanonicalBarsSchema (start_ts_ms/end_ts_ms/activity_volume; hive timeframe/year/month) to the physical XAUUSD bar sources (bar_open_ts/bar_close_ts/volume)?",
+      "related_claim_ids": ["BG001-A02-C006", "BG001-A02-C020"]
+    },
+    {
+      "question_id": "UQ-005",
+      "question": "Which time coordinate governs the known-time of each detector payload value, and when does each payload value become available relative to the anchor clock?",
+      "related_claim_ids": ["BG001-A02-C016", "BG001-A02-C021"]
+    },
+    {
+      "question_id": "UQ-006",
+      "question": "How are episodes, anchors, or lifecycle states identified and bounded for bar objects and detector payload values?",
+      "related_claim_ids": ["BG001-A02-C022", "BG001-A02-C023"]
+    },
+    {
+      "question_id": "UQ-007",
+      "question": "Which specific detector pairs, if any, are independent for confluence purposes?",
+      "related_claim_ids": ["BG001-A02-C024", "BG001-A02-C025"]
+    },
+    {
+      "question_id": "UQ-008",
+      "question": "Which rows or parts carry non-null payload values, given that every payload column is declared nullable?",
+      "related_claim_ids": ["BG001-A02-C013", "BG001-A02-C016"]
+    },
+    {
+      "question_id": "UQ-009",
+      "question": "Under which authorized source ID can the physical-schema, registry, and contract declarations currently read from the repository instrument, registry, and contract surfaces be published with citable provenance?",
+      "related_claim_ids": ["BG001-A02-C007", "BG001-A02-C008", "BG001-A02-C009", "BG001-A02-C010", "BG001-A02-C011", "BG001-A02-C012", "BG001-A02-C013", "BG001-A02-C015", "BG001-A02-C022"]
+    }
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "xauusd.wave1.bg001",
+      "relative_path": "authority/",
+      "description": "Authorized authority bundle for source xauusd.wave1.bg001: authority.json (CanonicalBarsSchema selection, provenance, status, unresolved flags) and its bundle manifest declaring content identity"
+    },
+    {
+      "source_id": "protocol.research_rules",
+      "relative_path": "repository/protocol/RESEARCH_RULES.md",
+      "description": "Research rules 1-15 governing units, clocks, scales, lifecycles, exposure classes, and confluence"
+    },
+    {
+      "source_id": "assignment.bg-001_a-02",
+      "relative_path": "repository/agent_harness/assignments/BG-001/A-02.json",
+      "description": "Assignment for BG-001 role A-02 (subject bar_lineage, authorized repository surfaces, access denials)"
+    }
+  ]
+}
