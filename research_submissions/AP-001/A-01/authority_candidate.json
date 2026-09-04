@@ -1,0 +1,202 @@
+{
+  "artifact_type": "authority_candidate",
+  "program_id": "AP-001",
+  "role_id": "A-01",
+  "subjects": ["drift_burst"],
+  "claims": [
+    {
+      "claim_id": "AP001-A01-C001",
+      "subject": "drift_burst",
+      "topic": "record_surfaces",
+      "claim": "The declared drift_burst serialization has a completed surface named drift_burst_completed and a state surface named drift_burst_state; the state surface also declares emitted_events[].",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id":"xauusd.wave1.ap001","relative_path":"XAUUSD/WAVE1_AUTHORITY_V3/AP-001-b485920ff2961a2e995e7ee6b0a74bfcb18bfb826495c6679b32e4e657b29ef5-959f07628fc89dffe5b2183e786129578d0b39a9907271f0de719d67ad4c8168/authority.json","locator":"/selected/drift_burst/{drift_burst_completed,drift_burst_state}","evidence_type":"declared_field_paths","supports":"The named surfaces and emitted_events[] nesting are declared."}],
+      "counterevidence": [],
+      "future_information_risk": "Surface declaration does not establish lifecycle order or event meaning.",
+      "dependency_implications": "Lifecycle and segmentation conclusions require producer authority.",
+      "notes": "Structure only."
+    },
+    {
+      "claim_id": "AP001-A01-C002",
+      "subject": "drift_burst",
+      "topic": "completed_surface",
+      "claim": "The completed surface declares event_id, origin, weak, online, strong, peak, decay-risk, dying, end, burst, availability-labeled, and remaining-percentage field paths.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id":"xauusd.wave1.ap001","relative_path":"XAUUSD/WAVE1_AUTHORITY_V3/AP-001-b485920ff2961a2e995e7ee6b0a74bfcb18bfb826495c6679b32e4e657b29ef5-959f07628fc89dffe5b2183e786129578d0b39a9907271f0de719d67ad4c8168/authority.json","locator":"/selected/drift_burst/drift_burst_completed/field_paths","evidence_type":"declared_field_paths","supports":"The listed completed-surface paths are declared."}],
+      "counterevidence": [],
+      "future_information_risk": "Completed-surface presence does not prove that all fields are known at any earlier point.",
+      "dependency_implications": "Any completed-record cohort needs an explicit as-of rule.",
+      "notes": "No field lifecycle semantics inferred."
+    },
+    {
+      "claim_id": "AP001-A01-C003",
+      "subject": "drift_burst",
+      "topic": "state_surface",
+      "claim": "The state surface declares state, event_id, authority score_30s and score_60s objects, operational fields, weak and online milestones, multiscale 5s/15s/30s/60s objects, and emitted event fields.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id":"xauusd.wave1.ap001","relative_path":"XAUUSD/WAVE1_AUTHORITY_V3/AP-001-b485920ff2961a2e995e7ee6b0a74bfcb18bfb826495c6679b32e4e657b29ef5-959f07628fc89dffe5b2183e786129578d0b39a9907271f0de719d67ad4c8168/authority.json","locator":"/selected/drift_burst/drift_burst_state/field_paths","evidence_type":"declared_field_paths","supports":"The state, milestone, score, multiscale, and emitted-event paths are declared."}],
+      "counterevidence": [],
+      "future_information_risk": "The state label and nested objects have no declared transition semantics.",
+      "dependency_implications": "State-machine reconstruction is not authorized by structure alone.",
+      "notes": "Structure only."
+    },
+    {
+      "claim_id": "AP001-A01-C004",
+      "subject": "drift_burst",
+      "topic": "timestamps_and_indices",
+      "claim": "Declared timestamp/index paths include origin, weak, online, strong, peak, decay-risk, dying, end, and score/milestone paths; state score timestamps use ts_ms and completed/event timestamps use ts.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id":"xauusd.wave1.ap001","relative_path":"XAUUSD/WAVE1_AUTHORITY_V3/AP-001-b485920ff2961a2e995e7ee6b0a74bfcb18bfb826495c6679b32e4e657b29ef5-959f07628fc89dffe5b2183e786129578d0b39a9907271f0de719d67ad4c8168/authority.json","locator":"/selected/drift_burst/drift_burst_{completed,state}/field_paths","evidence_type":"declared_field_paths","supports":"The timestamp and index path names and nesting are declared."}],
+      "counterevidence": [],
+      "future_information_risk": "Names and units in paths do not establish occurrence time, availability time, ordering, or clock authority.",
+      "dependency_implications": "As-of chronology requires producer documentation or behavioral evidence outside this authority run.",
+      "notes": "No timestamp semantics inferred."
+    },
+    {
+      "claim_id": "AP001-A01-C005",
+      "subject": "drift_burst",
+      "topic": "direction",
+      "claim": "Direction-bearing paths are declared for weak, online, strong, score, milestones, multiscale objects, and completed/emitted event records; internal_sign is also declared.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id":"xauusd.wave1.ap001","relative_path":"XAUUSD/WAVE1_AUTHORITY_V3/AP-001-b485920ff2961a2e995e7ee6b0a74bfcb18bfb826495c6679b32e4e657b29ef5-959f07628fc89dffe5b2183e786129578d0b39a9907271f0de719d67ad4c8168/authority.json","locator":"/selected/drift_burst/drift_burst_state/field_paths and /selected/drift_burst/drift_burst_completed/field_paths","evidence_type":"declared_field_paths","supports":"The direction and internal_sign paths are declared."}],
+      "counterevidence": [],
+      "future_information_risk": "No allowed evidence defines sign convention or whether direction is observed, derived, or predictive.",
+      "dependency_implications": "Directional interpretation remains blocked.",
+      "notes": "Presence is authoritative; meaning is unresolved."
+    },
+    {
+      "claim_id": "AP001-A01-C006",
+      "subject": "drift_burst",
+      "topic": "scores",
+      "claim": "The state surface declares net_log, efficiency, z, score, update_count, var_rate, cabs, start_cabs, start_ts, start_mid, and start_var_rate under score_30s, score_60s, and operational objects.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id":"xauusd.wave1.ap001","relative_path":"XAUUSD/WAVE1_AUTHORITY_V3/AP-001-b485920ff2961a2e995e7ee6b0a74bfcb18bfb826495c6679b32e4e657b29ef5-959f07628fc89dffe5b2183e786129578d0b39a9907271f0de719d67ad4c8168/authority.json","locator":"/selected/drift_burst/drift_burst_state/field_paths","evidence_type":"declared_field_paths","supports":"The score field paths are declared."}],
+      "counterevidence": [],
+      "future_information_risk": "Field names do not establish formulas, thresholds, normalization basis, or predictive interpretation.",
+      "dependency_implications": "Score use requires producer definitions and availability rules.",
+      "notes": "No score semantics inferred."
+    },
+    {
+      "claim_id": "AP001-A01-C007",
+      "subject": "drift_burst",
+      "topic": "multiscale_fields",
+      "claim": "The state surface declares multiscale objects at 5s, 15s, 30s, and 60s, each with z, score, efficiency, direction, duration_s, start_idx, update_count, and var_rate.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id":"xauusd.wave1.ap001","relative_path":"XAUUSD/WAVE1_AUTHORITY_V3/AP-001-b485920ff2961a2e995e7ee6b0a74bfcb18bfb826495c6679b32e4e657b29ef5-959f07628fc89dffe5b2183e786129578d0b39a9907271f0de719d67ad4c8168/authority.json","locator":"/selected/drift_burst/drift_burst_state/field_paths/multiscale.*","evidence_type":"declared_field_paths","supports":"The four multiscale structures and their fields are declared."}],
+      "counterevidence": [],
+      "future_information_risk": "Scale labels and duration fields do not establish sampling, aggregation, or causal availability.",
+      "dependency_implications": "Cross-scale comparison requires explicit scale and clock semantics.",
+      "notes": "Native tick subject; declared multiscale fields are not equivalent to bar scales."
+    },
+    {
+      "claim_id": "AP001-A01-C008",
+      "subject": "drift_burst",
+      "topic": "availability_fields",
+      "claim": "The completed surface declares available_after_weak_points, available_after_online_points, available_after_strong_points, available_after_decay_risk_points, and available_after_first_dying_points.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id":"xauusd.wave1.ap001","relative_path":"XAUUSD/WAVE1_AUTHORITY_V3/AP-001-b485920ff2961a2e995e7ee6b0a74bfcb18bfb826495c6679b32e4e657b29ef5-959f07628fc89dffe5b2183e786129578d0b39a9907271f0de719d67ad4c8168/authority.json","locator":"/selected/drift_burst/drift_burst_completed/field_paths/available_after_*_points","evidence_type":"declared_field_paths","supports":"The availability-labeled paths are declared."}],
+      "counterevidence": [],
+      "future_information_risk": "Availability-labeled names do not establish whether values are point-in-time safe or what points means.",
+      "dependency_implications": "A usable future-information firewall needs producer timing semantics.",
+      "notes": "Field presence only."
+    },
+    {
+      "claim_id": "AP001-A01-C009",
+      "subject": "drift_burst",
+      "topic": "lifecycle",
+      "claim": "The lifecycle states, transitions, entry conditions, terminal conditions, and meaning of completed versus state are not established by the authorized evidence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["The authority bundle declares names and paths but no transition definitions."],
+      "future_information_risk": "Later completion or termination fields could leak future information into earlier-state analyses.",
+      "dependency_implications": "Do not construct lifecycle cohorts or transitions from these fields alone.",
+      "notes": "Producer authority required."
+    },
+    {
+      "claim_id": "AP001-A01-C010",
+      "subject": "drift_burst",
+      "topic": "episode_identity",
+      "claim": "event_id is a declared identity-shaped field, but uniqueness, persistence, reuse, and relation between state and emitted/completed records are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["Field declaration establishes only the path name."],
+      "future_information_risk": "Joining records on event_id without identity authority may merge or split episodes incorrectly.",
+      "dependency_implications": "Episode identity cannot be treated as authoritative.",
+      "notes": "No semantics inferred from the English name."
+    },
+    {
+      "claim_id": "AP001-A01-C011",
+      "subject": "drift_burst",
+      "topic": "causal_information_clock",
+      "claim": "The research rules require one causal information clock: only information actually available by anchor time t is eligible; occurrence/origin timestamps remain provenance.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id":"repo.protocol","relative_path":"protocol/RESEARCH_RULES.md","locator":"Rule 2","evidence_type":"research_rule","supports":"The causal clock and occurrence-versus-availability distinction are explicit."}],
+      "counterevidence": [],
+      "future_information_risk": "The rule does not identify which drift_burst fields satisfy the clock.",
+      "dependency_implications": "Field-level eligibility remains unresolved pending producer timing authority.",
+      "notes": "Governance rule, not detector lifecycle semantics."
+    },
+    {
+      "claim_id": "AP001-A01-C012",
+      "subject": "drift_burst",
+      "topic": "future_information_firewall",
+      "claim": "A future-information firewall for drift_burst cannot be fully specified from the authorized evidence because field availability and transition timing are not defined.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["The bundle exposes availability-labeled field paths without defining their operational meaning."],
+      "future_information_risk": "Completed, peak, decay, dying, end, and remaining fields are potential future-dependent surfaces until timing is established.",
+      "dependency_implications": "Use only explicitly as-of-verified fields; otherwise mark unavailable for causal analysis.",
+      "notes": "Fail closed on unverified availability."
+    },
+    {
+      "claim_id": "AP001-A01-C013",
+      "subject": "drift_burst",
+      "topic": "censoring",
+      "claim": "Censoring, right-censoring, incomplete episodes, and treatment of records lacking end or completion information are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["No censoring policy or terminal-observation rule is declared."],
+      "future_information_risk": "Dropping incomplete state records could condition on future completion.",
+      "dependency_implications": "Any episode-duration or completion analysis requires a declared censoring policy.",
+      "notes": "No outcome research performed."
+    },
+    {
+      "claim_id": "AP001-A01-C014",
+      "subject": "drift_burst",
+      "topic": "episode_segmentation",
+      "claim": "Episode start, continuation, overlap, restart, merge, split, and termination segmentation rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["origin, milestone, dying, and end paths are declared without segmentation rules."],
+      "future_information_risk": "Using peak, end, or completed fields to segment earlier observations would create leakage.",
+      "dependency_implications": "No episode-level aggregation is authoritative.",
+      "notes": "Producer semantics required."
+    },
+    {
+      "claim_id": "AP001-A01-C015",
+      "subject": "drift_burst",
+      "topic": "direction_and_score_semantics",
+      "claim": "The meanings, sign conventions, formulas, thresholds, and normalization bases for direction, internal_sign, score, z, efficiency, net_log, var_rate, cabs, and burst_points are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["Only serialization paths are authorized."],
+      "future_information_risk": "Interpreting derived fields as contemporaneous or predictive can introduce unsupported semantics and leakage.",
+      "dependency_implications": "No directional or score-based scientific conclusion is authorized.",
+      "notes": "Direct structural evidence does not establish formulas."
+    }
+  ],
+  "unresolved_questions": [
+    "What producer-defined states and transitions correspond to state, milestones, completed, dying, and end_reason?",
+    "When is each field first available under the causal information clock?",
+    "Is event_id unique and persistent across state, emitted, and completed surfaces?",
+    "What are the sign conventions and formulas for direction and score fields?",
+    "How are incomplete, overlapping, restarted, merged, or split episodes segmented and censored?"
+  ],
+  "sources_consulted": [
+    {"source_id":"xauusd.wave1.ap001","relative_path":"XAUUSD/WAVE1_AUTHORITY_V3/AP-001-b485920ff2961a2e995e7ee6b0a74bfcb18bfb826495c6679b32e4e657b29ef5-959f07628fc89dffe5b2183e786129578d0b39a9907271f0de719d67ad4c8168/authority.json"},
+    {"source_id":"repo.protocol","relative_path":"protocol/RESEARCH_RULES.md"},
+    {"source_id":"repo.detector_registry","relative_path":"registry/detectors_v1.json"},
+    {"source_id":"repo.xauusd.source_inventory","relative_path":"instruments/XAUUSD/source_inventory.json"},
+    {"source_id":"repo.xauusd.instrument_config","relative_path":"instruments/XAUUSD/instrument_config.json"}
+  ]
+}
