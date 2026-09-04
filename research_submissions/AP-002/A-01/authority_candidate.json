@@ -1,0 +1,169 @@
+{
+  "artifact_type": "authority_candidate",
+  "program_id": "AP-002",
+  "role_id": "A-01",
+  "subjects": ["fvg"],
+  "claims": [
+    {
+      "claim_id": "AP002-A01-C001",
+      "subject": "fvg",
+      "topic": "native_bar_scales",
+      "claim": "The declared XAUUSD bar inventory contains native Bar scale labels 15s, 30s, 1m, 5m, 15m, 1h, and 4h; this establishes physical inventory scope only.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id":"repo.xauusd.source_inventory","relative_path":"instruments/XAUUSD/source_inventory.json","locator":"sources[].scale.Bar","evidence_type":"declared_inventory","supports":"The listed native Bar scale labels."}],
+      "counterevidence": [],
+      "future_information_risk": "Scale-specific lifecycle or scientific meaning is not established.",
+      "dependency_implications": "Any cross-scale comparison must retain the declared scale label and await semantic approval.",
+      "notes": "Physical scale scope only; no timeframe priority is inferred."
+    },
+    {
+      "claim_id": "AP002-A01-C002",
+      "subject": "fvg",
+      "topic": "physical_payload_surface",
+      "claim": "Each declared bar scale includes a nullable LargeUtf8 payload_fvg field in its physical schema.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id":"repo.xauusd.source_inventory","relative_path":"instruments/XAUUSD/source_inventory.json","locator":"sources[].physical_schema entry name=payload_fvg","evidence_type":"physical_schema","supports":"Presence, type, and nullability of the payload_fvg field."}],
+      "counterevidence": [],
+      "future_information_risk": "Field presence does not establish payload encoding, producer logic, or lifecycle semantics.",
+      "dependency_implications": "Consumers may rely on the physical field contract only; semantic parsing remains gated.",
+      "notes": "No meaning is inferred from the field name."
+    },
+    {
+      "claim_id": "AP002-A01-C003",
+      "subject": "fvg",
+      "topic": "bar_time_coordinates",
+      "claim": "The declared Bar payload surfaces expose non-null Int64 bar_open_ts and bar_close_ts fields as physical time-coordinate fields.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id":"repo.xauusd.source_inventory","relative_path":"instruments/XAUUSD/source_inventory.json","locator":"sources[].physical_schema and sources[].physical_time_coordinate_fields","evidence_type":"physical_schema","supports":"The named fields, types, nullability, and inventory designation as physical time coordinates."}],
+      "counterevidence": [],
+      "future_information_risk": "Occurrence time, availability time, close finality, and causal eligibility are not established.",
+      "dependency_implications": "Causal-clock and availability logic cannot be implemented from these fields alone.",
+      "notes": "Coordinate fields are not assigned lifecycle or event semantics."
+    },
+    {
+      "claim_id": "AP002-A01-C004",
+      "subject": "fvg",
+      "topic": "authority_status",
+      "claim": "The declared AP-002 authority bundle has status UNRESOLVED_PENDING_SOURCE_APPROVAL.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id":"xauusd.wave1.ap002","relative_path":"XAUUSD/WAVE1_AUTHORITY_V3/AP-002-b9c57bb2b211e09d8b68342dd2892834fd46afea8dbe5934afed2726c5abf715-f97f522ab621bb79904f5df40a7916d3d7de4805c593372ac2f44f5a5412f80f","locator":"authority.json: unresolved[0]","evidence_type":"authority_bundle_status","supports":"The bundle’s explicit unresolved status."}],
+      "counterevidence": [],
+      "future_information_risk": "Source approval may add or revise authority evidence.",
+      "dependency_implications": "No lifecycle authority or activation decision may depend on this candidate.",
+      "notes": "This is a direct status statement, not a lifecycle claim."
+    },
+    {
+      "claim_id": "AP002-A01-C005",
+      "subject": "fvg",
+      "topic": "formation",
+      "claim": "Formation semantics and any formation state are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["The registry describes fvg as an authoritative bar surface with semantics unresolved."],
+      "future_information_risk": "A source-approved definition may establish whether and when formation exists.",
+      "dependency_implications": "No formation timestamp, transition, cohort, or ordering may be derived.",
+      "notes": "FORMATION is a requested concept, not an established lifecycle state."
+    },
+    {
+      "claim_id": "AP002-A01-C006",
+      "subject": "fvg",
+      "topic": "detection",
+      "claim": "Detection semantics, trigger conditions, and detection time are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["The declared registry provides no fvg lifecycle vocabulary or availability semantics."],
+      "future_information_risk": "Source approval may define detector conditions and timing.",
+      "dependency_implications": "No detector event or detection-to-availability rule is authoritative.",
+      "notes": "No semantics are inferred from the detector name."
+    },
+    {
+      "claim_id": "AP002-A01-C007",
+      "subject": "fvg",
+      "topic": "identity_and_geometry",
+      "claim": "FVG episode identity, uniqueness, boundaries, direction, and geometry are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["The physical schema establishes only a payload field, not its internal structure or meaning."],
+      "future_information_risk": "Approved source material may define identity keys, bounds, direction, or geometry.",
+      "dependency_implications": "No episode deduplication, zone construction, or cross-scale identity linkage is valid.",
+      "notes": "Identity and geometry remain separate unresolved semantics despite the payload field."
+    },
+    {
+      "claim_id": "AP002-A01-C008",
+      "subject": "fvg",
+      "topic": "touch_and_fill",
+      "claim": "Touch and fill semantics, including their relationship or ordering, are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["No lifecycle vocabulary or transition semantics are declared for fvg."],
+      "future_information_risk": "Source approval may distinguish touch, fill, partial fill, or other events.",
+      "dependency_implications": "No touch/fill event time, completion rule, or ordering may be assigned.",
+      "notes": "FIRST_TOUCH and FILL are requested concepts, not authoritative states."
+    },
+    {
+      "claim_id": "AP002-A01-C009",
+      "subject": "fvg",
+      "topic": "invalidation",
+      "claim": "Invalidation semantics and invalidation timing are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["The authority bundle contains no selected lifecycle definitions."],
+      "future_information_risk": "Approved semantics may specify invalidation conditions and whether invalidation is terminal.",
+      "dependency_implications": "No termination, censoring, or active/inactive state may be computed.",
+      "notes": "No price-field rule is inferred."
+    },
+    {
+      "claim_id": "AP002-A01-C010",
+      "subject": "fvg",
+      "topic": "availability",
+      "claim": "Availability time, persistence timing, and causal eligibility of fvg payload information are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["bar_open_ts and bar_close_ts are physical coordinates only and do not establish availability."],
+      "future_information_risk": "Source approval may define when the payload becomes usable and whether later mutation occurs.",
+      "dependency_implications": "No as-of feature or no-leakage rule can use fvg semantics from this evidence alone.",
+      "notes": "Occurrence time and availability time are intentionally not conflated."
+    },
+    {
+      "claim_id": "AP002-A01-C011",
+      "subject": "fvg",
+      "topic": "censoring_and_mutation",
+      "claim": "Censoring rules, incomplete episodes, revisions, mutation, and append/update behavior are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["Inventory rows and nullable payload declarations establish no persistence or revision behavior."],
+      "future_information_risk": "Approved source or lifecycle evidence may establish right-censoring and mutation handling.",
+      "dependency_implications": "Episode duration, terminal outcomes, and replay equivalence cannot be defined.",
+      "notes": "No outcome or behavioral research was performed."
+    },
+    {
+      "claim_id": "AP002-A01-C012",
+      "subject": "fvg",
+      "topic": "scale_identity_and_lineage",
+      "claim": "The registry authorizes fvg as an explicit native-scale bar surface across the registered bar scales, but scale identity semantics, resampling lineage, derivation, and cross-scale correspondence are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": ["The registry explicitly marks fvg semantic_status as UNRESOLVED and derives_from as empty; neither establishes lineage meaning."],
+      "future_information_risk": "Source approval may define native-versus-derived identity and lineage relationships.",
+      "dependency_implications": "Do not merge, order, or treat observations across scales as one episode without approved lineage semantics.",
+      "notes": "The physical scale labels remain directly evidenced by AP002-A01-C001."
+    }
+  ],
+  "unresolved_questions": [
+    "What source-approved rule defines FVG formation and detection?",
+    "What constitutes episode identity and geometry at each native bar scale?",
+    "Are FIRST_TOUCH and FILL distinct states or events, and is any ordering authoritative?",
+    "What are invalidation, censoring, mutation, persistence, and availability rules?",
+    "How are native scale identity and cross-scale lineage defined?"
+  ],
+  "sources_consulted": [
+    {"source_id":"xauusd.wave1.ap002","relative_path":"XAUUSD/WAVE1_AUTHORITY_V3/AP-002-b9c57bb2b211e09d8b68342dd2892834fd46afea8dbe5934afed2726c5abf715-f97f522ab621bb79904f5df40a7916d3d7de4805c593372ac2f44f5a5412f80f"},
+    {"source_id":"repo.protocol","relative_path":"protocol/RESEARCH_RULES.md"},
+    {"source_id":"repo.protocol","relative_path":"protocol/AGENT_ACCESS.md"},
+    {"source_id":"repo.registry","relative_path":"registry/detectors_v1.json"},
+    {"source_id":"repo.xauusd.source_inventory","relative_path":"instruments/XAUUSD/source_inventory.json"},
+    {"source_id":"repo.xauusd.instrument_config","relative_path":"instruments/XAUUSD/instrument_config.json"},
+    {"source_id":"repo.contracts","relative_path":"contracts/detector_registry_entry_v1.schema.json"},
+    {"source_id":"repo.contracts","relative_path":"contracts/knowledge_record_v1.schema.json"}
+  ]
+}
