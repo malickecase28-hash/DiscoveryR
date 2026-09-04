@@ -14,6 +14,7 @@ param(
 )
 
 $ErrorActionPreference='Stop'
+if ($PublicationEpoch -ieq 'v3') { throw 'Publication epoch v3 is retired.' }
 $repo=(Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $source=(Resolve-Path -LiteralPath $SubmissionPath).Path
 $baseSha=if($ResearchBaseSha){$ResearchBaseSha.ToLowerInvariant()}else{$BaseRef.ToLowerInvariant()}
