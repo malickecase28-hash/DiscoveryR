@@ -9,7 +9,19 @@ param(
     [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$')][string] $RuntimeSlot
 )
 $ErrorActionPreference = 'Stop'
-$repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+$repoSource = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+$baseSha = if ($ResearchBaseSha) { $ResearchBaseSha.ToLowerInvariant() } elseif ($env:TRINITYR_RESEARCH_BASE_SHA) { $env:TRINITYR_RESEARCH_BASE_SHA.ToLowerInvariant() } else { throw 'ResearchBaseSha is required; launch from the frozen research base.' }
+if ($baseSha -notmatch '^[0-9a-f]{40}$') { throw 'Invalid immutable research base SHA.' }
+$launchWorktreeRoot = if ($env:TRINITYR_LAUNCH_WORKTREE_ROOT) { $env:TRINITYR_LAUNCH_WORKTREE_ROOT } else { Join-Path $RunRoot '.launch-worktrees' }
+if ($launchWorktreeRoot -notmatch '^[A-Za-z]:\\' -or $launchWorktreeRoot -match '[*?]') { throw 'Unsafe launch worktree root.' }
+New-Item -ItemType Directory -Force -Path $launchWorktreeRoot | Out-Null
+$baseTree = Join-Path $launchWorktreeRoot ('trinityr-launch-' + [guid]::NewGuid().ToString('N'))
+$baseTreeAdded = $false
+try {
+& git -C $repoSource worktree add --detach $baseTree $baseSha | Out-Null
+if ($LASTEXITCODE -ne 0) { throw 'Unable to materialize frozen research base.' }
+$baseTreeAdded = $true
+$repo = (Resolve-Path $baseTree).Path
 $repoFull = [IO.Path]::GetFullPath($repo).TrimEnd('\') + '\'
 function SafePath([string] $Path) {
     $full = [IO.Path]::GetFullPath($Path)
@@ -69,10 +81,7 @@ function WriteInputManifest($Assignment, $Authority, [string] $ManifestRoot, [st
     $authoritySources=@($Assignment.authority_source_ids | ForEach-Object { $s=@($Authority.sources | Where-Object source_id -eq $_)[0]; [ordered]@{source_id=$s.source_id;relative_path=$s.relative_path;mount_target=$s.mount_target;hash=$s.hash;bundle_content_identity=$s.bundle_content_identity;directory_transport_hash=$s.directory_transport_hash} })
     $pair = SharedInputFingerprint $Assignment $Authority $repositorySourceHashes
     New-Item -ItemType Directory -Force -Path $ManifestRoot | Out-Null
-    $attestation=[ordered]@{schema_version='trinity.mount-attestation.v1';research_base_sha=$BaseSha;program_id=$Assignment.program_id;role_id=$Assignment.role_id;repository_source_hashes=$repositorySourceHashes;authority_sources=$authoritySources}
-    $attestationJson=($attestation|ConvertTo-Json -Depth 20)+[Environment]::NewLine;$attestationHash=ShaText $attestationJson;$attestationPath=Join-Path $ManifestRoot 'mount_attestation.json'
-    if(Test-Path -LiteralPath $attestationPath){if((Get-FileHash $attestationPath -Algorithm SHA256).Hash.ToLowerInvariant() -ne $attestationHash -or (Get-Content -Raw $attestationPath) -ne $attestationJson){throw 'Immutable mount attestation conflict.'}}else{[IO.File]::WriteAllText($attestationPath,$attestationJson,[Text.UTF8Encoding]::new($false))}
-    $manifest = [ordered]@{ schema_version='trinity.research-input-manifest.v2'; program_id=$Assignment.program_id; role_id=$Assignment.role_id; phase=$Assignment.phase; research_base_sha=$BaseSha; assignment_path=("agent_harness/assignments/$($Assignment.program_id)/$($Assignment.role_id).json"); assignment_sha256=(Get-FileHash $assignmentPath -Algorithm SHA256).Hash.ToLowerInvariant(); access_profile=$Assignment.access_profile; raw_lake_access=$Assignment.raw_lake_access; repository_surfaces=$surfaces; repository_source_hashes=$repositorySourceHashes; authority_sources=$authoritySources; mount_attestation_sha256=$attestationHash; shared_input_fingerprint=$pair }
+    $manifest = [ordered]@{ schema_version='trinity.research-input-manifest.v3'; program_id=$Assignment.program_id; role_id=$Assignment.role_id; phase=$Assignment.phase; research_base_sha=$BaseSha; assignment_path=("agent_harness/assignments/$($Assignment.program_id)/$($Assignment.role_id).json"); assignment_sha256=(Get-FileHash $assignmentPath -Algorithm SHA256).Hash.ToLowerInvariant(); access_profile=$Assignment.access_profile; raw_lake_access=$Assignment.raw_lake_access; repository_surfaces=$surfaces; repository_source_hashes=$repositorySourceHashes; authority_sources=$authoritySources; shared_input_fingerprint=$pair }
     $path=Join-Path $ManifestRoot 'research_input_manifest.json'; if (Test-Path -LiteralPath $path) { $old=Get-Content -Raw $path; $new=($manifest|ConvertTo-Json -Depth 20)+[Environment]::NewLine; if ($old -ne $new) { throw 'Immutable research input manifest conflict.' } } else { [IO.File]::WriteAllText($path,(($manifest|ConvertTo-Json -Depth 20)+[Environment]::NewLine),[Text.UTF8Encoding]::new($false)) }
     return $path
 }
@@ -215,19 +224,36 @@ foreach ($sourceId in @($assignment.authority_source_ids)) {
 }
 if ($lake) { $mounts += [PSCustomObject]@{ source = (MountPath $lake); target = "/shared/data/$($assignment.data_scope_id)/development" } }
 if ($runtime) { $mounts += $runtime }
-$baseSha = if ($ResearchBaseSha) { $ResearchBaseSha.ToLowerInvariant() } elseif ($env:TRINITYR_RESEARCH_BASE_SHA) { $env:TRINITYR_RESEARCH_BASE_SHA.ToLowerInvariant() } else { throw 'ResearchBaseSha is required; launch from the frozen research base.' }
-if ($baseSha -notmatch '^[0-9a-f]{40}$') { throw 'Invalid immutable research base SHA.' }
 $actualHead = (& git -C $repo rev-parse HEAD).Trim().ToLowerInvariant()
 if ($actualHead -ne $baseSha) { throw 'Repository HEAD does not match ResearchBaseSha.' }
 if (@(& git -C $repo status --porcelain --untracked-files=all).Count -ne 0) { throw 'Research base worktree must be clean.' }
-$manifestRootInput = if ($env:TRINITYR_MANIFEST_ROOT) { $env:TRINITYR_MANIFEST_ROOT } else { 'F:\TrinityR-manifests\wave1-v3' }
+$manifestRootInput = if ($env:TRINITYR_MANIFEST_ROOT) { $env:TRINITYR_MANIFEST_ROOT } else { 'F:\TrinityR-manifests\wave1-v4' }
 $manifestRoot = ManifestRoot $manifestRootInput
 $manifestPath = WriteInputManifest $assignment $authority (Join-Path $manifestRoot "$ProgramId\$Role") $baseSha
 $mounts += [PSCustomObject]@{ source = (MountPath $manifestPath); target = '/shared/research_input_manifest.json' }
+$plannedManifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
+$sourceMap = @{'protocol'='repo.protocol';'contracts'='repo.contracts';'registry'='repo.detector_registry';'instruments/XAUUSD/instrument_config.json'='repo.xauusd.instrument_config';'instruments/XAUUSD/source_inventory.json'='repo.xauusd.source_inventory'}
+$runtimeAttestationPath = Join-Path (Split-Path $manifestPath -Parent) 'runtime_mount_attestation.json'
+if (Test-Path -LiteralPath $runtimeAttestationPath) { throw 'Runtime attestation path already exists.' }
+[IO.File]::WriteAllText($runtimeAttestationPath, '', [Text.UTF8Encoding]::new($false))
+$repositorySpecs = @($plannedManifest.repository_surfaces | ForEach-Object { $id = $sourceMap[$_.relative_path]; if ($id) { "REPO`t$id`t/shared/research-program/$($_.relative_path -replace '\\','/')`t$($_.hash)" } })
+$authoritySpecs = @($plannedManifest.authority_sources | ForEach-Object { "AUTH`t$($_.source_id)`t$($_.mount_target)`t$($_.bundle_content_identity)`t$($_.directory_transport_hash)" })
+$attestationSpecs = ($repositorySpecs + $authoritySpecs) -join "`n"
+$manifestHash = (Get-FileHash $manifestPath -Algorithm SHA256).Hash.ToLowerInvariant()
+$launchId = [guid]::NewGuid().ToString('N')
 $mountText = ($mounts | ForEach-Object { "$(B64 $_.source)|$(B64 $_.target)" }) -join "`n"
-$launcher = Join-Path $PSScriptRoot 'isolated-run.sh'
+$launcher = Join-Path $repo 'agent_harness\launch\isolated-run.sh'
 $bootstrap = B64 ((Get-Content -Raw -LiteralPath $launcher).Replace("`r", ''))
 $safeCommand = $Command.Replace("`r", '')
-$commandLine = "mountpoint -q /mnt/f || mount -t drvfs F: /mnt/f; printf %s $bootstrap | base64 -d > /tmp/trinityr-isolated-run.sh && chmod 700 /tmp/trinityr-isolated-run.sh && unshare --mount --pid --fork --mount-proc --propagation private -- /bin/bash /tmp/trinityr-isolated-run.sh $(B64 (WslPath $workspace)) $(B64 $assignment.access_profile) $(B64 $safeCommand) $(B64 (B64 $mountText))"
+$commandLine = "mountpoint -q /mnt/f || mount -t drvfs F: /mnt/f; printf %s $bootstrap | base64 -d > /tmp/trinityr-isolated-run.sh && chmod 700 /tmp/trinityr-isolated-run.sh && unshare --mount --pid --fork --mount-proc --propagation private -- /bin/bash /tmp/trinityr-isolated-run.sh $(B64 (WslPath $workspace)) $(B64 $assignment.access_profile) $(B64 $safeCommand) $(B64 (B64 $mountText)) $(B64 (B64 $attestationSpecs)) $(B64 (WslPath $runtimeAttestationPath)) $(B64 $launchId) $(B64 $manifestHash) $(B64 $ProgramId) $(B64 $Role) $(B64 $baseSha)"
 & wsl.exe --distribution $Distro --user root -- /bin/bash -lc $commandLine
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+$workerExit = $LASTEXITCODE
+if (-not (Test-Path -LiteralPath $runtimeAttestationPath -PathType Leaf)) { throw 'Runtime attestation missing.' }
+$runtimeAttestation = Get-Content -Raw -LiteralPath $runtimeAttestationPath | ConvertFrom-Json
+if ($runtimeAttestation.schema_version -ne 'trinity.runtime-mount-attestation.v1' -or $runtimeAttestation.launch_id -ne $launchId -or $runtimeAttestation.program_id -ne $ProgramId -or $runtimeAttestation.role_id -ne $Role -or $runtimeAttestation.research_base_sha -ne $baseSha -or $runtimeAttestation.research_input_manifest_sha256 -ne $manifestHash -or $runtimeAttestation.all_match -ne $true) { throw 'RUNTIME_ATTESTATION_FAIL' }
+Write-Output "RUNTIME_ATTESTATION_PASS launch_id=$launchId sha256=$((Get-FileHash $runtimeAttestationPath -Algorithm SHA256).Hash.ToLowerInvariant())"
+if ($workerExit -ne 0) { exit $workerExit }
+} finally {
+    if ($baseTreeAdded) { & git -C $repoSource worktree remove --force $baseTree 2>$null }
+    if (Test-Path -LiteralPath $baseTree) { [IO.Directory]::Delete($baseTree, $true) }
+}
