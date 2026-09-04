@@ -36,7 +36,7 @@ if (-not (SafeId 'SAFE-INSTRUMENT') -or (SafeId 'unsafe/id')) { throw 'Safe ID v
 'GENERIC_ID_VALIDATION_PASS'
 if ($LocalSynthetic) {
     $root=Join-Path ([IO.Path]::GetTempPath()) ('i02-local-'+[guid]::NewGuid());New-Item -ItemType Directory -Force (Join-Path $root 'nested')|Out-Null
-    try { 'a'|Set-Content -NoNewline (Join-Path $root 'authority.json');'manifest'|Set-Content -NoNewline (Join-Path $root 'bundle_manifest.json');'b'|Set-Content -NoNewline (Join-Path $root 'nested\child.txt');$records=Get-ChildItem $root -Recurse -File|ForEach-Object{$relative=$_.FullName.Substring($root.Length+1).Replace('\','/');"$relative`t$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())`n"}|Sort-Object;$hash=([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($records -join '')))|ForEach-Object ToString x2)-join '';if($hash.Length -ne 64 -or $records.Count -ne 3){throw 'LOCAL_SYNTHETIC_HASH_FAILED'};'LOCAL_SYNTHETIC_PASS' } finally { Remove-Item -Recurse -Force -LiteralPath $root -ErrorAction SilentlyContinue };exit 0
+    try { 'a'|Set-Content -NoNewline (Join-Path $root 'authority.json');'manifest'|Set-Content -NoNewline (Join-Path $root 'bundle_manifest.json');'b'|Set-Content -NoNewline (Join-Path $root 'nested\child.txt');$records=[Collections.Generic.List[string]]::new();Get-ChildItem $root -Recurse -File|ForEach-Object{$relative=$_.FullName.Substring($root.Length+1).Replace('\','/');$records.Add("$relative`t$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())`n")};$records.Sort([StringComparer]::Ordinal);$hash=([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($records -join '')))|ForEach-Object ToString x2)-join '';if($hash.Length -ne 64 -or $records.Count -ne 3){throw 'LOCAL_SYNTHETIC_HASH_FAILED'};'LOCAL_SYNTHETIC_PASS' } finally { Remove-Item -Recurse -Force -LiteralPath $root -ErrorAction SilentlyContinue };exit 0
 }
 function MustFail([scriptblock] $Action, [string] $Name) {
     try { & $Action 2>$null; throw "$Name unexpectedly succeeded" } catch { if ($_.Exception.Message -match 'unexpectedly succeeded') { throw } }
@@ -117,7 +117,6 @@ $parityPath=Join-Path $parityRoot 'pair_input_parity.json'; $parityJson=($parity
 if (Test-Path $parityPath) { if ((Get-Content -Raw $parityPath) -ne $parityJson) { throw 'Immutable pair parity conflict.' } } else { $parityJson | Set-Content -NoNewline -Encoding utf8 $parityPath }
 $badManifest=$bundleManifest.PSObject.Copy();$badManifest.bundle_content_identity=('0'*64);MustFail { ValidateBundleIdentity $source[0] $badManifest $sourcePath } 'wrong bundle content identity'
 $badParity=$parity.pairs[0].PSObject.Copy();$badParity.a02_shared_input_fingerprint=('0'*64);MustFail {ValidateParityPair $badParity} 'parity mismatch'
-$manifestCheck=Get-Content -Raw (Join-Path $env:TRINITYR_MANIFEST_ROOT 'AP-001\A-01\research_input_manifest.json')|ConvertFrom-Json;ValidateInputManifest $manifestCheck;$badManifest=$manifestCheck.PSObject.Copy();$badManifest.shared_input_fingerprint=$null;MustFail {ValidateInputManifest $badManifest} 'missing manifest fields'
 $claimFixture=@([pscustomobject]@{claim_id='AP001-A01-C001';status='PROVISIONAL';claim='null model'});ValidateArtifactClaims $claimFixture;$duplicate=@($claimFixture+$claimFixture);MustFail {ValidateArtifactClaims $duplicate} 'duplicate IDs';$invalid=$claimFixture[0].PSObject.Copy();$invalid.status='UNRESOLVED_RELATIONSHIP';MustFail {ValidateArtifactClaims @($invalid)} 'invalid status';$malformed=$claimFixture[0].PSObject.Copy();$malformed.status='AUTHORITATIVE';MustFail {ValidateArtifactClaims @($malformed)} 'malformed AUTHORITATIVE evidence';'NEGATIVE_CONTRACT_TESTS_PASS'
 $codex = Get-Content -Raw (Join-Path $repo 'agent_harness\assignments\TEST-01\TEST-01.json') | ConvertFrom-Json
 ValidateAssignment $codex 'TEST-01/TEST-01'
@@ -146,7 +145,7 @@ try {
     $env:TRINITYR_VIEWS_ROOT = $oldViews
     Remove-Item -Recurse -Force -LiteralPath $viewRoot,$devRun -ErrorAction SilentlyContinue
 }
-'CODEX_HOST_MANAGED'
+'HOST_MANAGED_CODEX_UNSAFE'
 'ZCODE_RUNTIME_RETIRED'
 'WSL_CODEX_RUNTIME_NOT_REQUIRED'
 $authorityTestRoot = "F:\trinityr-authority-$PID"
@@ -155,10 +154,12 @@ try {
     'a' | Set-Content -NoNewline (Join-Path $authorityTestRoot 'root.txt')
     'b' | Set-Content -NoNewline (Join-Path $authorityTestRoot 'nested\child.txt')
     'manifest' | Set-Content -NoNewline (Join-Path $authorityTestRoot 'bundle_manifest.json')
-    $records = Get-ChildItem $authorityTestRoot -Recurse -File | ForEach-Object {
+    $records = [Collections.Generic.List[string]]::new()
+    Get-ChildItem $authorityTestRoot -Recurse -File | ForEach-Object {
         $relative = $_.FullName.Substring($authorityTestRoot.Length + 1).Replace('\','/')
-        "$relative`t$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())`n"
-    } | Sort-Object
+        $records.Add("$relative`t$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())`n")
+    }
+    $records.Sort([StringComparer]::Ordinal)
     $v2hash = ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($records -join ''))) | ForEach-Object ToString x2) -join ''
     if ($v2hash.Length -ne 64 -or $records.Count -ne 3) { throw 'Synthetic v2 authority hash failed.' }
     'AUTHORITY_V2_HASH_PASS'
@@ -191,5 +192,6 @@ foreach ($role in @('A-01', 'A-02')) {
     if ($LASTEXITCODE -ne 0 -or ($result -notcontains "ISOLATION_PASS $role")) { throw "Isolation validation failed for $role." }
     $result
 }
+$manifestCheck=Get-Content -Raw (Join-Path $env:TRINITYR_MANIFEST_ROOT 'AP-001\A-01\research_input_manifest.json')|ConvertFrom-Json;ValidateInputManifest $manifestCheck;$badManifest=$manifestCheck.PSObject.Copy();$badManifest.shared_input_fingerprint=$null;MustFail {ValidateInputManifest $badManifest} 'missing manifest fields'
 $serializationProbes = @(@('TC-001','A-01','test -s /shared/authority/xauusd/tc001/authority.json; grep -q feed_health /shared/authority/xauusd/tc001/authority.json'), @('AP-002','A-01','test -s /shared/authority/xauusd/ap002/authority.json; grep -q UNRESOLVED_PENDING_SOURCE_APPROVAL /shared/authority/xauusd/ap002/authority.json'))
 foreach ($slot in $serializationProbes) { $result=& $launcher -ProgramId $slot[0] -Role $slot[1] -RunRoot $RunRoot -Distro $Distro -Command "set -eu; $($slot[2]); printf 'SERIALIZATION_MOUNT_PASS\n'"; if($LASTEXITCODE -ne 0 -or ($result -notcontains 'SERIALIZATION_MOUNT_PASS')){throw "Serialization mount validation failed for $($slot[0])/$($slot[1])"};$result }

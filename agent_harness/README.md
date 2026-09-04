@@ -21,7 +21,11 @@ Active workers are host-managed Codex sessions; no Codex executable or model
 broker is required inside WSL. The prior ZCode investigation is historical:
 `ZCODE_RUNTIME_RETIRED` and `WSL_CODEX_RUNTIME_NOT_REQUIRED`. Provider identity
 and credentials remain outside scientific artifacts and are never mounted into
-the research namespace.
+the research namespace. The WSL boundary does not constrain native tools of a
+Codex process running on the host; the current runtime gate is
+`HOST_MANAGED_CODEX_UNSAFE`. Host-managed Codex is therefore suitable for
+host-side validation/publication only until the researcher tools are mediated
+or the Codex process runs inside the hard namespace.
 
 Example:
 
