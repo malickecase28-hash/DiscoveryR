@@ -1,0 +1,7 @@
+{
+  "instrument": "XAUUSD",
+  "lake_root_env": "TRINITYR_ANALYTICAL_LAKE",
+  "relative_path": "fusion_markets/xauusd",
+  "manifest": "manifest.json",
+  "payload_manifest": "payload_manifest.json"
+}
