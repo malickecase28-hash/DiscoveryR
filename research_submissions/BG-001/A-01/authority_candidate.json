@@ -1,0 +1,181 @@
+{
+  "program_id": "BG-001",
+  "role_id": "A-01",
+  "artifact_type": "AUTHORITY_CANDIDATE",
+  "subjects": ["raw3", "range", "fvg", "bos_choch", "local_structure", "order_blocks", "micro_liquidity", "micro_liquidity_context"],
+  "claims": [
+    {
+      "claim_id": "BG001-A01-C001",
+      "subject": "raw3",
+      "topic": "physical_output_surface",
+      "precise_claim": "The authoritative physical output surface is payload_raw3.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id": "repo.inventory", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "sources[*].physical_schema[name=payload_raw3]", "evidence_type": "mounted_source", "supports": "The approved source set identifies payload_raw3 in physical_schema as the raw3 physical payload surface."}],
+      "counterevidence": [],
+      "notes": "Physical surface only; no producer or lineage assertion."
+    },
+    {
+      "claim_id": "BG001-A01-C002",
+      "subject": "range",
+      "topic": "physical_output_surface",
+      "precise_claim": "The authoritative physical output surface is payload_range.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id": "repo.inventory", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "sources[*].physical_schema[name=payload_range]", "evidence_type": "mounted_source", "supports": "The approved source set identifies payload_range in physical_schema as the range physical payload surface."}],
+      "counterevidence": [],
+      "notes": "Physical surface only; no producer or lineage assertion."
+    },
+    {
+      "claim_id": "BG001-A01-C003",
+      "subject": "fvg",
+      "topic": "physical_output_surface",
+      "precise_claim": "The authoritative physical output surface is payload_fvg.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id": "repo.inventory", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "sources[*].physical_schema[name=payload_fvg]", "evidence_type": "mounted_source", "supports": "The approved source set identifies payload_fvg in physical_schema as the fvg physical payload surface."}],
+      "counterevidence": [],
+      "notes": "Physical surface only; no producer or lineage assertion."
+    },
+    {
+      "claim_id": "BG001-A01-C004",
+      "subject": "bos_choch",
+      "topic": "physical_output_surface",
+      "precise_claim": "The authoritative physical output surface is payload_bos_choch.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id": "repo.inventory", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "sources[*].physical_schema[name=payload_bos_choch]", "evidence_type": "mounted_source", "supports": "The approved source set identifies payload_bos_choch in physical_schema as the bos_choch physical payload surface."}],
+      "counterevidence": [],
+      "notes": "Physical surface only; no producer or lineage assertion."
+    },
+    {
+      "claim_id": "BG001-A01-C005",
+      "subject": "local_structure",
+      "topic": "physical_output_surface",
+      "precise_claim": "The authoritative physical output surface is payload_local_structure.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id": "repo.inventory", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "sources[*].physical_schema[name=payload_local_structure]", "evidence_type": "mounted_source", "supports": "The approved source set identifies payload_local_structure in physical_schema as the local_structure physical payload surface."}],
+      "counterevidence": [],
+      "notes": "Physical surface only; no producer or lineage assertion."
+    },
+    {
+      "claim_id": "BG001-A01-C006",
+      "subject": "order_blocks",
+      "topic": "physical_output_surface",
+      "precise_claim": "The authoritative physical output surface is payload_order_blocks.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id": "repo.inventory", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "sources[*].physical_schema[name=payload_order_blocks]", "evidence_type": "mounted_source", "supports": "The approved source set identifies payload_order_blocks in physical_schema as the order_blocks physical payload surface."}],
+      "counterevidence": [],
+      "notes": "Physical surface only; no producer or lineage assertion."
+    },
+    {
+      "claim_id": "BG001-A01-C007",
+      "subject": "micro_liquidity",
+      "topic": "physical_output_surface",
+      "precise_claim": "The authoritative physical output surface is payload_micro_liquidity.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id": "repo.inventory", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "sources[*].physical_schema[name=payload_micro_liquidity]", "evidence_type": "mounted_source", "supports": "The approved source set identifies payload_micro_liquidity in physical_schema as the micro_liquidity physical payload surface."}],
+      "counterevidence": [],
+      "notes": "Physical surface only; no producer or lineage assertion."
+    },
+    {
+      "claim_id": "BG001-A01-C008",
+      "subject": "micro_liquidity_context",
+      "topic": "physical_output_surface",
+      "precise_claim": "The authoritative physical output surface is payload_micro_liquidity_context.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [{"source_id": "repo.inventory", "relative_path": "instruments/XAUUSD/source_inventory.json", "locator": "sources[*].physical_schema[name=payload_micro_liquidity_context]", "evidence_type": "mounted_source", "supports": "The approved source set identifies payload_micro_liquidity_context in physical_schema as the micro_liquidity_context physical payload surface."}],
+      "counterevidence": [],
+      "notes": "Physical surface only; no producer or lineage assertion."
+    },
+    {
+      "claim_id": "BG001-A01-C009",
+      "subject": "raw3",
+      "topic": "producer_and_lineage",
+      "precise_claim": {"producer_raw_inputs": "UNRESOLVED", "upstream_detector_inputs": "UNRESOLVED", "derivation_relationships": "UNRESOLVED", "identity_linkage": "UNRESOLVED", "known_time_lineage": "UNRESOLVED"},
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "notes": "No approved source directly establishes producer inputs, upstream inputs, derivation, identity linkage, or known-time lineage."
+    },
+    {
+      "claim_id": "BG001-A01-C010",
+      "subject": "range",
+      "topic": "producer_and_lineage",
+      "precise_claim": {"producer_raw_inputs": "UNRESOLVED", "upstream_detector_inputs": "UNRESOLVED", "derivation_relationships": "UNRESOLVED", "identity_linkage": "UNRESOLVED", "known_time_lineage": "UNRESOLVED"},
+      "status": "UNRESOLVED", "authority_evidence": [], "counterevidence": [], "notes": "No approved source directly establishes the listed producer or lineage dimensions."
+    },
+    {
+      "claim_id": "BG001-A01-C011",
+      "subject": "fvg",
+      "topic": "producer_and_lineage",
+      "precise_claim": {"producer_raw_inputs": "UNRESOLVED", "upstream_detector_inputs": "UNRESOLVED", "derivation_relationships": "UNRESOLVED", "identity_linkage": "UNRESOLVED", "known_time_lineage": "UNRESOLVED"},
+      "status": "UNRESOLVED", "authority_evidence": [], "counterevidence": [], "notes": "No approved source directly establishes the listed producer or lineage dimensions."
+    },
+    {
+      "claim_id": "BG001-A01-C012",
+      "subject": "bos_choch",
+      "topic": "producer_and_lineage",
+      "precise_claim": {"producer_raw_inputs": "UNRESOLVED", "upstream_detector_inputs": "UNRESOLVED", "derivation_relationships": "UNRESOLVED", "identity_linkage": "UNRESOLVED", "known_time_lineage": "UNRESOLVED"},
+      "status": "UNRESOLVED", "authority_evidence": [], "counterevidence": [], "notes": "No approved source directly establishes the listed producer or lineage dimensions."
+    },
+    {
+      "claim_id": "BG001-A01-C013",
+      "subject": "local_structure",
+      "topic": "producer_and_lineage",
+      "precise_claim": {"producer_raw_inputs": "UNRESOLVED", "upstream_detector_inputs": "UNRESOLVED", "derivation_relationships": "UNRESOLVED", "identity_linkage": "UNRESOLVED", "known_time_lineage": "UNRESOLVED"},
+      "status": "UNRESOLVED", "authority_evidence": [], "counterevidence": [], "notes": "No approved source directly establishes the listed producer or lineage dimensions."
+    },
+    {
+      "claim_id": "BG001-A01-C014",
+      "subject": "order_blocks",
+      "topic": "producer_and_lineage",
+      "precise_claim": {"producer_raw_inputs": "UNRESOLVED", "upstream_detector_inputs": "UNRESOLVED", "derivation_relationships": "UNRESOLVED", "identity_linkage": "UNRESOLVED", "known_time_lineage": "UNRESOLVED"},
+      "status": "UNRESOLVED", "authority_evidence": [], "counterevidence": [], "notes": "No approved source directly establishes the listed producer or lineage dimensions."
+    },
+    {
+      "claim_id": "BG001-A01-C015",
+      "subject": "micro_liquidity",
+      "topic": "producer_and_lineage",
+      "precise_claim": {"producer_raw_inputs": "UNRESOLVED", "upstream_detector_inputs": "UNRESOLVED", "derivation_relationships": "UNRESOLVED", "identity_linkage": "UNRESOLVED", "known_time_lineage": "UNRESOLVED"},
+      "status": "UNRESOLVED", "authority_evidence": [], "counterevidence": [], "notes": "No approved source directly establishes the listed producer or lineage dimensions."
+    },
+    {
+      "claim_id": "BG001-A01-C016",
+      "subject": "micro_liquidity_context",
+      "topic": "producer_and_lineage",
+      "precise_claim": {"producer_raw_inputs": "UNRESOLVED", "upstream_detector_inputs": "UNRESOLVED", "derivation_relationships": "UNRESOLVED", "identity_linkage": "UNRESOLVED", "known_time_lineage": "UNRESOLVED"},
+      "status": "UNRESOLVED", "authority_evidence": [], "counterevidence": [], "notes": "No approved source directly establishes the listed producer or lineage dimensions."
+    },
+    {"claim_id":"BG001-A01-C017","subject":"authority_scope","topic":"scope","precise_claim":"Only the eight named physical output surfaces are in scope.","status":"AUTHORITATIVE","authority_evidence":[],"counterevidence":[],"notes":"Scope is limited to BG-001/A-01."},
+    {"claim_id":"BG001-A01-C018","subject":"graph","topic":"accepted_edges","precise_claim":"No relationship edge is accepted.","status":"AUTHORITATIVE","authority_evidence":[],"counterevidence":[],"notes":"graph.edges remains empty."},
+    {"claim_id":"BG001-A01-C019","subject":"graph","topic":"requested_relationships","precise_claim":"Requested relationships are unresolved relationships only.","status":"UNRESOLVED_RELATIONSHIP","authority_evidence":[],"counterevidence":[],"notes":"No direct evidence supports an edge."},
+    {"claim_id":"BG001-A01-C020","subject":"fake_confluence","topic":"general_rule","precise_claim":"Confluence must not be treated as independent evidence when outputs share unresolved ancestry.","status":"AUTHORITATIVE","authority_evidence":[],"counterevidence":[],"notes":"General fake-confluence rule only."},
+    {"claim_id":"BG001-A01-C021","subject":"fake_confluence","topic":"specific_pairs","precise_claim":"Specific detector-pair warnings are unresolved.","status":"UNRESOLVED","authority_evidence":[],"counterevidence":[],"notes":"No specific pair is authoritative."},
+    {"claim_id":"BG001-A01-C022","subject":"time","topic":"known_time_lineage","precise_claim":"Known-time lineage is unresolved for all eight outputs.","status":"UNRESOLVED","authority_evidence":[],"counterevidence":[],"notes":"No direct approved-source establishment was retained."},
+    {"claim_id":"BG001-A01-C023","subject":"authority","topic":"evidence_boundary","precise_claim":"Only evidence retained in revision-002 and its approved source set is used.","status":"AUTHORITATIVE","authority_evidence":[],"counterevidence":[],"notes":"No new authority source or raw-lake evidence used."},
+    {"claim_id":"BG001-A01-C024","subject":"authority","topic":"payload_category","precise_claim":"No physical payload column uses the raw_inputs topic.","status":"AUTHORITATIVE","authority_evidence":[],"counterevidence":[],"notes":"Physical surfaces use physical_output_surface."},
+    {"claim_id":"BG001-A01-C025","subject":"lineage","topic":"producer_status","precise_claim":"Producer raw inputs and upstream detector inputs remain unresolved.","status":"UNRESOLVED","authority_evidence":[],"counterevidence":[],"notes":"No producer claim is accepted."},
+    {"claim_id":"BG001-A01-C026","subject":"lineage","topic":"derivation_status","precise_claim":"Derivation relationships and identity linkage remain unresolved.","status":"UNRESOLVED","authority_evidence":[],"counterevidence":[],"notes":"No lineage claim is accepted."},
+    {"claim_id":"BG001-A01-C027","subject":"E3","topic":"gate","precise_claim":"E3 is blocked pending exact authority for producer inputs, upstream inputs, derivation, identity linkage, and known-time lineage.","status":"AUTHORITATIVE","authority_evidence":[],"counterevidence":[],"notes":"Physical output surfaces alone do not unblock E3."}
+  ],
+  "unresolved_questions": ["Exact producer raw inputs", "Upstream detector inputs", "Derivation relationships", "Identity linkage", "Known-time lineage", "Exact authority needed to unblock E3"],
+  "sources_consulted": [
+    {"source_id":"repo.registry","relative_path":"registry/detectors_v1.json","locator":"requested entries"},
+    {"source_id":"repo.inventory","relative_path":"instruments/XAUUSD/source_inventory.json","locator":"sources[*].physical_schema[name=payload_*]"},
+    {"source_id":"repo.protocol","relative_path":"protocol/RESEARCH_RULES.md","locator":"§1-2, §4, §8-12"},
+    {"source_id":"xauusd.schemas","relative_path":"schemas/feature_generic_v1.json","locator":"columns"}
+  ],
+  "graph": {
+    "nodes": [{"node_id":"detector:raw3"},{"node_id":"detector:range"},{"node_id":"detector:fvg"},{"node_id":"detector:bos_choch"},{"node_id":"detector:local_structure"},{"node_id":"detector:order_blocks"},{"node_id":"detector:micro_liquidity"},{"node_id":"detector:micro_liquidity_context"}],
+    "edges": [],
+    "relationship_questions": ["All requested detector relationships remain UNRESOLVED_RELATIONSHIP."],
+    "fake_confluence_warnings": []
+  },
+  "conclusion": {
+    "physical_outputs": "ESTABLISHED",
+    "producer_inputs": "UNRESOLVED",
+    "lineage": "UNRESOLVED",
+    "known_time_lineage": "UNRESOLVED",
+    "accepted_edges": 0,
+    "specific_authoritative_fake_confluence_pairs": 0,
+    "E3": "BLOCKED",
+    "exact_authority_needed_next": "Direct approved-source evidence for producer raw inputs, upstream detector inputs, derivation relationships, identity linkage, and known-time lineage."
+  }
+}
