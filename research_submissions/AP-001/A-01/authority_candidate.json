@@ -1,0 +1,445 @@
+{
+  "artifact_type": "AUTHORITY_CANDIDATE",
+  "program_id": "AP-001",
+  "role_id": "A-01",
+  "subjects": ["drift_burst"],
+  "claims": [
+    {
+      "claim_id": "AP001-A01-C001",
+      "subject": "drift_burst",
+      "topic": "record_surfaces",
+      "claim": "The mounted authority bundle (schema trinity.authority.v2, subject drift_burst, instrument XAUUSD) selects contract schema_version trinity.research.tick-payload-contract.v1 with contract_source native_detector_serialization_contract and declares exactly two drift_burst record surfaces: drift_burst_completed and drift_burst_state. This is the complete declared set within this bundle; it does not establish that no other surfaces exist outside it.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/contract_schema_version", "evidence_type": "declared_json_pointer", "supports": "records trinity.research.tick-payload-contract.v1 as the selected contract schema version"},
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/contract_source", "evidence_type": "declared_json_pointer", "supports": "records native_detector_serialization_contract as the selected contract source"},
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst", "evidence_type": "declared_record_surface_map", "supports": "declares exactly two record-surface keys: drift_burst_completed and drift_burst_state"},
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/status/0", "evidence_type": "declared_status_array", "supports": "records DECLARED_SERIALIZATION_CONTRACT_AVAILABLE for the bundle"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A revised payload manifest or a producer-authority bundle could redeclare the contract version or declare additional record surfaces; the exactly-two reading is scoped to this bundle's selected contract.",
+      "dependency_implications": "Downstream work may treat these two surface names as the complete declared set within this bundle only; no lifecycle, availability, or identity semantics may be derived from this claim.",
+      "notes": "Record-surface names are recorded verbatim as declared strings; no semantics were inferred from the names."
+    },
+    {
+      "claim_id": "AP001-A01-C002",
+      "subject": "drift_burst",
+      "topic": "field_paths_completed",
+      "claim": "drift_burst_completed declares exactly 51 field paths: event_id, internal_sign, origin_idx, origin_ts, origin_price, origin_vr, origin_cabs, weak_idx, weak_ts, weak_price, weak_direction, online_idx, online_ts, online_price, online_direction, strong_idx, strong_ts, strong_price, strong_direction, peak_idx, peak_ts, peak_price, peak_points, peak_score, decay_risk_idx, decay_risk_ts, decay_risk_price, decay_risk_entries, first_dying_idx, first_dying_ts, first_dying_price, last_dying_idx, last_dying_ts, last_dying_price, dying_entries, decay_recoveries, dying_recoveries, end_reason, end_idx, end_ts, end_price, burst_points, burst_duration_to_peak_s, available_after_weak_points, available_after_online_points, available_after_strong_points, available_after_decay_risk_points, available_after_first_dying_points, weak_remaining_pct, online_remaining_pct, strong_remaining_pct.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_completed/field_paths", "evidence_type": "declared_field_path_list", "supports": "enumerates the declared field paths; 51 entries counted and verified"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A contract revision could add, remove, or reorder declared field paths; the count and contents are fixed to this bundle.",
+      "dependency_implications": "The enumerated paths may be relied on as declared serialization structure only; the presence of a path does not establish the existence or meaning of the named quantity.",
+      "notes": "Field-path names are recorded verbatim; no semantics were inferred from names."
+    },
+    {
+      "claim_id": "AP001-A01-C003",
+      "subject": "drift_burst",
+      "topic": "field_paths_state",
+      "claim": "drift_burst_state declares exactly 146 field paths: top-level state and event_id; authority.weak_online_scale_s and authority.strong_scale_s; 17 fields each under authority.score_30s, authority.score_60s, and operational (idx, ts_ms, mid, start_idx, direction, duration_s, net_log, efficiency, z, score, update_count, var_rate, cabs, start_cabs, start_ts, start_mid, start_var_rate); 4 fields each under milestones.weak and milestones.online (index, ts_ms, mid, direction); 8 fields each under multiscale.5s, multiscale.15s, multiscale.30s, multiscale.60s (z, score, efficiency, direction, duration_s, start_idx, update_count, var_rate); and 51 element fields under emitted_events[.].",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_state/field_paths", "evidence_type": "declared_field_path_list", "supports": "enumerates the declared field paths; 146 entries counted and verified"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A contract revision could add, remove, or reorder declared field paths; the count and contents are fixed to this bundle.",
+      "dependency_implications": "The enumerated paths may be relied on as declared serialization structure only; the presence of a path does not establish the existence or meaning of the named quantity.",
+      "notes": "Field-path names are recorded verbatim; no semantics were inferred from names."
+    },
+    {
+      "claim_id": "AP001-A01-C004",
+      "subject": "drift_burst",
+      "topic": "nested_structure",
+      "claim": "The declared drift_burst_state field paths use dotted nesting (authority.*, operational.*, milestones.*, multiscale.*) and array-element notation (emitted_events[.].*); the declared drift_burst_completed field paths are flat, with no dotted or bracketed segments.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_state/field_paths", "evidence_type": "declared_field_path_list", "supports": "contains dotted path nesting and array-element notation"},
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_completed/field_paths", "evidence_type": "declared_field_path_list", "supports": "contains no dotted or bracketed path segments"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A contract revision could restructure either surface's declared paths.",
+      "dependency_implications": "Downstream readers may rely on the declared nesting shape of each surface as serialization structure only.",
+      "notes": "Declared structure only; the nesting shape carries no lifecycle meaning."
+    },
+    {
+      "claim_id": "AP001-A01-C005",
+      "subject": "drift_burst",
+      "topic": "structural_equivalence",
+      "claim": "The declared element field-path list of drift_burst_state's emitted_events[] (51 paths) is identical, element for element and in order, to the declared field-path list of drift_burst_completed. This is a structural equality of declared path lists only.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_state/field_paths", "evidence_type": "declared_field_path_list", "supports": "emitted_events[] subset enumerates 51 element paths"},
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_completed/field_paths", "evidence_type": "declared_field_path_list", "supports": "enumerates 51 paths; element-for-element order and content equality with the emitted_events[] subset verified against the declared lists"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A contract revision changing either declared list would dissolve the equality.",
+      "dependency_implications": "Downstream may rely on the structural equality of the two declared lists; it does not establish when emitted events appear, how many appear, or any lifecycle relationship (see AP001-A01-C017 and AP001-A01-C028).",
+      "notes": "The equality was verified mechanically against the declared lists; it is not a producer assertion about record production."
+    },
+    {
+      "claim_id": "AP001-A01-C006",
+      "subject": "drift_burst",
+      "topic": "physical_storage",
+      "claim": "The XAUUSD source inventory declares one tick-scale source of six schema-verified parts with declared row counts totaling 68,445,659 rows. Its physical schema comprises event_ts_ns (Int64), received_ts_ns (Int64), source_sequence (Int64), bid (Float64), ask (Float64), and seven nullable LargeUtf8 payload columns, one of which is payload_drift_burst. The declared physical time coordinate fields are event_ts_ns and received_ts_ns.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "A revised source inventory could change the declared schema, part set, or row counts; additionally, the declaring surface must become citable under an authorized source ID before this claim could be restored to a supported status.",
+      "dependency_implications": "Until the underlying declaration is citable under an authorized source ID, downstream may not rely on this claim; the descriptive content is retained verbatim without support.",
+      "notes": "Provenance-only reclassification: this claim's basis was cited from a repository surface (the XAUUSD source inventory) that cannot be represented by an authorized source ID for this publication. Per the provenance policy the status was set to UNRESOLVED rather than relabeling the evidence. The claim text is unchanged; resolution requires the declaring surface to be citable under an authorized source ID."
+    },
+    {
+      "claim_id": "AP001-A01-C007",
+      "subject": "drift_burst",
+      "topic": "domain_surface_consistency",
+      "claim": "The registry declares drift_burst with domain tick and known_surfaces [tick]. Consistently, the XAUUSD bar-scale sources (15s, 30s, 1m, 5m, 15m, 1h, 4h) declare no drift_burst payload column, while the tick source declares payload_drift_burst. No drift_burst payload column exists on any bar-scale surface in the inventory.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "A registry or inventory revision could introduce drift_burst payloads on other surfaces; additionally, both declaring surfaces must become citable under an authorized source ID before this claim could be restored to a supported status.",
+      "dependency_implications": "Until the underlying declarations are citable under an authorized source ID, downstream may not rely on this claim; the descriptive content is retained verbatim without support.",
+      "notes": "Provenance-only reclassification: this claim's basis was cited from two repository surfaces (the detector registry and the XAUUSD source inventory) that cannot be represented by an authorized source ID for this publication. Per the provenance policy the status was set to UNRESOLVED rather than relabeling the evidence. The claim text is unchanged; resolution requires those surfaces to be citable under an authorized source ID."
+    },
+    {
+      "claim_id": "AP001-A01-C008",
+      "subject": "drift_burst",
+      "topic": "registry_semantic_status",
+      "claim": "The registry record for drift_burst declares semantic_status UNRESOLVED and availability_semantics 'UNRESOLVED; authoritative manifest surface only.' The registry record itself carries no resolved semantics for this detector.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "A registry revision could redeclare the semantic status; additionally, the declaring surface must become citable under an authorized source ID before this claim could be restored to a supported status.",
+      "dependency_implications": "Until the underlying declaration is citable under an authorized source ID, downstream may not rely on this claim; the descriptive content is retained verbatim without support.",
+      "notes": "Provenance-only reclassification: this claim's basis was cited from a repository surface (the detector registry) that cannot be represented by an authorized source ID for this publication. Per the provenance policy the status was set to UNRESOLVED rather than relabeling the evidence. The claim text is unchanged; resolution requires the declaring surface to be citable under an authorized source ID."
+    },
+    {
+      "claim_id": "AP001-A01-C009",
+      "subject": "drift_burst",
+      "topic": "registry_declared_absences",
+      "claim": "The registry record for drift_burst declares lifecycle_vocabulary as an empty array, derives_from as an empty array, and roles as an empty array. No lifecycle vocabulary, no derivation, and no role assignment is declared for this detector at registry level. This declared absence constrains what can be derived from the registry; it does not establish that no lifecycle or derivation exists.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "A registry revision could declare a non-empty lifecycle_vocabulary, derivations, or roles; additionally, the declaring surface must become citable under an authorized source ID before this claim could be restored to a supported status.",
+      "dependency_implications": "Until the underlying declaration is citable under an authorized source ID, downstream may not rely on this claim; no lifecycle, derivation, or role may be asserted for drift_burst in any case, since a declared absence is not evidence that none exists.",
+      "notes": "Provenance-only reclassification: this claim's basis was cited from a repository surface (the detector registry) that cannot be represented by an authorized source ID for this publication. Per the provenance policy the status was set to UNRESOLVED rather than relabeling the evidence. The claim text is unchanged; resolution requires the declaring surface to be citable under an authorized source ID."
+    },
+    {
+      "claim_id": "AP001-A01-C010",
+      "subject": "drift_burst",
+      "topic": "provenance_linkage",
+      "claim": "The authority bundle's provenance cites payload_manifest.json (source_sha256 78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed) at three JSON pointers: /declared_tick_payload_contract/schema_version, /declared_tick_payload_contract/source, and /declared_tick_payload_contract/detectors/drift_burst. The instrument source inventory independently records payload_manifest_identity with the same digest. The two mounted surfaces agree on the identity of the payload manifest.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/provenance", "evidence_type": "declared_digest", "supports": "cites payload_manifest.json at source_sha256 78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed with three pointers into /declared_tick_payload_contract/"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A re-issued payload manifest or inventory could change the recorded digest; additionally, the inventory-side surface must become citable under an authorized source ID before the cross-surface agreement could be treated as supported.",
+      "dependency_implications": "Until the cross-surface half is citable under an authorized source ID, downstream may rely only on the authority bundle's own provenance citation, not on the asserted agreement between the two surfaces.",
+      "notes": "Provenance-only partial reclassification: the authority-bundle half of this claim remains cited; the second half (the source inventory's recorded payload_manifest_identity) was cited from a repository surface that cannot be represented by an authorized source ID for this publication, so that citation was dropped rather than relabeled and the status was set to UNRESOLVED. The claim text is unchanged; resolution requires the inventory surface to be citable under an authorized source ID."
+    },
+    {
+      "claim_id": "AP001-A01-C011",
+      "subject": "drift_burst",
+      "topic": "bundle_status",
+      "claim": "The authority bundle itself declares status values DECLARED_SERIALIZATION_CONTRACT_AVAILABLE and LIFECYCLE_SEMANTICS_STILL_REQUIRE_PRODUCER_AUTHORITY, with an empty unresolved array. Per the bundle's own declaration, serialization structure is available but lifecycle semantics still require producer authority.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/status", "evidence_type": "declared_status_array", "supports": "records [DECLARED_SERIALIZATION_CONTRACT_AVAILABLE, LIFECYCLE_SEMANTICS_STILL_REQUIRE_PRODUCER_AUTHORITY]"},
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/unresolved", "evidence_type": "declared_json_pointer", "supports": "records an empty unresolved array"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A producer-authority bundle could supersede these status declarations.",
+      "dependency_implications": "Downstream must treat serialization structure as available and lifecycle semantics as requiring producer authority, per the bundle's own statuses.",
+      "notes": "The status strings are quoted from the bundle; they are declarations about the bundle, not behavioral evidence."
+    },
+    {
+      "claim_id": "AP001-A01-C012",
+      "subject": "drift_burst",
+      "topic": "instrument_mount_mapping",
+      "claim": "The XAUUSD instrument configuration declares the analytical lake root via environment variable TRINITYR_ANALYTICAL_LAKE at relative path fusion_markets/xauusd, with manifest.json and payload_manifest.json as declared manifests. This is the declared mapping only; those manifest files were not read under this assignment (raw lake access DENY).",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "A revised instrument configuration could remap the lake root or manifests; additionally, the declaring surface must become citable under an authorized source ID before this claim could be restored to a supported status.",
+      "dependency_implications": "Until the underlying declaration is citable under an authorized source ID, downstream may not rely on this claim; the descriptive content is retained verbatim without support.",
+      "notes": "Provenance-only reclassification: this claim's basis was cited from a repository surface (the XAUUSD instrument configuration) that cannot be represented by an authorized source ID for this publication. Per the provenance policy the status was set to UNRESOLVED rather than relabeling the evidence. The claim text is unchanged; resolution requires the declaring surface to be citable under an authorized source ID."
+    },
+    {
+      "claim_id": "AP001-A01-C013",
+      "subject": "drift_burst",
+      "topic": "normative_causal_clock",
+      "claim": "Protocol research rule 2 is in force: one causal information clock; at anchor time t only information actually available by t is eligible, and occurrence/origin timestamps remain provenance.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "protocol.research_rules", "relative_path": "repository/protocol/RESEARCH_RULES.md", "locator": "rule 2", "evidence_type": "declared_rule_text", "supports": "records the causal information clock constraint verbatim"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A protocol revision could restate or supersede the rule; the recorded text governs this run.",
+      "dependency_implications": "All anchoring and cohort construction downstream must respect the causal clock; occurrence/origin-style timestamps in records are provenance, not availability evidence.",
+      "notes": "Normative constraint from the mounted protocol; its application to drift_burst availability timing remains unresolved (see AP001-A01-C021 and AP001-A01-C026)."
+    },
+    {
+      "claim_id": "AP001-A01-C014",
+      "subject": "drift_burst",
+      "topic": "normative_lifecycle_first",
+      "claim": "Protocol research rule 4 is in force: lifecycle-first; future completion/termination cannot define an earlier-state cohort; completed may be a later outcome or later anchor.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "protocol.research_rules", "relative_path": "repository/protocol/RESEARCH_RULES.md", "locator": "rule 4", "evidence_type": "declared_rule_text", "supports": "records the lifecycle-first constraint verbatim"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A protocol revision could restate or supersede the rule; the recorded text governs this run.",
+      "dependency_implications": "Completed-shape drift_burst records may not be used to define earlier-state cohorts downstream; whether they may serve as later anchors is part of the unresolved availability topic (AP001-A01-C021, AP001-A01-C026).",
+      "notes": "Normative constraint from the mounted protocol."
+    },
+    {
+      "claim_id": "AP001-A01-C015",
+      "subject": "drift_burst",
+      "topic": "normative_native_scale",
+      "claim": "Protocol research rule 3 is in force: native scale preservation; a shared causal clock does not make objects at different scales statistically identical, and native scale remains attached.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {"source_id": "protocol.research_rules", "relative_path": "repository/protocol/RESEARCH_RULES.md", "locator": "rule 3", "evidence_type": "declared_rule_text", "supports": "records the native scale preservation constraint verbatim"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "A protocol revision could restate or supersede the rule; the recorded text governs this run.",
+      "dependency_implications": "Downstream comparisons involving the declared multiscale groups or score groupings must attach native scale; no cross-scale statistical identity may be assumed.",
+      "notes": "Normative constraint from the mounted protocol; the meaning of the declared scale labels remains unresolved (AP001-A01-C016, AP001-A01-C029)."
+    },
+    {
+      "claim_id": "AP001-A01-C016",
+      "subject": "drift_burst",
+      "topic": "multiscale_label_overlap",
+      "claim": "The declared multiscale labels (5s, 15s, 30s, 60s) partially overlap the registry's bar-scale vocabulary: 15s and 30s appear verbatim in the BarScale enum; 5s and 60s do not (the enum uses 1m rather than 60s). This textual label overlap is consistent with, but does not establish, any relationship between drift_burst multiscale groupings and registered bar scales. Recorded as a non-confirmatory observation only.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_state/field_paths", "evidence_type": "declared_field_path_list", "supports": "declares multiscale.5s, multiscale.15s, multiscale.30s, and multiscale.60s groups"}
+      ],
+      "counterevidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_state/field_paths", "evidence_type": "declared_field_path_list", "supports": "declares the labels as field-path text only; no mounted surface declares any relationship between multiscale labels and registered bar scales, so the overlap cannot be promoted"}
+      ],
+      "future_information_risk": "A producer-authority declaration of multiscale semantics could confirm or refute any relationship; additionally, the contract-schema surface (BarScale vocabulary) must become citable under an authorized source ID before the overlap half of the claim could be treated as supported.",
+      "dependency_implications": "Must not be used to align multiscale groupings with bar scales in downstream normalization, comparison, or anchoring work; until the enum half is citable, even the overlap observation is unsupported.",
+      "notes": "Provenance-only partial reclassification: the authority-bundle half of this claim (the declared multiscale labels) remains cited; the bar-scale vocabulary half was cited from a repository surface (the contract schema) that cannot be represented by an authorized source ID for this publication, so that citation was dropped rather than relabeled and the status was set from PROVISIONAL to UNRESOLVED. The claim text is unchanged; resolution requires the contract-schema surface to be citable under an authorized source ID or a producer-authority restatement of any label relationship."
+    },
+    {
+      "claim_id": "AP001-A01-C017",
+      "subject": "drift_burst",
+      "topic": "emitted_events_interpretation",
+      "claim": "The structural equivalence of emitted_events[] elements to the drift_burst_completed field set (AP001-A01-C005) is consistent with a reading in which drift_burst_state records embed completed-event records under emitted_events[]. This reading is a consistency observation from declared structure only; it does not establish when such records appear, how many appear, whether the array accumulates, or any lifecycle meaning.",
+      "status": "PROVISIONAL",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_state/field_paths", "evidence_type": "declared_field_path_list", "supports": "declares emitted_events[] element paths equal to the drift_burst_completed paths (basis: AP001-A01-C005)"}
+      ],
+      "counterevidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/status/1", "evidence_type": "declared_status_array", "supports": "bundle declares LIFECYCLE_SEMANTICS_STILL_REQUIRE_PRODUCER_AUTHORITY, so the embedding reading cannot be promoted on structural consistency alone"}
+      ],
+      "future_information_risk": "A producer-authority declaration of the record-production relationship could confirm or refute the embedding reading (see AP001-A01-C028).",
+      "dependency_implications": "Must not be used to assert state-record accumulation, event emission timing, or per-event versus per-episode production downstream.",
+      "notes": "Recorded as a non-confirmatory structural reading; deliberately kept below AUTHORITATIVE."
+    },
+    {
+      "claim_id": "AP001-A01-C018",
+      "subject": "drift_burst",
+      "topic": "lifecycle_meaning",
+      "claim": "No mounted surface establishes the lifecycle meaning of drift_burst records. The registry declares semantic_status UNRESOLVED with an empty lifecycle_vocabulary, and the bundle itself declares LIFECYCLE_SEMANTICS_STILL_REQUIRE_PRODUCER_AUTHORITY. Producer authority is required before any lifecycle meaning is treated as established.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/status/1", "evidence_type": "declared_status_array", "supports": "declares LIFECYCLE_SEMANTICS_STILL_REQUIRE_PRODUCER_AUTHORITY"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Producer-authority evidence could resolve this topic; until mounted, the status must remain UNRESOLVED under fail-closed confirmation.",
+      "dependency_implications": "Downstream work may not attribute lifecycle meaning to any drift_burst record on the basis of mounted surfaces.",
+      "notes": "Provenance-only correction applied: the two registry-declaration citations supporting the first half of this claim were dropped rather than relabeled, because the detector registry surface cannot be represented by an authorized source ID for this publication; the bundle's own status declaration remains cited. Status was and remains UNRESOLVED. Resolution requires a producer-authority declaration of the drift_burst record lifecycle mounted as an authorized source for this program."
+    },
+    {
+      "claim_id": "AP001-A01-C019",
+      "subject": "drift_burst",
+      "topic": "state_transitions",
+      "claim": "A top-level state field path is declared on the drift_burst_state record, but no mounted surface declares the set of permissible state values, an initial state, or transition rules. Whether the declared milestones.weak and milestones.online groupings, or the authority/operational/multiscale groupings, correspond to state transitions is unknown.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_state/field_paths", "evidence_type": "declared_field_path_list", "supports": "declares the state path; no state value vocabulary is declared on any mounted surface"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Producer-authority evidence could resolve this topic; until mounted, the status must remain UNRESOLVED.",
+      "dependency_implications": "Downstream may not assert states, initial states, or transitions for drift_burst from mounted surfaces.",
+      "notes": "Provenance-only correction applied: the registry-declaration citation supporting part of this claim's basis was dropped rather than relabeled, because the detector registry surface cannot be represented by an authorized source ID for this publication; the authority-bundle citation remains. Status was and remains UNRESOLVED. Resolution requires a producer-authority declaration of the state value vocabulary and transition semantics."
+    },
+    {
+      "claim_id": "AP001-A01-C020",
+      "subject": "drift_burst",
+      "topic": "episode_identity_persistence",
+      "claim": "Both declared record surfaces include an event_id field path, and each declared emitted_events[] element includes event_id, but no mounted surface declares the identity format, the uniqueness scope, or whether an event_id persists across state records, emitted_events[] elements, and completed records as the same episode. Episode identity semantics, including persistence, are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_completed/field_paths", "evidence_type": "declared_field_path_list", "supports": "declares event_id on the completed surface"},
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_state/field_paths", "evidence_type": "declared_field_path_list", "supports": "declares event_id at top level and within each emitted_events[] element; no identity construction, uniqueness, or persistence rule is declared on any mounted surface"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Producer-authority evidence could resolve this topic; until mounted, the status must remain UNRESOLVED.",
+      "dependency_implications": "Downstream may not join, deduplicate, or cohort drift_burst records by event_id as episode identity without producer authority on persistence and uniqueness.",
+      "notes": "Resolution requires a producer-authority declaration of event_id construction, uniqueness scope, and cross-surface persistence."
+    },
+    {
+      "claim_id": "AP001-A01-C021",
+      "subject": "drift_burst",
+      "topic": "availability_timing",
+      "claim": "Five available_after_*_points field paths (weak, online, strong, decay_risk, first_dying) are declared on completed-shape records and are not declared among the state record's non-emitted field paths; the registry declares availability_semantics 'UNRESOLVED; authoritative manifest surface only.' No mounted surface establishes when a drift_burst_state or drift_burst_completed record becomes eligible information at an anchor time. Under protocol rule 2, occurrence and origin timestamps carried in a record remain provenance and are not evidence of availability.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_completed/field_paths", "evidence_type": "declared_field_path_list", "supports": "declares the five available_after_*_points paths"},
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_state/field_paths", "evidence_type": "declared_field_path_list", "supports": "declares no top-level available_after_* path outside emitted_events[]"},
+        {"source_id": "protocol.research_rules", "relative_path": "repository/protocol/RESEARCH_RULES.md", "locator": "rule 2", "evidence_type": "declared_rule_text", "supports": "records the availability-eligibility constraint; occurrence/origin timestamps remain provenance"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Producer-authority evidence could resolve this topic; until mounted, the status must remain UNRESOLVED.",
+      "dependency_implications": "Downstream anchoring may not treat any drift_burst record as eligible at an anchor time on the basis of mounted surfaces; the availability_after path names carry no established timing semantics.",
+      "notes": "Provenance-only correction applied: the registry availability-semantics citation was dropped rather than relabeled, because the detector registry surface cannot be represented by an authorized source ID for this publication; the authority-bundle and protocol citations remain. Status was and remains UNRESOLVED. Resolution requires a producer-authority declaration of emission/availability timing per record surface."
+    },
+    {
+      "claim_id": "AP001-A01-C022",
+      "subject": "drift_burst",
+      "topic": "direction_semantics",
+      "claim": "Direction-bearing and sign-bearing field paths are declared (weak_direction, online_direction, strong_direction, internal_sign, milestones.weak.direction, milestones.online.direction, operational.direction, and a direction field in each multiscale group), but no mounted surface declares the value domain, sign convention, or meaning of any direction or sign field.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst", "evidence_type": "declared_field_path_list", "supports": "declares direction and sign paths; no value domain or convention is declared on any mounted surface"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Producer-authority evidence could resolve this topic; until mounted, the status must remain UNRESOLVED.",
+      "dependency_implications": "Downstream may not interpret, encode, or compare any drift_burst direction or sign value without producer authority.",
+      "notes": "Resolution requires a producer-authority declaration of direction and sign value domains and conventions."
+    },
+    {
+      "claim_id": "AP001-A01-C023",
+      "subject": "drift_burst",
+      "topic": "score_semantics",
+      "claim": "Score-bearing and magnitude field paths are declared (peak_score; score, z, efficiency, net_log, var_rate, cabs, update_count within authority.score_30s, authority.score_60s, operational, and each multiscale group), but no mounted surface declares any scoring formula, units, ranges, thresholds, or update rule. Score semantics are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_state/field_paths", "evidence_type": "declared_field_path_list", "supports": "declares score and companion paths; no formula, units, or thresholds are declared on any mounted surface"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Producer-authority evidence could resolve this topic; until mounted, the status must remain UNRESOLVED.",
+      "dependency_implications": "Downstream may not threshold, rank, or compare any drift_burst score or magnitude without producer authority on score construction.",
+      "notes": "Resolution requires a producer-authority declaration of score construction, units, and thresholds."
+    },
+    {
+      "claim_id": "AP001-A01-C024",
+      "subject": "drift_burst",
+      "topic": "recovery_semantics",
+      "claim": "Recovery-related and entry-related field paths are declared (decay_recoveries, dying_recoveries, decay_risk_entries, dying_entries), but no mounted surface declares what these count, over what window, or their relationship to the decay/dying designations named in adjacent field paths. Recovery semantics are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_completed/field_paths", "evidence_type": "declared_field_path_list", "supports": "declares recovery and entry paths; no counting rule is declared on any mounted surface"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Producer-authority evidence could resolve this topic; until mounted, the status must remain UNRESOLVED.",
+      "dependency_implications": "Downstream may not interpret recovery or entry counts as lifecycle evidence without producer authority.",
+      "notes": "Resolution requires a producer-authority declaration of recovery and entry counting semantics."
+    },
+    {
+      "claim_id": "AP001-A01-C025",
+      "subject": "drift_burst",
+      "topic": "completion_semantics",
+      "claim": "Completed-shape records declare end_reason, end_idx, end_ts, end_price, burst_points, and burst_duration_to_peak_s, but no mounted surface declares the end_reason value vocabulary, whether every episode produces a completed record, or the completion criterion. Completion semantics are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_completed/field_paths", "evidence_type": "declared_field_path_list", "supports": "declares end_reason and completion paths; no end_reason vocabulary or completion criterion is declared on any mounted surface"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Producer-authority evidence could resolve this topic; until mounted, the status must remain UNRESOLVED.",
+      "dependency_implications": "Downstream may not enumerate or interpret end_reason values, or assume universal completion, without producer authority.",
+      "notes": "Resolution requires a producer-authority declaration of the end_reason vocabulary and completion criteria."
+    },
+    {
+      "claim_id": "AP001-A01-C026",
+      "subject": "drift_burst",
+      "topic": "future_field_legality",
+      "claim": "Whether completed-shape records, which declare fields whose reference points are not established as contemporaneous, are legal evidence at anchors earlier than their completion is not established by any mounted surface. Protocol rules 2 and 4 forbid defining earlier-state cohorts by future completion and confine occurrence/origin timestamps to provenance; the registry declares availability semantics unresolved. The empirical availability timing of these records at earlier anchors therefore remains unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "protocol.research_rules", "relative_path": "repository/protocol/RESEARCH_RULES.md", "locator": "rule 2", "evidence_type": "declared_rule_text", "supports": "records the causal-clock constraint"},
+        {"source_id": "protocol.research_rules", "relative_path": "repository/protocol/RESEARCH_RULES.md", "locator": "rule 4", "evidence_type": "declared_rule_text", "supports": "records the lifecycle-first constraint"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Producer-authority evidence could resolve this topic; until mounted, the status must remain UNRESOLVED.",
+      "dependency_implications": "Downstream may not use completed-shape drift_burst records at pre-completion anchors, and may not define earlier-state cohorts by future completion (protocol rule 4).",
+      "notes": "Provenance-only correction applied: the registry availability-semantics citation was dropped rather than relabeled, because the detector registry surface cannot be represented by an authorized source ID for this publication; the two protocol citations remain. Status was and remains UNRESOLVED. Resolution requires a producer-authority availability declaration plus explicit anchoring rules for completed-shape records."
+    },
+    {
+      "claim_id": "AP001-A01-C027",
+      "subject": "drift_burst",
+      "topic": "payload_conformity",
+      "claim": "The mounted surfaces declare the serialization contract (AP001-A01-C001) and the physical nullable UTF-8 payload column (AP001-A01-C006), but the contents of payload_drift_burst in the tick parts were not inspectable under this assignment (raw lake access DENY). Conformity of stored payload strings to the declared contract is unverified here.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "assignment.ap-001_a-01", "relative_path": "repository/agent_harness/assignments/AP-001/A-01.json", "locator": "/raw_lake_access", "evidence_type": "declared_access_profile", "supports": "records raw lake access as DENY for this assignment"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Authorized payload samples or a conformity attestation could resolve this topic; until mounted, the status must remain UNRESOLVED.",
+      "dependency_implications": "Downstream may not assume that stored payload strings conform to the declared contract on the basis of mounted surfaces alone.",
+      "notes": "Provenance-only correction applied: the physical-schema citation was dropped rather than relabeled, because the source-inventory surface cannot be represented by an authorized source ID for this publication; the assignment access-profile citation remains. Status was and remains UNRESOLVED. Resolution requires authorized payload samples or a conformity attestation mounted as authority evidence."
+    },
+    {
+      "claim_id": "AP001-A01-C028",
+      "subject": "drift_burst",
+      "topic": "surface_relationship",
+      "claim": "The relationship between drift_burst_state and drift_burst_completed records is not established: whether state records are per-tick snapshots, whether completed records are produced per event or per episode, whether emitted_events[] accumulates over time, and whether the two surfaces are two views of one lifecycle or independent products are all unknown. The declared structure (AP001-A01-C004, AP001-A01-C005) constrains possible readings but does not select among them.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst", "evidence_type": "declared_record_surface_map", "supports": "declares both surfaces with overlapping field sets; no relationship rule is declared on any mounted surface"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Producer-authority evidence could resolve this topic; until mounted, the status must remain UNRESOLVED.",
+      "dependency_implications": "Downstream may not assume per-tick state snapshots, per-event or per-episode completion, or array accumulation without producer authority.",
+      "notes": "Resolution requires a producer-authority declaration of the record-production relationship between the two surfaces."
+    },
+    {
+      "claim_id": "AP001-A01-C029",
+      "subject": "drift_burst",
+      "topic": "scale_parameter_semantics",
+      "claim": "The field paths authority.weak_online_scale_s and authority.strong_scale_s are declared on the drift_burst_state record, but their units, values, and effect are not declared on any mounted surface. The milestone groupings milestones.weak and milestones.online are structurally declared (index, ts_ms, mid, direction each); their lifecycle meaning is unresolved (see AP001-A01-C019).",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "locator": "/selected/drift_burst/drift_burst_state/field_paths", "evidence_type": "declared_field_path_list", "supports": "declares authority.weak_online_scale_s, authority.strong_scale_s, milestones.weak.*, and milestones.online.*; no semantics for them are declared on any mounted surface"}
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Producer-authority evidence could resolve this topic; until mounted, the status must remain UNRESOLVED.",
+      "dependency_implications": "Downstream may not assign units, values, or effects to the declared scale parameters, or lifecycle meaning to the milestone groupings, without producer authority.",
+      "notes": "Resolution requires a producer-authority declaration of scale parameter meaning and milestone semantics."
+    }
+  ],
+  "unresolved_questions": [
+    "AP001-A01-C018 — What is the lifecycle meaning of drift_burst records? Resolution requires a producer-authority lifecycle declaration mounted as an authorized source for this program.",
+    "AP001-A01-C019 — What state values exist for the declared state field, and what transitions apply? Resolution requires a producer-authority declaration of the state vocabulary and transition rules.",
+    "AP001-A01-C020 — Does an event_id persist as the same episode across state records, emitted_events[] elements, and completed records, and what are its format and uniqueness scope? Resolution requires a producer-authority identity declaration.",
+    "AP001-A01-C021 — When does a drift_burst_state or drift_burst_completed record become eligible information at an anchor time? Resolution requires a producer-authority availability declaration per record surface.",
+    "AP001-A01-C022 — What value domain, sign convention, and meaning do the declared direction and sign fields carry? Resolution requires a producer-authority direction declaration.",
+    "AP001-A01-C023 — How are the declared score and companion magnitudes constructed, in what units and ranges, and with what thresholds or update rules? Resolution requires a producer-authority score declaration.",
+    "AP001-A01-C024 — What do decay_recoveries, dying_recoveries, decay_risk_entries, and dying_entries count, and over what window? Resolution requires a producer-authority recovery declaration.",
+    "AP001-A01-C025 — What end_reason values exist, what is the completion criterion, and does every episode produce a completed record? Resolution requires a producer-authority completion declaration.",
+    "AP001-A01-C026 — Are completed-shape records legal evidence at anchors earlier than completion, and when do they become available? Resolution requires a producer-authority availability declaration plus explicit anchoring rules.",
+    "AP001-A01-C027 — Do stored payload_drift_burst strings conform to the declared contract? Resolution requires authorized payload samples or a mounted conformity attestation.",
+    "AP001-A01-C028 — What production relationship holds between drift_burst_state and drift_burst_completed records? Resolution requires a producer-authority record-relationship declaration.",
+    "AP001-A01-C029 — What units, values, and effects do authority.weak_online_scale_s and authority.strong_scale_s carry, and what do the milestone groupings mean? Resolution requires a producer-authority parameter and milestone declaration.",
+    "AP001-A01-C006 — Can the source-inventory declaration of the tick physical schema be cited under an authorized source ID? Until then this claim remains UNRESOLVED for provenance-only reasons.",
+    "AP001-A01-C007 — Can the registry and source-inventory declarations underlying the domain/surface consistency observation be cited under an authorized source ID? Until then this claim remains UNRESOLVED for provenance-only reasons.",
+    "AP001-A01-C008 — Can the registry semantic-status declaration be cited under an authorized source ID? Until then this claim remains UNRESOLVED for provenance-only reasons.",
+    "AP001-A01-C009 — Can the registry declared-absence record be cited under an authorized source ID? Until then this claim remains UNRESOLVED for provenance-only reasons.",
+    "AP001-A01-C010 — Can the source-inventory digest record backing the cross-surface provenance agreement be cited under an authorized source ID? Until then only the authority-bundle half of the claim is supported and the claim remains UNRESOLVED.",
+    "AP001-A01-C012 — Can the instrument-configuration mapping declaration be cited under an authorized source ID? Until then this claim remains UNRESOLVED for provenance-only reasons.",
+    "AP001-A01-C016 — Can the contract-schema bar-scale vocabulary backing the label-overlap observation be cited under an authorized source ID? Until then this claim remains UNRESOLVED for provenance-only reasons."
+  ],
+  "sources_consulted": [
+    {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/authority.json", "identity": "69701763cd40ffc1981c44e02f54e26ebb3509fee3b745c49406037fa38ade09", "access": "read"},
+    {"source_id": "xauusd.wave1.ap001", "relative_path": "authority/bundle_manifest.json", "identity": "bundle_content_identity 69701763cd40ffc1981c44e02f54e26ebb3509fee3b745c49406037fa38ade09", "access": "read"},
+    {"source_id": "protocol.research_rules", "relative_path": "repository/protocol/RESEARCH_RULES.md", "identity": "protocol surface identity 196fb905a653d5290580dc2a686c32587b49dc2cc07721129873693c8cb091e8", "access": "read"},
+    {"source_id": "assignment.ap-001_a-01", "relative_path": "repository/agent_harness/assignments/AP-001/A-01.json", "identity": "d7c8c0b3d005940b5a0fab7a00bb6c0fc2640ef0b6b833cd6ed32c812ab4b586", "access": "read"}
+  ]
+}
