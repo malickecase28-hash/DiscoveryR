@@ -2,9 +2,13 @@
 
 `XAUUSD.wave1.spec.json` is a positive extraction specification. The host-side
 generator writes outcome-free bundles outside the repository under
-`TRINITYR_AUTHORITY_ROOT` (the default is `F:\TrinityR-authority`).
+`TRINITYR_AUTHORITY_ROOT` (the default is `F:\TrinityR-authority`). The
+approved payload source is supplied through `TRINITYR_PAYLOAD_CONTRACT_SOURCE`
+and only `/declared_tick_payload_contract` is selected.
 
-The approved schema root contains no detector producer contracts for AP-001,
-AP-002, or TC-001, and no detector dependency/lineage contract for BG-001.
-Those claims remain `UNRESOLVED_PENDING_SOURCE_APPROVAL`. BG-001 includes only
-the declared canonical-bar schema fields; it does not infer lineage.
+AP-001 and TC-001 receive declared serialization contracts, but lifecycle and
+producer semantics remain unresolved. AP-002 has no approved FVG contract.
+BG-001 includes only the declared canonical-bar schema fields and does not
+infer lineage. Bundle directories are atomically created and use the shared
+recursive transport digest; `bundle_manifest.json` is excluded to avoid a
+self-referential hash.

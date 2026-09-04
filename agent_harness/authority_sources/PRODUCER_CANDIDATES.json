@@ -1,0 +1,6 @@
+{
+  "schema_version": "trinity.authority-producer-candidates.v1",
+  "instrument": "XAUUSD",
+  "status": "NOT_FOUND_IN_APPROVED_ROOTS",
+  "candidate_files": []
+}
