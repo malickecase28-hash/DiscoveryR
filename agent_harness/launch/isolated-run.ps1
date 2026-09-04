@@ -49,6 +49,11 @@ $workspace = Join-Path $programRoot $Role
 New-Item -ItemType Directory -Force -Path $workspace | Out-Null
 NoReparse $runRootFull; NoReparse $programRoot; NoReparse $workspace
 $mounts = @()
+$runtime = $null
+if ($assignment.agent_runtime) {
+    if ($assignment.agent_runtime -ne 'ZCODE') { throw "Undeclared agent runtime: $($assignment.agent_runtime)" }
+    $runtime = [PSCustomObject]@{ source = '/home/malo/.zcode/server'; target = '/opt/zcode' }
+}
 foreach ($surface in @($assignment.authorized_repository_surfaces)) {
     if ([string]::IsNullOrWhiteSpace($surface) -or $surface.StartsWith('/') -or $surface.StartsWith('\') -or $surface -match '(^|[\\/])\.\.([\\/]|$)' -or $surface -match ':') { throw "Unsafe repository surface: $surface" }
     $source = [IO.Path]::GetFullPath((Join-Path $repoFull ($surface -replace '/','\')))
@@ -70,6 +75,7 @@ foreach ($sourceId in @($assignment.authority_source_ids)) {
     $mounts += [PSCustomObject]@{ source = (WslPath $sourcePath); target = $source[0].mount_target }
 }
 if ($lake) { $mounts += [PSCustomObject]@{ source = (WslPath $lake); target = '/shared/data/XAUUSD_DATA_SCOPE_V1/development' } }
+if ($runtime) { $mounts += $runtime }
 $mountText = ($mounts | ForEach-Object { "$(B64 $_.source)|$(B64 $_.target)" }) -join "`n"
 $launcher = Join-Path $PSScriptRoot 'isolated-run.sh'
 $bootstrap = B64 (Get-Content -Raw -LiteralPath $launcher)
