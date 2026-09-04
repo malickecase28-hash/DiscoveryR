@@ -5,6 +5,7 @@ workspace=$(decode "$1")
 profile=$(decode "$2")
 command=$(decode "$3")
 mount_specs=$(decode "$(decode "$4")")
+runtime_endpoint=$(decode "${5:-}")
 mkdir -p /workspace /shared/research-program
 mount --make-rprivate /
 mount --bind "$workspace" /workspace
@@ -29,4 +30,5 @@ mount -t tmpfs -o size=1m,nosuid,nodev,noexec tmpfs /root
 cd /workspace
 exec setpriv --reuid=nobody --regid=nogroup --init-groups env -i \
   HOME=/tmp USER=nobody LOGNAME=nobody PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+  TRINITYR_RUNTIME_ENDPOINT="$runtime_endpoint" \
   /bin/bash --noprofile --norc -c "$command"

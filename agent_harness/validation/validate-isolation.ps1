@@ -3,6 +3,15 @@ param([string] $RunRoot = 'F:\TrinityR-runs', [string] $Distro = 'Ubuntu')
 $ErrorActionPreference = 'Stop'
 $launcher = Join-Path $PSScriptRoot '..\launch\isolated-run.ps1'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+function SafeId([string] $Value) { $Value -match '^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$' }
+function ValidateAssignment($Assignment, [string] $Name) {
+    foreach ($property in $Assignment.psobject.Properties) {
+        if ($property.Name -match 'provider|model|runtime|credential|secret|token' -or $property.Name -in @('environment','env','runtime_config')) { throw "Provider/runtime selector present: $Name/$($property.Name)" }
+    }
+    if (-not (SafeId $Assignment.program_id) -or -not (SafeId $Assignment.role_id)) { throw "Unsafe assignment identity: $Name" }
+    if ($Assignment.raw_lake_access -ne 'DENY' -or $Assignment.peer_visibility -ne 'DENY') { throw "Unsafe assignment policy: $Name" }
+    if ($Assignment.access_profile -eq 'DEVELOPMENT' -and (-not (SafeId $Assignment.instrument_id) -or -not (SafeId $Assignment.data_scope_id))) { throw "DEVELOPMENT identity missing: $Name" }
+}
 function MustFail([scriptblock] $Action, [string] $Name) {
     try { & $Action 2>$null; throw "$Name unexpectedly succeeded" } catch { if ($_.Exception.Message -match 'unexpectedly succeeded') { throw } }
 }
@@ -31,6 +40,7 @@ foreach ($slot in @(
     $program = $slot[0]; $role = $slot[1]
     $path = Join-Path $repo "agent_harness\assignments\$program\$role.json"
     $assignment = Get-Content -Raw $path | ConvertFrom-Json
+    ValidateAssignment $assignment "$program/$role"
     if ($assignment.program_id -ne $program -or $assignment.role_id -ne $role) { throw "Wave-1 identity mismatch: $program/$role" }
     if (-not $profiles.profiles.($assignment.access_profile)) { throw "Wave-1 profile missing: $program/$role" }
     foreach ($surface in @($assignment.authorized_repository_surfaces)) {
@@ -42,6 +52,10 @@ foreach ($slot in @(
     }
     "WAVE1_PREFLIGHT_PASS $program/$role"
 }
+$glm = Get-Content -Raw (Join-Path $repo 'agent_harness\assignments\TEST-GLM-01\TEST-GLM-01.json') | ConvertFrom-Json
+ValidateAssignment $glm 'TEST-GLM-01/TEST-GLM-01'
+if ($glm.agent_runtime -or $glm.provider -or $glm.model) { throw 'TEST-GLM scientific assignment selects runtime/provider.' }
+'OPAQUE_ASSIGNMENT_PASS'
 $probe = @'
 set -eu
 test "$(id -u)" -eq 65534; test "$(id -g)" -eq 65534

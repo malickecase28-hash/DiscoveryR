@@ -10,13 +10,17 @@ read-write, and drops to the unprivileged nobody user inside private mount/PID
 and proc namespaces.
 
 AUTHORITY receives committed schema/inventory metadata and no raw lake.
-DEVELOPMENT requires the external development view declared by
-instruments/XAUUSD/data_scope_v1.json. CONFIRMATION is always rejected until a
-separate explicit freeze action is implemented.
+DEVELOPMENT assignments declare `instrument_id` and `data_scope_id`; the
+launcher resolves the committed scope and requires a matching external
+`view_manifest.json` under `TRINITYR_VIEWS_ROOT` (default `F:\TrinityR-views`).
+CONFIRMATION is always rejected until a separate explicit freeze action is
+implemented.
 
 The harness is an operational boundary, not a provider/model scheduler.
-Provider identity must remain in an orchestrator-owned system outside the
-scientific artifacts.
+Provider identity remains in an orchestrator-owned runtime slot configuration
+outside the scientific artifacts. Use `-RuntimeSlot slot-07` with
+`TRINITYR_RUNTIME_CONFIG`; the private mapping is never mounted into the
+research namespace.
 
 Example:
 

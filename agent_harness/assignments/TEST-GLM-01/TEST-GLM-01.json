@@ -3,7 +3,6 @@
   "role_id": "TEST-GLM-01",
   "phase": "AUTHORITY",
   "access_profile": "AUTHORITY",
-  "agent_runtime": "ZCODE",
   "assignment": "Disposable GLM isolation smoke test. Read the assignment and protocol, write only the private smoke artifact, and perform no market research.",
   "authorized_repository_surfaces": [
     "protocol",
