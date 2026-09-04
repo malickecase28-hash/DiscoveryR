@@ -5,6 +5,7 @@ $launcher = Join-Path $PSScriptRoot '..\launch\isolated-run.ps1'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 if ([string]::IsNullOrWhiteSpace($AuthorityRegistryPath)) { $AuthorityRegistryPath = Join-Path $repo 'agent_harness\authority_sources\XAUUSD.json' }
 elseif (-not [IO.Path]::IsPathRooted($AuthorityRegistryPath)) { $AuthorityRegistryPath = Join-Path $repo $AuthorityRegistryPath }
+$env:TRINITYR_AUTHORITY_REGISTRY = $AuthorityRegistryPath
 function SafeId([string] $Value) { $Value -match '^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$' }
 function RejectOperationalKeys($Node, [string] $Path = 'assignment') {
     if ($Node -is [PSCustomObject]) {
