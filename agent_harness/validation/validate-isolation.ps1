@@ -34,7 +34,7 @@ if (-not (SafeId 'SAFE-INSTRUMENT') -or (SafeId 'unsafe/id')) { throw 'Safe ID v
 function MustFail([scriptblock] $Action, [string] $Name) {
     try { & $Action 2>$null; throw "$Name unexpectedly succeeded" } catch { if ($_.Exception.Message -match 'unexpectedly succeeded') { throw } }
 }
-function ValidateBundleIdentity($Record,$Manifest) { foreach($field in 'bundle_content_identity','directory_transport_hash'){ if($Record.$field -notmatch '^[0-9a-fA-F]{64}$' -or $Record.$field -ne $Manifest.$field){throw "Bundle identity mismatch: $field"} } }
+function ValidateBundleIdentity($Record,$Manifest) { if($Record.bundle_content_identity -notmatch '^[0-9a-fA-F]{64}$' -or $Record.bundle_content_identity -ne $Manifest.bundle_content_identity){throw 'Bundle identity mismatch: bundle_content_identity'} }
 function ValidateInputManifest($Manifest) { foreach($field in 'schema_version','program_id','role_id','phase','research_base_sha','assignment_path','assignment_sha256','access_profile','raw_lake_access','repository_surfaces','authority_sources','shared_input_fingerprint'){$value=$Manifest.PSObject.Properties[$field].Value;if($null -eq $value -or ($value -is [string] -and [string]::IsNullOrWhiteSpace($value)) -or ($value -is [Collections.IEnumerable] -and $value -isnot [string] -and @($value).Count -eq 0)){throw "Input manifest field missing: $field"}} }
 function ValidateParityPair($Pair) { if($Pair.a01_shared_input_fingerprint -notmatch '^[0-9a-fA-F]{64}$' -or $Pair.a02_shared_input_fingerprint -notmatch '^[0-9a-fA-F]{64}$' -or $Pair.a01_shared_input_fingerprint -ne $Pair.a02_shared_input_fingerprint -or $Pair.match -ne $true){throw 'parity mismatch'} }
 function ValidateArtifactClaims($Claims) { $seen=@{};foreach($claim in @($Claims)){if($claim.claim_id -notmatch '^[A-Z]{2}\d{3}-A-?\d{2}-C\d{3,}$' -or $seen[$claim.claim_id]){throw 'duplicate or invalid claim id'};$seen[$claim.claim_id]=$true;if($claim.status -notin @('AUTHORITATIVE','PROVISIONAL','UNRESOLVED')){throw 'invalid status'};$e=$claim.evidence;$ae=$claim.authority_evidence;if($claim.status -eq 'AUTHORITATIVE' -and (($null -eq $e -or @($e).Count -eq 0) -and ($null -eq $ae -or @($ae).Count -eq 0))){throw 'malformed AUTHORITATIVE evidence'}}}
@@ -52,7 +52,7 @@ foreach ($authoritySource in $source) {
  if ([string]::IsNullOrWhiteSpace([string]$authoritySource.hash) -or $authoritySource.hash -notmatch '^[0-9a-fA-F]{64}$') { throw "Empty authority hash: $($authoritySource.source_id)" }
  $members = Get-ChildItem -LiteralPath $sourcePath -Recurse -Force | ForEach-Object {
     if ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "Authority source contains reparse point: $($_.FullName)" }
-    if (-not $_.PSIsContainer -and $_.Name -ne 'bundle_manifest.json') {
+    if (-not $_.PSIsContainer) {
         $relative = $_.FullName.Substring($sourcePath.Length + 1).Replace('\','/')
         $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
         "$relative`t$hash`n"
@@ -166,12 +166,13 @@ try {
     New-Item -ItemType Directory -Force (Join-Path $authorityTestRoot 'nested') | Out-Null
     'a' | Set-Content -NoNewline (Join-Path $authorityTestRoot 'root.txt')
     'b' | Set-Content -NoNewline (Join-Path $authorityTestRoot 'nested\child.txt')
+    'manifest' | Set-Content -NoNewline (Join-Path $authorityTestRoot 'bundle_manifest.json')
     $records = Get-ChildItem $authorityTestRoot -Recurse -File | ForEach-Object {
         $relative = $_.FullName.Substring($authorityTestRoot.Length + 1).Replace('\','/')
         "$relative`t$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())`n"
     } | Sort-Object
     $v2hash = ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($records -join ''))) | ForEach-Object ToString x2) -join ''
-    if ($v2hash.Length -ne 64 -or $records.Count -ne 2) { throw 'Synthetic v2 authority hash failed.' }
+    if ($v2hash.Length -ne 64 -or $records.Count -ne 3) { throw 'Synthetic v2 authority hash failed.' }
     'AUTHORITY_V2_HASH_PASS'
 } finally { Remove-Item -Recurse -Force -LiteralPath $authorityTestRoot -ErrorAction SilentlyContinue }
 $probe = @'

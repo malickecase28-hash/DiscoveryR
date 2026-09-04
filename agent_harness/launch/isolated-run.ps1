@@ -41,7 +41,7 @@ function SafeRelative([string] $Value, [string] $Name) {
 function RecursiveHash([string] $Path) {
     $members = Get-ChildItem -LiteralPath $Path -Recurse -Force | ForEach-Object {
         if ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "Reparse points are not allowed: $($_.FullName)" }
-        if (-not $_.PSIsContainer -and $_.Name -ne 'bundle_manifest.json') {
+        if (-not $_.PSIsContainer) {
             $relative = $_.FullName.Substring($Path.Length + 1).Replace('\','/')
             "$relative`t$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())`n"
         }
@@ -200,7 +200,7 @@ foreach ($sourceId in @($assignment.authority_source_ids)) {
     if ([string]::IsNullOrWhiteSpace([string]$source[0].hash) -or $source[0].hash -notmatch '^[0-9a-fA-F]{64}$') { throw "Authority source hash is empty or invalid: $sourceId" }
     if ((RecursiveHash $sourcePath) -ne $source[0].hash.ToLowerInvariant()) { throw "Authority source hash mismatch: $sourceId" }
     $bundleManifestPath=Join-Path $sourcePath 'bundle_manifest.json'; if(!(Test-Path $bundleManifestPath -PathType Leaf)){throw "Authority bundle manifest missing: $sourceId"};$bundleManifest=Get-Content -Raw $bundleManifestPath|ConvertFrom-Json
-    foreach($field in 'bundle_content_identity','directory_transport_hash'){if([string]::IsNullOrWhiteSpace([string]$source[0].$field)-or $source[0].$field -notmatch '^[0-9a-fA-F]{64}$'-or $bundleManifest.$field -ne $source[0].$field){throw "Authority bundle identity mismatch: $sourceId/$field"}}
+    if ([string]::IsNullOrWhiteSpace([string]$source[0].bundle_content_identity) -or $source[0].bundle_content_identity -notmatch '^[0-9a-fA-F]{64}$' -or $bundleManifest.bundle_content_identity -ne $source[0].bundle_content_identity) { throw "Authority bundle identity mismatch: $sourceId/bundle_content_identity" }
     if ($source[0].mount_target -notmatch '^/shared/[A-Za-z0-9._/-]+$' -or $source[0].mount_target -match '\.\.') { throw "Unsafe authority mount target: $sourceId" }
     $mounts += [PSCustomObject]@{ source = (MountPath $sourcePath); target = $source[0].mount_target }
 }
