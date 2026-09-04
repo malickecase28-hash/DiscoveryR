@@ -1,0 +1,98 @@
+{
+  "artifact_type": "authority_candidate",
+  "program_id": "TC-001",
+  "role_id": "A-02",
+  "subjects": ["tick_conditioning"],
+  "claims": [
+    {
+      "claim_id": "TC001-A02-C001",
+      "subject": "tick_conditioning",
+      "topic": "serialization_family_1",
+      "claim": "Authority for the first declared serialization record variant and its field paths was not available in the mounted evidence visible to this worker.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "The unavailable authority bundle may define structural fields; no event or state meaning may be inferred here.",
+      "dependency_implications": "No dependency implication is established.",
+      "notes": "Preserved unresolved; no semantic inference from names or co-location."
+    },
+    {
+      "claim_id": "TC001-A02-C002",
+      "subject": "tick_conditioning",
+      "topic": "serialization_family_2",
+      "claim": "Authority for the second declared serialization record variant and its field paths was not available in the mounted evidence visible to this worker.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "The unavailable authority bundle may define structural fields; no event or state meaning may be inferred here.",
+      "dependency_implications": "No dependency implication is established.",
+      "notes": "Preserved unresolved; no semantic inference from names or co-location."
+    },
+    {
+      "claim_id": "TC001-A02-C003",
+      "subject": "tick_conditioning",
+      "topic": "serialization_family_3",
+      "claim": "Authority for the third declared serialization record variant and its field paths was not available in the mounted evidence visible to this worker.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "The unavailable authority bundle may define structural fields; no event or state meaning may be inferred here.",
+      "dependency_implications": "No dependency implication is established.",
+      "notes": "Preserved unresolved; no semantic inference from names or co-location."
+    },
+    {
+      "claim_id": "TC001-A02-C004",
+      "subject": "tick_conditioning",
+      "topic": "serialization_family_4",
+      "claim": "Authority for the fourth declared serialization record variant and its field paths was not available in the mounted evidence visible to this worker.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "The unavailable authority bundle may define structural fields; no event or state meaning may be inferred here.",
+      "dependency_implications": "No dependency implication is established.",
+      "notes": "Preserved unresolved; no semantic inference from names or co-location."
+    },
+    {
+      "claim_id": "TC001-A02-C005",
+      "subject": "tick_conditioning",
+      "topic": "serialization_family_5",
+      "claim": "Authority for the fifth declared serialization record variant and its field paths was not available in the mounted evidence visible to this worker.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "The unavailable authority bundle may define structural fields; no event or state meaning may be inferred here.",
+      "dependency_implications": "No dependency implication is established.",
+      "notes": "Preserved unresolved; no semantic inference from names or co-location."
+    },
+    {
+      "claim_id": "TC001-A02-C006",
+      "subject": "tick_conditioning",
+      "topic": "serialization_family_6",
+      "claim": "Authority for the sixth declared serialization record variant and its field paths was not available in the mounted evidence visible to this worker.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "The unavailable authority bundle may define structural fields; no event or state meaning may be inferred here.",
+      "dependency_implications": "No dependency implication is established.",
+      "notes": "Preserved unresolved; no semantic inference from names or co-location."
+    }
+  ],
+  "unresolved_questions": [
+    "What are the six declared serialization record variants and their exact field paths?",
+    "Is there direct authority for event/state meaning, direction, baseline, reset, persistence, history, row-keying, occurrence clock, availability clock, or dependencies?"
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "manifest.tc001.a02",
+      "relative_path": "F:/TrinityR-manifests/wave1-v3-4cf6413/TC-001/A-02/research_input_manifest.json",
+      "locator": "top-level manifest metadata",
+      "access_status": "consulted"
+    },
+    {
+      "source_id": "mount_attestation.tc001.a02",
+      "relative_path": "F:/TrinityR-manifests/wave1-v3-4cf6413/TC-001/A-02/mount_attestation.json",
+      "locator": "authority_sources[0]",
+      "access_status": "consulted; declared mount not visible"
+    }
+  ]
+}

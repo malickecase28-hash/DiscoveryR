@@ -1,0 +1,31 @@
+{
+    "schema_version":  "trinity.submission-manifest.v2",
+    "program_id":  "TC-001",
+    "role_id":  "A-02",
+    "research_base_sha":  "4cf641369f64255624349696c9937eb56cb7dbcc",
+    "research_input_manifest_sha256":  "ef191553c8e6c37bf0fbff13d23ee30542f15009bd87dbe51a441c2a673cfad6",
+    "assignment_sha256":  "3e74e3ecc12401fe06528e6d9102df72a026298f29085ba802b9722d7815bc12",
+    "shared_input_fingerprint":  "e95f629d148470391af9874fe711dcb0310c58c373c85ffde0cbdafb7ce88dfe",
+    "repository_source_hashes":  {
+                                     "repo.contracts":  "549089d4a2ad99de1cdd77edac6fa1fb47b8aac21d7c1ac23f9767d6a4c7c92e",
+                                     "repo.xauusd.instrument_config":  "879378d5df956cd70ac9c8cc699d488ff260f689d8c97754ca9f45a7e6e8f6da",
+                                     "repo.xauusd.source_inventory":  "62838cf49e4df5fa301cc7263eab55dfa1684b029344f0bb9ea61f87696503ef",
+                                     "repo.protocol":  "196fb905a653d5290580dc2a686c32587b49dc2cc07721129873693c8cb091e8",
+                                     "repo.detector_registry":  "24ab4c4b2f8c5919b0127bbb7954a1b8e1391dbaabf281dbc1969c871d3cb269"
+                                 },
+    "mount_attestation_sha256":  "03d03c8f667ac420067725159d381dc3628cd4487cf77bb3185b5ca925099128",
+    "authority_source_ids":  [
+                                 "xauusd.wave1.tc001"
+                             ],
+    "authority_bundle_hashes":  [
+                                    {
+                                        "source_id":  "xauusd.wave1.tc001",
+                                        "relative_path":  "XAUUSD/WAVE1_AUTHORITY_V3/TC-001-c5b9597abc9bdba043b5aa843eebdffd47db6aec0a7c22fddf79fc83abbdc406-fb9515c47fe9ff57b7258c74a5c5449515ff0951966ff7c8e8a444a7daab7ded",
+                                        "bundle_content_identity":  "c5b9597abc9bdba043b5aa843eebdffd47db6aec0a7c22fddf79fc83abbdc406",
+                                        "directory_transport_hash":  "fb9515c47fe9ff57b7258c74a5c5449515ff0951966ff7c8e8a444a7daab7ded"
+                                    }
+                                ],
+    "authority_candidate_sha256":  "6586ea78ab162b72277ff489607d7cef835e2fb4e6f66c071cb822c7340593c1",
+    "authority_review_sha256":  "ca0688be3514287f907191d837d064a5907039b867e9f58810a22b73b7bf625b",
+    "published_utc":  "2026-09-04T20:32:57.9879338Z"
+}
