@@ -1,0 +1,133 @@
+{
+  "artifact_type": "AUTHORITY_CANDIDATE",
+  "program_id": "TC-001",
+  "role_id": "A-02",
+  "subjects": [
+    "feed_health",
+    "micro_volatility",
+    "quote_arrival",
+    "quote_dynamics",
+    "quote_pressure",
+    "spread_state"
+  ],
+  "claims": [
+    {
+      "claim_id": "TC001-A02-C001",
+      "claim": "The declared serialization contract contains feed_health variants clock_inversion, event_time_gap, event_time_regression, expected_market_closure, latency_spike, sequence_duplicate, sequence_gap, and sequence_regression with the field paths listed in authority.json.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.tc001",
+        "relative_path": "authority.json",
+        "locator": "/selected/feed_health",
+        "evidence_type": "declared_serialization_structure",
+        "supports": "Variant names and field_paths for feed_health only."
+      },
+      "counterevidence": [],
+      "future_information_risk": "The declaration does not establish event/state meaning, thresholds as semantics, clock authority, availability, persistence, or causal timing.",
+      "dependency_implications": "Consumers may depend on the declared paths, but must not treat them as semantic or timing guarantees.",
+      "notes": "Physical output presence is distinct from occurrence and availability clocks; no row-keying hypothesis is supported."
+    },
+    {
+      "claim_id": "TC001-A02-C002",
+      "claim": "The declared serialization contract contains micro_volatility variants micro_volatility_burst, micro_volatility_compression, and micro_volatility_transition with field paths from/to, short_rms_bps, baseline_rms_bps, and ratio.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.tc001",
+        "relative_path": "authority.json",
+        "locator": "/selected/micro_volatility",
+        "evidence_type": "declared_serialization_structure",
+        "supports": "Variant names and field_paths for micro_volatility only."
+      },
+      "counterevidence": [],
+      "future_information_risk": "The declaration does not establish volatility meaning, baseline construction, transition rules, direction, reset, persistence, availability, or causality.",
+      "dependency_implications": "Consumers may depend on the declared paths, but must preserve the distinction between serialized fields and their unestablished meaning.",
+      "notes": "Field names are not scientific evidence."
+    },
+    {
+      "claim_id": "TC001-A02-C003",
+      "claim": "The declared serialization contract contains quote_arrival variants arrival_burst and arrival_gap with field paths interarrival_ns, median_ns, and ratio.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.tc001",
+        "relative_path": "authority.json",
+        "locator": "/selected/quote_arrival",
+        "evidence_type": "declared_serialization_structure",
+        "supports": "Variant names and field_paths for quote_arrival only."
+      },
+      "counterevidence": [],
+      "future_information_risk": "The declaration does not establish arrival-event meaning, reference population, threshold semantics, direction, reset, persistence, availability, or causal timing.",
+      "dependency_implications": "Consumers may depend on the declared paths, but cannot infer an occurrence or availability clock from them alone.",
+      "notes": "Physical output, occurrence clock, and availability clock remain separate unknowns."
+    },
+    {
+      "claim_id": "TC001-A02-C004",
+      "claim": "The declared serialization contract contains quote_dynamics variants asymmetric_reprice_down, asymmetric_reprice_up, down, quote_acceleration_down, quote_acceleration_up, quote_reprice_up, spread_compression_impulse, and spread_widening_impulse with the field paths listed in authority.json.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.tc001",
+        "relative_path": "authority.json",
+        "locator": "/selected/quote_dynamics",
+        "evidence_type": "declared_serialization_structure",
+        "supports": "Variant names and field_paths for quote_dynamics only."
+      },
+      "counterevidence": [],
+      "future_information_risk": "The declaration does not establish motion, reprice, acceleration, spread-effect, direction, baseline, reset, persistence, availability, or causal timing.",
+      "dependency_implications": "Consumers may depend on the declared paths, but must not convert variant or field names into event/state or scientific roles.",
+      "notes": "No directional or row-keying interpretation is supported."
+    },
+    {
+      "claim_id": "TC001-A02-C005",
+      "claim": "The declared serialization contract contains quote_pressure variants buy_quote_pressure and sell_quote_pressure with field paths semantics, direction_pressure, pressure, instantaneous_pressure, bid_move, and ask_move.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.tc001",
+        "relative_path": "authority.json",
+        "locator": "/selected/quote_pressure",
+        "evidence_type": "declared_serialization_structure",
+        "supports": "Variant names and field_paths for quote_pressure only."
+      },
+      "counterevidence": [],
+      "future_information_risk": "The declaration does not establish the meaning of pressure or semantics fields, direction rules, baseline, reset, persistence, availability, or causal timing.",
+      "dependency_implications": "Consumers may depend on the declared paths, but cannot treat variant names as validated directional evidence.",
+      "notes": "The words buy and sell are declared variant labels, not proof of scientific or market direction."
+    },
+    {
+      "claim_id": "TC001-A02-C006",
+      "claim": "The declared serialization contract contains spread_state variants spread_compression, spread_state_transition, and spread_widening with field paths listed in authority.json.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.tc001",
+        "relative_path": "authority.json",
+        "locator": "/selected/spread_state",
+        "evidence_type": "declared_serialization_structure",
+        "supports": "Variant names and field_paths for spread_state only."
+      },
+      "counterevidence": [],
+      "future_information_risk": "The declaration does not establish spread-state meaning, transition direction, baseline, reset, persistence, availability, or causal timing.",
+      "dependency_implications": "Consumers may depend on the declared paths, but must not infer state-machine or scientific behavior from serialization alone.",
+      "notes": "No row-keying hypothesis is supported; physical co-location does not establish payload keying."
+    }
+  ],
+  "unresolved_questions": [
+    "What event or state meaning, if any, does each declared variant have?",
+    "What are the direction, baseline, threshold, reset, persistence, and history-dependence rules for each topic?",
+    "What is the occurrence clock for each output, and how does it differ from its availability clock?",
+    "Are outputs physically emitted, conditionally emitted, or absent under any conditions not represented in this declaration?",
+    "What causal timing, ordering, or upstream dependency guarantees exist beyond the declared field paths?",
+    "Does any payload keying or association rule exist? The supplied evidence does not establish one."
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "xauusd.wave1.tc001",
+      "relative_path": "authority.json",
+      "locator": "/selected",
+      "scope": "Declared serialization variants and field paths for all six mandatory topics."
+    },
+    {
+      "source_id": "bundle_manifest.json",
+      "relative_path": "bundle_manifest.json",
+      "locator": "/generated_files/0",
+      "scope": "Bundle file identity and declared authority-bundle metadata."
+    }
+  ]
+}
