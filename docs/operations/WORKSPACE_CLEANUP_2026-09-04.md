@@ -20,13 +20,11 @@ These roots were deliberately not moved or deleted:
 
 They contain the active research workspace, canonical custody repository, authority material, manifests, active runs, research workspaces, or data/history.
 
-## Archived staging roots
+## Purged staging roots
 
-The dated correction, rework, push-target, harness, dry-run, and empty staging roots were moved intact to:
+The dated correction, rework, push-target, harness, dry-run, empty staging roots, superseded local report copies, smoke fixtures, ZIPs, and prior test manifests were removed after explicit signoff.
 
-`F:\TrinityR-archive\20260904-staging`
-
-Nothing in that set was deleted. The archive is recoverable by moving an individual root back if required.
+The temporary archive `F:\TrinityR-archive\20260904-staging` was also removed. Those disposable materials are not retained locally; authoritative committed/published copies remain where applicable.
 
 ## WSL retirement
 
@@ -44,7 +42,8 @@ The following stopped distributions were unregistered after process and state ch
 
 - Active Windows processes were not terminated.
 - Current research, authority, manifest, run, workspace, and data roots were not touched.
-- No repository files were changed by the cleanup itself except this journal record.
+- Active program directories and current research descendants were not touched.
+- The lifecycle rule was added to `protocol/RESEARCH_RULES.md`.
 - V4 custody commit `9134975bc04cf7450268677f5f9cf32f756d83f1` remains the implementation base.
 
 ## Operating layout going forward

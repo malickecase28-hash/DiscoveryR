@@ -27,6 +27,12 @@
 15. Submission lifecycle: agents leave exactly the required artifacts in their
    private workspace; host orchestration validates and publishes them only as
    an explicit, reviewable action on a dedicated branch.
+16. Temporary workspace lifecycle: every phase-scoped temporary workspace must
+   be deleted after the phase receives signoff. Preserve only published
+   artifacts, required manifests/receipts, and reusable scripts moved into
+   their permanent repository location. If signoff is absent, the workspace
+   remains intact and is marked pending; it must not be silently reused or
+   abandoned. Cleanup is a host-controlled, auditable action after validation.
 
 All work preserves chronology, separates raw observations from derived findings,
 reports unresolved semantics and missing data, does not infer provider/model/
