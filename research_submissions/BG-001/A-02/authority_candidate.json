@@ -1,0 +1,55 @@
+{
+  "artifact_type": "authority_candidate",
+  "program_id": "BG-001",
+  "role_id": "A-02",
+  "subjects": [
+    "XAUUSD canonical bar physical schema",
+    "XAUUSD bar data lineage"
+  ],
+  "claims": [
+    {
+      "claim_id": "BG001-A02-C001",
+      "subject": "XAUUSD canonical bar physical schema",
+      "topic": "canonical_bar_physical_schema",
+      "claim": "The canonical physical schema for XAUUSD bars is unresolved because no directly readable structured authority evidence was available in the mounted worker view.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Future evidence may define fields, types, nullability, units, ordering, timestamp semantics, or completion rules not available here.",
+      "dependency_implications": "Consumers must not treat any bar field layout, timestamp interpretation, or completion rule as authority based on this artifact.",
+      "notes": "No schema was inferred from convention, undeclared data, or undeclared sources."
+    },
+    {
+      "claim_id": "BG001-A02-C002",
+      "subject": "XAUUSD bar data lineage",
+      "topic": "lineage_graph",
+      "claim": "Zero lineage edges are accepted. Producer inputs, object identity, occurrence-time lineage, known-time lineage, and detector dependencies remain unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [],
+      "counterevidence": [],
+      "future_information_risk": "Future direct evidence may establish producer inputs, identifiers, timestamps, transformations, or dependencies.",
+      "dependency_implications": "Downstream authority, activation, and detector-dependency decisions must treat the lineage graph as empty and incomplete.",
+      "notes": "No relationship or edge was fabricated."
+    }
+  ],
+  "unresolved_questions": [
+    "What is the canonical XAUUSD bar physical schema, including field types, units, nullability, ordering, and completion semantics?",
+    "What source objects produce the canonical bars, and what stable object identity identifies them?",
+    "What are the occurrence-time and known-time semantics for each lineage step?",
+    "Which transformations and detector dependencies, if any, are directly authorized?"
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "research_input_manifest",
+      "relative_path": "F:/TrinityR-manifests/wave1-v3-4cf6413/BG-001/A-02/research_input_manifest.json",
+      "locator": "$.authority_sources[0], $.repository_surfaces, $.raw_lake_access",
+      "evidence_type": "manifest_metadata"
+    },
+    {
+      "source_id": "mount_attestation",
+      "relative_path": "F:/TrinityR-manifests/wave1-v3-4cf6413/BG-001/A-02/mount_attestation.json",
+      "locator": "$.authority_sources[0], $.repository_source_hashes",
+      "evidence_type": "mount_metadata"
+    }
+  ]
+}
