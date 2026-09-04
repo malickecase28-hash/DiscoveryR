@@ -32,7 +32,7 @@ The architecture answers: what the scientific units are, what states they pass t
 
 **Primary unit = Anchor Experiment (AE)**
 
-An Anchor Experiment is the investigation of a specific anchor phenomenon at a specific anchor time, under a specific exposure stage, by a specific researcher.
+An Anchor Experiment is one bounded, reproducible study specification for a defined anchor phenomenon, anchor-time rule, population, exposure stage, and researcher assignment. Individual anchor occurrences are observations inside the experiment, not separate experiments.
 
 It answers: "What does this anchor phenomenon look like at this point in its lifecycle, given what was knowable at that time?"
 
@@ -47,6 +47,24 @@ At research time `t`:
 - No future-state conditioning. No lookahead. No retrospective back-projection of terminal information.
 
 The causal clock is a **single universal ordering** shared by all instruments, timeframes, and detectors. A 15s object and a 4h object coexist on the same clock. Timeframe is a native attribute/stratum, not a separate scientific universe.
+
+### 2.4 Anchor and lifecycle representation
+
+An anchor is represented as a structured identity, not only as a detector name:
+
+```text
+anchor = {
+  detector_id,
+  lifecycle_state,
+  anchor_time_semantics
+}
+```
+
+For example, `fvg / first_touch / known_at_touch`. The corpus may retain separate
+`occurrence_time`, lifecycle `birth_time`, `known_time`, and terminal/resolution
+times. Only the selected `anchor_time` establishes the causal boundary; an
+occurrence or terminal time never back-projects knowledge. This makes birth,
+stage, and terminal anchors explicit while keeping them on the one clock.
 
 ---
 
@@ -229,16 +247,19 @@ The contract is the **single source of truth** that allows:
 |-------|------|---------|
 | `experiment_id` | string | Unique identity (e.g., `AE-001`) |
 | `anchor_phenomenon` | string | The anchor being studied (e.g., `drift_burst.weak`) |
+| `anchor_lifecycle_state` | string | The lifecycle stage that defines the anchor (e.g., `formed`, `first_touch`) |
 | `instrument` | string | Target instrument (e.g., `XAUUSD`) |
-| `anchor_time` | timestamp | The causal boundary point |
+| `anchor_time_rule` | object | How each population occurrence gets its causal boundary from known/available time |
 | `exposure_stage` | enum `[E1, E2, E3]` | What information is available |
 | `native_timeframe` | string | The native resolution (e.g., `15m`) |
+| `eligible_context` | object | Explicit detector, lifecycle, timeframe, and data-view allowlist resolved from the exposure stage |
 | `population` | string/object | Definition of the study population |
+| `measurements_and_outcomes` | object | Predeclared observables and lifecycle/context measurements; not trading outcomes |
+| `controls` | object | Required comparison or null controls, when the question needs them |
 | `development_data_scope` | object | Data range for development |
 | `confirmation_data_scope` | object | Data range for confirmation (may be locked) |
 | `discovery_status` | enum `[predeclared, discovered]` | Was this found systematically or discovered unexpectedly? |
 | `researcher_ids` | array | Who worked this experiment |
-| `code_identity` | string | Git SHA + script hash of generating code |
 | `normalization_basis` | string | How native measurements are normalized |
 | `created_utc` | timestamp | When the contract was written |
 
@@ -250,13 +271,34 @@ The contract is the **single source of truth** that allows:
 - Researcher names or model identities (blinded)
 - Unrelated legacy findings
 
+Code identity is bound to each result, not used to make independent researchers
+run the same implementation. Every accepted result must carry a `result_id`,
+Git SHA/script hash, input-data hashes, configuration/contract hash, and output
+identity. This preserves reproducibility without turning the scientific contract
+into a hidden implementation lock.
+
+Every measurement preserves its native/raw value, its normalized value when one
+is defined, and the normalization basis used. The contract names the basis; the
+result records carry the values.
+
 ### 7.4 Contract as Enforcement
 
 The contract must be powerful enough to:
-- Prevent silent goalpost changes (changing `anchor_phenomenon` or `anchor_time` after results)
+- Prevent silent goalpost changes (changing the anchor, anchor-time rule, exposure, population, measurements, controls, or data scope after results)
 - Allow three blinded researchers to work the same experiment identically
 - Drive deterministic Rust execution
 - Preserve the causal rule `available_time <= anchor_time`
+
+### 7.5 Context permission resolution
+
+The contract's `eligible_context` is an explicit allowlist, not a researcher
+choice. The orchestrator derives it from the requested exposure stage plus the
+Detector Registry's `domain`, `roles`, `derives_from`, lifecycle vocabulary, and
+availability semantics. E1 resolves to the anchor phenotype; E2 adds the
+declared same-domain compatible set; E3 adds the declared cross-domain and
+multi-resolution set. The runner rejects data outside that allowlist or with
+`available_time > anchor_time`. Thus exposure is reproducible and enforceable,
+while timeframes remain strata rather than isolated universes.
 
 ---
 
@@ -553,6 +595,19 @@ When a new instrument is added:
 
 No new methodology, no new code tree, no new lifecycle.
 
+### 14.4 Git and external boundaries
+
+Git contains the small, reviewable scientific source of truth: contracts and
+schemas, detector/anchor registry definitions, reusable Rust code, instrument
+configuration, machine-readable findings/knowledge records, manifests and
+hashes, and the reports that interpret them. Every material result points to
+the exact commit and input identities that generated it.
+
+The frozen analytical corpus, Parquet/DuckDB data, large derived outputs,
+secrets, provider-identity registry, runtime state, logs, caches, and
+disposable researcher workspaces remain external. They are referenced by
+immutable identifiers or read-only views, not copied into the repository.
+
 ---
 
 ## 15. Legacy Migration Decisions
@@ -701,7 +756,6 @@ That's 7 artifacts, not 14,000 lines of scanner code.
 ```
 Research Program/
 ├── README.md
-├── STAGE1_ARCHITECTURE_PROPOSAL.md          ← This document
 ├── bootstrap/
 │   ├── COMPONENT_INVENTORY.json
 │   ├── ENVIRONMENT_MAP.md
@@ -717,18 +771,13 @@ Research Program/
 ├── programs/                                  ← Anchor Programs (one per phenomenon family)
 │   └── drift_burst_weak/
 │       ├── program_contract.json              ← Anchor Program definition
-│       ├── experiment_001/                    ← Individual experiments
-│       │   ├── experiment_contract.json
-│       │   ├── researcher_P-01/               ← Isolated researcher workspace
-│       │   │   ├── workspace/                 ← Writable only
-│       │   │   └── artifacts/
-│       │   └── researcher_P-02/
-│       │       └── workspace/
-│       │       └── artifacts/
-│       └── knowledge_records/                 ← Knowledge layer
-│           ├── findings.jsonl
-│           ├── challenges.jsonl
-│           └── questions.jsonl
+│       └── experiment_001/                    ← Individual experiments
+│           ├── experiment_contract.json
+│           ├── researcher_P-01/               ← Isolated researcher workspace
+│           │   └── workspace/                 ← Writable only
+│           ├── researcher_P-02/
+│           │   └── workspace/
+│           └── result_manifest.json           ← Experiment-local evidence identity
 ├── core/                                      ← Reusable research engine (Rust, later)
 │   ├── causal_clock.rs                        ← available_time <= anchor_time validator
 │   ├── contract_validator.rs                  ← Experiment contract validation
@@ -741,7 +790,8 @@ Research Program/
 ├── knowledge/                                 ← Cumulative scientific memory
 │   ├── findings.jsonl
 │   ├── questions.jsonl
-│   └── rejections.jsonl
+│   ├── challenges.jsonl
+│   └── knowledge.jsonl
 └── docs/
     └── ARCHITECTURE_DECISIONS.md              ← Rationale for key decisions
 ```
