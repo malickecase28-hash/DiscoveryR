@@ -1,0 +1,204 @@
+{
+  "artifact_type": "AUTHORITY_CANDIDATE",
+  "program_id": "BG-001",
+  "role_id": "A-01",
+  "graph": {
+    "edges": []
+  },
+  "subjects": [
+    "bar_lineage",
+    "raw3",
+    "range",
+    "fvg",
+    "bos_choch",
+    "local_structure",
+    "order_blocks",
+    "micro_liquidity",
+    "micro_liquidity_context"
+  ],
+  "claims": [
+    {
+      "claim_id": "BG001-A01-C001",
+      "claim": "The canonical bar schema is trinity.research.bars.canonical.v1, described as replay-aggregated bars stored in a Parquet lake, with non-null start_ts_ms, end_ts_ms, open, high, low, close, and activity_volume columns and timeframe/year/month Hive partitions.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.bg001",
+        "relative_path": "authority.json",
+        "locator": "/selected",
+        "evidence_type": "canonical_schema",
+        "supports": "canonical bar schema and declared physical storage surface"
+      },
+      "counterevidence": [],
+      "future_information_risk": "Schema or storage authority may change in a later version.",
+      "dependency_implications": "Only the declared canonical bar schema may be treated as evidenced input/output surface in this run.",
+      "notes": "This does not establish any detector producer, upstream input, object identifier, occurrence time, known time, or detector relationship."
+    },
+    {
+      "claim_id": "BG001-A01-C002",
+      "claim": "The raw3 bar-detector lineage relationship is not established by the V2 evidence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.bg001",
+        "relative_path": "authority.json",
+        "locator": "/unresolved/0",
+        "evidence_type": "explicit_lineage_gap",
+        "supports": "lineage remains pending source approval"
+      },
+      "counterevidence": [],
+      "future_information_risk": "A future approved source may establish the relationship.",
+      "dependency_implications": "No graph edge or producer/upstream dependency may be emitted for raw3.",
+      "notes": "UNRESOLVED_RELATIONSHIP is not used as a claim status."
+    },
+    {
+      "claim_id": "BG001-A01-C003",
+      "claim": "The range bar-detector lineage relationship is not established by the V2 evidence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.bg001",
+        "relative_path": "authority.json",
+        "locator": "/unresolved/0",
+        "evidence_type": "explicit_lineage_gap",
+        "supports": "lineage remains pending source approval"
+      },
+      "counterevidence": [],
+      "future_information_risk": "A future approved source may establish the relationship.",
+      "dependency_implications": "No graph edge or producer/upstream dependency may be emitted for range.",
+      "notes": "No scientific meaning is inferred from the detector name."
+    },
+    {
+      "claim_id": "BG001-A01-C004",
+      "claim": "The fvg bar-detector lineage relationship is not established by the V2 evidence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.bg001",
+        "relative_path": "authority.json",
+        "locator": "/unresolved/0",
+        "evidence_type": "explicit_lineage_gap",
+        "supports": "lineage remains pending source approval"
+      },
+      "counterevidence": [],
+      "future_information_risk": "A future approved source may establish the relationship.",
+      "dependency_implications": "No graph edge or producer/upstream dependency may be emitted for fvg.",
+      "notes": "No scientific meaning is inferred from the detector name."
+    },
+    {
+      "claim_id": "BG001-A01-C005",
+      "claim": "The bos_choch bar-detector lineage relationship is not established by the V2 evidence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.bg001",
+        "relative_path": "authority.json",
+        "locator": "/unresolved/0",
+        "evidence_type": "explicit_lineage_gap",
+        "supports": "lineage remains pending source approval"
+      },
+      "counterevidence": [],
+      "future_information_risk": "A future approved source may establish the relationship.",
+      "dependency_implications": "No graph edge or producer/upstream dependency may be emitted for bos_choch.",
+      "notes": "No scientific meaning is inferred from the detector name."
+    },
+    {
+      "claim_id": "BG001-A01-C006",
+      "claim": "The local_structure bar-detector lineage relationship is not established by the V2 evidence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.bg001",
+        "relative_path": "authority.json",
+        "locator": "/unresolved/0",
+        "evidence_type": "explicit_lineage_gap",
+        "supports": "lineage remains pending source approval"
+      },
+      "counterevidence": [],
+      "future_information_risk": "A future approved source may establish the relationship.",
+      "dependency_implications": "No graph edge or producer/upstream dependency may be emitted for local_structure.",
+      "notes": "No scientific meaning is inferred from the detector name."
+    },
+    {
+      "claim_id": "BG001-A01-C007",
+      "claim": "The order_blocks bar-detector lineage relationship is not established by the V2 evidence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.bg001",
+        "relative_path": "authority.json",
+        "locator": "/unresolved/0",
+        "evidence_type": "explicit_lineage_gap",
+        "supports": "lineage remains pending source approval"
+      },
+      "counterevidence": [],
+      "future_information_risk": "A future approved source may establish the relationship.",
+      "dependency_implications": "No graph edge or producer/upstream dependency may be emitted for order_blocks.",
+      "notes": "No scientific meaning is inferred from the detector name."
+    },
+    {
+      "claim_id": "BG001-A01-C008",
+      "claim": "The micro_liquidity bar-detector lineage relationship is not established by the V2 evidence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.bg001",
+        "relative_path": "authority.json",
+        "locator": "/unresolved/0",
+        "evidence_type": "explicit_lineage_gap",
+        "supports": "lineage remains pending source approval"
+      },
+      "counterevidence": [],
+      "future_information_risk": "A future approved source may establish the relationship.",
+      "dependency_implications": "No graph edge or producer/upstream dependency may be emitted for micro_liquidity.",
+      "notes": "No scientific meaning is inferred from the detector name."
+    },
+    {
+      "claim_id": "BG001-A01-C009",
+      "claim": "The micro_liquidity_context bar-detector lineage relationship is not established by the V2 evidence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "xauusd.wave1.bg001",
+        "relative_path": "authority.json",
+        "locator": "/unresolved/0",
+        "evidence_type": "explicit_lineage_gap",
+        "supports": "lineage remains pending source approval"
+      },
+      "counterevidence": [],
+      "future_information_risk": "A future approved source may establish the relationship.",
+      "dependency_implications": "No graph edge or producer/upstream dependency may be emitted for micro_liquidity_context.",
+      "notes": "No scientific meaning is inferred from the detector name."
+    },
+    {
+      "claim_id": "BG001-A01-C010",
+      "claim": "The general protocol fake-confluence rule is not directly established in the available V2 evidence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": {
+        "source_id": "protocol.research_rules",
+        "relative_path": "protocol",
+        "locator": "surface unavailable in private workspace",
+        "evidence_type": "unavailable_direct_source",
+        "supports": "nothing"
+      },
+      "counterevidence": [],
+      "future_information_risk": "Direct protocol evidence may establish the rule when the declared surface is available.",
+      "dependency_implications": "Do not apply a fake-confluence rule as authority from this artifact.",
+      "notes": "The protocol was not inferred from field or variant names."
+    }
+  ],
+  "unresolved_questions": [
+    "What approved producer creates each of raw3, range, fvg, bos_choch, local_structure, order_blocks, micro_liquidity, and micro_liquidity_context?",
+    "What upstream inputs, object identifiers, occurrence times, and known times belong to each detector output?",
+    "What direct protocol text defines the general fake-confluence rule?",
+    "Are any physical detector output surfaces directly authorized beyond the canonical bar schema?"
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "xauusd.wave1.bg001",
+      "relative_path": "authority.json",
+      "locator": "/selected, /unresolved"
+    },
+    {
+      "source_id": "xauusd.wave1.bg001-manifest",
+      "relative_path": "bundle_manifest.json",
+      "locator": "/generated_files, /bundle_content_identity"
+    },
+    {
+      "source_id": "wave1-v2-manifest",
+      "relative_path": "research_input_manifest.json",
+      "locator": "/repository_surfaces, /authority_sources"
+    }
+  ]
+}
