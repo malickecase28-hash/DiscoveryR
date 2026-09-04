@@ -2,5 +2,11 @@
   "schema_version": "trinity.authority-producer-candidates.v1",
   "instrument": "XAUUSD",
   "status": "NOT_FOUND_IN_APPROVED_ROOTS",
-  "candidate_files": []
+  "candidate_files": [],
+  "programs": [
+    { "program_id": "AP-001", "subject_id": "drift_burst", "candidate_files": [], "status": "NOT_FOUND_IN_APPROVED_ROOTS" },
+    { "program_id": "AP-002", "subject_id": "fvg", "candidate_files": [], "status": "NOT_FOUND_IN_APPROVED_ROOTS" },
+    { "program_id": "TC-001", "subject_id": "tick_conditioning", "candidate_files": [], "status": "NOT_FOUND_IN_APPROVED_ROOTS" },
+    { "program_id": "BG-001", "subject_id": "bar_dependency_lineage", "candidate_files": [], "status": "NOT_FOUND_IN_APPROVED_ROOTS" }
+  ]
 }
