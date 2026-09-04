@@ -1,0 +1,2326 @@
+{
+  "program_id": "TC-001",
+  "role_id": "A-02",
+  "artifact_type": "AUTHORITY_CANDIDATE",
+  "subjects": [
+    "six tick-conditioning families"
+  ],
+  "claims": [
+    {
+      "claim_id": "TC001-A02-C001",
+      "subject": "feed_health",
+      "topic": "physical_output_surface",
+      "precise_claim": "The XAUUSD tick source physically declares payload_feed_health as a nullable LargeUtf8 output column; this establishes physical presence only, not its scientific meaning.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "None established from physical presence alone; payload timing remains unspecified.",
+      "dependency_implications": "Physical co-location does not establish causal dependence or independence.",
+      "notes": "Payload column is not classified as a record variant."
+    },
+    {
+      "claim_id": "TC001-A02-C002",
+      "subject": "feed_health",
+      "topic": "purpose_role",
+      "precise_claim": "Producer purpose and supported role(s) are not defined by mounted authority sources.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C003",
+      "subject": "feed_health",
+      "topic": "variants",
+      "precise_claim": "Payload column existence is known; record variants or payload keys are not defined.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C004",
+      "subject": "feed_health",
+      "topic": "event_state",
+      "precise_claim": "Whether the output is an event, persistent state, or both is unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C005",
+      "subject": "feed_health",
+      "topic": "identity",
+      "precise_claim": "Identity fields or identity rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C006",
+      "subject": "feed_health",
+      "topic": "occurrence",
+      "precise_claim": "Occurrence/origin time for this family is unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C007",
+      "subject": "feed_health",
+      "topic": "availability",
+      "precise_claim": "Availability/emission-known time is unresolved; occurrence must not be substituted.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "causal_rule",
+          "supports": "Only information actually available by anchor time is eligible; occurrence/origin remains provenance"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C008",
+      "subject": "feed_health",
+      "topic": "reset",
+      "precise_claim": "Reset or replacement rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C009",
+      "subject": "feed_health",
+      "topic": "persistence",
+      "precise_claim": "Duration and persistence rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C010",
+      "subject": "feed_health",
+      "topic": "transition",
+      "precise_claim": "Lifecycle transition rules are unresolved; names such as from/to do not establish meaning.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C011",
+      "subject": "feed_health",
+      "topic": "direction",
+      "precise_claim": "Direction and sign conventions are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C012",
+      "subject": "feed_health",
+      "topic": "baseline",
+      "precise_claim": "Normalization and baseline definitions are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C013",
+      "subject": "feed_health",
+      "topic": "history",
+      "precise_claim": "History or warmup requirements are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C014",
+      "subject": "feed_health",
+      "topic": "future_mapping",
+      "precise_claim": "Exact future-field mapping is unresolved. The general causal rule is that only information actually available by anchor time may be used.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "causal_rule",
+          "supports": "Only information actually available by anchor time is eligible; occurrence/origin remains provenance"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Exact mapping is unknown; do not use completion, terminal, peak, fill, end, remaining, total-duration, or other later-known fields before availability is evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C015",
+      "subject": "feed_health",
+      "topic": "dependencies",
+      "precise_claim": "Direct producer dependencies for this family are unresolved; registry derives_from=[] is not proof of no dependency or independence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_feed_health]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "xauusd.detector_registry",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "entry detector_id=feed_health.derives_from",
+          "evidence_type": "registry_field",
+          "supports": "The inspected registry entry has derives_from=[]; this records no declared dependency only"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "Do not combine families as independent evidence.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C016",
+      "subject": "micro_volatility",
+      "topic": "physical_output_surface",
+      "precise_claim": "The XAUUSD tick source physically declares payload_micro_volatility as a nullable LargeUtf8 output column; this establishes physical presence only, not its scientific meaning.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "None established from physical presence alone; payload timing remains unspecified.",
+      "dependency_implications": "Physical co-location does not establish causal dependence or independence.",
+      "notes": "Payload column is not classified as a record variant."
+    },
+    {
+      "claim_id": "TC001-A02-C017",
+      "subject": "micro_volatility",
+      "topic": "purpose_role",
+      "precise_claim": "Producer purpose and supported role(s) are not defined by mounted authority sources.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C018",
+      "subject": "micro_volatility",
+      "topic": "variants",
+      "precise_claim": "Payload column existence is known; record variants or payload keys are not defined.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C019",
+      "subject": "micro_volatility",
+      "topic": "event_state",
+      "precise_claim": "Whether the output is an event, persistent state, or both is unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C020",
+      "subject": "micro_volatility",
+      "topic": "identity",
+      "precise_claim": "Identity fields or identity rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C021",
+      "subject": "micro_volatility",
+      "topic": "occurrence",
+      "precise_claim": "Occurrence/origin time for this family is unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C022",
+      "subject": "micro_volatility",
+      "topic": "availability",
+      "precise_claim": "Availability/emission-known time is unresolved; occurrence must not be substituted.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "causal_rule",
+          "supports": "Only information actually available by anchor time is eligible; occurrence/origin remains provenance"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C023",
+      "subject": "micro_volatility",
+      "topic": "reset",
+      "precise_claim": "Reset or replacement rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C024",
+      "subject": "micro_volatility",
+      "topic": "persistence",
+      "precise_claim": "Duration and persistence rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C025",
+      "subject": "micro_volatility",
+      "topic": "transition",
+      "precise_claim": "Lifecycle transition rules are unresolved; names such as from/to do not establish meaning.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C026",
+      "subject": "micro_volatility",
+      "topic": "direction",
+      "precise_claim": "Direction and sign conventions are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C027",
+      "subject": "micro_volatility",
+      "topic": "baseline",
+      "precise_claim": "Normalization and baseline definitions are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C028",
+      "subject": "micro_volatility",
+      "topic": "history",
+      "precise_claim": "History or warmup requirements are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C029",
+      "subject": "micro_volatility",
+      "topic": "future_mapping",
+      "precise_claim": "Exact future-field mapping is unresolved. The general causal rule is that only information actually available by anchor time may be used.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "causal_rule",
+          "supports": "Only information actually available by anchor time is eligible; occurrence/origin remains provenance"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Exact mapping is unknown; do not use completion, terminal, peak, fill, end, remaining, total-duration, or other later-known fields before availability is evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C030",
+      "subject": "micro_volatility",
+      "topic": "dependencies",
+      "precise_claim": "Direct producer dependencies for this family are unresolved; registry derives_from=[] is not proof of no dependency or independence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_micro_volatility]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "xauusd.detector_registry",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "entry detector_id=micro_volatility.derives_from",
+          "evidence_type": "registry_field",
+          "supports": "The inspected registry entry has derives_from=[]; this records no declared dependency only"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "Do not combine families as independent evidence.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C031",
+      "subject": "quote_arrival",
+      "topic": "physical_output_surface",
+      "precise_claim": "The XAUUSD tick source physically declares payload_quote_arrival as a nullable LargeUtf8 output column; this establishes physical presence only, not its scientific meaning.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "None established from physical presence alone; payload timing remains unspecified.",
+      "dependency_implications": "Physical co-location does not establish causal dependence or independence.",
+      "notes": "Payload column is not classified as a record variant."
+    },
+    {
+      "claim_id": "TC001-A02-C032",
+      "subject": "quote_arrival",
+      "topic": "purpose_role",
+      "precise_claim": "Producer purpose and supported role(s) are not defined by mounted authority sources.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C033",
+      "subject": "quote_arrival",
+      "topic": "variants",
+      "precise_claim": "Payload column existence is known; record variants or payload keys are not defined.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C034",
+      "subject": "quote_arrival",
+      "topic": "event_state",
+      "precise_claim": "Whether the output is an event, persistent state, or both is unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C035",
+      "subject": "quote_arrival",
+      "topic": "identity",
+      "precise_claim": "Identity fields or identity rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C036",
+      "subject": "quote_arrival",
+      "topic": "occurrence",
+      "precise_claim": "Occurrence/origin time for this family is unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C037",
+      "subject": "quote_arrival",
+      "topic": "availability",
+      "precise_claim": "Availability/emission-known time is unresolved; occurrence must not be substituted.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "causal_rule",
+          "supports": "Only information actually available by anchor time is eligible; occurrence/origin remains provenance"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C038",
+      "subject": "quote_arrival",
+      "topic": "reset",
+      "precise_claim": "Reset or replacement rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C039",
+      "subject": "quote_arrival",
+      "topic": "persistence",
+      "precise_claim": "Duration and persistence rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C040",
+      "subject": "quote_arrival",
+      "topic": "transition",
+      "precise_claim": "Lifecycle transition rules are unresolved; names such as from/to do not establish meaning.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C041",
+      "subject": "quote_arrival",
+      "topic": "direction",
+      "precise_claim": "Direction and sign conventions are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C042",
+      "subject": "quote_arrival",
+      "topic": "baseline",
+      "precise_claim": "Normalization and baseline definitions are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C043",
+      "subject": "quote_arrival",
+      "topic": "history",
+      "precise_claim": "History or warmup requirements are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C044",
+      "subject": "quote_arrival",
+      "topic": "future_mapping",
+      "precise_claim": "Exact future-field mapping is unresolved. The general causal rule is that only information actually available by anchor time may be used.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "causal_rule",
+          "supports": "Only information actually available by anchor time is eligible; occurrence/origin remains provenance"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Exact mapping is unknown; do not use completion, terminal, peak, fill, end, remaining, total-duration, or other later-known fields before availability is evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C045",
+      "subject": "quote_arrival",
+      "topic": "dependencies",
+      "precise_claim": "Direct producer dependencies for this family are unresolved; registry derives_from=[] is not proof of no dependency or independence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_arrival]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "xauusd.detector_registry",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "entry detector_id=quote_arrival.derives_from",
+          "evidence_type": "registry_field",
+          "supports": "The inspected registry entry has derives_from=[]; this records no declared dependency only"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "Do not combine families as independent evidence.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C046",
+      "subject": "quote_dynamics",
+      "topic": "physical_output_surface",
+      "precise_claim": "The XAUUSD tick source physically declares payload_quote_dynamics as a nullable LargeUtf8 output column; this establishes physical presence only, not its scientific meaning.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "None established from physical presence alone; payload timing remains unspecified.",
+      "dependency_implications": "Physical co-location does not establish causal dependence or independence.",
+      "notes": "Payload column is not classified as a record variant."
+    },
+    {
+      "claim_id": "TC001-A02-C047",
+      "subject": "quote_dynamics",
+      "topic": "purpose_role",
+      "precise_claim": "Producer purpose and supported role(s) are not defined by mounted authority sources.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C048",
+      "subject": "quote_dynamics",
+      "topic": "variants",
+      "precise_claim": "Payload column existence is known; record variants or payload keys are not defined.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C049",
+      "subject": "quote_dynamics",
+      "topic": "event_state",
+      "precise_claim": "Whether the output is an event, persistent state, or both is unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C050",
+      "subject": "quote_dynamics",
+      "topic": "identity",
+      "precise_claim": "Identity fields or identity rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C051",
+      "subject": "quote_dynamics",
+      "topic": "occurrence",
+      "precise_claim": "Occurrence/origin time for this family is unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C052",
+      "subject": "quote_dynamics",
+      "topic": "availability",
+      "precise_claim": "Availability/emission-known time is unresolved; occurrence must not be substituted.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "causal_rule",
+          "supports": "Only information actually available by anchor time is eligible; occurrence/origin remains provenance"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C053",
+      "subject": "quote_dynamics",
+      "topic": "reset",
+      "precise_claim": "Reset or replacement rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C054",
+      "subject": "quote_dynamics",
+      "topic": "persistence",
+      "precise_claim": "Duration and persistence rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C055",
+      "subject": "quote_dynamics",
+      "topic": "transition",
+      "precise_claim": "Lifecycle transition rules are unresolved; names such as from/to do not establish meaning.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C056",
+      "subject": "quote_dynamics",
+      "topic": "direction",
+      "precise_claim": "Direction and sign conventions are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C057",
+      "subject": "quote_dynamics",
+      "topic": "baseline",
+      "precise_claim": "Normalization and baseline definitions are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C058",
+      "subject": "quote_dynamics",
+      "topic": "history",
+      "precise_claim": "History or warmup requirements are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C059",
+      "subject": "quote_dynamics",
+      "topic": "future_mapping",
+      "precise_claim": "Exact future-field mapping is unresolved. The general causal rule is that only information actually available by anchor time may be used.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "causal_rule",
+          "supports": "Only information actually available by anchor time is eligible; occurrence/origin remains provenance"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Exact mapping is unknown; do not use completion, terminal, peak, fill, end, remaining, total-duration, or other later-known fields before availability is evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C060",
+      "subject": "quote_dynamics",
+      "topic": "dependencies",
+      "precise_claim": "Direct producer dependencies for this family are unresolved; registry derives_from=[] is not proof of no dependency or independence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_dynamics]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "xauusd.detector_registry",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "entry detector_id=quote_dynamics.derives_from",
+          "evidence_type": "registry_field",
+          "supports": "The inspected registry entry has derives_from=[]; this records no declared dependency only"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "Do not combine families as independent evidence.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C061",
+      "subject": "quote_pressure",
+      "topic": "physical_output_surface",
+      "precise_claim": "The XAUUSD tick source physically declares payload_quote_pressure as a nullable LargeUtf8 output column; this establishes physical presence only, not its scientific meaning.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "None established from physical presence alone; payload timing remains unspecified.",
+      "dependency_implications": "Physical co-location does not establish causal dependence or independence.",
+      "notes": "Payload column is not classified as a record variant."
+    },
+    {
+      "claim_id": "TC001-A02-C062",
+      "subject": "quote_pressure",
+      "topic": "purpose_role",
+      "precise_claim": "Producer purpose and supported role(s) are not defined by mounted authority sources.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C063",
+      "subject": "quote_pressure",
+      "topic": "variants",
+      "precise_claim": "Payload column existence is known; record variants or payload keys are not defined.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C064",
+      "subject": "quote_pressure",
+      "topic": "event_state",
+      "precise_claim": "Whether the output is an event, persistent state, or both is unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C065",
+      "subject": "quote_pressure",
+      "topic": "identity",
+      "precise_claim": "Identity fields or identity rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C066",
+      "subject": "quote_pressure",
+      "topic": "occurrence",
+      "precise_claim": "Occurrence/origin time for this family is unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C067",
+      "subject": "quote_pressure",
+      "topic": "availability",
+      "precise_claim": "Availability/emission-known time is unresolved; occurrence must not be substituted.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "causal_rule",
+          "supports": "Only information actually available by anchor time is eligible; occurrence/origin remains provenance"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C068",
+      "subject": "quote_pressure",
+      "topic": "reset",
+      "precise_claim": "Reset or replacement rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C069",
+      "subject": "quote_pressure",
+      "topic": "persistence",
+      "precise_claim": "Duration and persistence rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C070",
+      "subject": "quote_pressure",
+      "topic": "transition",
+      "precise_claim": "Lifecycle transition rules are unresolved; names such as from/to do not establish meaning.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C071",
+      "subject": "quote_pressure",
+      "topic": "direction",
+      "precise_claim": "Direction and sign conventions are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C072",
+      "subject": "quote_pressure",
+      "topic": "baseline",
+      "precise_claim": "Normalization and baseline definitions are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C073",
+      "subject": "quote_pressure",
+      "topic": "history",
+      "precise_claim": "History or warmup requirements are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C074",
+      "subject": "quote_pressure",
+      "topic": "future_mapping",
+      "precise_claim": "Exact future-field mapping is unresolved. The general causal rule is that only information actually available by anchor time may be used.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "causal_rule",
+          "supports": "Only information actually available by anchor time is eligible; occurrence/origin remains provenance"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Exact mapping is unknown; do not use completion, terminal, peak, fill, end, remaining, total-duration, or other later-known fields before availability is evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C075",
+      "subject": "quote_pressure",
+      "topic": "dependencies",
+      "precise_claim": "Direct producer dependencies for this family are unresolved; registry derives_from=[] is not proof of no dependency or independence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_quote_pressure]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "xauusd.detector_registry",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "entry detector_id=quote_pressure.derives_from",
+          "evidence_type": "registry_field",
+          "supports": "The inspected registry entry has derives_from=[]; this records no declared dependency only"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "Do not combine families as independent evidence.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C076",
+      "subject": "spread_state",
+      "topic": "physical_output_surface",
+      "precise_claim": "The XAUUSD tick source physically declares payload_spread_state as a nullable LargeUtf8 output column; this establishes physical presence only, not its scientific meaning.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "None established from physical presence alone; payload timing remains unspecified.",
+      "dependency_implications": "Physical co-location does not establish causal dependence or independence.",
+      "notes": "Payload column is not classified as a record variant."
+    },
+    {
+      "claim_id": "TC001-A02-C077",
+      "subject": "spread_state",
+      "topic": "purpose_role",
+      "precise_claim": "Producer purpose and supported role(s) are not defined by mounted authority sources.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C078",
+      "subject": "spread_state",
+      "topic": "variants",
+      "precise_claim": "Payload column existence is known; record variants or payload keys are not defined.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C079",
+      "subject": "spread_state",
+      "topic": "event_state",
+      "precise_claim": "Whether the output is an event, persistent state, or both is unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C080",
+      "subject": "spread_state",
+      "topic": "identity",
+      "precise_claim": "Identity fields or identity rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C081",
+      "subject": "spread_state",
+      "topic": "occurrence",
+      "precise_claim": "Occurrence/origin time for this family is unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C082",
+      "subject": "spread_state",
+      "topic": "availability",
+      "precise_claim": "Availability/emission-known time is unresolved; occurrence must not be substituted.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "causal_rule",
+          "supports": "Only information actually available by anchor time is eligible; occurrence/origin remains provenance"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C083",
+      "subject": "spread_state",
+      "topic": "reset",
+      "precise_claim": "Reset or replacement rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C084",
+      "subject": "spread_state",
+      "topic": "persistence",
+      "precise_claim": "Duration and persistence rules are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C085",
+      "subject": "spread_state",
+      "topic": "transition",
+      "precise_claim": "Lifecycle transition rules are unresolved; names such as from/to do not establish meaning.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C086",
+      "subject": "spread_state",
+      "topic": "direction",
+      "precise_claim": "Direction and sign conventions are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C087",
+      "subject": "spread_state",
+      "topic": "baseline",
+      "precise_claim": "Normalization and baseline definitions are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C088",
+      "subject": "spread_state",
+      "topic": "history",
+      "precise_claim": "History or warmup requirements are unresolved.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C089",
+      "subject": "spread_state",
+      "topic": "future_mapping",
+      "precise_claim": "Exact future-field mapping is unresolved. The general causal rule is that only information actually available by anchor time may be used.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "protocol.research_rules",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "rule 2",
+          "evidence_type": "causal_rule",
+          "supports": "Only information actually available by anchor time is eligible; occurrence/origin remains provenance"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Exact mapping is unknown; do not use completion, terminal, peak, fill, end, remaining, total-duration, or other later-known fields before availability is evidenced.",
+      "dependency_implications": "No independence or causal dependency conclusion is supported.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    },
+    {
+      "claim_id": "TC001-A02-C090",
+      "subject": "spread_state",
+      "topic": "dependencies",
+      "precise_claim": "Direct producer dependencies for this family are unresolved; registry derives_from=[] is not proof of no dependency or independence.",
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[scale=Tick].physical_schema[name=payload_spread_state]",
+          "evidence_type": "physical_schema",
+          "supports": "Physical nullable LargeUtf8 output column only; no scientific meaning"
+        },
+        {
+          "source_id": "xauusd.detector_registry",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "entry detector_id=spread_state.derives_from",
+          "evidence_type": "registry_field",
+          "supports": "The inspected registry entry has derives_from=[]; this records no declared dependency only"
+        }
+      ],
+      "counterevidence": [
+        "No detector-specific semantic schema or producer contract is mounted."
+      ],
+      "future_information_risk": "Unknown until detector-specific emission timing and field mapping are evidenced.",
+      "dependency_implications": "Do not combine families as independent evidence.",
+      "notes": "Physical presence is separated from scientific meaning; no semantics are inferred from names."
+    }
+  ],
+  "unresolved_questions": [
+    "All detector-specific semantic contracts for the six families, including every per-family topic in the claims.",
+    "Which payload keys and value types exist inside each physical column?",
+    "When is each field emitted and available under the causal clock?",
+    "What exact producer dependency graph exists?"
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "xauusd.source_inventory",
+      "relative_path": "instruments/XAUUSD/source_inventory.json",
+      "locators": [
+        "sources[scale=Tick].physical_schema[]",
+        "sources[scale=Tick].physical_time_coordinate_fields[]",
+        "sources[scale=Tick].payload_columns[]"
+      ]
+    },
+    {
+      "source_id": "xauusd.detector_registry",
+      "relative_path": "registry/detectors_v1.json",
+      "locators": [
+        "entries for six detector_id values",
+        "derives_from fields"
+      ]
+    },
+    {
+      "source_id": "xauusd.schemas",
+      "relative_path": "authority/xauusd/schemas",
+      "locators": [
+        "feature_generic_v1.json|columns[]"
+      ]
+    },
+    {
+      "source_id": "protocol.agent_access",
+      "relative_path": "protocol/AGENT_ACCESS.md",
+      "locators": [
+        "repository mounts; authority sources; visibility restrictions"
+      ]
+    },
+    {
+      "source_id": "protocol.research_rules",
+      "relative_path": "protocol/RESEARCH_RULES.md",
+      "locators": [
+        "rules 1-5,8-12,14"
+      ]
+    }
+  ],
+  "lifecycle_stage_future_information_matrix": [
+    {
+      "family": "feed_health",
+      "physical_output": "payload_feed_health physically present as nullable LargeUtf8",
+      "role": "UNRESOLVED",
+      "event_or_state": "UNRESOLVED",
+      "availability": "UNRESOLVED",
+      "persistence": "UNRESOLVED",
+      "direction": "UNRESOLVED",
+      "baseline": "UNRESOLVED",
+      "safe_state_use": "UNRESOLVED; row fields are PHYSICALLY_PRESENT_ON_TICK_ROW only",
+      "future_rule": "AUTHORITATIVE general causal rule; exact detector field mapping UNRESOLVED",
+      "dependencies": "UNRESOLVED; derives_from=[] is not proof",
+      "unresolved_topics": [
+        "purpose_role",
+        "variants",
+        "event_state",
+        "identity",
+        "occurrence",
+        "availability",
+        "reset",
+        "persistence",
+        "transition",
+        "direction",
+        "baseline",
+        "history",
+        "future_mapping",
+        "dependencies"
+      ]
+    },
+    {
+      "family": "micro_volatility",
+      "physical_output": "payload_micro_volatility physically present as nullable LargeUtf8",
+      "role": "UNRESOLVED",
+      "event_or_state": "UNRESOLVED",
+      "availability": "UNRESOLVED",
+      "persistence": "UNRESOLVED",
+      "direction": "UNRESOLVED",
+      "baseline": "UNRESOLVED",
+      "safe_state_use": "UNRESOLVED; row fields are PHYSICALLY_PRESENT_ON_TICK_ROW only",
+      "future_rule": "AUTHORITATIVE general causal rule; exact detector field mapping UNRESOLVED",
+      "dependencies": "UNRESOLVED; derives_from=[] is not proof",
+      "unresolved_topics": [
+        "purpose_role",
+        "variants",
+        "event_state",
+        "identity",
+        "occurrence",
+        "availability",
+        "reset",
+        "persistence",
+        "transition",
+        "direction",
+        "baseline",
+        "history",
+        "future_mapping",
+        "dependencies"
+      ]
+    },
+    {
+      "family": "quote_arrival",
+      "physical_output": "payload_quote_arrival physically present as nullable LargeUtf8",
+      "role": "UNRESOLVED",
+      "event_or_state": "UNRESOLVED",
+      "availability": "UNRESOLVED",
+      "persistence": "UNRESOLVED",
+      "direction": "UNRESOLVED",
+      "baseline": "UNRESOLVED",
+      "safe_state_use": "UNRESOLVED; row fields are PHYSICALLY_PRESENT_ON_TICK_ROW only",
+      "future_rule": "AUTHORITATIVE general causal rule; exact detector field mapping UNRESOLVED",
+      "dependencies": "UNRESOLVED; derives_from=[] is not proof",
+      "unresolved_topics": [
+        "purpose_role",
+        "variants",
+        "event_state",
+        "identity",
+        "occurrence",
+        "availability",
+        "reset",
+        "persistence",
+        "transition",
+        "direction",
+        "baseline",
+        "history",
+        "future_mapping",
+        "dependencies"
+      ]
+    },
+    {
+      "family": "quote_dynamics",
+      "physical_output": "payload_quote_dynamics physically present as nullable LargeUtf8",
+      "role": "UNRESOLVED",
+      "event_or_state": "UNRESOLVED",
+      "availability": "UNRESOLVED",
+      "persistence": "UNRESOLVED",
+      "direction": "UNRESOLVED",
+      "baseline": "UNRESOLVED",
+      "safe_state_use": "UNRESOLVED; row fields are PHYSICALLY_PRESENT_ON_TICK_ROW only",
+      "future_rule": "AUTHORITATIVE general causal rule; exact detector field mapping UNRESOLVED",
+      "dependencies": "UNRESOLVED; derives_from=[] is not proof",
+      "unresolved_topics": [
+        "purpose_role",
+        "variants",
+        "event_state",
+        "identity",
+        "occurrence",
+        "availability",
+        "reset",
+        "persistence",
+        "transition",
+        "direction",
+        "baseline",
+        "history",
+        "future_mapping",
+        "dependencies"
+      ]
+    },
+    {
+      "family": "quote_pressure",
+      "physical_output": "payload_quote_pressure physically present as nullable LargeUtf8",
+      "role": "UNRESOLVED",
+      "event_or_state": "UNRESOLVED",
+      "availability": "UNRESOLVED",
+      "persistence": "UNRESOLVED",
+      "direction": "UNRESOLVED",
+      "baseline": "UNRESOLVED",
+      "safe_state_use": "UNRESOLVED; row fields are PHYSICALLY_PRESENT_ON_TICK_ROW only",
+      "future_rule": "AUTHORITATIVE general causal rule; exact detector field mapping UNRESOLVED",
+      "dependencies": "UNRESOLVED; derives_from=[] is not proof",
+      "unresolved_topics": [
+        "purpose_role",
+        "variants",
+        "event_state",
+        "identity",
+        "occurrence",
+        "availability",
+        "reset",
+        "persistence",
+        "transition",
+        "direction",
+        "baseline",
+        "history",
+        "future_mapping",
+        "dependencies"
+      ]
+    },
+    {
+      "family": "spread_state",
+      "physical_output": "payload_spread_state physically present as nullable LargeUtf8",
+      "role": "UNRESOLVED",
+      "event_or_state": "UNRESOLVED",
+      "availability": "UNRESOLVED",
+      "persistence": "UNRESOLVED",
+      "direction": "UNRESOLVED",
+      "baseline": "UNRESOLVED",
+      "safe_state_use": "UNRESOLVED; row fields are PHYSICALLY_PRESENT_ON_TICK_ROW only",
+      "future_rule": "AUTHORITATIVE general causal rule; exact detector field mapping UNRESOLVED",
+      "dependencies": "UNRESOLVED; derives_from=[] is not proof",
+      "unresolved_topics": [
+        "purpose_role",
+        "variants",
+        "event_state",
+        "identity",
+        "occurrence",
+        "availability",
+        "reset",
+        "persistence",
+        "transition",
+        "direction",
+        "baseline",
+        "history",
+        "future_mapping",
+        "dependencies"
+      ]
+    }
+  ]
+}
