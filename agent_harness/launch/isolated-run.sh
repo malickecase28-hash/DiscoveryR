@@ -11,9 +11,9 @@ attestation_sink=$(decode "$6")
 launch_id=$(decode "$7")
 manifest_sha=$(decode "$8")
 program_id=$(decode "$9")
-role_id=$(decode "\${10}")
-research_base_sha=$(decode "\${11}")
-launch_purpose=$(decode "\${12}")
+role_id=$(decode "${10}")
+research_base_sha=$(decode "${11}")
+launch_purpose=$(decode "${12}")
 
 case "$launch_purpose" in SMOKE|RESEARCH) ;; *) echo "invalid launch purpose" >&2; exit 1 ;; esac
 mount --make-rprivate /
