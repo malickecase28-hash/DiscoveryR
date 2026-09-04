@@ -13,5 +13,4 @@ AP-001 and TC-001 receive declared serialization contracts, but lifecycle and
 producer semantics remain unresolved. AP-002 has no approved FVG contract.
 BG-001 includes only the declared canonical-bar schema fields and does not
 infer lineage. Bundle directories are atomically created and use the shared
-recursive transport digest; `bundle_manifest.json` is excluded to avoid a
-self-referential hash.
+recursive transport digest, including `bundle_manifest.json`.
