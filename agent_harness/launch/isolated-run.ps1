@@ -15,6 +15,10 @@ function SafePath([string] $Path) {
     if ($full.Equals($repo.TrimEnd('\'), [StringComparison]::OrdinalIgnoreCase) -or $full.StartsWith($repoFull, [StringComparison]::OrdinalIgnoreCase)) { throw 'RunRoot must be outside the shared Git repository.' }
     return $full
 }
+function ManifestRoot([string] $Path) {
+    if ($Path -notmatch '^[A-Za-z]:\\' -or $Path -match '[*?]') { throw 'Unsafe TRINITYR_MANIFEST_ROOT.' }
+    $full=[IO.Path]::GetFullPath($Path).TrimEnd('\'); if ($full.Equals($repo.TrimEnd('\'),[StringComparison]::OrdinalIgnoreCase) -or $full.StartsWith($repoFull,[StringComparison]::OrdinalIgnoreCase)) { throw 'Manifest root must be outside the shared Git repository.' }; return $full
+}
 function B64([string] $Value) { [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($Value)) }
 function WslPath([string] $Path) {
     if ($Path -notmatch '^([A-Za-z]):\\(.*)$') { throw "Only absolute Windows drive paths are supported: $Path" }
@@ -37,12 +41,31 @@ function SafeRelative([string] $Value, [string] $Name) {
 function RecursiveHash([string] $Path) {
     $members = Get-ChildItem -LiteralPath $Path -Recurse -Force | ForEach-Object {
         if ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "Reparse points are not allowed: $($_.FullName)" }
-        if (-not $_.PSIsContainer) {
+        if (-not $_.PSIsContainer -and $_.Name -ne 'bundle_manifest.json') {
             $relative = $_.FullName.Substring($Path.Length + 1).Replace('\','/')
             "$relative`t$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant())`n"
         }
     } | Sort-Object
     ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($members -join ''))) | ForEach-Object ToString x2) -join ''
+}
+function ShaText([string] $Value) { ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes($Value)) | ForEach-Object ToString x2) -join '' }
+function SharedInputFingerprint($Assignment, $Authority) {
+    $shared = [ordered]@{
+        program_id = $Assignment.program_id; detector_id = $Assignment.detector_id; assignment = $Assignment.assignment
+        authorized_repository_surfaces = @($Assignment.authorized_repository_surfaces | Where-Object { $_ -notmatch '^agent_harness/assignments/' } | Sort-Object)
+        authority_source_ids = @($Assignment.authority_source_ids | Sort-Object)
+        authority_bundle_identities = @($Assignment.authority_source_ids | ForEach-Object { $s=(@($Authority.sources | Where-Object source_id -eq $_))[0]; "$($s.bundle_content_identity):$($s.directory_transport_hash)" } | Sort-Object)
+        raw_lake_access = $Assignment.raw_lake_access; peer_visibility = $Assignment.peer_visibility
+    }
+    ShaText (($shared | ConvertTo-Json -Compress -Depth 10))
+}
+function WriteInputManifest($Assignment, $Authority, [string] $ManifestRoot, [string] $BaseSha) {
+    $pair = SharedInputFingerprint $Assignment $Authority
+    $surfaces=@($Assignment.authorized_repository_surfaces|Sort-Object|ForEach-Object{$p=Join-Path $repoFull ($_ -replace '/','\');[ordered]@{relative_path=$_;identity=if((Get-Item $p).PSIsContainer){RecursiveHash $p}else{(Get-FileHash $p -Algorithm SHA256).Hash.ToLowerInvariant()};hash=if((Get-Item $p).PSIsContainer){RecursiveHash $p}else{(Get-FileHash $p -Algorithm SHA256).Hash.ToLowerInvariant()}}})
+    $manifest = [ordered]@{ schema_version='trinity.research-input-manifest.v1'; program_id=$Assignment.program_id; role_id=$Assignment.role_id; phase=$Assignment.phase; research_base_sha=$BaseSha; assignment_path=("agent_harness/assignments/$($Assignment.program_id)/$($Assignment.role_id).json"); assignment_sha256=(Get-FileHash $assignmentPath -Algorithm SHA256).Hash.ToLowerInvariant(); access_profile=$Assignment.access_profile; raw_lake_access=$Assignment.raw_lake_access; repository_surfaces=$surfaces; authority_sources=@($Assignment.authority_source_ids | ForEach-Object { $s=@($Authority.sources | Where-Object source_id -eq $_)[0]; [ordered]@{source_id=$s.source_id;bundle_content_identity=$s.bundle_content_identity;directory_transport_hash=$s.directory_transport_hash} }); shared_input_fingerprint=$pair }
+    New-Item -ItemType Directory -Force -Path $ManifestRoot | Out-Null
+    $path=Join-Path $ManifestRoot 'research_input_manifest.json'; if (Test-Path -LiteralPath $path) { $old=Get-Content -Raw $path; $new=($manifest|ConvertTo-Json -Depth 20)+[Environment]::NewLine; if ($old -ne $new) { throw 'Immutable research input manifest conflict.' } } else { ($manifest|ConvertTo-Json -Depth 20)+[Environment]::NewLine | Set-Content -NoNewline -Encoding utf8 $path }
+    return $path
 }
 function MountPath([string] $Path) { if ($Path.StartsWith('/')) { $Path } else { WslPath $Path } }
 function RejectOperationalKeys($Node, [string] $Path = 'assignment') {
@@ -146,6 +169,7 @@ foreach ($surface in @($assignment.authorized_repository_surfaces)) {
     if ([string]::IsNullOrWhiteSpace($surface) -or $surface.StartsWith('/') -or $surface.StartsWith('\') -or $surface -match '(^|[\\/])\.\.([\\/]|$)' -or $surface -match ':') { throw "Unsafe repository surface: $surface" }
     $source = [IO.Path]::GetFullPath((Join-Path $repoFull ($surface -replace '/','\')))
     if (-not $source.StartsWith($repoFull, [StringComparison]::OrdinalIgnoreCase) -or -not (Test-Path -LiteralPath $source)) { throw "Unavailable or outside repository surface: $surface" }
+    if ((Get-Item -LiteralPath $source).PSIsContainer -and @(Get-ChildItem -LiteralPath $source -Force).Count -eq 0) { throw "Empty repository surface: $surface" }
     NoReparse $source
     if ($surface -match '(^|[\\/])\.\.([\\/]|$)') { throw "Unsafe repository surface: $surface" }
     $mounts += [PSCustomObject]@{ source = (WslPath $source); target = '/shared/research-program/' + ($surface -replace '\\','/') }
@@ -173,12 +197,21 @@ foreach ($sourceId in @($assignment.authority_source_ids)) {
     } else { throw "Authority source root missing: $sourceId" }
     if (-not (Test-Path -LiteralPath $sourcePath)) { throw "Unavailable authority source: $sourceId" }
     NoReparse $sourcePath
-    if ((RecursiveHash $sourcePath) -ne $source[0].hash) { throw "Authority source hash mismatch: $sourceId" }
+    if ([string]::IsNullOrWhiteSpace([string]$source[0].hash) -or $source[0].hash -notmatch '^[0-9a-fA-F]{64}$') { throw "Authority source hash is empty or invalid: $sourceId" }
+    if ((RecursiveHash $sourcePath) -ne $source[0].hash.ToLowerInvariant()) { throw "Authority source hash mismatch: $sourceId" }
+    $bundleManifestPath=Join-Path $sourcePath 'bundle_manifest.json'; if(!(Test-Path $bundleManifestPath -PathType Leaf)){throw "Authority bundle manifest missing: $sourceId"};$bundleManifest=Get-Content -Raw $bundleManifestPath|ConvertFrom-Json
+    foreach($field in 'bundle_content_identity','directory_transport_hash'){if([string]::IsNullOrWhiteSpace([string]$source[0].$field)-or $source[0].$field -notmatch '^[0-9a-fA-F]{64}$'-or $bundleManifest.$field -ne $source[0].$field){throw "Authority bundle identity mismatch: $sourceId/$field"}}
     if ($source[0].mount_target -notmatch '^/shared/[A-Za-z0-9._/-]+$' -or $source[0].mount_target -match '\.\.') { throw "Unsafe authority mount target: $sourceId" }
     $mounts += [PSCustomObject]@{ source = (MountPath $sourcePath); target = $source[0].mount_target }
 }
 if ($lake) { $mounts += [PSCustomObject]@{ source = (MountPath $lake); target = "/shared/data/$($assignment.data_scope_id)/development" } }
 if ($runtime) { $mounts += $runtime }
+$baseSha = (& git -C $repo rev-parse HEAD).Trim()
+if ($baseSha -notmatch '^[0-9a-f]{40}$') { throw 'Unable to establish immutable research base SHA.' }
+$manifestRootInput = if ($env:TRINITYR_MANIFEST_ROOT) { $env:TRINITYR_MANIFEST_ROOT } else { 'F:\TrinityR-manifests\wave1-v2' }
+$manifestRoot = ManifestRoot $manifestRootInput
+$manifestPath = WriteInputManifest $assignment $authority (Join-Path $manifestRoot "$ProgramId\$Role") $baseSha
+$mounts += [PSCustomObject]@{ source = (MountPath $manifestPath); target = '/shared/research_input_manifest.json' }
 $mountText = ($mounts | ForEach-Object { "$(B64 $_.source)|$(B64 $_.target)" }) -join "`n"
 $launcher = Join-Path $PSScriptRoot 'isolated-run.sh'
 $bootstrap = B64 ((Get-Content -Raw -LiteralPath $launcher).Replace("`r", ''))

@@ -13,7 +13,7 @@
     "instruments/XAUUSD/source_inventory.json",
     "agent_harness/assignments/AP-001/A-02.json"
   ],
-  "authority_source_ids": ["xauusd.schemas"],
+  "authority_source_ids": ["xauusd.wave1.ap001"],
   "raw_lake_access": "DENY",
   "private_workspace": "F:\\TrinityR-runs\\AP-001\\A-02",
   "peer_visibility": "DENY"

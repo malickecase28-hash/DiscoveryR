@@ -44,9 +44,11 @@ Examples:
 
     .\agent_harness\publication\publish-submission.ps1 `
       -ProgramId BG-001 -Role A-02 `
+      -BaseRef <immutable-commit-sha> -ResearchBaseSha <same-commit-sha> `
       -SubmissionPath '\\wsl.localhost\<distro>\home\glm\workspace' `
       -Push
 
 Codex run roots and WSL workspaces are both accepted as submission paths. The
-publisher rejects extra files, identity mismatches, and forbidden operational
-identity terms before creating the branch.
+publisher rejects extra files, identity mismatches, mutable/mismatched base
+references, invalid claims/evidence, and explicit operational identity names
+before creating the branch. Scientific phrases such as null model remain valid.

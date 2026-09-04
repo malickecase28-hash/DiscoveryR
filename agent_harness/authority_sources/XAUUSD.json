@@ -1,15 +1,52 @@
 {
-  "instrument": "XAUUSD",
-  "sources": [
-    {
-      "source_id": "xauusd.schemas",
-      "root_path": "F:\\TrinityR-research",
-      "relative_path": "schemas",
-      "mount_target": "/shared/authority/xauusd/schemas",
-      "purpose": "Authoritative schema surfaces only",
-      "hash": "8f42d6b8fb22cfb8f9ec65426a8217f113073c2deb32dd0329b506b3046def6f"
-    }
-  ],
-  "excluded": ["config secrets", "Google credentials", ".codex runtime", "research directives", "findings", "DuckDB bytes", "raw outcomes"],
-  "unresolved_semantics_are_reportable": true
+    "schema_version":  "trinity.authority-sources.v2",
+    "instrument":  "XAUUSD",
+    "sources":  [
+                    {
+                        "source_id":  "xauusd.wave1.ap001",
+                        "root_env":  "TRINITYR_AUTHORITY_ROOT",
+                        "relative_path":  "XAUUSD/WAVE1_AUTHORITY_V1/AP-001",
+                        "mount_target":  "/shared/authority/xauusd/ap001",
+                        "hash":  "24f3c6cc918e11eebe71c0e228267292276e0b44564859a54d62fce049638248",
+                        "bundle_content_identity":  "69701763cd40ffc1981c44e02f54e26ebb3509fee3b745c49406037fa38ade09",
+                        "directory_transport_hash":  "24f3c6cc918e11eebe71c0e228267292276e0b44564859a54d62fce049638248"
+                    },
+                    {
+                        "source_id":  "xauusd.wave1.ap002",
+                        "root_env":  "TRINITYR_AUTHORITY_ROOT",
+                        "relative_path":  "XAUUSD/WAVE1_AUTHORITY_V1/AP-002",
+                        "mount_target":  "/shared/authority/xauusd/ap002",
+                        "hash":  "0d21fb54f2235627e0e3b21b15abe3c11a257f567180d24e0fd42702bad04ca8",
+                        "bundle_content_identity":  "2caba332a393ce3a34421a6b407794d7a23e985b20f8d42d7e000796c3ac32d8",
+                        "directory_transport_hash":  "0d21fb54f2235627e0e3b21b15abe3c11a257f567180d24e0fd42702bad04ca8"
+                    },
+                    {
+                        "source_id":  "xauusd.wave1.tc001",
+                        "root_env":  "TRINITYR_AUTHORITY_ROOT",
+                        "relative_path":  "XAUUSD/WAVE1_AUTHORITY_V1/TC-001",
+                        "mount_target":  "/shared/authority/xauusd/tc001",
+                        "hash":  "1fdda4e9d5702f5eb1563acbe618bab7af84d9d72ac236cf54a00319cc853400",
+                        "bundle_content_identity":  "668f932ebc660929a6c16587ad90693dcd04ebdd294983963399f764d8d28281",
+                        "directory_transport_hash":  "1fdda4e9d5702f5eb1563acbe618bab7af84d9d72ac236cf54a00319cc853400"
+                    },
+                    {
+                        "source_id":  "xauusd.wave1.bg001",
+                        "root_env":  "TRINITYR_AUTHORITY_ROOT",
+                        "relative_path":  "XAUUSD/WAVE1_AUTHORITY_V1/BG-001",
+                        "mount_target":  "/shared/authority/xauusd/bg001",
+                        "hash":  "c0ea7aa9d041e97892dcf4ffcb72ae935996095ac66a31831cdc7c6a8a8e8fcc",
+                        "bundle_content_identity":  "92dc60d4454a5c8687dbb9eb63d1e413f5d312676f7bab1ee4b9332798797288",
+                        "directory_transport_hash":  "c0ea7aa9d041e97892dcf4ffcb72ae935996095ac66a31831cdc7c6a8a8e8fcc"
+                    }
+                ],
+    "excluded":  [
+                     "config secrets",
+                     "Google credentials",
+                     ".codex runtime",
+                     "research directives",
+                     "findings",
+                     "DuckDB bytes",
+                     "raw outcomes"
+                 ],
+    "unresolved_semantics_are_reportable":  true
 }

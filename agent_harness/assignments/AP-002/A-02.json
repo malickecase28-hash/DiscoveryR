@@ -6,7 +6,7 @@
   "detector_id": "fvg",
   "assignment": "Reconstruct FVG lifecycle, availability, and episode identity semantics independently.",
   "authorized_repository_surfaces": ["protocol", "contracts", "registry", "instruments/XAUUSD/instrument_config.json", "instruments/XAUUSD/source_inventory.json", "agent_harness/assignments/AP-002/A-02.json"],
-  "authority_source_ids": ["xauusd.schemas"],
+  "authority_source_ids": ["xauusd.wave1.ap002"],
   "raw_lake_access": "DENY",
   "peer_visibility": "DENY"
 }

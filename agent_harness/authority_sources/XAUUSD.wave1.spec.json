@@ -1,0 +1,10 @@
+{
+  "schema_version": "trinity.authority-extraction.v2",
+  "instrument": "XAUUSD",
+  "bundles": [
+    { "program_id": "AP-001", "subject_id": "drift_burst", "source_file": "payload_manifest.json", "source_kind": "payload_contract", "selectors": { "contract_schema_version": "/declared_tick_payload_contract/schema_version", "contract_source": "/declared_tick_payload_contract/source", "drift_burst": "/declared_tick_payload_contract/detectors/drift_burst" }, "status": ["DECLARED_SERIALIZATION_CONTRACT_AVAILABLE", "LIFECYCLE_SEMANTICS_STILL_REQUIRE_PRODUCER_AUTHORITY"], "unresolved": [] },
+    { "program_id": "AP-002", "subject_id": "fvg", "source_file": null, "source_kind": null, "selectors": {}, "status": [], "unresolved": ["UNRESOLVED_PENDING_SOURCE_APPROVAL"] },
+    { "program_id": "TC-001", "subject_id": "tick_conditioning", "source_file": "payload_manifest.json", "source_kind": "payload_contract", "selectors": { "contract_schema_version": "/declared_tick_payload_contract/schema_version", "contract_source": "/declared_tick_payload_contract/source", "feed_health": "/declared_tick_payload_contract/detectors/feed_health", "micro_volatility": "/declared_tick_payload_contract/detectors/micro_volatility", "quote_arrival": "/declared_tick_payload_contract/detectors/quote_arrival", "quote_dynamics": "/declared_tick_payload_contract/detectors/quote_dynamics", "quote_pressure": "/declared_tick_payload_contract/detectors/quote_pressure", "spread_state": "/declared_tick_payload_contract/detectors/spread_state" }, "status": ["DECLARED_SERIALIZATION_CONTRACT_AVAILABLE"], "unresolved": [] },
+    { "program_id": "BG-001", "subject_id": "bar_dependency_lineage", "source_file": "bars_canonical_v1.json", "source_kind": "schema", "selectors": { "title": "/title", "schema_id": "/schema_id", "description": "/description", "columns": "/columns", "hive_partitions": "/hive_partitions" }, "status": [], "unresolved": ["lineage: UNRESOLVED_PENDING_SOURCE_APPROVAL"] }
+  ]
+}
