@@ -69,8 +69,14 @@ foreach ($sourceId in @($assignment.authority_source_ids)) {
     $sourcePath = Join-Path $source[0].root_path ($source[0].relative_path -replace '/','\')
     if (-not (Test-Path -LiteralPath $sourcePath)) { throw "Unavailable authority source: $sourceId" }
     NoReparse $sourcePath
-    $members = (Get-ChildItem -LiteralPath $sourcePath -File | Sort-Object FullName | ForEach-Object { $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash; "$hash  $($_.Name)" }) -join "`r`n"
-    $digest = ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes($members)) | ForEach-Object ToString x2) -join ''
+    $members = Get-ChildItem -LiteralPath $sourcePath -Recurse -Force | ForEach-Object {
+        if ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw "Authority source contains reparse point: $($_.FullName)" }
+        if ($_.PSIsContainer) { return }
+        $relative = $_.FullName.Substring($sourcePath.Length + 1).Replace('\','/')
+        $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+        "$relative`t$hash`n"
+    } | Sort-Object
+    $digest = ([Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes(($members -join ''))) | ForEach-Object ToString x2) -join ''
     if ($digest -ne $source[0].hash) { throw "Authority source hash mismatch: $sourceId" }
     $mounts += [PSCustomObject]@{ source = (WslPath $sourcePath); target = $source[0].mount_target }
 }
