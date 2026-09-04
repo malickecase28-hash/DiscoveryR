@@ -233,9 +233,9 @@ $manifestPath = WriteInputManifest $assignment $authority (Join-Path $manifestRo
 $mounts += [PSCustomObject]@{ source = (MountPath $manifestPath); target = '/shared/research_input_manifest.json' }
 $plannedManifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
 $sourceMap = @{'protocol'='repo.protocol';'contracts'='repo.contracts';'registry'='repo.detector_registry';'instruments/XAUUSD/instrument_config.json'='repo.xauusd.instrument_config';'instruments/XAUUSD/source_inventory.json'='repo.xauusd.source_inventory'}
-$runtimeAttestationPath = Join-Path (Split-Path $manifestPath -Parent) 'runtime_mount_attestation.json'
-if (Test-Path -LiteralPath $runtimeAttestationPath) { throw 'Runtime attestation path already exists.' }
-[IO.File]::WriteAllText($runtimeAttestationPath, '', [Text.UTF8Encoding]::new($false))
+$runtimeAttestationDirectory = Join-Path (Split-Path $manifestPath -Parent) ('runtime-attestation-' + [guid]::NewGuid().ToString('N'))
+$runtimeAttestationPath = Join-Path $runtimeAttestationDirectory 'runtime_mount_attestation.json'
+New-Item -ItemType Directory -Path $runtimeAttestationDirectory | Out-Null
 $repositorySpecs = @($plannedManifest.repository_surfaces | ForEach-Object { $id = $sourceMap[$_.relative_path]; if ($id) { "REPO`t$id`t/shared/research-program/$($_.relative_path -replace '\\','/')`t$($_.hash)" } })
 $authoritySpecs = @($plannedManifest.authority_sources | ForEach-Object { "AUTH`t$($_.source_id)`t$($_.mount_target)`t$($_.bundle_content_identity)`t$($_.directory_transport_hash)" })
 $attestationSpecs = ($repositorySpecs + $authoritySpecs) -join "`n"
@@ -245,7 +245,7 @@ $mountText = ($mounts | ForEach-Object { "$(B64 $_.source)|$(B64 $_.target)" }) 
 $launcher = Join-Path $repo 'agent_harness\launch\isolated-run.sh'
 $bootstrap = B64 ((Get-Content -Raw -LiteralPath $launcher).Replace("`r", ''))
 $safeCommand = $Command.Replace("`r", '')
-$commandLine = "mountpoint -q /mnt/f || mount -t drvfs F: /mnt/f; printf %s $bootstrap | base64 -d > /tmp/trinityr-isolated-run.sh && chmod 700 /tmp/trinityr-isolated-run.sh && unshare --mount --pid --fork --mount-proc --propagation private -- /bin/bash /tmp/trinityr-isolated-run.sh $(B64 (WslPath $workspace)) $(B64 $assignment.access_profile) $(B64 $safeCommand) $(B64 (B64 $mountText)) $(B64 (B64 $attestationSpecs)) $(B64 (WslPath $runtimeAttestationPath)) $(B64 $launchId) $(B64 $manifestHash) $(B64 $ProgramId) $(B64 $Role) $(B64 $baseSha)"
+$commandLine = "mountpoint -q /mnt/f || mount -t drvfs F: /mnt/f; printf %s $bootstrap | base64 -d > /tmp/trinityr-isolated-run.sh && chmod 700 /tmp/trinityr-isolated-run.sh && unshare --mount --pid --fork --mount-proc --propagation private -- /bin/bash /tmp/trinityr-isolated-run.sh $(B64 (WslPath $workspace)) $(B64 $assignment.access_profile) $(B64 $safeCommand) $(B64 (B64 $mountText)) $(B64 (B64 $attestationSpecs)) $(B64 (WslPath $runtimeAttestationDirectory)) $(B64 $launchId) $(B64 $manifestHash) $(B64 $ProgramId) $(B64 $Role) $(B64 $baseSha)"
 & wsl.exe --distribution $Distro --user root -- /bin/bash -lc $commandLine
 $workerExit = $LASTEXITCODE
 if (-not (Test-Path -LiteralPath $runtimeAttestationPath -PathType Leaf)) { throw 'Runtime attestation missing.' }

@@ -18,11 +18,11 @@ mount --make-rprivate /
 mount -t tmpfs -o size=4m,nosuid,nodev,noexec tmpfs /shared
 mkdir -p /workspace /shared/research-program
 
-mount_rw_file() {
+mount_rw_dir() {
   source=$1; target=$2
-  [ -f "$source" ] || { echo "missing writable sink: $source" >&2; exit 1; }
+  [ -d "$source" ] || { echo "missing writable sink: $source" >&2; exit 1; }
   mkdir -p "$(dirname "$target")"
-  touch "$target"
+  mkdir -p "$target"
   mount --bind "$source" "$target"
 }
 
@@ -35,7 +35,7 @@ mount_ro() {
 }
 
 mount --bind "$workspace" /workspace
-mount_rw_file "$attestation_sink" /shared/runtime_mount_attestation.json
+mount_rw_dir "$attestation_sink" /shared/runtime_mount_attestation
 while IFS='|' read -r source_b64 target_b64; do
   [ -n "$source_b64" ] || continue
   mount_ro "$(decode "$source_b64")" "$(decode "$target_b64")"
@@ -112,8 +112,8 @@ for value in "$peer_workspace" "$peer_assignment" "$confirmation" "$legacy" "$ra
 done
 
 attestation="{\n  \"schema_version\": \"trinity.runtime-mount-attestation.v1\",\n  \"launch_id\": \"$(json_escape "$launch_id")\",\n  \"program_id\": \"$(json_escape "$program_id")\",\n  \"role_id\": \"$(json_escape "$role_id")\",\n  \"research_base_sha\": \"$(json_escape "$research_base_sha")\",\n  \"research_input_manifest_sha256\": \"$manifest_sha\",\n  \"observed_repository_sources\": [$repo_json],\n  \"observed_authority_sources\": [$auth_json],\n  \"observed_input_manifest_sha256\": \"$observed_manifest_sha\",\n  \"input_manifest_match\": $manifest_match,\n  \"denial_probes\": {\"peer_workspace\": $peer_workspace, \"peer_assignment\": $peer_assignment, \"confirmation\": $confirmation, \"legacy\": $legacy, \"raw_lake\": $raw_lake, \"provider_mapping\": $provider_mapping, \"windows_mounts\": $windows_mounts},\n  \"all_match\": $all_match\n}\n"
-printf '%b' "$attestation" > /shared/runtime_mount_attestation.json
-mount -o remount,bind,ro /shared/runtime_mount_attestation.json
+printf '%b' "$attestation" > /shared/runtime_mount_attestation/runtime_mount_attestation.json
+mount -o remount,bind,ro /shared/runtime_mount_attestation
 
 [ "$all_match" = true ] || { echo 'RUNTIME_ATTESTATION_FAIL' >&2; exit 42; }
 
