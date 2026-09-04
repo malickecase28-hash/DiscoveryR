@@ -1,0 +1,627 @@
+{
+  "program_id": "AP-002",
+  "role_id": "A-01",
+  "artifact_type": "AUTHORITY_CANDIDATE",
+  "subjects": [
+    "fvg",
+    "XAUUSD",
+    "15s",
+    "30s",
+    "1m",
+    "5m",
+    "15m",
+    "1h",
+    "4h"
+  ],
+  "claims": [
+    {
+      "claim_id": "AP002-A01-C001",
+      "subject": "fvg",
+      "topic": "physical payload and variants",
+      "precise_claim": "The approved inventory establishes physical nullable LargeUtf8 payload_fvg presence; its serialized fields and variants are not established.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "instruments.xauusd.source_inventory",
+          "relative_path": "instruments/XAUUSD/source_inventory.json",
+          "locator": "sources[*].physical_schema object where name equals payload_fvg; fields data_type and nullable",
+          "evidence_type": "inventory_field",
+          "supports": "supports physical nullable LargeUtf8 payload presence only"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C002",
+      "subject": "fvg",
+      "topic": "stable object identity",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C003",
+      "subject": "fvg",
+      "topic": "formation/detection and occurrence-vs-detection",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C004",
+      "subject": "fvg",
+      "topic": "lawful availability",
+      "precise_claim": "The general causal rule requires information actually available by anchor time; detector-specific FVG availability mapping is not established.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "protocol.RESEARCH_RULES",
+          "relative_path": "protocol/RESEARCH_RULES.md",
+          "locator": "Rule 2, sentence beginning At anchor time t",
+          "evidence_type": "protocol_rule",
+          "supports": "supports the general causal availability rule; it does not map FVG fields"
+        },
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; fields semantic_status, native_scales, derives_from",
+          "evidence_type": "registry_entry",
+          "supports": "supports unresolved registry semantics, native scale declaration, and empty derives_from only"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C005",
+      "subject": "fvg",
+      "topic": "earlier-bar references",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C006",
+      "subject": "fvg",
+      "topic": "direction",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C007",
+      "subject": "fvg",
+      "topic": "price boundaries",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C008",
+      "subject": "fvg",
+      "topic": "lifecycle and persistence",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C009",
+      "subject": "fvg",
+      "topic": "first touch event/state/retrospective",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C010",
+      "subject": "fvg",
+      "topic": "fill, fill basis, modes, timestamp",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C011",
+      "subject": "fvg",
+      "topic": "invalidation/removal/terminal conditions",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C012",
+      "subject": "fvg",
+      "topic": "corpus-end unresolved objects and right censoring",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C013",
+      "subject": "fvg",
+      "topic": "multiple touches",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C014",
+      "subject": "fvg",
+      "topic": "mutation versus new records",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C015",
+      "subject": "fvg",
+      "topic": "native scale preservation",
+      "precise_claim": "The approved registry declares explicit native scales 15s, 30s, 1m, 5m, 15m, 1h, and 4h; scale streams remain distinct.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; fields semantic_status, native_scales, derives_from",
+          "evidence_type": "registry_entry",
+          "supports": "supports unresolved registry semantics, native scale declaration, and empty derives_from only"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C016",
+      "subject": "fvg",
+      "topic": "cross-scale identity",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C017",
+      "subject": "fvg",
+      "topic": "causal/retrospective/provenance fields",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C018",
+      "subject": "fvg",
+      "topic": "direct producer dependencies",
+      "precise_claim": "The approved registry records an empty derives_from array for fvg; this does not establish independence or internal causal completeness.",
+      "status": "AUTHORITATIVE",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; fields semantic_status, native_scales, derives_from",
+          "evidence_type": "registry_entry",
+          "supports": "supports unresolved registry semantics, native scale declaration, and empty derives_from only"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    },
+    {
+      "claim_id": "AP002-A01-C019",
+      "subject": "fvg",
+      "topic": "exact E1 reconstruction",
+      "precise_claim": null,
+      "status": "UNRESOLVED",
+      "authority_evidence": [
+        {
+          "source_id": "registry.detectors_v1",
+          "relative_path": "registry/detectors_v1.json",
+          "locator": "array entry where detector_id equals fvg; lifecycle_vocabulary, availability_semantics, known_surfaces",
+          "evidence_type": "searched_scope",
+          "supports": "detector-specific semantic mapping not established by approved consulted sources"
+        },
+        {
+          "source_id": "schemas.bars_canonical_v1",
+          "relative_path": "schemas/bars_canonical_v1.json",
+          "locator": "top-level columns array and hive_partitions",
+          "evidence_type": "schema_scope",
+          "supports": "supports canonical bar physical fields only; FVG scientific meaning not established"
+        }
+      ],
+      "counterevidence": [],
+      "future_information_risk": "Later-bar, terminal, completion, peak, fill, end, remaining, or total-duration information may leak into an earlier state.",
+      "dependency_implications": "Detector-specific field and clock mappings are required; direct producer evidence remains the dependency.",
+      "notes": "Physical presence is not scientific meaning; no inference from names."
+    }
+  ],
+  "unresolved_questions": [
+    "What exact payload variants and stable identity rules define FVG objects at each native scale?",
+    "Which fields and clocks represent formation, occurrence/origin, detection/evaluation, milestone, emission, receipt, and completion?",
+    "When is each detector field lawfully available as of the causal anchor?",
+    "What are the boundary, direction, touch, fill, invalidation, removal, terminal, persistence, mutation, and right-censoring rules?",
+    "Can E1 reconstruction be performed from direct producer dependencies and field-level availability evidence?"
+  ],
+  "sources_consulted": [
+    {
+      "source_id": "protocol.AGENT_ACCESS",
+      "relative_path": "protocol/AGENT_ACCESS.md",
+      "locators": [
+        "entire file, numbered access rules"
+      ]
+    },
+    {
+      "source_id": "protocol.RESEARCH_RULES",
+      "relative_path": "protocol/RESEARCH_RULES.md",
+      "locators": [
+        "Rules 1-14"
+      ]
+    },
+    {
+      "source_id": "contracts.experiment_contract_v1",
+      "relative_path": "contracts/experiment_contract_v1.schema.json",
+      "locators": [
+        "properties.anchor, properties.anchor_time_rule, definitions.ExposureClass"
+      ]
+    },
+    {
+      "source_id": "schemas.bars_canonical_v1",
+      "relative_path": "schemas/bars_canonical_v1.json",
+      "locators": [
+        "top-level columns and hive_partitions"
+      ]
+    },
+    {
+      "source_id": "schemas.dataset_manifest_v1",
+      "relative_path": "schemas/dataset_manifest_v1.json",
+      "locators": [
+        "properties detector, timeframe, parts"
+      ]
+    },
+    {
+      "source_id": "registry.detectors_v1",
+      "relative_path": "registry/detectors_v1.json",
+      "locators": [
+        "array entry detector_id equals fvg"
+      ]
+    },
+    {
+      "source_id": "instruments.xauusd.instrument_config",
+      "relative_path": "instruments/XAUUSD/instrument_config.json",
+      "locators": [
+        "top-level instrument, relative_path, manifest, payload_manifest"
+      ]
+    },
+    {
+      "source_id": "instruments.xauusd.source_inventory",
+      "relative_path": "instruments/XAUUSD/source_inventory.json",
+      "locators": [
+        "sources array; scale, physical_schema, payload_columns"
+      ]
+    }
+  ],
+  "lifecycle_stage_future_information_matrix": {
+    "FORMATION": {
+      "authority_status": "UNRESOLVED",
+      "available_at_anchor": "UNRESOLVED",
+      "future_information_risk": "Later information may define or rewrite this stage; occurrence or origin is not availability.",
+      "required_evidence": [
+        "exact producer field mapping",
+        "field-level availability clock",
+        "as-of emission and receipt rule"
+      ]
+    },
+    "FIRST_TOUCH": {
+      "authority_status": "UNRESOLVED",
+      "available_at_anchor": "UNRESOLVED",
+      "future_information_risk": "Later information may define or rewrite this stage; occurrence or origin is not availability.",
+      "required_evidence": [
+        "exact producer field mapping",
+        "field-level availability clock",
+        "as-of emission and receipt rule"
+      ]
+    },
+    "FILL": {
+      "authority_status": "UNRESOLVED",
+      "available_at_anchor": "UNRESOLVED",
+      "future_information_risk": "Later information may define or rewrite this stage; occurrence or origin is not availability.",
+      "required_evidence": [
+        "exact producer field mapping",
+        "field-level availability clock",
+        "as-of emission and receipt rule"
+      ]
+    },
+    "OTHER_STATE": {
+      "authority_status": "UNRESOLVED",
+      "available_at_anchor": "UNRESOLVED",
+      "future_information_risk": "Later information may define or rewrite this stage; occurrence or origin is not availability.",
+      "required_evidence": [
+        "exact producer field mapping",
+        "field-level availability clock",
+        "as-of emission and receipt rule"
+      ]
+    },
+    "EMISSION_AND_RECEIPT": {
+      "authority_status": "UNRESOLVED",
+      "available_at_anchor": "UNRESOLVED",
+      "future_information_risk": "Later information may define or rewrite this stage; occurrence or origin is not availability.",
+      "required_evidence": [
+        "exact producer field mapping",
+        "field-level availability clock",
+        "as-of emission and receipt rule"
+      ]
+    }
+  }
+}
