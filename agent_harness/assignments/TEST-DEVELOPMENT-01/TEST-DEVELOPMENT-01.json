@@ -1,0 +1,14 @@
+{
+  "program_id": "TEST-DEVELOPMENT-01",
+  "role_id": "TEST-DEVELOPMENT-01",
+  "phase": "DEVELOPMENT",
+  "access_profile": "DEVELOPMENT",
+  "instrument_id": "XAUUSD",
+  "data_scope_id": "XAUUSD_DATA_SCOPE_V1",
+  "authority_registry_id": "XAUUSD",
+  "assignment": "Disposable generic development view smoke test.",
+  "authorized_repository_surfaces": ["protocol", "agent_harness/assignments/TEST-DEVELOPMENT-01/TEST-DEVELOPMENT-01.json"],
+  "authority_source_ids": [],
+  "raw_lake_access": "DENY",
+  "peer_visibility": "DENY"
+}

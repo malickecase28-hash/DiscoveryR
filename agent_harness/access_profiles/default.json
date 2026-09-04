@@ -7,7 +7,7 @@
   "legacy_visibility": "DENY",
   "profiles": {
     "AUTHORITY": {"repository": "READ_ONLY", "lake": "DENY", "confirmation": "DENY"},
-    "DEVELOPMENT": {"repository": "READ_ONLY", "lake": "XAUUSD_DATA_SCOPE_V1_DEVELOPMENT_READ_ONLY", "confirmation": "DENY"},
+    "DEVELOPMENT": {"repository": "READ_ONLY", "lake": "DECLARED_INSTRUMENT_SCOPE_DEVELOPMENT_READ_ONLY", "confirmation": "DENY"},
     "CONFIRMATION": {"repository": "READ_ONLY", "lake": "DENY", "confirmation": "DENY_UNTIL_EXPLICIT_FREEZE"}
   },
   "orchestrator_private": {"provider_map": "external", "agent_visibility": "DENY"}
