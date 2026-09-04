@@ -23,5 +23,14 @@ canonical repository or an explicitly registered project path. On signoff,
 delete that temporary directory. Preserve only the required published output,
 manifests/receipts, and reusable scripts in their permanent location.
 
+The approved native-Windows Wave-1 folder run is:
+
+- `F:\TrinityR-research\Research Program\.runs\wave1-native-v1\<PROGRAM>\<ROLE>`
+
+Each role directory is private by workflow convention only. Windows folder
+separation does not provide hard peer, credential, network, or host-data
+isolation. Researchers must write only `authority_candidate.json` and
+`authority_review.md` there; host validation and publication happen afterward.
+
 If signoff has not occurred, leave the directory intact and mark it pending.
 Never create disposable roots directly under `F:\`.

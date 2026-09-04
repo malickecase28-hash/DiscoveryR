@@ -12,6 +12,7 @@ target/
 scratch/
 agent-scratch/
 model-cache/
+.runs/
 
 # Secrets and local credentials
 .env
