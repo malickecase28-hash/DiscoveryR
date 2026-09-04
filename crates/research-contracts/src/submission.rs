@@ -189,6 +189,10 @@ fn collect(
     dir: &Path,
     out: &mut Vec<(String, PathBuf)>,
 ) -> Result<(), Box<dyn std::error::Error>> {
+    let dir_meta = fs::symlink_metadata(dir)?;
+    if reparse_or_symlink(&dir_meta) || !dir_meta.is_dir() {
+        return Err(err("symlinks or reparse points are not allowed"));
+    }
     for entry in fs::read_dir(dir)? {
         let entry = entry?;
         let path = entry.path();
@@ -393,6 +397,11 @@ pub fn seal(opts: &SealOptions) -> Result<SubmissionManifest, Box<dyn std::error
 }
 
 pub fn verify(repo: &Path, dir: &Path) -> Result<(), Box<dyn std::error::Error>> {
+    reject_unsafe_ancestors(dir)?;
+    let dir_meta = fs::symlink_metadata(dir)?;
+    if reparse_or_symlink(&dir_meta) || !dir_meta.is_dir() {
+        return Err(err("sealed output root must be a regular directory"));
+    }
     let manifest: SubmissionManifest =
         serde_json::from_slice(&fs::read(dir.join("submission_manifest.json"))?)?;
     if identity(&manifest) != manifest.logical_submission_identity {

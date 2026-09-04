@@ -233,6 +233,42 @@ fn nested_reparse_point_is_rejected() {
     assert!(seal(&opts).is_err());
 }
 
+#[cfg(unix)]
+#[test]
+fn sealed_files_root_symlink_is_rejected() {
+    use std::os::unix::fs::symlink;
+    let (root, opts) = fixture();
+    let manifest = seal(&opts).unwrap();
+    let dir = opts
+        .output_root
+        .join("AP-001/A-01")
+        .join(&manifest.logical_submission_identity);
+    let real = root.join("elsewhere");
+    fs::create_dir_all(&real).unwrap();
+    fs::remove_dir_all(dir.join("files")).unwrap();
+    symlink(&real, dir.join("files")).unwrap();
+    assert!(research_contracts::submission::verify(&opts.repo, &dir).is_err());
+}
+
+#[cfg(windows)]
+#[test]
+fn sealed_files_root_reparse_is_rejected_when_available() {
+    use std::os::windows::fs::symlink_dir;
+    let (root, opts) = fixture();
+    let manifest = seal(&opts).unwrap();
+    let dir = opts
+        .output_root
+        .join("AP-001/A-01")
+        .join(&manifest.logical_submission_identity);
+    let real = root.join("elsewhere");
+    fs::create_dir_all(&real).unwrap();
+    fs::remove_dir_all(dir.join("files")).unwrap();
+    if symlink_dir(&real, dir.join("files")).is_err() {
+        return;
+    }
+    assert!(research_contracts::submission::verify(&opts.repo, &dir).is_err());
+}
+
 #[test]
 fn forged_manifest_provenance_is_rejected() {
     let (_, opts) = fixture();
