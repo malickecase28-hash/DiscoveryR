@@ -777,6 +777,12 @@ dependencies = [
 [[package]]
 name = "research-engine"
 version = "0.1.0"
+dependencies = [
+ "research-contracts",
+ "serde",
+ "serde_json",
+ "sha2",
+]
 
 [[package]]
 name = "research-tape"

@@ -314,17 +314,17 @@ pub struct PortfolioReport {
 
 fn status(states: impl Iterator<Item = EvidenceState>) -> PortfolioStatus {
     let states: Vec<_> = states.collect();
-    if states.iter().any(|s| *s == EvidenceState::Contradictory) {
+    if states.contains(&EvidenceState::Contradictory) {
         PortfolioStatus::Contradictory
-    } else if states.iter().any(|s| *s == EvidenceState::Unknown) {
+    } else if states.contains(&EvidenceState::Unknown) {
         PortfolioStatus::Unknown
-    } else if states.iter().any(|s| *s == EvidenceState::Null) {
+    } else if states.contains(&EvidenceState::Null) {
         PortfolioStatus::Null
-    } else if states.iter().any(|s| *s == EvidenceState::Rejected) {
+    } else if states.contains(&EvidenceState::Rejected) {
         PortfolioStatus::Abstained
-    } else if states.iter().any(|s| *s == EvidenceState::Inconclusive) {
+    } else if states.contains(&EvidenceState::Inconclusive) {
         PortfolioStatus::Inconclusive
-    } else if states.iter().any(|s| *s == EvidenceState::Partial) {
+    } else if states.contains(&EvidenceState::Partial) {
         PortfolioStatus::Partial
     } else {
         PortfolioStatus::Known
@@ -382,7 +382,7 @@ fn pearson(x: &[f64], y: &[f64]) -> Result<f64, PortfolioError> {
     }
     (vx > 0.0 && vy > 0.0)
         .then_some(covariance / (vx * vy).sqrt())
-        .ok_or_else(|| PortfolioError::InvalidParameter("constant series"))
+        .ok_or(PortfolioError::InvalidParameter("constant series"))
 }
 
 fn validate_pair<'a>(
