@@ -44,7 +44,7 @@ fn validate_zone(zone: &ZoneLifecycle, value: &serde_json::Value) -> Result<(), 
     }
     if zone.anchor_bid <= 0.0
         || zone.anchor_ask < zone.anchor_bid
-        || zone.anchor_mid != (zone.anchor_bid + zone.anchor_ask) / 2.0
+        || !close_enough(zone.anchor_mid, (zone.anchor_bid + zone.anchor_ask) / 2.0)
         || zone.anchor_received_ts_ns != zone.formation_available_time_ns
     {
         return Err("formation anchor price is not tied to the trigger tick".into());
