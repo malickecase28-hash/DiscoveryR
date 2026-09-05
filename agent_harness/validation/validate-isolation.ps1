@@ -52,7 +52,7 @@ $launcher = Join-Path $PSScriptRoot '..\launch\isolated-run.ps1'
 $launcherText = Get-Content -Raw $launcher
 if ($launcherText -match '(?i)wsl\.exe|zcode-cli|TrinityR-runs|RuntimeSlot|broker_socket|TRINITYR_RUNTIME_CONFIG') { throw 'Retired runtime surface remains in the native launcher.' }
 if (Test-Path -LiteralPath (Join-Path $PSScriptRoot '..\launch\isolated-run.sh')) { throw 'Retired WSL launcher remains.' }
-if ($launcherText -notmatch '\.runs\\wave1-native-v1' -or $launcherText -notmatch 'TRINITYR_WORKSPACE') { throw 'Native launcher is not bound to the approved folder workflow.' }
+if ($launcherText -notmatch '\.runs\\wave1-native-v2' -or $launcherText -notmatch 'TRINITYR_WORKSPACE') { throw 'Native launcher is not bound to the approved folder workflow.' }
 'NATIVE_WINDOWS_POLICY_PASS'
 
 $authority = Get-Content -Raw $AuthorityRegistryPath | ConvertFrom-Json
@@ -85,7 +85,7 @@ foreach ($program in @('AP-001','AP-002','TC-001','BG-001')) {
     "PAIR_INPUT_PARITY_PASS $program"
 }
 
-$runRoot = (Resolve-Path (Join-Path $repo '.runs\wave1-native-v1')).Path
+$runRoot = (Resolve-Path (Join-Path $repo '.runs\wave1-native-v2')).Path
 $result = & $launcher -ProgramId TEST-GLM-01 -Role TEST-GLM-01 -RunRoot $runRoot -Command 'if ($env:TRINITYR_NATIVE_WORKSPACE_ONLY -ne ''1'' -or -not (Test-Path -LiteralPath $env:TRINITYR_WORKSPACE -PathType Container)) { exit 1 }; Write-Output NATIVE_FOLDER_LAUNCH_PASS'
 if ($LASTEXITCODE -ne 0 -or $result -notcontains 'NATIVE_FOLDER_LAUNCH_PASS') { throw 'Native folder launch failed.' }
 'NATIVE_FOLDER_LAUNCH_PASS'

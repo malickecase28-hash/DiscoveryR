@@ -8,7 +8,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
-$approvedRoot = (Resolve-Path (Join-Path $repo '.runs\wave1-native-v1')).Path
+$approvedRoot = Join-Path $repo '.runs\wave1-native-v2'
 $requestedRoot = if ($RunRoot) { [IO.Path]::GetFullPath($RunRoot).TrimEnd('\') } else { $approvedRoot }
 if (-not $requestedRoot.Equals($approvedRoot.TrimEnd('\'), [StringComparison]::OrdinalIgnoreCase)) { throw "RunRoot must be the approved phase root: $approvedRoot" }
 
@@ -20,6 +20,10 @@ if ($assignment.raw_lake_access -ne 'DENY' -or $assignment.peer_visibility -ne '
 if ($assignment.access_profile -eq 'CONFIRMATION') { throw 'CONFIRMATION access is locked.' }
 
 $workspace = Join-Path (Join-Path $approvedRoot $ProgramId) $Role
+if (Test-Path -LiteralPath $workspace) {
+    $entries = @(Get-ChildItem -LiteralPath $workspace -Force)
+    if ($entries.Count -gt 0) { throw "NATIVE_WORKSPACE_NOT_FRESH: $workspace" }
+}
 New-Item -ItemType Directory -Force -Path $workspace | Out-Null
 $old = @{}
 foreach ($name in @('TRINITYR_NATIVE_WORKSPACE_ONLY','TRINITYR_PROGRAM_ID','TRINITYR_ROLE_ID','TRINITYR_WORKSPACE')) { $old[$name] = [Environment]::GetEnvironmentVariable($name, 'Process') }

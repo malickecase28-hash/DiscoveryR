@@ -25,7 +25,7 @@ manifests/receipts, and reusable scripts in their permanent location.
 
 The approved native-Windows Wave-1 folder run is:
 
-- `F:\TrinityR-research\Research Program\.runs\wave1-native-v1\<PROGRAM>\<ROLE>`
+- `F:\TrinityR-research\Research Program\.runs\wave1-native-v2\<PROGRAM>\<ROLE>`
 
 Each role directory is private by workflow convention only. Windows folder
 separation does not provide hard peer, credential, network, or host-data

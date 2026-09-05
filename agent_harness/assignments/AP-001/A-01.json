@@ -15,6 +15,6 @@
   ],
   "authority_source_ids": ["xauusd.schemas"],
   "raw_lake_access": "DENY",
-  "private_workspace": "F:\\TrinityR-runs\\AP-001\\A-01",
+  "private_workspace": "F:\\TrinityR-research\\Research Program\\.runs\\wave1-native-v2\\AP-001\\A-01",
   "peer_visibility": "DENY"
 }

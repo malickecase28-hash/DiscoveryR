@@ -2,10 +2,13 @@
 
 The WSL-based agent harness is retired on the direct-Windows branch. The
 PowerShell launcher runs approved Windows commands from the declared folder
-run root `.runs\wave1-native-v1\<PROGRAM>\<ROLE>`. The former shell launcher
+run root `.runs\wave1-native-v2\<PROGRAM>\<ROLE>`. The former shell launcher
 is removed.
 
 Do not reinstall WSL distributions or create `F:\TrinityR-runs`.
+
+Every research role must start in a fresh directory. A non-empty role directory
+is rejected as `NATIVE_WORKSPACE_NOT_FRESH`; prior runs are never overwritten.
 
 Operational status: `NATIVE_WINDOWS_WORKSPACE_ONLY`, `WSL_RUNTIME_RETIRED`,
 `NO_NEW_SCRATCH_ROOTS`.
