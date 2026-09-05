@@ -29,6 +29,24 @@ Operational status: `NATIVE_WINDOWS_WORKSPACE_ONLY`, `WSL_RUNTIME_RETIRED`,
   workspace.
 - Do not create disposable top-level folders under `F:\`.
 
+## Canonical authority evidence sources
+
+The report gate binds evidence to the current assignment. For Wave-1 authority
+reports, use these canonical repository source IDs when the corresponding
+surface is authorized:
+
+- `repo.protocol` — paths relative to `protocol/`.
+- `repo.contracts` — paths relative to `contracts/`.
+- `repo.registry` — paths relative to `registry/`.
+- `repo.xauusd.instrument_config` — `relative_path` must be `instrument_config.json`.
+- `repo.xauusd.source_inventory` — `relative_path` must be `source_inventory.json`.
+- `assignment.self` — `relative_path` must be the current role assignment filename.
+- Assignment-authorized external source IDs such as `xauusd.schemas` — paths are
+  relative to that registered source root.
+
+`relative_path` must resolve to an existing file inside its bound source. Made-up
+source IDs, path traversal, and source/path mismatches fail the host gate.
+
 Run the policy, assignment, pair-parity, and folder-launch checks with:
 
     .\agent_harness\validation\validate-isolation.ps1
