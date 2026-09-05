@@ -116,3 +116,15 @@ fn usage(message: &str) -> String {
         "{message}; usage: research_engine <validate-instrument|materialize-scope|run-experiment|verify-result|challenge-result|confirm-frozen-claim|generate-report> <input.json> [output.json]"
     )
 }
+
+#[cfg(test)]
+mod tests {
+    use super::output_path;
+
+    #[test]
+    fn output_path_rejects_escape_attempts() {
+        assert!(output_path("..\\outside.json").is_err());
+        assert!(output_path("C:\\outside.json").is_err());
+        assert!(output_path("reports\\result.json").is_ok());
+    }
+}
