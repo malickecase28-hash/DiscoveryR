@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StrategyValidation",
+  "type": "object",
+  "required": [
+    "code_identity",
+    "confirmed_input_ids",
+    "data_policy_identity",
+    "parameters",
+    "state",
+    "strategy_id",
+    "validation_id"
+  ],
+  "properties": {
+    "code_identity": {
+      "type": "string"
+    },
+    "confirmed_input_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "data_policy_identity": {
+      "type": "string"
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "state": {
+      "$ref": "#/definitions/EvidenceState"
+    },
+    "strategy_id": {
+      "type": "string"
+    },
+    "validation_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "EvidenceState": {
+      "type": "string",
+      "enum": [
+        "KNOWN",
+        "UNKNOWN",
+        "NULL",
+        "REJECTED",
+        "INCONCLUSIVE",
+        "PARTIAL",
+        "CONTRADICTORY"
+      ]
+    }
+  }
+}

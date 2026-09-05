@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ObjectIdentity",
+  "type": "object",
+  "required": [
+    "detector_id",
+    "object_id",
+    "parent_object_ids",
+    "scope_identity",
+    "source_identity"
+  ],
+  "properties": {
+    "detector_id": {
+      "type": "string"
+    },
+    "object_id": {
+      "type": "string"
+    },
+    "parent_object_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "scope_identity": {
+      "type": "string"
+    },
+    "source_identity": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,4 +1,4 @@
-use research_contracts::generated_schemas;
+use research_contracts::{generated_additive_schemas, generated_schemas};
 use std::{env, fs, path::PathBuf, process};
 
 fn main() {
@@ -6,11 +6,14 @@ fn main() {
         .nth(1)
         .map(PathBuf::from)
         .unwrap_or_else(|| PathBuf::from("contracts"));
-    for (name, schema) in generated_schemas() {
+    let schemas = generated_schemas()
+        .into_iter()
+        .chain(generated_additive_schemas());
+    for (name, schema) in schemas {
         if let Err(error) = fs::write(dir.join(name), schema) {
             eprintln!("failed to write {name}: {error}");
             process::exit(1);
         }
     }
-    println!("generated four schemas in {}", dir.display());
+    println!("generated schemas in {}", dir.display());
 }

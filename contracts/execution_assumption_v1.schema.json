@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExecutionAssumption",
+  "type": "object",
+  "required": [
+    "assumption_id",
+    "assumptions"
+  ],
+  "properties": {
+    "assumption_id": {
+      "type": "string"
+    },
+    "assumptions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -6,6 +6,7 @@ use parquet::arrow::{
     ProjectionMask,
 };
 use research_contracts::BarScale;
+pub use research_contracts::NativeScale;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
@@ -15,12 +16,6 @@ use std::{
     path::{Path, PathBuf},
     time::Instant,
 };
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub enum NativeScale {
-    Tick,
-    Bar(BarScale),
-}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct SourceRef {

@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ConfirmationContract",
+  "type": "object",
+  "required": [
+    "actor",
+    "anchor_identity",
+    "claim_identity",
+    "code_identity",
+    "confirmation_id",
+    "context_identity",
+    "control_design_identity",
+    "custodian_policy_identity",
+    "data_policy_identity",
+    "holdout_policy_identity",
+    "metric_identity",
+    "multiplicity_family_identity",
+    "null_design_identity",
+    "outcome_identity",
+    "population_identity",
+    "state"
+  ],
+  "properties": {
+    "actor": {
+      "$ref": "#/definitions/ConfirmationActor"
+    },
+    "anchor_identity": {
+      "type": "string"
+    },
+    "claim_identity": {
+      "type": "string"
+    },
+    "code_identity": {
+      "type": "string"
+    },
+    "confirmation_id": {
+      "type": "string"
+    },
+    "context_identity": {
+      "type": "string"
+    },
+    "control_design_identity": {
+      "type": "string"
+    },
+    "custodian_policy_identity": {
+      "type": "string"
+    },
+    "data_policy_identity": {
+      "type": "string"
+    },
+    "holdout_policy_identity": {
+      "type": "string"
+    },
+    "metric_identity": {
+      "type": "string"
+    },
+    "multiplicity_family_identity": {
+      "type": "string"
+    },
+    "null_design_identity": {
+      "type": "string"
+    },
+    "outcome_identity": {
+      "type": "string"
+    },
+    "population_identity": {
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/definitions/ConfirmationState"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "ConfirmationActor": {
+      "type": "string",
+      "enum": [
+        "WORKER",
+        "CUSTODIAN",
+        "RUNNER"
+      ]
+    },
+    "ConfirmationState": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "NULL",
+        "REJECTED",
+        "INCONCLUSIVE",
+        "CONFIRMED"
+      ]
+    }
+  }
+}

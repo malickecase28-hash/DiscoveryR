@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DetectorLineage",
+  "type": "object",
+  "required": [
+    "detector_id",
+    "parent_detector_ids"
+  ],
+  "properties": {
+    "detector_id": {
+      "type": "string"
+    },
+    "parent_detector_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

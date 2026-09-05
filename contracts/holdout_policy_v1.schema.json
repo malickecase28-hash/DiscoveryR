@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HoldoutPolicy",
+  "type": "object",
+  "required": [
+    "dataset_identity",
+    "frozen_at_ns",
+    "leaves",
+    "policy_id"
+  ],
+  "properties": {
+    "dataset_identity": {
+      "type": "string"
+    },
+    "frozen_at_ns": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "future_data_policy": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/FutureDataPolicy"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "leaves": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/HoldoutLeaf"
+      }
+    },
+    "policy_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "FutureDataPolicy": {
+      "type": "object",
+      "required": [
+        "allowed",
+        "policy_id"
+      ],
+      "properties": {
+        "allowed": {
+          "type": "boolean"
+        },
+        "policy_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "HoldoutLeaf": {
+      "type": "object",
+      "required": [
+        "leaf_id",
+        "role",
+        "scope"
+      ],
+      "properties": {
+        "leaf_id": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/definitions/HoldoutRole"
+        },
+        "scope": {
+          "$ref": "#/definitions/ScopeInterval"
+        }
+      },
+      "additionalProperties": false
+    },
+    "HoldoutRole": {
+      "type": "string",
+      "enum": [
+        "DEVELOPMENT",
+        "DETECTOR_CONFIRMATION",
+        "STRATEGY_HOLDOUT",
+        "PORTFOLIO_HOLDOUT",
+        "FUTURE_DATA"
+      ]
+    },
+    "ScopeInterval": {
+      "type": "object",
+      "required": [
+        "dataset_identity",
+        "end_time_ns",
+        "instrument_id",
+        "scope_id",
+        "start_time_ns"
+      ],
+      "properties": {
+        "dataset_identity": {
+          "type": "string"
+        },
+        "end_time_ns": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "instrument_id": {
+          "type": "string"
+        },
+        "scope_id": {
+          "type": "string"
+        },
+        "start_time_ns": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

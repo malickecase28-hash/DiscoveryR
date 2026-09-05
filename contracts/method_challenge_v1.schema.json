@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MethodChallenge",
+  "type": "object",
+  "required": [
+    "attack_kind",
+    "challenge_id",
+    "evidence_ids",
+    "protocol_identity",
+    "result",
+    "target_identity"
+  ],
+  "properties": {
+    "attack_kind": {
+      "$ref": "#/definitions/AttackKind"
+    },
+    "challenge_id": {
+      "type": "string"
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "protocol_identity": {
+      "type": "string"
+    },
+    "result": {
+      "$ref": "#/definitions/ChallengeResult"
+    },
+    "target_identity": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "AttackKind": {
+      "type": "string",
+      "enum": [
+        "TIMESTAMP_LEAKAGE",
+        "SELECTION_BIAS",
+        "MULTIPLE_TESTING",
+        "DATA_SNOOPING",
+        "CONFOUNDING",
+        "REVERSE_CAUSALITY",
+        "MEASUREMENT_ERROR",
+        "MISSINGNESS",
+        "SURVIVORSHIP_BIAS",
+        "NON_STATIONARITY",
+        "SPECIFICATION_SENSITIVITY",
+        "PLACEBO",
+        "REPRODUCIBILITY"
+      ]
+    },
+    "ChallengeResult": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "PASSED",
+        "FAILED",
+        "INCONCLUSIVE"
+      ]
+    }
+  }
+}

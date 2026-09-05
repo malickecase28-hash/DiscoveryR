@@ -1,0 +1,114 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ProducerAuthority",
+  "type": "object",
+  "required": [
+    "availability_contract_identity",
+    "detector_version",
+    "parameter_identity",
+    "payload_contract_identity",
+    "producer_commit",
+    "producer_id",
+    "producer_version",
+    "required_native_scales",
+    "source_blob_identity",
+    "source_schema_identity",
+    "state_version"
+  ],
+  "properties": {
+    "availability_contract_identity": {
+      "type": "string"
+    },
+    "detector_version": {
+      "$ref": "#/definitions/DetectorVersion"
+    },
+    "parameter_identity": {
+      "type": "string"
+    },
+    "payload_contract_identity": {
+      "type": "string"
+    },
+    "producer_commit": {
+      "type": "string"
+    },
+    "producer_id": {
+      "type": "string"
+    },
+    "producer_version": {
+      "type": "string"
+    },
+    "required_native_scales": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/NativeScale"
+      },
+      "uniqueItems": true
+    },
+    "source_blob_identity": {
+      "type": "string"
+    },
+    "source_schema_identity": {
+      "type": "string"
+    },
+    "state_version": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "BarScale": {
+      "type": "string",
+      "enum": [
+        "15s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "4h"
+      ]
+    },
+    "DetectorVersion": {
+      "type": "object",
+      "required": [
+        "detector_id",
+        "detector_version",
+        "state_version"
+      ],
+      "properties": {
+        "detector_id": {
+          "type": "string"
+        },
+        "detector_version": {
+          "type": "string"
+        },
+        "state_version": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "NativeScale": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "Tick"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "Bar"
+          ],
+          "properties": {
+            "Bar": {
+              "$ref": "#/definitions/BarScale"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

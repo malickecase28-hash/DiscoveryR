@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Hypothesis",
+  "type": "object",
+  "required": [
+    "claim",
+    "experiment_id",
+    "hypothesis_id",
+    "question_id",
+    "referenced_input_ids"
+  ],
+  "properties": {
+    "claim": {
+      "type": "string"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "hypothesis_id": {
+      "type": "string"
+    },
+    "question_id": {
+      "type": "string"
+    },
+    "referenced_input_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

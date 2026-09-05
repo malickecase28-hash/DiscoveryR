@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OccurrenceRule",
+  "type": "object",
+  "required": [
+    "occurrence_timestamp_field",
+    "rule_identity",
+    "semantics"
+  ],
+  "properties": {
+    "occurrence_timestamp_field": {
+      "type": "string"
+    },
+    "rule_identity": {
+      "type": "string"
+    },
+    "semantics": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

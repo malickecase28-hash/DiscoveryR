@@ -3,7 +3,36 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::{collections::HashSet, fmt};
 
+pub mod authority;
+pub mod evidence;
+pub mod identity;
+pub mod programs;
 pub mod submission;
+pub mod timing;
+
+pub use authority::{
+    validate_compatibility, AuthorityCompatibility, AuthorityDelta, DetectorVersion,
+    ProducerAuthority,
+};
+pub use evidence::{
+    AttackKind, ChallengeResult, ConfirmationActor, ConfirmationContract, ConfirmationState,
+    ControlDesign, EvidenceState, Hypothesis, KnowledgeEnvelope, KnowledgeFacets, KnowledgeQuery,
+    MethodChallenge, NullDesign, OutcomeDefinition, Question,
+};
+pub use identity::{
+    validate_detector_lineage, validate_object_lineage, DetectorLineage, ObjectIdentity,
+    ReproducibilityIdentity,
+};
+pub use programs::{
+    CostModel, DecisionRule, ExecutionAssumption, PortfolioComponent, PortfolioConstraint,
+    PortfolioConstraintKind, RiskRule, StrategyHypothesis, StrategyValidation, UserParameter,
+};
+pub use timing::{
+    record_exposure, AnchorDefinition, AnchorProgram, AvailabilityRule, ContextPermission,
+    EvidenceAccess, ExposureEvent, ExposureHistory, FutureDataPolicy, HoldoutLeaf, HoldoutPolicy,
+    HoldoutRole, Instrument, InstrumentScope, LifecycleTransition, LifecycleVocabulary,
+    NormalizationBasis, OccurrenceRule, ProgramConsumer, ScopeInterval,
+};
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -13,7 +42,9 @@ pub enum ExposureClass {
     E3,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq, Hash)]
+#[derive(
+    Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq, Hash, PartialOrd, Ord,
+)]
 pub enum BarScale {
     #[serde(rename = "15s")]
     #[schemars(rename = "15s")]
@@ -36,6 +67,14 @@ pub enum BarScale {
     #[serde(rename = "4h")]
     #[schemars(rename = "4h")]
     H4,
+}
+
+#[derive(
+    Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq, Hash, PartialOrd, Ord,
+)]
+pub enum NativeScale {
+    Tick,
+    Bar(BarScale),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
@@ -123,8 +162,24 @@ pub enum SemanticStatus {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum DetectorRole {
+    LifecycleObject,
+    StructuralObject,
+    Event,
+    StateRegime,
+    DirectionalContext,
+    QualityInstrumentation,
+    NormalizationMeasure,
+    TemporalContext,
+    DerivedObject,
+    CompositeContext,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+#[schemars(rename = "DetectorRole")]
+pub enum LegacyDetectorRole {
     DirectionalEvidence,
     StateRegime,
     StructuralObject,
@@ -142,7 +197,7 @@ pub struct DetectorRegistryEntry {
     pub name: String,
     pub description: String,
     pub lifecycle_vocabulary: Vec<String>,
-    pub roles: Vec<DetectorRole>,
+    pub roles: Vec<LegacyDetectorRole>,
     pub derives_from: Vec<String>,
     pub native_scales: NativeScaleScope,
     pub known_surfaces: Vec<String>,
@@ -469,6 +524,100 @@ pub fn generated_schemas() -> [(&'static str, String); 4] {
         (
             "knowledge_record_v1.schema.json",
             schema_json::<KnowledgeRecord>(),
+        ),
+    ]
+}
+
+pub fn generated_additive_schemas() -> Vec<(&'static str, String)> {
+    vec![
+        ("instrument_v1.schema.json", schema_json::<Instrument>()),
+        (
+            "instrument_scope_v1.schema.json",
+            schema_json::<InstrumentScope>(),
+        ),
+        (
+            "producer_authority_v1.schema.json",
+            schema_json::<ProducerAuthority>(),
+        ),
+        (
+            "authority_compatibility_v1.schema.json",
+            schema_json::<AuthorityCompatibility>(),
+        ),
+        (
+            "detector_role_v1.schema.json",
+            schema_json::<DetectorRole>(),
+        ),
+        (
+            "availability_rule_v1.schema.json",
+            schema_json::<AvailabilityRule>(),
+        ),
+        (
+            "occurrence_rule_v1.schema.json",
+            schema_json::<OccurrenceRule>(),
+        ),
+        (
+            "holdout_policy_v1.schema.json",
+            schema_json::<HoldoutPolicy>(),
+        ),
+        (
+            "exposure_event_v1.schema.json",
+            schema_json::<ExposureEvent>(),
+        ),
+        (
+            "normalization_basis_v1.schema.json",
+            schema_json::<NormalizationBasis>(),
+        ),
+        (
+            "knowledge_envelope_v1.schema.json",
+            schema_json::<KnowledgeEnvelope>(),
+        ),
+        ("question_v1.schema.json", schema_json::<Question>()),
+        ("hypothesis_v1.schema.json", schema_json::<Hypothesis>()),
+        (
+            "method_challenge_v1.schema.json",
+            schema_json::<MethodChallenge>(),
+        ),
+        (
+            "confirmation_contract_v1.schema.json",
+            schema_json::<ConfirmationContract>(),
+        ),
+        (
+            "strategy_hypothesis_v1.schema.json",
+            schema_json::<StrategyHypothesis>(),
+        ),
+        (
+            "decision_rule_v1.schema.json",
+            schema_json::<DecisionRule>(),
+        ),
+        (
+            "execution_assumption_v1.schema.json",
+            schema_json::<ExecutionAssumption>(),
+        ),
+        ("cost_model_v1.schema.json", schema_json::<CostModel>()),
+        ("risk_rule_v1.schema.json", schema_json::<RiskRule>()),
+        (
+            "strategy_validation_v1.schema.json",
+            schema_json::<StrategyValidation>(),
+        ),
+        (
+            "portfolio_component_v1.schema.json",
+            schema_json::<PortfolioComponent>(),
+        ),
+        (
+            "portfolio_constraint_v1.schema.json",
+            schema_json::<PortfolioConstraint>(),
+        ),
+        (
+            "reproducibility_identity_v1.schema.json",
+            schema_json::<ReproducibilityIdentity>(),
+        ),
+        (
+            "object_identity_v1.schema.json",
+            schema_json::<ObjectIdentity>(),
+        ),
+        (
+            "detector_lineage_v1.schema.json",
+            schema_json::<DetectorLineage>(),
         ),
     ]
 }

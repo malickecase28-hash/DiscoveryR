@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NormalizationBasis",
+  "type": "object",
+  "required": [
+    "available_time_ns",
+    "basis_identity",
+    "formula",
+    "normalized_value",
+    "raw_value"
+  ],
+  "properties": {
+    "available_time_ns": {
+      "type": "integer",
+      "format": "int64"
+    },
+    "basis_identity": {
+      "type": "string"
+    },
+    "formula": {
+      "type": "string"
+    },
+    "normalized_value": {
+      "type": "number",
+      "format": "double"
+    },
+    "raw_value": {
+      "type": "number",
+      "format": "double"
+    }
+  },
+  "additionalProperties": false
+}
