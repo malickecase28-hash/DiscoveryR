@@ -77,6 +77,31 @@ function Find-BadKey([object] $value, [string] $where) {
     }
 }
 
+function Add-DirectoryBinding([hashtable] $bindings, [string] $sourceId, [string] $root) {
+    $bindings[$sourceId] = [pscustomobject]@{ Mode = 'Directory'; Root = $root; Relative = $null }
+}
+
+function Add-FileBinding([hashtable] $bindings, [string] $sourceId, [string] $path, [string] $relative) {
+    $bindings[$sourceId] = [pscustomobject]@{ Mode = 'File'; Root = $path; Relative = $relative }
+}
+
+function Validate-SourcePath([string] $sourceId, [string] $relativePath, [string] $where) {
+    if (-not $script:sourceBindings.ContainsKey($sourceId)) { Fail "$where uses unauthorized source_id '$sourceId'" }
+    $binding = $script:sourceBindings[$sourceId]
+    if ($binding.Mode -eq 'File') {
+        if ($relativePath -cne $binding.Relative) { Fail "$where relative_path does not match source_id '$sourceId'" }
+        if (-not (Test-Path -LiteralPath $binding.Root -PathType Leaf)) { Fail "$where source file is unavailable for '$sourceId'" }
+        return
+    }
+
+    if (-not (Test-Path -LiteralPath $binding.Root -PathType Container)) { Fail "$where source root is unavailable for '$sourceId'" }
+    $rootFull = [IO.Path]::GetFullPath($binding.Root).TrimEnd('\')
+    $candidate = [IO.Path]::GetFullPath((Join-Path $rootFull ($relativePath -replace '/', '\')))
+    $prefix = $rootFull + '\'
+    if (-not $candidate.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase)) { Fail "$where escapes source root '$sourceId'" }
+    if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) { Fail "$where relative_path does not resolve to a source file for '$sourceId'" }
+}
+
 function Validate-Evidence([object] $item, [string] $where) {
     if (-not (Has-ExactKeys $item @('source_id', 'relative_path', 'locator', 'evidence_type', 'supports'))) {
         Fail "$where has non-canonical authority_evidence keys"
@@ -86,6 +111,7 @@ function Validate-Evidence([object] $item, [string] $where) {
     Require-String $item.locator "$where locator"
     Require-String $item.evidence_type "$where evidence_type"
     Require-String $item.supports "$where supports"
+    Validate-SourcePath $item.source_id $item.relative_path $where
 }
 
 function Validate-Source([object] $source, [string] $where) {
@@ -95,10 +121,47 @@ function Validate-Source([object] $source, [string] $where) {
     Require-SourceId $source.source_id "$where source_id"
     Require-SafeRelativePath $source.relative_path "$where relative_path"
     Require-String $source.locator "$where locator"
+    Validate-SourcePath $source.source_id $source.relative_path $where
 }
 
 if ($ProgramId -cnotmatch '^[A-Z]{2,8}-[0-9]{3}$') { Fail 'ProgramId format is invalid' }
 if ($Role -cnotmatch '^A-[0-9]{2}$') { Fail 'Role format is invalid' }
+
+$repo = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+$assignmentPath = Join-Path $repo "agent_harness\assignments\$ProgramId\$Role.json"
+if (-not (Test-Path -LiteralPath $assignmentPath -PathType Leaf)) { Fail 'assignment is unavailable' }
+try { $assignment = Get-Content -Raw -LiteralPath $assignmentPath | ConvertFrom-Json }
+catch { Fail "assignment JSON is invalid: $($_.Exception.Message)" }
+if ($assignment.program_id -cne $ProgramId -or $assignment.role_id -cne $Role) { Fail 'assignment identity mismatch' }
+
+$script:sourceBindings = @{}
+$surfaces = @($assignment.authorized_repository_surfaces)
+if ($surfaces -contains 'protocol') { Add-DirectoryBinding $script:sourceBindings 'repo.protocol' (Join-Path $repo 'protocol') }
+if ($surfaces -contains 'contracts') { Add-DirectoryBinding $script:sourceBindings 'repo.contracts' (Join-Path $repo 'contracts') }
+if ($surfaces -contains 'registry') { Add-DirectoryBinding $script:sourceBindings 'repo.registry' (Join-Path $repo 'registry') }
+if ($surfaces -contains 'instruments/XAUUSD/instrument_config.json') { Add-FileBinding $script:sourceBindings 'repo.xauusd.instrument_config' (Join-Path $repo 'instruments\XAUUSD\instrument_config.json') 'instrument_config.json' }
+if ($surfaces -contains 'instruments/XAUUSD/source_inventory.json') { Add-FileBinding $script:sourceBindings 'repo.xauusd.source_inventory' (Join-Path $repo 'instruments\XAUUSD\source_inventory.json') 'source_inventory.json' }
+$assignmentSurface = "agent_harness/assignments/$ProgramId/$Role.json"
+if ($surfaces -contains $assignmentSurface) { Add-FileBinding $script:sourceBindings 'assignment.self' $assignmentPath "$Role.json" }
+
+$authorityRegistryPath = Join-Path $repo 'agent_harness\authority_sources\XAUUSD.json'
+if (-not (Test-Path -LiteralPath $authorityRegistryPath -PathType Leaf)) { Fail 'authority source registry is unavailable' }
+try { $authorityRegistry = Get-Content -Raw -LiteralPath $authorityRegistryPath | ConvertFrom-Json }
+catch { Fail "authority source registry JSON is invalid: $($_.Exception.Message)" }
+foreach ($sourceId in @($assignment.authority_source_ids)) {
+    $records = @($authorityRegistry.sources | Where-Object { $_.source_id -ceq $sourceId })
+    if ($records.Count -ne 1) { Fail "authority source '$sourceId' is not uniquely registered" }
+    $record = $records[0]
+    if (-not [string]::IsNullOrWhiteSpace([string] $record.root_path)) {
+        Add-DirectoryBinding $script:sourceBindings $sourceId (Join-Path $record.root_path ($record.relative_path -replace '/', '\'))
+    } elseif (-not [string]::IsNullOrWhiteSpace([string] $record.root_env)) {
+        $root = [Environment]::GetEnvironmentVariable([string] $record.root_env)
+        if ([string]::IsNullOrWhiteSpace($root)) { Fail "authority root environment is unavailable for '$sourceId'" }
+        Add-DirectoryBinding $script:sourceBindings $sourceId (Join-Path $root ($record.relative_path -replace '/', '\'))
+    } else {
+        Fail "authority source '$sourceId' has no usable root"
+    }
+}
 
 $workspacePath = Resolve-Path -LiteralPath $Workspace -ErrorAction SilentlyContinue
 if ($null -eq $workspacePath -or -not (Test-Path -LiteralPath $workspacePath.Path -PathType Container)) {
