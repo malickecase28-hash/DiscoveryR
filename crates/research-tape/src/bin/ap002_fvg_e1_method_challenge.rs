@@ -1,4 +1,4 @@
-use research_tape::fvg_e1::{PreflightResult, ZoneLifecycle};
+use research_tape::fvg_e1::{Direction, PreflightResult, ZoneLifecycle};
 use serde::Serialize;
 use sha2::{Digest, Sha256};
 use std::{
@@ -14,12 +14,11 @@ struct Check {
     status: &'static str,
     evidence: String,
 }
-
 #[derive(Debug, Serialize)]
-struct ChallengePackage {
-    package_type: &'static str,
+struct IntegrityGate {
+    gate_type: &'static str,
     status: &'static str,
-    independent_from_scanner: bool,
+    scientific_interpretation: bool,
     confirmation_status: &'static str,
     zones_n: u64,
     logical_rows_sha256: String,
@@ -37,11 +36,29 @@ fn validate_zone(zone: &ZoneLifecycle, value: &serde_json::Value) -> Result<(), 
     if zone.formation.detection_ts != zone.formation_bar_close_ts {
         return Err("formation detection and bar close differ".into());
     }
-    if zone.formation_available_time_ns <= 0 || zone.formation_source_sequence <= 0 {
-        return Err("formation availability provenance is missing".into());
+    if zone.formation_available_time_ns <= 0
+        || zone.formation_source_sequence <= 0
+        || zone.anchor_source_sequence != zone.formation_source_sequence
+    {
+        return Err("formation availability provenance is missing or inconsistent".into());
+    }
+    if zone.anchor_bid <= 0.0
+        || zone.anchor_ask < zone.anchor_bid
+        || zone.anchor_mid != (zone.anchor_bid + zone.anchor_ask) / 2.0
+        || zone.anchor_received_ts_ns != zone.formation_available_time_ns
+    {
+        return Err("formation anchor price is not tied to the trigger tick".into());
     }
     if zone.formation.lower >= zone.formation.upper {
         return Err("formation bounds are not ordered".into());
+    }
+    if zone.first_touch_ts.is_some()
+        != (zone.first_touch_available_time_ns.is_some()
+            && zone.first_touch_source_sequence.is_some())
+        || zone.fill_ts.is_some()
+            != (zone.fill_available_time_ns.is_some() && zone.fill_source_sequence.is_some())
+    {
+        return Err("lifecycle event availability is incomplete".into());
     }
     if zone
         .first_touch_ts
@@ -52,13 +69,19 @@ fn validate_zone(zone: &ZoneLifecycle, value: &serde_json::Value) -> Result<(), 
     {
         return Err("later lifecycle outcome is not later than formation".into());
     }
-    if zone.fill_ts.is_some() != (!zone.active && !zone.right_censored) {
+    if zone
+        .first_touch_ts
+        .zip(zone.fill_ts)
+        .is_some_and(|(touch, fill)| touch > fill)
+    {
+        return Err("touch follows fill".into());
+    }
+    if zone.fill_ts.is_some() != (!zone.active && !zone.right_censored)
+        || zone.fill_ts.is_none() != (zone.active && zone.right_censored)
+    {
         return Err("fill/active/right-censor state is inconsistent".into());
     }
-    if zone.fill_ts.is_none() != (zone.active && zone.right_censored) {
-        return Err("unfilled zone is not right-censored".into());
-    }
-    if zone.active_duration_ms < 0 || zone.prospective_response_bps.len() != 3 {
+    if zone.active_duration_ms < 0 || zone.prospective_outcomes.len() != 3 {
         return Err("lifecycle duration or response horizon shape is invalid".into());
     }
     if value
@@ -75,6 +98,31 @@ fn validate_zone(zone: &ZoneLifecycle, value: &serde_json::Value) -> Result<(), 
     {
         return Err("formation cohort contains later lifecycle fields".into());
     }
+    for outcome in zone.prospective_outcomes.iter().flatten() {
+        if outcome.anchor_mid != zone.anchor_mid
+            || (
+                outcome.outcome_available_time_ns,
+                outcome.outcome_source_sequence,
+            ) <= (
+                zone.formation_available_time_ns,
+                zone.anchor_source_sequence,
+            )
+            || outcome.outcome_bar_close_ts <= zone.formation_bar_close_ts
+        {
+            return Err("prospective response is not strictly post-anchor".into());
+        }
+        let raw = 10_000.0 * outcome.raw_price_delta / zone.anchor_mid;
+        let adjusted = match zone.formation.direction {
+            Direction::Bullish => raw,
+            Direction::Bearish => -raw,
+        };
+        if outcome.raw_price_delta != outcome.outcome_close - zone.anchor_mid
+            || outcome.raw_return_bps != raw
+            || outcome.direction_adjusted_return_bps != adjusted
+        {
+            return Err("prospective response arithmetic is inconsistent".into());
+        }
+    }
     Ok(())
 }
 
@@ -87,11 +135,10 @@ fn validate_zone_value(value: &serde_json::Value) -> Result<(), String> {
 
 fn main() {
     if let Err(error) = run() {
-        eprintln!("AP-002 E1 method challenge failed: {error}");
+        eprintln!("AP-002 E1 scanner integrity gate failed: {error}");
         std::process::exit(1);
     }
 }
-
 fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut results = PathBuf::new();
     let mut zones = PathBuf::new();
@@ -117,6 +164,8 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let results_value: serde_json::Value = serde_json::from_reader(File::open(&results)?)?;
     if results_value["exposure_class"] != "E1_PHENOTYPE"
         || results_value["confirmation_status"] != "LOCKED"
+        || results_value.get("e2").is_some()
+        || results_value.get("e3").is_some()
     {
         return Err("results are outside the locked E1 scope".into());
     }
@@ -132,7 +181,6 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut unique = HashSet::new();
     let mut count = 0_u64;
     let mut logical = Sha256::new();
-    let mut checks = Vec::new();
     loop {
         line.clear();
         if reader.read_line(&mut line)? == 0 {
@@ -157,26 +205,64 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         )
         .into());
     }
-    checks.push(Check {
-        id: "native_identity",
-        status: "PASS",
-        evidence: format!("{count} unique (timeframe, zone_id) identities"),
-    });
-    checks.push(Check {
-        id: "formation_outcome_separation",
-        status: "PASS",
-        evidence: "formation rows contain no later touch/fill fields".into(),
-    });
-    checks.push(Check {
-        id: "causal_availability",
-        status: "PASS",
-        evidence: "all formation rows carry frozen sidecar receipt-time provenance".into(),
-    });
-    checks.push(Check {
-        id: "right_censoring",
-        status: "PASS",
-        evidence: "unfilled zones are active and right-censored".into(),
-    });
+    let strata = results_value["tables"]["strata"]["rows"]
+        .as_array()
+        .ok_or("stratum summary rows missing")?;
+    if strata.iter().any(|row| {
+        row["unavailable_touch_events_n"].is_null()
+            || row["unavailable_fill_events_n"].is_null()
+            || row["unavailable_outcome_events_n"].is_null()
+    }) {
+        return Err("unavailable-event counters are missing".into());
+    }
+    let mut checks = vec![
+        Check {
+            id: "native_identity",
+            status: "PASS",
+            evidence: format!("{count} unique (timeframe, zone_id) identities"),
+        },
+        Check {
+            id: "formation_outcome_separation",
+            status: "PASS",
+            evidence: "formation rows contain no later lifecycle fields".into(),
+        },
+        Check {
+            id: "formation_anchor_price",
+            status: "PASS",
+            evidence: "anchor bid/ask/mid and receipt identity are preserved".into(),
+        },
+        Check {
+            id: "lifecycle_availability",
+            status: "PASS",
+            evidence:
+                "touch and fill event time are separate from availability time and source sequence"
+                    .into(),
+        },
+        Check {
+            id: "prospective_response_causality",
+            status: "PASS",
+            evidence:
+                "every response is on a later lawful native close and after the anchor receipt"
+                    .into(),
+        },
+        Check {
+            id: "unavailable_lifecycle_gate",
+            status: "PASS",
+            evidence: "explicit unavailable touch/fill/outcome counters are present per stratum"
+                .into(),
+        },
+        Check {
+            id: "right_censoring",
+            status: "PASS",
+            evidence: "unfilled zones are active and censored at the final lawful native bar"
+                .into(),
+        },
+        Check {
+            id: "confirmation_locked_scope",
+            status: "PASS",
+            evidence: "E1 phenotype scope is locked; E2 and E3 are absent".into(),
+        },
+    ];
     let preflight_status = if preflight_value.regressions_count == 0 {
         "PASS"
     } else {
@@ -188,18 +274,18 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         evidence: format!("{} regressions", preflight_value.regressions_count),
     });
     if preflight_status == "FAIL" {
-        return Err("method challenge rejects nonzero receipt regressions".into());
+        return Err("scanner integrity gate rejects nonzero receipt regressions".into());
     }
-    let package = ChallengePackage {
-        package_type: "AP-002-E1-INDEPENDENT-METHOD-CHALLENGE",
+    let package = IntegrityGate {
+        gate_type: "SCANNER_INTEGRITY_GATE",
         status: "PASS",
-        independent_from_scanner: true,
+        scientific_interpretation: false,
         confirmation_status: "LOCKED",
         zones_n: count,
         logical_rows_sha256: logical_hash,
         checks,
     };
-    fs::write(output, serde_json::to_vec_pretty(&package)?)?;
+    fs::write(&output, serde_json::to_vec_pretty(&package)?)?;
     println!("{}", serde_json::to_string_pretty(&package)?);
     Ok(())
 }
@@ -207,23 +293,9 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 #[cfg(test)]
 mod tests {
     use super::*;
-
     #[test]
-    fn challenge_rejects_formation_row_with_future_outcome_as_formation_data() {
-        let row = serde_json::json!({
-            "timeframe": "15s",
-            "identity": "15s:7",
-            "formation": {"zone_id": 7, "detection_ts": 1000},
-            "formation_bar_close_ts": 1000,
-            "formation_available_time_ns": 1100,
-            "formation_source_sequence": 1,
-            "first_touch_ts": 2000,
-            "fill_ts": 3000,
-            "active_duration_ms": 2000,
-            "active": false,
-            "right_censored": false,
-            "prospective_response_bps": [0.0, null, null]
-        });
+    fn gate_rejects_formation_row_with_future_outcome_as_formation_data() {
+        let row = serde_json::json!({ "timeframe":"15s", "identity":"15s:7", "formation":{"zone_id":7,"detection_ts":1000}, "formation_bar_close_ts":1000, "formation_available_time_ns":1100, "formation_source_sequence":1, "anchor_bid":10.0, "anchor_ask":12.0, "anchor_mid":11.0, "anchor_received_ts_ns":1100, "anchor_source_sequence":1, "first_touch_ts":2000, "first_touch_available_time_ns":2100, "first_touch_source_sequence":2, "fill_ts":3000, "fill_available_time_ns":3100, "fill_source_sequence":3, "active_duration_ms":2000, "active":false, "right_censored":false, "prospective_outcomes":[null,null,null] });
         assert!(validate_zone_value(&row).is_err());
     }
 }
