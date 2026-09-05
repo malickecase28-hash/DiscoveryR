@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 arrow-array = "53"
+arrow-select = "53"
 arrow-schema = "53"
 parquet = { version = "53", features = ["arrow"] }
 research-contracts = { path = "../research-contracts" }
