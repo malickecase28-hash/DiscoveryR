@@ -15,8 +15,8 @@
 - Preserve v1 `ExperimentContract`, `RunManifest`, `Finding`, `KnowledgeRecord`, `ExposureClass`, registry, and generated schemas; additions are composable and additive.
 - Group new typed concepts into 4–6 focused contract modules; do not jam them into the existing `lib.rs` or one giant schema.
 - Support 15+ instruments, 23 role-heterogeneous detectors, ten exact semantic roles, and eleven exact relationship operator categories without inventing unneeded adapters.
-- Preserve normalized raw and basis timestamps; reject invalid causal inputs while retaining contradictory, null, inconclusive, partial, and unknown findings.
-- Keep raw/private lake, peer, holdout, and future context inaccessible to workers; confirmation requires an externally authorized custodian policy and authentication boundary.
+- Preserve distinct raw and basis timestamps and consume declared availability; reject invalid causal inputs while retaining contradictory, null, inconclusive, partial, and unknown findings. Do not claim full measurement normalization before it is implemented.
+- Enforce declared access policies for raw/private lake, peer, holdout, and future context; the Windows folder workflow does not itself make host files inaccessible. Confirmation requires an externally authorized custodian policy and authentication boundary.
 - Reproducibility identity includes immutable source/binary/config/seed/output identities and excludes absolute paths.
 - Do not add scientific thresholds, returns, outcomes, real studies, scanners, AP changes, or scientific artifacts.
 
@@ -34,6 +34,17 @@
 | Challenge, confirmation, provenance | Partial v1 authority/sealing | Separate challenge, external custody, and path-independent identity |
 
 Boundary audit targets: development-view expected instrument/scope/source binding and root/ancestor reparse rejection; launcher current-directory correctness; interruption-safe immutable knowledge publication; declared-root output containment and expected identities; targeted report-gate source junction escape where its existing contract applies. The Windows folder workflow remains the accepted boundary; no OS sandbox rebuild.
+
+## Decision ledger
+
+| Decision | Ruling |
+| --- | --- |
+| Program meanings | R = Market Research; S = Strategy / Alpha Research; P = Portfolio Research; promotion remains an evidence-lifecycle operation |
+| Input authority | S and P require confirmed strategy/behavioral inputs; synthetic confirmations are test-only labels and never real authority |
+| Isolation claim | `agent_harness` records and checks access policy; the Windows folder workflow is not an OS security boundary and does not make host files inaccessible |
+| Timing claim | Tape preserves physical timing fields and causal availability; complete normalization is a future contract/engine concern, not a baseline claim |
+| Evidence handling | Invalid causal inputs fail closed; R preserves partial, contradictory, null, inconclusive, and unknown findings |
+| Architecture | Retain `research-contracts` and `research-tape`; add one Arrow-free engine; reuse `NativeScale`; avoid detector adapters without producer need |
 
 ## Staged tasks
 
@@ -77,7 +88,7 @@ Boundary audit targets: development-view expected instrument/scope/source bindin
 - Test: `crates/research-engine/tests/strategy.rs`.
 
 **Interfaces:**
-- Consume R evidence plus explicit `StrategyHypothesis`, entry/exit/sizing/management `DecisionRule`, `ExecutionAssumption`, `CostModel`, `RiskRule`, and confirmation manifest.
+- Consume R evidence plus explicit `StrategyHypothesis`, entry/exit/sizing/management `DecisionRule`, `ExecutionAssumption`, `CostModel`, `RiskRule`, and a confirmed input manifest. Synthetic confirmation is test-only.
 - Produce `StrategyValidation` with causal partitions, coverage, abstentions, costs, risks, and performance fields; promotion is a lifecycle operation over this evidence, never Program P.
 - `confirm_strategy(request, external_custodian) -> Result<StrategyConfirmation, ConfirmationError>` requires injectable external policy/authentication; a worker bool, shared secret, or self-issued signature is invalid.
 
@@ -92,7 +103,7 @@ Boundary audit targets: development-view expected instrument/scope/source bindin
 - Test: `crates/research-engine/tests/portfolio.rs`, `tests/end_to_end.rs`; targeted existing harness tests.
 
 **Interfaces:**
-- Consume `PortfolioComponent`, `PortfolioConstraint`, strategy evidence, and declared `ContextPermission`.
+- Consume `PortfolioComponent`, `PortfolioConstraint`, confirmed strategy evidence, and declared `ContextPermission`. Synthetic confirmation is test-only.
 - Produce reports for correlation/conditional correlation, overlap, capital allocation, drawdown, regime diversification, capacity, turnover, liquidity, concentration, risk budgets, optimization, stress, and portfolio confirmation.
 - CLI is a thin adapter over the existing scope materializer and emits machine-readable reports, provenance, exposure ledger, and locked confirmation status under declared output roots.
 

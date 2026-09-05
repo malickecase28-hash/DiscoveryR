@@ -9,9 +9,9 @@ This charter defines deterministic research infrastructure for three programs. R
 | `research-contracts` | Composable semantic contracts, v1 compatibility, authority/submission metadata, exposure and provenance contracts, schemas | Parquet I/O, pure statistical algorithms, broker behavior |
 | `research-tape` | Physical causal data, Parquet projection, as-of reads, raw and basis timing, availability sidecar, development-view physical materialization | Semantic lifecycle, sealed knowledge/workflow blinding, normalized measurement contracts |
 | `research-engine` | Arrow-free deterministic R/S/P execution, role dispatch, bounded statistics/nulls, challenges, strategy/portfolio methods, reports, thin CLI adapter | Canonical knowledge storage, self-confirmation, live orders/fills |
-| `agent_harness` and submission tooling | Scope isolation, workflow blinding, sealed publication and custody boundary | Scientific findings or detector semantics |
+| `agent_harness` and submission tooling | Declared access policies, workflow blinding, sealed publication and custody boundary | Scientific findings or detector semantics |
 
-Existing v1 `ExperimentContract`, `RunManifest`, `Finding`, `KnowledgeRecord`, `ExposureClass`, registry, causal cursors, projected reads, view builder, sidecar, submission sealing, and workflow isolation remain readable. Additive schemas and re-exports preserve v1 APIs; the current baseline is not described as fully normalized until implemented.
+Existing v1 `ExperimentContract`, `RunManifest`, `Finding`, `KnowledgeRecord`, `ExposureClass`, registry, causal cursors, projected reads, view builder, sidecar, submission sealing, and workflow policy remain readable. Additive schemas and re-exports preserve v1 APIs; the current baseline is not described as fully normalized until implemented.
 
 ## Semantic layer
 
@@ -21,9 +21,9 @@ The ten detector roles are exactly: `LIFECYCLE_OBJECT`, `STRUCTURAL_OBJECT`, `EV
 
 ## Authority and causality
 
-Every input and output records immutable source, binary, configuration, seed, and output identities; absolute paths are excluded from identity. Raw and basis timestamps remain distinct, and context is usable only when its declared availability satisfies the decision anchor. Invalid causal inputs fail closed. Contradictory, null, inconclusive, missing, and partial research findings remain first-class evidence with their metrics and uncertainty.
+Every input and output records immutable source, binary, configuration, seed, and output identities; absolute paths are excluded from identity. Raw and basis timestamps remain distinct, and the engine consumes declared availability under the causal rule; it does not claim to normalize all measurements. Invalid causal inputs fail closed. Contradictory, null, inconclusive, missing, and partial research findings remain first-class evidence with their metrics and uncertainty.
 
-Workers remain denied raw/private lake, peer, holdout, and future context surfaces. Nested and future exposure is recorded in a ledger. Confirmation is a separate contract with an injectable external custodian policy and authentication boundary; a worker cannot self-unlock it, a shared boolean or secret is not a security boundary, and the real CLI remains locked until an approved external process.
+Declared access policies require workers to be denied raw/private lake, peer, holdout, and future context surfaces, but the Windows folder workflow does not make host files inaccessible. Nested and future exposure is recorded in a ledger. Confirmation is a separate contract with an injectable external custodian policy and authentication boundary; a worker cannot self-unlock it, a shared boolean or secret is not a security boundary, and the real CLI remains locked until an approved external process.
 
 ## Program R — Market Research
 
@@ -33,12 +33,12 @@ R statistics are reusable and bounded: streaming moments; quantiles with declare
 
 ## Program S — Strategy / Alpha Research
 
-S represents a `StrategyHypothesis`, decision entry/exit/sizing/management rules, execution assumptions, cost model, risk rules, and walk-forward validation. Strategy confirmation is a separate operation with explicit input confirmation and method challenge. Promotion may consume S evidence as a lifecycle operation, but it does not become Program P or grant live authority.
+S represents a `StrategyHypothesis`, decision entry/exit/sizing/management rules, execution assumptions, cost model, risk rules, and walk-forward validation. S requires confirmed behavioral inputs; strategy confirmation is a separate operation with explicit input confirmation and method challenge. Synthetic confirmations are test-only and cannot authorize a real run. Promotion may consume S evidence as a lifecycle operation, but it does not become Program P or grant live authority.
 
 ## Program P — Portfolio Research
 
-P represents portfolio components and constraints: correlation and conditional correlation, overlap, capital allocation, drawdown, regime diversification, capacity, turnover, liquidity, concentration, risk budgets, optimization, stress, and portfolio confirmation. P consumes confirmed or explicitly unconfirmed strategy evidence according to `ContextPermission`; it reports unknowns and abstentions without manufacturing performance.
+P represents portfolio components and constraints: correlation and conditional correlation, overlap, capital allocation, drawdown, regime diversification, capacity, turnover, liquidity, concentration, risk budgets, optimization, stress, and portfolio confirmation. P requires confirmed strategy inputs and applies `ContextPermission` to portfolio context; it reports unknowns and abstentions without manufacturing performance. Synthetic portfolio confirmations are test-only.
 
 ## Acceptance and deferrals
 
-Acceptance requires a fresh-process synthetic two-instrument R→S→P path, causal timing, v1 compatibility, deterministic path-independent identities, explicit partial/null/contradictory evidence, future/nested holdout rejection, and locked confirmation. No real study, alpha claim, holdout exposure, AP change, OS sandbox rebuild, live broker/fills, distributed execution, graph database, or 21 adapter set is included. Add those only when an approved producer semantic need and acceptance test exist.
+Acceptance requires a fresh-process synthetic two-instrument R→S→P path, causal timing, v1 compatibility, deterministic path-independent identities, explicit partial/null/contradictory evidence, future/nested holdout rejection, confirmed-input enforcement for S/P, test-only confirmation labels, and locked real confirmation. No real study, alpha claim, holdout exposure, AP change, OS sandbox rebuild, live broker/fills, distributed execution, graph database, or 21 adapter set is included. Add those only when an approved producer semantic need and acceptance test exist.
