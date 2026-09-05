@@ -9,6 +9,8 @@ use parquet::{
     basic::Compression,
     file::properties::WriterProperties,
 };
+use research_contracts::submission::reject_unsafe_ancestors;
+use research_tape::{validate_source_inventory, NativeScale, SourceInventory};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
@@ -20,8 +22,32 @@ use std::{
     time::Instant,
 };
 
-pub const BOUNDARY_MS: i64 = 1_777_984_740_000;
 pub const DEFAULT_BATCH_SIZE: usize = 65_536;
+
+#[derive(Debug, Clone)]
+pub struct ExpectedDevelopmentScope {
+    pub instrument: String,
+    pub scope_id: String,
+    pub source_manifest_identity: String,
+    pub payload_manifest_identity: String,
+    pub boundary_ms: i64,
+    pub development_end_exclusive: String,
+}
+
+impl ExpectedDevelopmentScope {
+    fn validate(&self) -> Result<(), Box<dyn std::error::Error>> {
+        if self.instrument.is_empty()
+            || self.scope_id.is_empty()
+            || self.development_end_exclusive.is_empty()
+            || self.boundary_ms <= 0
+        {
+            return Err(io::Error::other("invalid expected development scope").into());
+        }
+        required_identity("source_manifest_identity", &self.source_manifest_identity)?;
+        required_identity("payload_manifest_identity", &self.payload_manifest_identity)?;
+        Ok(())
+    }
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Gate {
@@ -447,6 +473,8 @@ pub struct Manifest {
     pub source_manifest_identity: String,
     pub payload_manifest_identity: String,
     pub boundary_rule: String,
+    #[serde(default)]
+    pub boundary_ms: Option<i64>,
     pub development_end_exclusive: String,
     pub builder_code_identity: String,
     pub source_groups: BTreeMap<String, Vec<ManifestFile>>,
@@ -469,45 +497,99 @@ pub struct ManifestFile {
     pub source_part: Option<String>,
 }
 
-pub fn parse_scale(value: &serde_json::Value) -> Result<(String, Gate), String> {
-    if value == "Tick" {
+pub fn parse_scale(scale: &NativeScale, boundary_ms: i64) -> Result<(String, Gate), String> {
+    if matches!(scale, NativeScale::Tick) {
         return Ok((
             "tick".into(),
             Gate::Tick {
-                boundary_ns: BOUNDARY_MS
+                boundary_ns: boundary_ms
                     .checked_mul(1_000_000)
                     .ok_or("boundary overflow")?,
             },
         ));
     }
-    let scale = value
-        .get("Bar")
-        .and_then(|v| v.as_str())
-        .ok_or("invalid scale")?;
+    let NativeScale::Bar(scale) = scale else {
+        return Err("invalid scale".into());
+    };
     Ok((
-        scale.into(),
-        Gate::Bar {
-            boundary_ms: BOUNDARY_MS,
-        },
+        serde_json::to_string(scale)
+            .map_err(|_| "invalid scale")?
+            .trim_matches('"')
+            .into(),
+        Gate::Bar { boundary_ms },
     ))
 }
 
 #[derive(Deserialize)]
-struct Inventory {
+struct ScopeFile {
+    instrument: String,
+    scope_id: String,
     source_manifest_identity: String,
     payload_manifest_identity: String,
-    sources: Vec<InventoryGroup>,
+    development: ScopeDevelopment,
 }
 #[derive(Deserialize)]
-struct InventoryGroup {
-    scale: serde_json::Value,
-    parts: Vec<InventoryPart>,
+struct ScopeDevelopment {
+    end_epoch_millis_exclusive: i64,
+    end_utc_exclusive: String,
 }
-#[derive(Deserialize)]
-struct InventoryPart {
-    path: String,
-    rows: u64,
+
+pub fn load_expected_scope(
+    path: &Path,
+) -> Result<ExpectedDevelopmentScope, Box<dyn std::error::Error>> {
+    reject_unsafe_ancestors(path)?;
+    let scope: ScopeFile = serde_json::from_reader(File::open(path)?)?;
+    let expected = ExpectedDevelopmentScope {
+        instrument: scope.instrument,
+        scope_id: scope.scope_id,
+        source_manifest_identity: scope.source_manifest_identity,
+        payload_manifest_identity: scope.payload_manifest_identity,
+        boundary_ms: scope.development.end_epoch_millis_exclusive,
+        development_end_exclusive: scope.development.end_utc_exclusive,
+    };
+    expected.validate()?;
+    Ok(expected)
 }
+
+fn validate_input_binding(
+    source_root: &Path,
+    inventory_path: &Path,
+    expected: &ExpectedDevelopmentScope,
+) -> Result<SourceInventory, Box<dyn std::error::Error>> {
+    reject_unsafe_ancestors(source_root)?;
+    reject_unsafe_ancestors(inventory_path)?;
+    let source_meta = fs::symlink_metadata(source_root)?;
+    if !source_meta.is_dir() {
+        return Err(io::Error::other("source root must be a directory").into());
+    }
+    let inventory: SourceInventory = serde_json::from_reader(File::open(inventory_path)?)?;
+    validate_source_inventory(&inventory)
+        .map_err(|error| io::Error::other(format!("invalid source inventory: {error:?}")))?;
+    if inventory.instrument != expected.instrument
+        || inventory.source_manifest_identity != expected.source_manifest_identity
+        || inventory.payload_manifest_identity != expected.payload_manifest_identity
+    {
+        return Err(io::Error::other("source inventory identity mismatch").into());
+    }
+    for group in &inventory.sources {
+        for part in &group.parts {
+            let relative = Path::new(&part.path);
+            if relative.is_absolute()
+                || relative
+                    .components()
+                    .any(|component| {
+                        matches!(component, std::path::Component::ParentDir)
+                            || matches!(component, std::path::Component::Normal(value) if value.to_string_lossy().contains(':'))
+                    })
+            {
+                return Err(io::Error::other("source inventory path traversal").into());
+            }
+            reject_unsafe_ancestors(&source_root.join(relative))?;
+        }
+    }
+    Ok(inventory)
+}
+
 fn required_identity(name: &str, value: &str) -> Result<String, Box<dyn std::error::Error>> {
     if value.len() != 64 || !value.bytes().all(|b| b.is_ascii_hexdigit()) {
         return Err(io::Error::other(format!("invalid {name}")).into());
@@ -547,15 +629,36 @@ fn revoked(root: &Path) -> Result<bool, Box<dyn std::error::Error>> {
 }
 
 pub fn verify_view(
+    _root: &Path,
+    _manifest: &Manifest,
+    _batch_size: usize,
+) -> Result<(), Box<dyn std::error::Error>> {
+    Err(io::Error::other("expected development scope is required").into())
+}
+
+pub fn verify_view_with_expected(
     root: &Path,
     manifest: &Manifest,
     batch_size: usize,
+    expected: &ExpectedDevelopmentScope,
 ) -> Result<(), Box<dyn std::error::Error>> {
+    expected.validate()?;
+    reject_unsafe_ancestors(root)?;
     if revoked(root)? {
         return Err(io::Error::other("development view is revoked").into());
     }
+    if manifest.schema_version != 1
+        || manifest.instrument != expected.instrument
+        || manifest.scope_id != expected.scope_id
+        || manifest.source_manifest_identity != expected.source_manifest_identity
+        || manifest.payload_manifest_identity != expected.payload_manifest_identity
+        || manifest.boundary_ms != Some(expected.boundary_ms)
+        || manifest.development_end_exclusive != expected.development_end_exclusive
+    {
+        return Err(io::Error::other("development scope identity mismatch").into());
+    }
     validate_code_identity(&manifest.builder_code_identity)?;
-    let mut expected = BTreeSet::from(["view_manifest.json".to_string()]);
+    let mut expected_paths = BTreeSet::from(["view_manifest.json".to_string()]);
     let mut paths = Vec::new();
     let mut stats = Vec::new();
     let mut hashes = Vec::new();
@@ -563,13 +666,14 @@ pub fn verify_view(
     for (group, files) in &manifest.source_groups {
         let gate = if group == "tick" {
             Gate::Tick {
-                boundary_ns: BOUNDARY_MS
+                boundary_ns: expected
+                    .boundary_ms
                     .checked_mul(1_000_000)
                     .ok_or("boundary overflow")?,
             }
         } else {
             Gate::Bar {
-                boundary_ms: BOUNDARY_MS,
+                boundary_ms: expected.boundary_ms,
             }
         };
         for file in files {
@@ -577,13 +681,16 @@ pub fn verify_view(
             if relative.is_absolute()
                 || relative
                     .components()
-                    .any(|c| matches!(c, std::path::Component::ParentDir))
+                    .any(|c| {
+                        matches!(c, std::path::Component::ParentDir)
+                            || matches!(c, std::path::Component::Normal(value) if value.to_string_lossy().contains(':'))
+                    })
             {
                 return Err(io::Error::other("source path traversal").into());
             }
             let path = root.join(relative);
-            reject_reparse(&path)?;
-            expected.insert(file.logical_path.clone());
+            reject_unsafe_ancestors(&path)?;
+            expected_paths.insert(file.logical_path.clone());
             let result = scan_part(&path, gate, batch_size)?;
             if result.classification != Classification::FullDevelopment
                 || result.eligible != result.scanned
@@ -615,6 +722,12 @@ pub fn verify_view(
                 .into());
             }
             let actual_stats = result.stats;
+            if !matches!(
+                file.materialization_kind.as_str(),
+                "COPIED_FULL_DEVELOPMENT" | "HARDLINK_FULL_DEVELOPMENT" | "FILTERED_MIXED_PART"
+            ) {
+                return Err(io::Error::other("invalid materialization kind").into());
+            }
             let expected_stats = match (&actual_stats, group == "tick") {
                 (GateStats::Tick { .. }, true) | (GateStats::Bar { .. }, false) => true,
                 _ => false,
@@ -635,17 +748,17 @@ pub fn verify_view(
     let mut actual = BTreeSet::new();
     for entry in walk_files(root)? {
         let path = entry.strip_prefix(root)?;
-        reject_reparse(&entry)?;
+        reject_unsafe_ancestors(&entry)?;
         actual.insert(path.to_string_lossy().replace('\\', "/"));
     }
-    if actual != expected {
+    if actual != expected_paths {
         return Err(io::Error::other("unexpected files or missing manifest entry").into());
     }
     let identity = hash_view_identity(
         &manifest.scope_id,
         &manifest.source_manifest_identity,
         &manifest.payload_manifest_identity,
-        BOUNDARY_MS,
+        expected.boundary_ms,
         &paths,
         &stats,
         &hashes,
@@ -696,35 +809,32 @@ pub fn materialize(
     inventory_path: &Path,
     view_root: &Path,
     audit_root: &Path,
+    expected: &ExpectedDevelopmentScope,
     code: &str,
     batch_size: usize,
     copy_full: bool,
 ) -> Result<String, Box<dyn std::error::Error>> {
     let started = Instant::now();
+    expected.validate()?;
     validate_code_identity(code)?;
-    let inventory: Inventory = serde_json::from_reader(File::open(inventory_path)?)?;
-    let scope = "XAUUSD_DATA_SCOPE_V1";
-    let source_id = required_identity(
-        "source_manifest_identity",
-        &inventory.source_manifest_identity,
-    )?;
-    let payload_id = required_identity(
-        "payload_manifest_identity",
-        &inventory.payload_manifest_identity,
-    )?;
+    let inventory = validate_input_binding(source_root, inventory_path, expected)?;
+    let source_id = expected.source_manifest_identity.clone();
+    let payload_id = expected.payload_manifest_identity.clone();
+    reject_unsafe_ancestors(view_root)?;
+    reject_unsafe_ancestors(audit_root)?;
     if view_root.exists() {
         if revoked(view_root)? {
             return Err(io::Error::other("existing development view is revoked").into());
         }
         let existing: Manifest =
             serde_json::from_reader(File::open(view_root.join("view_manifest.json"))?)?;
-        if existing.scope_id == scope
+        if existing.scope_id == expected.scope_id
             && existing.source_manifest_identity == source_id
             && existing.payload_manifest_identity == payload_id
             && existing.builder_code_identity == code
-            && existing.development_end_exclusive == "2026-05-05T12:39:00Z"
+            && existing.development_end_exclusive == expected.development_end_exclusive
         {
-            verify_view(view_root, &existing, batch_size)?;
+            verify_view_with_expected(view_root, &existing, batch_size, expected)?;
             return Ok("ALREADY_MATERIALIZED".into());
         }
         return Err(io::Error::other("existing development view conflicts").into());
@@ -744,7 +854,7 @@ pub fn materialize(
     let mut bytes_linked = 0u64;
     let mut bytes_rewritten = 0u64;
     for group in &inventory.sources {
-        let (name, gate) = parse_scale(&group.scale)?;
+        let (name, gate) = parse_scale(&group.scale, expected.boundary_ms)?;
         let mut files = Vec::new();
         for part in &group.parts {
             let logical = part.path.as_str();
@@ -752,11 +862,15 @@ pub fn materialize(
             if logical_path.is_absolute()
                 || logical_path
                     .components()
-                    .any(|c| matches!(c, std::path::Component::ParentDir))
+                    .any(|c| {
+                        matches!(c, std::path::Component::ParentDir)
+                            || matches!(c, std::path::Component::Normal(value) if value.to_string_lossy().contains(':'))
+                    })
             {
                 return Err(io::Error::other("source path traversal").into());
             }
             let source = source_root.join(logical_path);
+            reject_unsafe_ancestors(&source)?;
             let result = scan_part(&source, gate, batch_size)?;
             if result.scanned != part.rows {
                 return Err(
@@ -843,10 +957,10 @@ pub fn materialize(
     let hash_refs: Vec<_> = hashes.iter().map(String::as_str).collect();
     let kind_refs: Vec<_> = kinds.iter().map(String::as_str).collect();
     let identity = hash_view_identity(
-        scope,
+        &expected.scope_id,
         &source_id,
         &payload_id,
-        BOUNDARY_MS,
+        expected.boundary_ms,
         &path_refs,
         &stats,
         &hash_refs,
@@ -854,15 +968,16 @@ pub fn materialize(
         code,
         started.elapsed().as_millis(),
     );
-    let manifest = Manifest { schema_version: 1, scope_id: scope.into(), instrument: "XAUUSD".into(), source_manifest_identity: source_id.into(), payload_manifest_identity: payload_id.into(), boundary_rule: "PHYSICAL DEVELOPMENT SCOPE FILTERS: end-exclusive; bars bar_close_ts < boundary; ticks event_ts_ns AND received_ts_ns < boundary_ns; null gating time is fatal".into(), development_end_exclusive: "2026-05-05T12:39:00Z".into(), builder_code_identity: code.into(), source_groups: groups, logical_view_identity: identity.clone() };
+    let manifest = Manifest { schema_version: 1, scope_id: expected.scope_id.clone(), instrument: expected.instrument.clone(), source_manifest_identity: source_id.into(), payload_manifest_identity: payload_id.into(), boundary_rule: "PHYSICAL DEVELOPMENT SCOPE FILTERS: end-exclusive; bars bar_close_ts < boundary; ticks event_ts_ns AND received_ts_ns < boundary_ns; null gating time is fatal".into(), boundary_ms: Some(expected.boundary_ms), development_end_exclusive: expected.development_end_exclusive.clone(), builder_code_identity: code.into(), source_groups: groups, logical_view_identity: identity.clone() };
     let manifest_path = temp.join("view_manifest.json");
     serde_json::to_writer_pretty(File::create(manifest_path)?, &manifest)?;
-    verify_view(&temp, &manifest, batch_size)?;
+    verify_view_with_expected(&temp, &manifest, batch_size, expected)?;
     fs::rename(&temp, view_root)?;
     fs::create_dir_all(audit_root)?;
+    reject_unsafe_ancestors(audit_root)?;
     serde_json::to_writer_pretty(
         File::create(audit_root.join("build_audit.json"))?,
-        &serde_json::json!({"scope_id":scope,"source_parts_examined":audit_parts,"hardlinked_parts":kinds.iter().filter(|k| k.as_str()=="HARDLINK_FULL_DEVELOPMENT").count(),"filtered_mixed_parts":kinds.iter().filter(|k| k.as_str()=="FILTERED_MIXED_PART").count(),"confirmation_only_parts":audit_parts.iter().filter(|p| p["classification"]=="FULL_CONFIRMATION").count(),"bytes_linked":bytes_linked,"bytes_rewritten":bytes_rewritten,"elapsed_millis":started.elapsed().as_millis(),"logical_view_identity":identity}),
+        &serde_json::json!({"scope_id":expected.scope_id,"source_parts_examined":audit_parts,"hardlinked_parts":kinds.iter().filter(|k| k.as_str()=="HARDLINK_FULL_DEVELOPMENT").count(),"filtered_mixed_parts":kinds.iter().filter(|k| k.as_str()=="FILTERED_MIXED_PART").count(),"confirmation_only_parts":audit_parts.iter().filter(|p| p["classification"]=="FULL_CONFIRMATION").count(),"bytes_linked":bytes_linked,"bytes_rewritten":bytes_rewritten,"elapsed_millis":started.elapsed().as_millis(),"logical_view_identity":identity}),
     )?;
     Ok(identity)
 }

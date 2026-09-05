@@ -48,8 +48,23 @@ function Require-StringArray([object] $value, [string] $where, [bool] $RequireNo
 function Require-SafeRelativePath([object] $value, [string] $where) {
     Require-String $value $where
     $path = [string] $value
-    if ($path -eq '.' -or [IO.Path]::IsPathRooted($path) -or $path -match '^[A-Za-z]:' -or $path -match '(^|[\\/])\.\.([\\/]|$)') {
+    if ($path -eq '.' -or [IO.Path]::IsPathRooted($path) -or $path -match ':' -or $path -match '(^|[\\/])\.\.([\\/]|$)') {
         Fail "$where must be a safe relative path"
+    }
+}
+
+function Assert-NoReparseAncestor([string] $Path, [string] $where) {
+    $current = [IO.Path]::GetFullPath($Path)
+    while ($null -ne $current -and $current.Length -gt 0) {
+        if (Test-Path -LiteralPath $current) {
+            $item = Get-Item -LiteralPath $current -Force
+            if (($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) {
+                Fail "$where contains a reparse point at $current"
+            }
+        }
+        $parent = [IO.Directory]::GetParent($current)
+        if ($null -eq $parent) { break }
+        $current = $parent.FullName
     }
 }
 
@@ -90,16 +105,24 @@ function Validate-SourcePath([string] $sourceId, [string] $relativePath, [string
     $binding = $script:sourceBindings[$sourceId]
     if ($binding.Mode -eq 'File') {
         if ($relativePath -cne $binding.Relative) { Fail "$where relative_path does not match source_id '$sourceId'" }
+        Assert-NoReparseAncestor $binding.Root "$where source file"
         if (-not (Test-Path -LiteralPath $binding.Root -PathType Leaf)) { Fail "$where source file is unavailable for '$sourceId'" }
         return
     }
 
+    Assert-NoReparseAncestor $binding.Root "$where source root"
     if (-not (Test-Path -LiteralPath $binding.Root -PathType Container)) { Fail "$where source root is unavailable for '$sourceId'" }
-    $rootFull = [IO.Path]::GetFullPath($binding.Root).TrimEnd('\')
+    $rootResolved = (Resolve-Path -LiteralPath $binding.Root).Path
+    Assert-NoReparseAncestor $rootResolved "$where source root"
+    $rootFull = $rootResolved.TrimEnd('\')
     $candidate = [IO.Path]::GetFullPath((Join-Path $rootFull ($relativePath -replace '/', '\')))
     $prefix = $rootFull + '\'
     if (-not $candidate.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase)) { Fail "$where escapes source root '$sourceId'" }
+    Assert-NoReparseAncestor $candidate "$where source path"
     if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) { Fail "$where relative_path does not resolve to a source file for '$sourceId'" }
+    $candidateResolved = (Resolve-Path -LiteralPath $candidate).Path
+    Assert-NoReparseAncestor $candidateResolved "$where source path"
+    if (-not $candidateResolved.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase)) { Fail "$where resolves outside source root '$sourceId'" }
 }
 
 function Validate-Evidence([object] $item, [string] $where) {
@@ -167,6 +190,7 @@ $workspacePath = Resolve-Path -LiteralPath $Workspace -ErrorAction SilentlyConti
 if ($null -eq $workspacePath -or -not (Test-Path -LiteralPath $workspacePath.Path -PathType Container)) {
     Fail 'workspace does not exist'
 }
+Assert-NoReparseAncestor $workspacePath.Path 'workspace'
 
 $items = @(Get-ChildItem -LiteralPath $workspacePath.Path -Force)
 $expectedFiles = @('authority_candidate.json', 'authority_review.md')

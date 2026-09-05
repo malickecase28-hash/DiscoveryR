@@ -158,7 +158,7 @@ fn reparse_or_symlink(meta: &fs::Metadata) -> bool {
     }
 }
 
-fn reject_unsafe_ancestors(path: &Path) -> Result<(), Box<dyn std::error::Error>> {
+pub fn reject_unsafe_ancestors(path: &Path) -> Result<(), Box<dyn std::error::Error>> {
     let mut current = PathBuf::new();
     for component in path.components() {
         current.push(component.as_os_str());
@@ -167,6 +167,48 @@ fn reject_unsafe_ancestors(path: &Path) -> Result<(), Box<dyn std::error::Error>
         }
     }
     Ok(())
+}
+
+pub fn publish_atomic_no_replace(
+    directory: &Path,
+    final_name: &str,
+    bytes: &[u8],
+) -> Result<(), Box<dyn std::error::Error>> {
+    if relative(Path::new(final_name))
+        .map(|relative_name| relative_name != final_name)
+        .unwrap_or(true)
+        || final_name.contains(':')
+    {
+        return Err(err("unsafe publication filename"));
+    }
+    reject_unsafe_ancestors(directory)?;
+    let directory_meta = fs::symlink_metadata(directory)?;
+    if reparse_or_symlink(&directory_meta) || !directory_meta.is_dir() {
+        return Err(err("publication directory must be a regular directory"));
+    }
+    let nonce = SystemTime::now().duration_since(UNIX_EPOCH)?.as_nanos();
+    let temporary = directory.join(format!(".{final_name}.tmp-{}-{nonce}", std::process::id()));
+    let final_path = directory.join(final_name);
+    let result = (|| {
+        let mut output = OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(&temporary)?;
+        output.write_all(bytes)?;
+        output.flush()?;
+        output.sync_all()?;
+        drop(output);
+        fs::hard_link(&temporary, &final_path)?;
+        Ok::<(), Box<dyn std::error::Error>>(())
+    })();
+    let cleanup = fs::remove_file(&temporary);
+    match (result, cleanup) {
+        (Ok(()), Ok(())) => Ok(()),
+        (Ok(()), Err(error)) => Err(err(format!(
+            "temporary publication cleanup failed: {error}"
+        ))),
+        (Err(error), _) => Err(error),
+    }
 }
 
 fn git_bytes(repo: &Path, args: &[String]) -> Result<Vec<u8>, Box<dyn std::error::Error>> {

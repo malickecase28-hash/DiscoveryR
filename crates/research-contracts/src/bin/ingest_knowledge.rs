@@ -1,13 +1,12 @@
 use research_contracts::{
+    submission::{publish_atomic_no_replace, reject_unsafe_ancestors},
     validate_knowledge_record, AcceptedKnowledgeRecord, ChallengeRecord, FindingRecord,
     KnowledgeRecord, QuestionRecord,
 };
 use serde_json::Value;
 use std::{
-    env,
-    fs::{self, OpenOptions},
-    io::Write,
-    path::Path,
+    env, fs,
+    path::{Path, PathBuf},
     process,
 };
 
@@ -52,12 +51,45 @@ fn valid_id(id: &str) -> bool {
         })
 }
 
+fn resolve_records_dir(path: &Path) -> Result<PathBuf, Box<dyn std::error::Error>> {
+    let absolute = if path.is_absolute() {
+        path.to_path_buf()
+    } else {
+        env::current_dir()?.join(path)
+    };
+    if absolute
+        .components()
+        .any(|component| {
+            matches!(component, std::path::Component::ParentDir)
+                || matches!(component, std::path::Component::Normal(value) if value.to_string_lossy().contains(':'))
+        })
+    {
+        return Err("records directory cannot contain parent traversal".into());
+    }
+    if let Some(workspace) = env::var_os("TRINITYR_WORKSPACE") {
+        let workspace = fs::canonicalize(workspace)?;
+        if !absolute.starts_with(&workspace) {
+            return Err("records directory escapes the assigned workspace".into());
+        }
+    }
+    reject_unsafe_ancestors(&absolute)?;
+    fs::create_dir_all(&absolute)?;
+    reject_unsafe_ancestors(&absolute)?;
+    let resolved = fs::canonicalize(&absolute)?;
+    if let Some(workspace) = env::var_os("TRINITYR_WORKSPACE") {
+        if !resolved.starts_with(fs::canonicalize(workspace)?) {
+            return Err("records directory escapes the assigned workspace".into());
+        }
+    }
+    Ok(resolved)
+}
+
 fn run() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = env::args().skip(1);
     let input = args
         .next()
         .ok_or("usage: ingest_knowledge <record.json> [knowledge/records]")?;
-    let records_dir = args.next().unwrap_or_else(|| "knowledge/records".into());
+    let records_dir = PathBuf::from(args.next().unwrap_or_else(|| "knowledge/records".into()));
     if args.next().is_some() {
         return Err("usage: ingest_knowledge <record.json> [knowledge/records]".into());
     }
@@ -69,15 +101,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     if !valid_id(id) {
         return Err("record_id has an unsafe filename grammar".into());
     }
-    fs::create_dir_all(&records_dir)?;
-    let path = Path::new(&records_dir).join(format!("{id}.json"));
-    let mut output = OpenOptions::new()
-        .write(true)
-        .create_new(true)
-        .open(&path)?;
-    serde_json::to_writer_pretty(&mut output, &record)?;
-    output.write_all(b"\n")?;
-    output.sync_all()?;
+    let records_dir = resolve_records_dir(&records_dir)?;
+    let mut bytes = serde_json::to_vec_pretty(&record)?;
+    bytes.push(b'\n');
+    publish_atomic_no_replace(&records_dir, &format!("{id}.json"), &bytes)?;
     println!("ingested {id}");
     Ok(())
 }
