@@ -165,6 +165,14 @@ try {
     $candidate.claims[0].authority_evidence[0].relative_path = '../secret.txt'
     Expect-Fail $candidate 'unsafe-relative-path'
 
+    $candidate = Clone $validAuthoritative
+    $candidate.claims[0].authority_evidence[0].source_id = 'made.up.source'
+    Expect-Fail $candidate 'unauthorized-source-id'
+
+    $candidate = Clone $validAuthoritative
+    $candidate.claims[0].authority_evidence[0].relative_path = 'DOES_NOT_EXIST.md'
+    Expect-Fail $candidate 'missing-source-file'
+
     $candidate = Clone $valid
     $candidate.claims[0].notes = 'Codex produced this.'
     Expect-Fail $candidate 'runtime-identity-in-candidate'
