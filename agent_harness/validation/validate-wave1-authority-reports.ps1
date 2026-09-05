@@ -9,7 +9,7 @@ $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $validator = Join-Path $PSScriptRoot 'validate-authority-report.ps1'
 if ([string]::IsNullOrWhiteSpace($RunRoot)) {
-    $RunRoot = Join-Path $repo '.runs\wave1-native-v2'
+    $RunRoot = Join-Path $repo '.runs\wave1-native-v3'
 }
 $runRootPath = [IO.Path]::GetFullPath($RunRoot).TrimEnd('\')
 if (-not (Test-Path -LiteralPath $runRootPath -PathType Container)) {
