@@ -147,9 +147,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         if !unique.insert(zone.identity.clone()) {
             return Err(format!("duplicate lawful identity: {}", zone.identity).into());
         }
-        let canonical = serde_json::to_vec(&zone)?;
-        logical.update((canonical.len() as u64).to_le_bytes());
-        logical.update(&canonical);
+        logical.update(line.as_bytes());
         count += 1;
     }
     let logical_hash = format!("{:x}", logical.finalize());

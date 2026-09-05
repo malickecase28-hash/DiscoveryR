@@ -141,12 +141,12 @@ impl ZoneWriter {
         zone: &research_tape::fvg_e1::ZoneLifecycle,
     ) -> Result<(), Box<dyn std::error::Error>> {
         let bytes = serde_json::to_vec(zone)?;
-        self.logical.update((bytes.len() as u64).to_le_bytes());
-        self.logical.update(&bytes);
         self.writer.write_all(&bytes)?;
         self.writer.write_all(b"\n")?;
         self.physical.update(&bytes);
         self.physical.update(b"\n");
+        self.logical.update(&bytes);
+        self.logical.update(b"\n");
         self.rows += 1;
         Ok(())
     }
