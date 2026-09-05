@@ -1,7 +1,7 @@
 {
   "artifact_type": "WAVE1_CLOSURE_MANIFEST",
-  "state": "AUTHORITY_PRIMARY_RUN_CLOSED",
-  "closed_utc": "2026-09-05T03:32:35Z",
+  "state": "CLOSED",
+  "closed_utc": "2026-09-05T08:15:00Z",
   "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
   "pr_merged": 1,
   "isolation_policy": "WORKFLOW_BLINDED_ACCESS_CONTROLLED",
@@ -22,8 +22,8 @@
   "pair_syntheses_complete": 4,
   "historical_authority_version": "XAUUSD_AUTHORITY_WAVE1_V1",
   "historical_version_sha256": "4df4ee34be9519f03b8b4c2f227218f22e1657c808672279a94020270a40848d",
-  "canonical_authority_version": "XAUUSD_AUTHORITY_WAVE1_V2_CANDIDATE",
-  "canonical_version_sha256": "a4264485cd41148b2e8f074dd92dac8018118bb457867bda6707e45ecde83bd3",
+  "canonical_authority_version": "XAUUSD_AUTHORITY_WAVE1_V2",
+  "canonical_version_sha256": "246287c3a83086bece10398daee01c536652aaeef2705bf6a38d53948b8e2caa",
   "synthesis_candidates": [
     "AP-001_AUTHORITY_CANDIDATE.json",
     "AP-002_AUTHORITY_CANDIDATE.json",
@@ -31,6 +31,24 @@
     "BG-001_AUTHORITY_CANDIDATE.json"
   ],
   "authority_recovery_candidate": "XAUUSD_AUTHORITY_WAVE1_V2_CANDIDATE.json",
+  "frozen_authority_artifacts": {
+    "canonical": "knowledge/wave1_authority_closure/XAUUSD_AUTHORITY_WAVE1_V2.json",
+    "ap001": "knowledge/wave1_authority_closure/AP-001_AUTHORITY_V1.json",
+    "ap002": "knowledge/wave1_authority_closure/AP-002_AUTHORITY_V1.json",
+    "producer_linkage": "knowledge/wave1_authority_closure/PRODUCER_LINKAGE_V2.json",
+    "tick_authority": "knowledge/wave1_authority_closure/TICK_AUTHORITY_RECOVERY.json",
+    "bar_authority": "knowledge/wave1_authority_closure/BAR_AUTHORITY_RECOVERY.json",
+    "fvg_sidecar_manifest": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.manifest.json"
+  },
+  "frozen_authority_hashes": {
+    "ap001": "75d2a6c4e3a57ce6691c520cfa00e33ba666825c8a0ff2f2afad83cc411b61af",
+    "ap002": "9b5609c98088660bee8ce32cf9a112ed92f6d3c9a6f965efa5eac65c8f427e51",
+    "producer_linkage": "2b75ef033384709c6a81dac3a1b2b11bb35d178998be11d68a7bf9996c511dfc",
+    "tick_authority": "ab65bffe3eeca467cb3a688664ca2b21db109c7a35469e2673452ace3266875d",
+    "bar_authority": "c101eb4fc831e4af609953da9ba3b83e2f98a176b7a72c8cb3497b4d71fc2f18",
+    "fvg_sidecar": "a0846a200f764a30e4b65f696e2ec80d6225409d6ac2f592679db9e47c20cb1d",
+    "fvg_sidecar_manifest": "b94064c358663ba9591f825c749f754f234a29de1a930531d24fab662cef6965"
+  },
   "e1_readiness": {
     "AP-001": "READY_FOR_E1",
     "AP-002": "READY_FOR_E1_NATIVE_STRATA"
@@ -45,7 +63,7 @@
   },
   "behavioral_research_performed": false,
   "confirmation": "LOCKED",
-  "e1_launch": "REQUIRES EXPLICIT MASTER APPROVAL (FREEZE / REWORK / START E1 issued separately for AP-001 and AP-002)",
+  "e1_launch": "AP-001 START APPROVED IN SEPARATE FORK; AP-002 NATIVE-STRATA START APPROVED AFTER FVG AVAILABILITY FREEZE",
   "old_run_supersession": {
     "superseded_runs": [
       "wave1-native-v2"
@@ -53,7 +71,7 @@
     "treatment": "Archived as prior-run material, marked superseded by failure class (stale run root / pre-hardening report gate). Not deleted, not treated as active evidence.",
     "obsolete_branch_note": "reports/* historical report branches retained as archive; no further temporary repair branches to be created."
   },
-  "handoff": "Wave-1 primary reports and targeted producer recovery are closed. The exact manifest-linked local TrinityR producer object, generator default-parameter construction, detector lifecycle authority, and native-stratum availability contracts are recorded in V2. AP-001 and AP-002 are ready for scoped E1; E2 remains unstarted; confirmation remains LOCKED.",
+  "handoff": "Wave-1 primary reports, targeted producer recovery, completed-bar availability sidecar, and canonical V2 authority freeze are closed. AP-001 and AP-002 native strata are ready for scoped E1; E2 remains unstarted; confirmation remains LOCKED.",
   "e1_authority_status": "READY_FOR_E1",
   "authority_source_scope": "MANIFEST_LINKED_PRODUCER_SOURCE_AND_SERIALIZATION_PATH",
   "producer_authority_included": true,

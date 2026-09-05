@@ -1,0 +1,102 @@
+{
+  "artifact_type": "XAUUSD_AUTHORITY_WAVE1_V2",
+  "artifact_version": "V2",
+  "freeze_status": "FROZEN",
+  "freeze_timestamp_utc": "2026-09-05T08:15:00Z",
+  "predecessor": {
+    "path": "knowledge/wave1_authority_closure/XAUUSD_AUTHORITY_WAVE1_V2_CANDIDATE.json",
+    "sha256": "a4264485cd41148b2e8f074dd92dac8018118bb457867bda6707e45ecde83bd3",
+    "correction": "final FVG availability is boundary-crossing tick receipt time, not bar_close_ts"
+  },
+  "historical_v1": {
+    "path": "knowledge/wave1_authority_closure/XAUUSD_AUTHORITY_WAVE1_V1.json",
+    "sha256": "4df4ee34be9519f03b8b4c2f227218f22e1657c808672279a94020270a40848d",
+    "byte_for_byte_preserved": true
+  },
+  "provenance": {
+    "authority_source_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+    "authority_freeze_commit": "CONTAINING_GIT_COMMIT_REPORTED_WITH_THIS_ARTIFACT",
+    "authority_freeze_base_commit": "a83767a7b3b1f40bf9283c4c7d22f27a82b5463c",
+    "discoveryr_integration_commit": "a83767a7b3b1f40bf9283c4c7d22f27a82b5463c",
+    "branch": "infra/i02-generic-runtime-harness",
+    "main_merge": "HOLD_UNTIL_MASTER_APPROVAL"
+  },
+  "authority_source_scope": "MANIFEST_LINKED_PRODUCER_SOURCE_AND_SERIALIZATION_PATH",
+  "producer_authority_included": true,
+  "lake_identity": {
+    "manifest": "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd\\manifest.json",
+    "manifest_sha256": "1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af",
+    "payload_manifest_sha256": "78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed",
+    "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+    "config_hash": "2fbbbc6ea5cbac6c20c9209a0f0861494145229d1279bafe500f64eb35f1f578",
+    "source_content_hash": "4df2ae85bb9eb22d460f8fd02eb21c1fcf71e40e3031bd8a96474981a9df77cc"
+  },
+  "recovery_artifacts": {
+    "producer_linkage": "knowledge/wave1_authority_closure/PRODUCER_LINKAGE_V2.json",
+    "tick_authority": "knowledge/wave1_authority_closure/TICK_AUTHORITY_RECOVERY.json",
+    "bar_authority": "knowledge/wave1_authority_closure/BAR_AUTHORITY_RECOVERY.json",
+    "fvg_sidecar_manifest": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.manifest.json"
+  },
+  "recovery_artifact_sha256": {
+    "producer_linkage": "2b75ef033384709c6a81dac3a1b2b11bb35d178998be11d68a7bf9996c511dfc",
+    "tick_authority": "ab65bffe3eeca467cb3a688664ca2b21db109c7a35469e2673452ace3266875d",
+    "bar_authority": "c101eb4fc831e4af609953da9ba3b83e2f98a176b7a72c8cb3497b4d71fc2f18",
+    "ap001": "75d2a6c4e3a57ce6691c520cfa00e33ba666825c8a0ff2f2afad83cc411b61af",
+    "ap002": "9b5609c98088660bee8ce32cf9a112ed92f6d3c9a6f965efa5eac65c8f427e51"
+  },
+  "authority_decisions": {
+    "AP-001": {
+      "artifact": "knowledge/wave1_authority_closure/AP-001_AUTHORITY_V1.json",
+      "authority": "FREEZABLE",
+      "e1_readiness": "READY_FOR_E1",
+      "availability": "received_ts_ns(i), source_sequence(i) for equal receipt timestamps",
+      "external_parameter_count": 0,
+      "parameter_identity": "NOT_APPLICABLE"
+    },
+    "AP-002": {
+      "artifact": "knowledge/wave1_authority_closure/AP-002_AUTHORITY_V1.json",
+      "authority": "FREEZABLE_NATIVE_STRATA",
+      "e1_readiness": "READY_FOR_E1_NATIVE_STRATA",
+      "native_scales": ["15s", "30s", "1m", "5m", "15m", "1h", "4h"],
+      "availability": "received_ts_ns of the first later-bucket source tick; source_sequence for equal receipt timestamps",
+      "cross_scale_identity": "PROHIBITED",
+      "external_parameter_count": 0,
+      "min_gap_atr": 0.2
+    },
+    "TC-001": {
+      "authority": "FREEZABLE_SCOPED",
+      "e2_eligibility": "ELIGIBLE_FOR_SCOPED_E2",
+      "e2_started": false
+    },
+    "BG-001": {
+      "authority": "FREEZABLE_WITH_LINEAGE_RESTRICTIONS",
+      "supported_dependency_edge_count": 7,
+      "independence_status_for_all_28_pairs": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    }
+  },
+  "fvg_availability_sidecar": {
+    "path": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.jsonl",
+    "manifest_path": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.manifest.json",
+    "sha256": "a0846a200f764a30e4b65f696e2ec80d6225409d6ac2f592679db9e47c20cb1d",
+    "sidecar_manifest_sha256": "b94064c358663ba9591f825c749f754f234a29de1a930531d24fab662cef6965",
+    "development_view_manifest_sha256": "4842ac0dfe0b207b75f4a1003fd16f5d2a8d63f93b3ac4dde943ff33372c9613",
+    "rows": 2087782,
+    "input_rows": 54415940,
+    "rule": "For each normal completed bar, available_time = received_ts_ns of the first source tick whose event_time_ns enters a later bucket; source_sequence is the equal-receipt causal tie-break. No synthetic tail-bar row is emitted."
+  },
+  "remaining_ceilings": [
+    "fresh replay equivalence was not run and is not required for the AP-001/AP-002 authority gate",
+    "connected remote does not expose the retained historical producer commit",
+    "Trinity-side reference revision is not lake-linked",
+    "AP-002 cross-scale object identity remains prohibited"
+  ],
+  "closure_state": "CLOSED",
+  "confirmation": "LOCKED",
+  "behavioral_research_before_closure": false,
+  "wave1_researchers_rerun": false,
+  "AP001_E1_started": false,
+  "AP001_E1_approval": "START_APPROVED_IN_SEPARATE_FORK",
+  "E2_started": false,
+  "E3_started": false
+}

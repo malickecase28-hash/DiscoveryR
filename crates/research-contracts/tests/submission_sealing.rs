@@ -1,6 +1,11 @@
 use research_contracts::submission::{seal, verify, FileRecord, SealOptions, SubmissionManifest};
 use sha2::{Digest, Sha256};
-use std::fs;
+use std::{
+    fs,
+    sync::atomic::{AtomicU64, Ordering},
+};
+
+static TEMP_COUNTER: AtomicU64 = AtomicU64::new(0);
 
 fn temp() -> std::path::PathBuf {
     let p = std::env::temp_dir().join(format!("seal-test-{}-{}", std::process::id(), unique()));
@@ -9,10 +14,12 @@ fn temp() -> std::path::PathBuf {
 }
 
 fn unique() -> u128 {
-    std::time::SystemTime::now()
+    let timestamp = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .unwrap()
-        .as_nanos()
+        .as_nanos();
+    ((timestamp & u128::from(u64::MAX)) << 64)
+        | u128::from(TEMP_COUNTER.fetch_add(1, Ordering::Relaxed))
 }
 
 fn manifest_identity(m: &SubmissionManifest) -> String {

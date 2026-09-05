@@ -105,8 +105,8 @@
         },
         "lawful_known_available_time": {
           "status": "AUTHORITATIVE",
-          "locator": "crates/trinity-marketdata/src/lib.rs:106-145; crates/trinity-replay/src/lib.rs:605-668; crates/trinity-research-tools/src/wide_parquet.rs:1212-1260; crates/trinity-analytics/src/bar/mod.rs:2465-2471,2525-2533",
-          "value": "For an FVG fact emitted while processing completed bar i, available_time = bar_close_ts(i) = CompletedBar.end_ts(i). CompletedBar.ts equals end_ts; replay processes the completed bar after the pending row is keyed by (timeframe, end_ts * 1_000_000), and the payload is attached to that same row before the next bar is admitted."
+          "locator": "TrinityR@211891e705d5e8ea132ef1391a0da4a9e5ff4376:crates/trinity-aggregation/src/lib.rs:211-258,464-520; crates/trinity-replay/src/lib.rs:605-668; crates/trinity-research-tools/src/wide_parquet.rs:1212-1260; F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.manifest.json",
+          "value": "bar_close_ts(i)=CompletedBar.end_ts(i) is the temporal boundary, not the earliest availability coordinate. The linked aggregator emits CompletedBar only when the first later source tick enters a different event-time bucket; for a normal completed bar, available_time = received_ts_ns(boundary-crossing source tick), with source_sequence as the equal-receipt tie-break. End-of-stream forming bars have no synthetic availability row and are excluded from this sidecar."
         },
         "zone_identity": {
           "status": "AUTHORITATIVE",
@@ -256,6 +256,16 @@
     "producer_authority_found": true,
     "exact_trinityr_version_linkage": "ESTABLISHED_BY_FROZEN_MANIFEST",
     "fvg_authority": "FREEZABLE_NATIVE_STRATA",
+    "fvg_availability_sidecar": {
+      "path": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.jsonl",
+      "manifest_path": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.manifest.json",
+      "sha256": "a0846a200f764a30e4b65f696e2ec80d6225409d6ac2f592679db9e47c20cb1d",
+      "sidecar_manifest_sha256": "b94064c358663ba9591f825c749f754f234a29de1a930531d24fab662cef6965",
+      "development_view_manifest_sha256": "4842ac0dfe0b207b75f4a1003fd16f5d2a8d63f93b3ac4dde943ff33372c9613",
+      "rows": 2087782,
+      "input_rows": 54415940,
+      "rule": "received_ts_ns of the first later-bucket source tick; source_sequence breaks equal receipt timestamps"
+    },
     "bg_lineage_authority": "FREEZABLE_WITH_LINEAGE_RESTRICTIONS",
     "cross_scale_identity": "NATIVE_STRATA_ONLY_NO_CROSS_SCALE_IDENTITY",
     "runtime_replay_equivalence": "UNRESOLVED",
