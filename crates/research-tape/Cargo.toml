@@ -16,3 +16,7 @@ sha2 = "0.10"
 [[bin]]
 name = "stage2_pilot"
 path = "src/bin/stage2_pilot.rs"
+
+[[bin]]
+name = "fvg_availability_sidecar"
+path = "src/bin/fvg_availability_sidecar.rs"

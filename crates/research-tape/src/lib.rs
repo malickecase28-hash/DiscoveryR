@@ -1,3 +1,5 @@
+pub mod fvg_availability;
+
 use arrow_array::{Array, Int64Array, RecordBatch, StringArray};
 use parquet::arrow::{
     arrow_reader::{ParquetRecordBatchReader, ParquetRecordBatchReaderBuilder},

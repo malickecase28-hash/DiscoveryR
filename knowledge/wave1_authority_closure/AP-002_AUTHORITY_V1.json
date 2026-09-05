@@ -1,0 +1,58 @@
+{
+  "artifact_type": "AP-002_AUTHORITY_V1",
+  "artifact_version": "v1",
+  "status": "FROZEN_NATIVE_STRATA",
+  "program_id": "AP-002",
+  "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+  "detector_version": "trinity.analytics.bar.fvg.v4.2",
+  "parameter_identity": "CODE_FROZEN_AT_PRODUCER_COMMIT",
+  "parameters": {
+    "external_parameter_count": 0,
+    "min_gap_atr": 0.2,
+    "source": "linked generator constructs an empty DetectorParams map; producer default is used"
+  },
+  "native_strata": ["15s", "30s", "1m", "5m", "15m", "1h", "4h"],
+  "identity": "(timeframe, zone_id)",
+  "cross_scale_identity": "UNRESOLVED_AND_PROHIBITED",
+  "authoritative_semantics": {
+    "formation_predicate": "Maintain the latest three completed bars. Bullish formation requires middle close > middle open and last low > first high; bearish formation requires middle close < middle open and last high < first low. The gap must meet min_gap_atr against formation ATR and the middle body must be at least 0.20 ATR.",
+    "formation_confirmation": "The first bar supplies the origin edge, the middle bar is the impulse bar, and the third/latest completed bar supplies confirmation and the detection event.",
+    "zone_identity": "A monotonically increasing zone_id identifies each active zone in detector state.",
+    "zone_bounds": "Bullish bounds are lower=first high and upper=last low. Bearish bounds are lower=last high and upper=first low.",
+    "first_touch": "The first later bar whose range overlaps the zone emits fvg_first_touch.",
+    "fill": "A bullish zone fills when a later bar low reaches the lower edge; a bearish zone fills when a later bar high reaches the upper edge.",
+    "persistence": "Zones remain active until far-edge invalidation and are serialized/restored with the detector state envelope.",
+    "leakage_boundary": "Formation payload is emitted before later touch/fill processing; touch and fill are later-bar outcomes and cannot define formation-time cohorts."
+  },
+  "lawful_availability": {
+    "status": "AUTHORITATIVE",
+    "rule": "For a normal completed bar i, available_time = received_ts_ns of the first source tick whose event_time_ns enters a later bucket; source_sequence is the equal-receipt causal tie-break. bar_close_ts(i)=CompletedBar.end_ts(i) remains the temporal boundary only.",
+    "end_of_stream": "No synthetic tail bar is emitted; a forming end-of-stream bar has no boundary-crossing receipt coordinate and is excluded from the sidecar.",
+    "sidecar": {
+      "path": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.jsonl",
+      "manifest_path": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.manifest.json",
+      "sha256": "a0846a200f764a30e4b65f696e2ec80d6225409d6ac2f592679db9e47c20cb1d",
+      "sidecar_manifest_sha256": "b94064c358663ba9591f825c749f754f234a29de1a930531d24fab662cef6965",
+      "development_view_manifest_sha256": "4842ac0dfe0b207b75f4a1003fd16f5d2a8d63f93b3ac4dde943ff33372c9613",
+      "rows": 2087782,
+      "input_rows": 54415940,
+      "projected_columns": ["event_ts_ns", "received_ts_ns", "source_sequence"]
+    }
+  },
+  "readiness": "READY_FOR_E1_NATIVE_STRATA",
+  "fresh_replay_equivalence": "UNRESOLVED_AND_NOT_REQUIRED_FOR_THIS_AUTHORITY_GATE",
+  "confirmation": "LOCKED",
+  "behavioral_research_started": false,
+  "supersedes_candidate": {
+    "path": "knowledge/wave1_authority_closure/AP-002_AUTHORITY_CANDIDATE.json",
+    "reason": "candidate was restricted to the pre-recovery authority set; this freeze adds linked producer semantics and the completed-bar availability mapping"
+  },
+  "evidence": [
+    "knowledge/wave1_authority_closure/BAR_AUTHORITY_RECOVERY.json",
+    "knowledge/wave1_authority_closure/PRODUCER_LINKAGE_V2.json",
+    "F:\\TrinityR\\crates\\trinity-aggregation\\src\\lib.rs",
+    "F:\\TrinityR\\crates\\trinity-replay\\src\\lib.rs",
+    "F:\\TrinityR\\crates\\trinity-analytics\\src\\bar\\mod.rs",
+    "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.manifest.json"
+  ]
+}
