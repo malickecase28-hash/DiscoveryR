@@ -1,6 +1,7 @@
 pub mod fvg_availability;
+pub mod fvg_e1;
 
-use arrow_array::{Array, Int64Array, RecordBatch, StringArray};
+use arrow_array::{Array, Float64Array, Int64Array, LargeStringArray, RecordBatch, StringArray};
 use parquet::arrow::{
     arrow_reader::{ParquetRecordBatchReader, ParquetRecordBatchReaderBuilder},
     ProjectionMask,
@@ -395,6 +396,24 @@ pub fn batch_string<'a>(
     batch
         .column_by_name(column)
         .and_then(|array| array.as_any().downcast_ref::<StringArray>())
+        .ok_or(ContractError::InvalidWindow)
+}
+pub fn batch_large_string<'a>(
+    batch: &'a RecordBatch,
+    column: &str,
+) -> Result<&'a LargeStringArray, ContractError> {
+    batch
+        .column_by_name(column)
+        .and_then(|array| array.as_any().downcast_ref::<LargeStringArray>())
+        .ok_or(ContractError::InvalidWindow)
+}
+pub fn batch_f64<'a>(
+    batch: &'a RecordBatch,
+    column: &str,
+) -> Result<&'a Float64Array, ContractError> {
+    batch
+        .column_by_name(column)
+        .and_then(|array| array.as_any().downcast_ref::<Float64Array>())
         .ok_or(ContractError::InvalidWindow)
 }
 pub struct LogicalOutputHasher(Sha256);
