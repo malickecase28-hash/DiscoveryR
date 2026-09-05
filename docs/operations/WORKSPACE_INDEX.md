@@ -23,9 +23,12 @@ canonical repository or an explicitly registered project path. On signoff,
 delete that temporary directory. Preserve only the required published output,
 manifests/receipts, and reusable scripts in their permanent location.
 
-The approved native-Windows Wave-1 folder run is:
+The approved native-Windows Wave-1 rerun is:
 
-- `F:\TrinityR-research\Research Program\.runs\wave1-native-v2\<PROGRAM>\<ROLE>`
+- `F:\TrinityR-research\Research Program\.runs\wave1-native-v3\<PROGRAM>\<ROLE>`
+
+The prior `wave1-native-v2` directory is retained as earlier-run material and is
+not reused for fresh researchers.
 
 Each role directory is private by workflow convention only. Windows folder
 separation does not provide hard peer, credential, network, or host-data
