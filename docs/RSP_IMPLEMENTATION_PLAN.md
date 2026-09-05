@@ -2,123 +2,115 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add a deterministic, role-aware R→S→P infrastructure path while preserving existing v1 contracts, causal tape behavior, workflow blinding, and locked confirmation.
+**Goal:** Add deterministic infrastructure for R Market Research, S Strategy / Alpha Research, and P Portfolio Research while preserving v1 contracts, causal tape behavior, workflow blinding, and locked confirmation.
 
-**Architecture:** Keep `research-contracts` as the semantic and authority boundary and `research-tape` as the causal/Parquet boundary. Add one `research-engine` crate for reusable role dispatch, statistics, simulation, promotion, provenance, and CLI composition. The implementation stages discovery evidence before operational gates and retain partial or unknown evidence.
+**Architecture:** Keep `research-contracts` as the semantic, authority, submission, and provenance boundary; keep `research-tape` as the physical causal Parquet boundary. Add one Arrow-free `research-engine` crate for reusable R statistics, S strategy validation, P portfolio methods, challenge, reproducibility, and a thin CLI wrapper around the existing materializer.
 
-**Tech Stack:** Rust workspace, existing `serde`, `serde_json`, `sha2`, and current Parquet/tape dependencies; no new dependency for pure statistics unless an existing dependency cannot express the required bounded operation.
+**Tech Stack:** Rust workspace, existing `serde`, `serde_json`, `sha2`, `NativeScale`, and current tape dependencies. Pure statistics do not depend on Arrow; do not add a dependency unless an existing one cannot express a tested operation.
 
 **Spec:** `docs/SYSTEM_CHARTER.md`
 
 ## Global Constraints
 
-- Preserve v1 serialization and generated schemas; additions are composable and compatibility-checked.
-- Support 15+ instruments and 23 role-heterogeneous detectors through declared role semantics, without inventing adapters without a producer need.
-- Preserve normalized raw and basis timestamps and fail closed on future, missing, contradictory, or unconfirmed inputs.
-- Keep worker access denied for raw/private lake, peer, and holdout surfaces; never self-unlock confirmation.
-- Record immutable source, binary, configuration, seed, and output identities without absolute paths.
-- Do not hardcode scientific thresholds, returns, outcomes, or one universal lifecycle for every role.
-- Do not run real scanners or alter science, holdout, or AP workspaces during implementation.
+- Preserve v1 `ExperimentContract`, `RunManifest`, `Finding`, `KnowledgeRecord`, `ExposureClass`, registry, and generated schemas; additions are composable and additive.
+- Group new typed concepts into 4–6 focused contract modules; do not jam them into the existing `lib.rs` or one giant schema.
+- Support 15+ instruments, 23 role-heterogeneous detectors, ten exact semantic roles, and eleven exact relationship operator categories without inventing unneeded adapters.
+- Preserve normalized raw and basis timestamps; reject invalid causal inputs while retaining contradictory, null, inconclusive, partial, and unknown findings.
+- Keep raw/private lake, peer, holdout, and future context inaccessible to workers; confirmation requires an externally authorized custodian policy and authentication boundary.
+- Reproducibility identity includes immutable source/binary/config/seed/output identities and excludes absolute paths.
+- Do not add scientific thresholds, returns, outcomes, real studies, scanners, AP changes, or scientific artifacts.
 
-## Existing baseline and gap map
+## Existing capability and gap map
 
-| Capability | Existing owner/evidence | Gap to fill |
+| Capability | Existing owner/evidence | Planned gap |
 | --- | --- | --- |
-| Typed v1 experiment, run, evidence, exposure contracts and generated schemas | `crates/research-contracts/src/lib.rs`; `contracts/*_v1.schema.json` | Add composable role/operator/authority/holdout semantics without breaking v1 |
-| Detector registry and instrument/source metadata | `registry/detectors_v1.json`, `instruments/` | Add semantic role and operator legality references; retain registry compatibility |
-| Causal cursors, normalized timing, projected Parquet reads | `crates/research-tape/src/lib.rs` | Expose a stable engine input interface for raw+basis causal records |
-| Development view materializer and verification | `crates/research-tape/src/development_view.rs`, `materialize_development_view` | Compose existing scope materializer into the CLI with explicit identity |
-| Availability sidecar | `crates/research-tape/src/fvg_availability.rs`, `fvg_availability_sidecar` | Consume sidecar availability; never infer availability from occurrence |
-| Sealed knowledge and workflow blinding | `crates/research-contracts/src/submission.rs`, `seal_submission`, `agent_harness/` | Add nested/future holdout exposure ledger and query immutable records |
-| Role-dispatched atlas/question generation | None | Engine R role registry, atlas, and deterministic question generation |
-| Reusable bounded statistics and nulls | None | Engine R stats/null interface with explicit parameters and abstentions |
-| Method challenge and confirmation verification | Partial authority/sealing primitives | Add challenge/replay evidence and separate custodian confirmation boundary |
-| Strategy/execution/cost/risk/walk-forward | None | Engine S/P typed method interfaces; current live confirmation remains locked |
-| Portfolio/constraints/stress | None | Engine S/P composable methods and synthetic acceptance only |
-| Typed provenance/run/report/knowledge querying | Partial v1 records | Compose immutable identities and query existing canonical records |
+| Typed v1 experiment/run/evidence/exposure and registry | `crates/research-contracts/src/lib.rs`, `contracts/`, `registry/` | Add composable semantics and compatibility/version/parameter IDs |
+| Physical causal data, raw+basis timing, projected Parquet, NativeScale | `crates/research-tape/src/lib.rs`, `development_view.rs` | Stable engine input adapter; reuse shared `NativeScale` via contracts/re-export |
+| Availability sidecar | `crates/research-tape/src/fvg_availability.rs` | Consume declared availability; never infer from occurrence |
+| Submission sealing and workflow blinding | `research-contracts/src/submission.rs`, `agent_harness/` | Typed exposure ledger, knowledge publication/query boundaries, custodian contract |
+| Role-dispatched atlas/questions | None | R ontology, exact role/operator compatibility, bounded question generation |
+| Reusable statistics/nulls | None | R statistics listed in Task 2 with declared exact/approximation ceilings |
+| Strategy and portfolio methods | None | S decision/execution/cost/risk/walk-forward and P allocation/constraints/stress |
+| Challenge, confirmation, provenance | Partial v1 authority/sealing | Separate challenge, external custody, and path-independent identity |
 
-Boundary-audit seams to harden in the relevant stage: the development-view verifier must bind expected instrument, scope, and source and reject root/ancestor reparse escapes; the native launcher must set its declared current directory; immutable knowledge publication must be interruption-safe against partial artifacts; CLI output must satisfy declared-root containment and expected identity checks. The accepted Windows folder workflow remains the boundary; do not redesign it as an OS sandbox. A report-gate source junction escape is a targeted check if its existing contract permits it, not a harness rewrite.
+Boundary audit targets: development-view expected instrument/scope/source binding and root/ancestor reparse rejection; launcher current-directory correctness; interruption-safe immutable knowledge publication; declared-root output containment and expected identities; targeted report-gate source junction escape where its existing contract applies. The Windows folder workflow remains the accepted boundary; no OS sandbox rebuild.
 
 ## Staged tasks
 
-### Task 1: Composable contracts, compatibility, and exposure invariants
+### Task 1: Semantic contracts and compatibility
 
 **Files:**
-- Modify: `crates/research-contracts/src/lib.rs`
-- Modify: `crates/research-contracts/src/submission.rs` only where sealing metadata must carry the new typed evidence
-- Modify: `contracts/` generated schemas through the existing `generate_schemas` path
-- Test: `crates/research-contracts/tests/contracts.rs`, `crates/research-contracts/tests/submission_sealing.rs`
+- Create: 4–6 focused modules under `crates/research-contracts/src/` for identity/provenance, instrument/producer, timing/lifecycle, research evidence, and strategy/portfolio contracts.
+- Modify: `crates/research-contracts/src/lib.rs` only for module exports and v1-compatible re-exports.
+- Modify: `crates/research-contracts/src/submission.rs` for typed submission/exposure metadata and interruption-safe publication.
+- Modify: `contracts/` via the existing schema generator; preserve all v1 schemas.
+- Test: `crates/research-contracts/tests/contracts.rs`, `crates/research-contracts/tests/submission_sealing.rs`.
 
 **Interfaces:**
-- Produce `RoleId`, `Operator`, `AuthorityCompatibility`, `ExposureLedger`, and `ProvenanceIdentity` as serde types with explicit validation.
-- Produce `validate_compatibility(v1, role, authority) -> Result<(), ContractError>` and `record_exposure(event) -> Result<(), ExposureError>`; nested future holdout exposure must fail closed.
-- Reuse existing registry parsing, causal validation, sealing, and generated-schema ownership.
+- Add `Instrument`, `InstrumentScope`, `ProducerAuthority`, `AuthorityCompatibility`, `DetectorRole`, `DetectorVersion`, `AvailabilityRule`, `OccurrenceRule`, `LifecycleVocabulary`, `LifecycleTransition`, `ObjectIdentity`, `DetectorLineage`, `AnchorDefinition`, `AnchorProgram`, `ContextPermission`, `NormalizationBasis`, `OutcomeDefinition`, `Question`, `Hypothesis`, `ControlDesign`, `NullDesign`, `MethodChallenge`, `ConfirmationContract`, `StrategyHypothesis`, `DecisionRule`, `ExecutionAssumption`, `CostModel`, `RiskRule`, `StrategyValidation`, `PortfolioComponent`, `PortfolioConstraint`, and `ReproducibilityIdentity` as small serde contracts.
+- Reuse existing `ExposureClass`, `ExperimentContract`, `RunManifest`, `Finding`, and `KnowledgeRecord`; expose `validate_compatibility(...)` and `record_exposure(...)` with explicit error types.
 
-- [ ] Add failing tests for v1 round-trip compatibility, illegal role/operator combinations, nested holdout exposure, future availability, and path-independent identity.
-- [ ] Implement the smallest composable types and validators; preserve v1 fields and error behavior.
-- [ ] Regenerate schemas with `generate_schemas` and verify committed schemas match.
-- [ ] Run targeted contract/sealing tests, then `cargo test --workspace` and `cargo fmt --all -- --check` with corpus/lake variables unset.
+- [ ] Add failing tests for v1 round trips, all ten roles, all eleven operators, illegal authority/operator combinations, nested/future exposure, path-independent identity, and partial/contradictory/null evidence retention.
+- [ ] Implement minimal modules and additive schemas; use `NativeScale` as the single shared scale type.
+- [ ] Add expected view identity/scope/source and reparse checks, then run targeted tests and schema verification.
 
-### Task 2: Engine R discovery core
+### Task 2: Program R engine and statistics
 
 **Files:**
-- Create: `crates/research-engine/Cargo.toml`, `crates/research-engine/src/lib.rs`, `crates/research-engine/src/role.rs`, `crates/research-engine/src/stats.rs`, `crates/research-engine/src/provenance.rs`
-- Modify: workspace `Cargo.toml`
-- Test: `crates/research-engine/tests/research.rs`
+- Create: `crates/research-engine/Cargo.toml`, `src/lib.rs`, `src/role.rs`, `src/questions.rs`, `src/stats.rs`, `src/provenance.rs`.
+- Modify: workspace `Cargo.toml`.
+- Test: `crates/research-engine/tests/research.rs`.
 
 **Interfaces:**
-- Consume `research-contracts` validated inputs and `research-tape` causal records.
-- Produce `RoleAtlas`, `Question { role, instrument, resolution, lag, sign, session, regime }`, `EvidenceRecord`, `NullResult`, and `run_research(input, plan) -> ResearchReport`.
-- `RoleDefinition::operators()` declares legality; stats functions accept explicit method parameters and return `Known`, `Abstained`, or `Failed` evidence.
+- Consume validated contract inputs and causal records through a tape adapter; pure stats depend on contracts only, never Arrow or tape internals.
+- Produce `RoleAtlas`, `Question`, `ResearchPlan`, and `ResearchReport` with `Known`, `Abstained`, `Failed`, `Null`, `Inconclusive`, and `Contradictory` evidence states.
+- Expose bounded operations for streaming moments; quantiles with declared exact/approximate limits; effect size; exact-strata matched controls; block-aware bootstrap/permutation; circular/time-shift nulls; seeded Monte Carlo; full-family accounting; BH/BY FDR; max-statistic control; support/cluster concentration; and survival/hazard.
 
-- [ ] Test a synthetic two-instrument, two-resolution role atlas, positive and negative signs, missing data abstention, bounded lag scan, and deterministic repeated-run identity.
-- [ ] Implement reusable pure statistics with stdlib/installed dependencies, preserving raw metrics and unknowns.
-- [ ] Add immutable provenance hashing that excludes absolute paths and includes source/binary/config/seed/output identities.
-- [ ] Verify R tests and workspace baseline.
+- [ ] Test each implemented operation against a small analytic or exhaustive oracle, including seed repeatability, declared approximation bounds, and explicit abstention; do not add an estimator without its oracle.
+- [ ] Test two synthetic instruments, multiple resolutions, positive/negative signs, role-compatible operators, and non-Cartesian question generation.
+- [ ] Implement R atlas, question generation, challenge/reproducibility identity, and immutable knowledge queries by reusing existing records.
 
-### Task 3: Engine S/P methods and confirmation boundary
+### Task 3: Program S strategy / alpha research
 
 **Files:**
-- Create: `crates/research-engine/src/simulation.rs`, `src/walk_forward.rs`, `src/portfolio.rs`, `src/confirmation.rs`
-- Test: `crates/research-engine/tests/simulation.rs`
+- Create: `crates/research-engine/src/strategy.rs`, `src/simulation.rs`, `src/walk_forward.rs`, `src/confirmation.rs`.
+- Test: `crates/research-engine/tests/strategy.rs`.
 
 **Interfaces:**
-- Consume R evidence plus explicit method parameters and confirmed input manifests.
-- Produce `SimulationReport`, `WalkForwardReport`, `PortfolioReport`, `StressReport`, and `PromotionEvidence` with separate coverage, abstention, cost, risk, and performance fields.
-- `confirm(request, custodian_token) -> Result<Confirmation, ConfirmationError>` fails closed unless a separately authorized custodian signs; worker context has no unlock path.
+- Consume R evidence plus explicit `StrategyHypothesis`, entry/exit/sizing/management `DecisionRule`, `ExecutionAssumption`, `CostModel`, `RiskRule`, and confirmation manifest.
+- Produce `StrategyValidation` with causal partitions, coverage, abstentions, costs, risks, and performance fields; promotion is a lifecycle operation over this evidence, never Program P.
+- `confirm_strategy(request, external_custodian) -> Result<StrategyConfirmation, ConfirmationError>` requires injectable external policy/authentication; a worker bool, shared secret, or self-issued signature is invalid.
 
-- [ ] Test causal walk-forward partitions, explicit cost/risk/constraint parameters, missing-input abstention, deterministic portfolio aggregation, stress scenarios, and self-confirmation rejection.
-- [ ] Implement pure replay/simulation and promotion evidence; keep live execution and live fills unavailable.
-- [ ] Verify no method embeds scientific thresholds or outcomes.
+- [ ] Test causal walk-forward boundaries, explicit cost/risk parameters, missing or future inputs, deterministic replay, and worker self-confirmation rejection.
+- [ ] Implement strategy simulation and method challenge without live orders, live fills, or hardcoded scientific outcomes.
 
-### Task 4: CLI integration and synthetic end-to-end
+### Task 4: Program P portfolio research and boundary-safe CLI
 
 **Files:**
-- Create: `crates/research-engine/src/bin/research_engine.rs`
-- Modify: `crates/research-tape/src/bin/materialize_development_view.rs` only if a stable library call is needed
-- Test: `crates/research-engine/tests/end_to_end.rs`
-- Check: `agent_harness/launch/isolated-run.ps1`, `agent_harness/validation/validate-isolation.ps1`
+- Create: `crates/research-engine/src/portfolio.rs`, `src/bin/research_engine.rs`.
+- Modify: `crates/research-tape/src/bin/materialize_development_view.rs` only for a stable library call; `agent_harness/launch/isolated-run.ps1` only for current-directory correctness.
+- Test: `crates/research-engine/tests/portfolio.rs`, `tests/end_to_end.rs`; targeted existing harness tests.
 
 **Interfaces:**
-- CLI consumes declared scope, synthetic inputs, plan, and output directory; it calls the existing development-view materializer and engine R/S/P APIs.
-- CLI produces machine-readable report, provenance identity, exposure ledger, and explicit locked confirmation status.
+- Consume `PortfolioComponent`, `PortfolioConstraint`, strategy evidence, and declared `ContextPermission`.
+- Produce reports for correlation/conditional correlation, overlap, capital allocation, drawdown, regime diversification, capacity, turnover, liquidity, concentration, risk budgets, optimization, stress, and portfolio confirmation.
+- CLI is a thin adapter over the existing scope materializer and emits machine-readable reports, provenance, exposure ledger, and locked confirmation status under declared output roots.
 
-- [ ] Run a fresh-process synthetic two-instrument R→S→P path through scope materialization, including one missing and one future input.
-- [ ] Assert the report preserves partial evidence, abstentions, provenance, and locked confirmation; assert repeated runs match.
-- [ ] Add synthetic regressions for expected instrument/scope/source binding, root and ancestor reparse rejection, launcher current-directory correctness, interruption-safe knowledge publish, declared-root output containment, and any report-gate source junction escape.
-- [ ] Run isolation validation and full workspace tests with real corpus variables unset; do not invoke scanners.
+- [ ] Test synthetic two-instrument R→S→P end-to-end with missing/future inputs, partial/contradictory evidence, deterministic path-independent identity, output containment, expected identity binding, and locked confirmation.
+- [ ] Test portfolio methods against small analytic/exhaustive oracles; report unknowns and abstentions without fabricating performance.
+- [ ] Add regressions for launcher CWD, root/ancestor reparse escapes, interruption-safe knowledge publication, and applicable report-gate junction escape.
 
-### Task 5: Documentation, review, and release gate
+### Task 5: Required documentation and final review
 
 **Files:**
-- Create or update: `docs/SYSTEM_CHARTER.md`, `docs/RSP_IMPLEMENTATION_PLAN.md`, `docs/RSP_CONTRACTS.md`, `docs/RSP_ENGINE_R.md`, `docs/RSP_ENGINE_SP.md`, `docs/RSP_PROVENANCE.md`, `docs/RSP_HOLDOUT_BOUNDARY.md`, `docs/RSP_CONFIRMATION_BOUNDARY.md`, and `docs/RSP_ACCEPTANCE.md`
-- Review: all changed contracts, engine, tape integration, and `agent_harness` boundaries
+- Create/update exactly: `docs/SYSTEM_CHARTER.md`, `docs/SCIENTIFIC_ONTOLOGY.md`, `docs/PROGRAM_R.md`, `docs/PROGRAM_S.md`, `docs/PROGRAM_P.md`, `docs/REPRODUCIBILITY.md`, `docs/INSTRUMENT_ONBOARDING.md`, `docs/HOLDOUT_POLICY.md`, and `docs/AGENT_OPERATIONS.md`.
+- Retain: `docs/RSP_IMPLEMENTATION_PLAN.md`.
 
-- [ ] Document interfaces, evidence states, provenance, holdout ledger, confirmation custody, and deferred capabilities without claiming empirical results.
-- [ ] Run `cargo fmt --all -- --check`, targeted tests, full workspace tests, isolation validation, and fresh-process deterministic replay.
-- [ ] Perform an independent defect-focused review; classify every failure or unavailable check as `not_run`, infrastructure failure, or analytical failure.
-- [ ] Commit only after docs, code, and evidence checks are complete; preserve v1 and leave live confirmation locked.
+- [ ] Document all interfaces, lifecycle evidence states, role/operator vocabulary, provenance, onboarding, holdout custody, and agent operations without scientific claims.
+- [ ] Run targeted tests, `cargo fmt --all -- --check`, full workspace tests with corpus/lake variables unset, isolation validation, and fresh-process deterministic replay.
+- [ ] Review changed surfaces for data leakage, invalid causal rejection versus finding preservation, and external confirmation custody; classify unavailable checks as `not_run`.
+- [ ] Commit only after the independent review passes; leave live confirmation locked.
 
 ## Deliberate deferrals
 
-The plan does not add 21 detector adapters without producer semantics, real studies or alpha, holdout exposure, AP changes, an OS sandbox rebuild, live brokers/fills, distributed execution, or a graph database. Add those only when an approved producer contract and acceptance test require them.
+No real studies, alpha claims, holdout exposure, AP changes, OS sandbox redesign, live broker/fill integration, distributed execution, graph database, or 21 detector adapters without a producer semantic need. Add any deferred surface only with an explicit contract and synthetic acceptance test.
