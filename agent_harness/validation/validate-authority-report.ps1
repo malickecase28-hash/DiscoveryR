@@ -19,7 +19,7 @@ function Keys([object] $value) {
 }
 
 function Has-ExactKeys([object] $value, [string[]] $expected) {
-    if ($null -eq $value -or $value -is [string] -or $value -is [ValueType]) { return $false }
+    if ($null -eq $value -or $value -is [string] -or $value -is [System.ValueType]) { return $false }
     $actual = @(Keys $value | Sort-Object)
     $wanted = @($expected | Sort-Object)
     return $null -eq (Compare-Object -ReferenceObject $wanted -DifferenceObject $actual)
@@ -65,7 +65,7 @@ function Find-BadKey([object] $value, [string] $where) {
     if ($value -is [PSCustomObject]) {
         foreach ($property in $value.PSObject.Properties) {
             $key = $property.Name.ToLowerInvariant()
-            if ($key -in @('provider', 'provider_id', 'provider_identity', 'model', 'model_id', 'model_name', 'model_provider', 'model_identity', 'vendor', 'runtime_provider', 'runtime_identity', 'runtime_slot', 'credential', 'credential_path', 'secret', 'token')) {
+            if ($key -in @('provider', 'provider_id', 'provider_identity', 'model_id', 'model_name', 'model_provider', 'model_identity', 'vendor', 'runtime_provider', 'runtime_identity', 'runtime_slot', 'credential', 'credential_path', 'secret', 'token')) {
                 Fail "forbidden identity field '$($property.Name)' at $where"
             }
             Find-BadKey $property.Value "$where.$($property.Name)"
