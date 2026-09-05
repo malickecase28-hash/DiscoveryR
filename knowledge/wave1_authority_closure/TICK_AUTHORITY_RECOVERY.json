@@ -1,0 +1,184 @@
+{
+  "artifact": "TICK_AUTHORITY_RECOVERY",
+  "artifact_version": "v1",
+  "worker": "AR-02",
+  "discoveryr_commit": "b2ecab9b1b77c46987502c05262888d2784f9afc",
+  "behavioral_research_inspected": false,
+  "confirmation_unlocked": false,
+  "wave1_researchers_rerun": false,
+  "linkage": {
+    "status": "EXACT",
+    "producer_repo": "https://github.com/malickecase28-hash/TrinityR",
+    "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+    "producer_commit_evidence": {
+      "lake_manifest": "F:/TrinityR-research/analytical_lake/fusion_markets/xauusd/manifest.json:12964",
+      "manifest_field": "trinityr_commit",
+      "manifest_sha256": "1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af",
+      "payload_manifest_sha256": "78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed",
+      "config_hash": "2fbbbc6ea5cbac6c20c9209a0f0861494145229d1279bafe500f64eb35f1f578",
+      "source_content_hash": "4df2ae85bb9eb22d460f8fd02eb21c1fcf71e40e3031bd8a96474981a9df77cc",
+      "tick_detectors": [
+        "drift_burst",
+        "spread_state",
+        "quote_dynamics",
+        "quote_arrival",
+        "micro_volatility",
+        "feed_health",
+        "quote_pressure"
+      ],
+      "payload_schema_version": "trinity.research.wide-parquet.payload-inventory.v1",
+      "producer_source_schema": "trinity.research.tick-payload-contract.v1"
+    },
+    "source_files": [
+      {
+        "path": "crates/trinity-analytics/src/tick/betay_drift_burst.rs",
+        "git_blob": "1b8739fd1bd1a2c30ea93da3719f4c68eff55fbe",
+        "sha256": "a19858d505259b111f08db7e63a617980aebcefcfe97de4991d8c0b1f44088b2"
+      },
+      {
+        "path": "crates/trinity-analytics/src/tick/mod.rs",
+        "git_blob": "23df74f486b0ec4eaf285b757e803f241837e33f",
+        "sha256": "a0df331e68e01414b69814bf80b7cc150407f6a869de0f83558e0efea73ac60d"
+      },
+      {
+        "path": "crates/trinity-analytics/src/registry.rs",
+        "git_blob": "17df434a5956e95fad47f694ee96cb308a262456",
+        "sha256": "d093c4ca8838aea95cd996bc597de89abeb282470f65ca3825d9eb6dd2708a38"
+      }
+    ],
+    "parameter_linkage": {
+      "status": "UNRESOLVED",
+      "reason": "The frozen lake exposes global config_hash but no detector-specific parameter-version or parameter-hash map.",
+      "config_hash": "2fbbbc6ea5cbac6c20c9209a0f0861494145229d1279bafe500f64eb35f1f578"
+    }
+  },
+  "detectors": {
+    "drift_burst": {
+      "producer_path": "crates/trinity-analytics/src/tick/betay_drift_burst.rs",
+      "detector_version": "v3",
+      "state_version": "trinity.analytics.tick.drift_burst.v4",
+      "linkage_status": "EXACT",
+      "claims": [
+        {"claim":"native causal tick scorer/lifecycle","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:1-20"},
+        {"claim":"lifecycle states IDLE, DEVELOPING, BURST, DECAY_RISK, DYING","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:463-475; 886-1077"},
+        {"claim":"stable episode identity via event_id and monotone next_event_id","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:296-306; 696-704"},
+        {"claim":"first-entry weak/online/strong milestone capture","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:864-945"},
+        {"claim":"weak release and opposite-direction reseeding/reprocessing","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:914-965"},
+        {"claim":"BURST peak tracking and transition to DECAY_RISK/DYING","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:967-1085"},
+        {"claim":"recovery counters and lifecycle recovery before terminal completion","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:1055-1138"},
+        {"claim":"terminal rules RETRACE and AGE_LIMIT","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:1046-1077"},
+        {"claim":"completed event carries end reason, end fields, peak and availability-after milestone fields","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:316-381; 620-645"},
+        {"claim":"state and completed events are emitted on the current tick event timestamp","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:1149-1181"},
+        {"claim":"state persistence and v3 checkpoint migration are implemented","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:1186-1205"},
+        {"claim":"5s, 15s, 30s and 60s multiscale horizons are maintained","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:11-24; 838-850"},
+        {"claim":"direction is the signed score/internal_sign and is copied to milestone fields","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:104-114; 687-726"},
+        {"claim":"available_after_* fields are finalization-time fields and cannot be populated before finalization by this implementation","classification":"AUTHORITATIVE","locator":"betay_drift_burst.rs:623-644"},
+        {"claim":"the frozen lake's full lawful availability contract is identical to this producer's runtime contract","classification":"PROVISIONAL","locator":"manifest.json:12964; betay_drift_burst.rs:623-644","reason":"Commit linkage is exact, but no separate detector-specific parameter/serialization comparison artifact was supplied."}
+      ],
+      "parameter_version": null,
+      "parameter_linkage": "UNRESOLVED"
+    },
+    "spread_state": {
+      "producer_path": "crates/trinity-analytics/src/tick/mod.rs",
+      "detector_version": "v2",
+      "state_version": "trinity.analytics.tick.spread_state.v2",
+      "linkage_status": "EXACT",
+      "claims": [
+        {"claim":"rolling spread regime detector","classification":"AUTHORITATIVE","locator":"mod.rs:756-852"},
+        {"claim":"spread is normalized as bid/ask spread in basis points over mid","classification":"AUTHORITATIVE","locator":"mod.rs:766-768"},
+        {"claim":"warmup median reference and hysteretic normal/widened/compressed transitions","classification":"AUTHORITATIVE","locator":"mod.rs:768-805"},
+        {"claim":"transition, widening and compression payloads are emitted at current tick time","classification":"AUTHORITATIVE","locator":"mod.rs:807-843"},
+        {"claim":"state persistence uses v2 envelope","classification":"AUTHORITATIVE","locator":"mod.rs:855-860"},
+        {"claim":"direction semantics","classification":"NOT_APPLICABLE","locator":"mod.rs:756-852"},
+        {"claim":"detector-specific parameter version/hash in frozen lake","classification":"UNRESOLVED","locator":"manifest.json:config_hash","reason":"Only global configuration identity is frozen."}
+      ],
+      "parameter_version": null,
+      "parameter_linkage": "UNRESOLVED"
+    },
+    "quote_dynamics": {
+      "producer_path": "crates/trinity-analytics/src/tick/mod.rs",
+      "detector_version": "v2",
+      "state_version": "trinity.analytics.tick.quote_dynamics.v2",
+      "linkage_status": "EXACT",
+      "claims": [
+        {"claim":"event detector over prior/current bid, ask and mid","classification":"AUTHORITATIVE","locator":"mod.rs:960-989"},
+        {"claim":"reprice and asymmetric-reprice events use baseline RMS anomaly magnitude and coherent/asymmetric motion class","classification":"AUTHORITATIVE","locator":"mod.rs:990-1032"},
+        {"claim":"spread widening/compression impulses are emitted from spread-change anomalies","classification":"AUTHORITATIVE","locator":"mod.rs:1035-1064"},
+        {"claim":"acceleration uses timestamp-corrected velocity separation","classification":"AUTHORITATIVE","locator":"mod.rs:938-956; 1067-1112"},
+        {"claim":"state persistence uses v2 envelope","classification":"AUTHORITATIVE","locator":"mod.rs:1135-1140"},
+        {"claim":"detector-specific parameter version/hash in frozen lake","classification":"UNRESOLVED","locator":"manifest.json:config_hash","reason":"Only global configuration identity is frozen."}
+      ],
+      "parameter_version": null,
+      "parameter_linkage": "UNRESOLVED"
+    },
+    "quote_arrival": {
+      "producer_path": "crates/trinity-analytics/src/tick/mod.rs",
+      "detector_version": "v2",
+      "state_version": "trinity.analytics.tick.quote_arrival.v1",
+      "linkage_status": "EXACT",
+      "claims": [
+        {"claim":"rolling inter-arrival event detector","classification":"AUTHORITATIVE","locator":"mod.rs:1197-1258"},
+        {"claim":"arrival_gap and arrival_burst classify inter-arrival ratio against rolling reference","classification":"AUTHORITATIVE","locator":"mod.rs:1202-1248"},
+        {"claim":"warmup/window and gap/burst thresholds are registered producer parameters","classification":"AUTHORITATIVE","locator":"mod.rs:349-360; 1197-1258"},
+        {"claim":"state persistence uses v1 envelope","classification":"AUTHORITATIVE","locator":"mod.rs:1253-1258"},
+        {"claim":"direction semantics","classification":"NOT_APPLICABLE","locator":"mod.rs:1197-1248"},
+        {"claim":"detector-specific parameter version/hash in frozen lake","classification":"UNRESOLVED","locator":"manifest.json:config_hash","reason":"Only global configuration identity is frozen."}
+      ],
+      "parameter_version": null,
+      "parameter_linkage": "UNRESOLVED"
+    },
+    "micro_volatility": {
+      "producer_path": "crates/trinity-analytics/src/tick/mod.rs",
+      "detector_version": "v3",
+      "state_version": "trinity.analytics.tick.micro_volatility.v2",
+      "linkage_status": "EXACT",
+      "claims": [
+        {"claim":"rolling short-window versus baseline volatility state detector","classification":"AUTHORITATIVE","locator":"mod.rs:362-381; 1376-1493"},
+        {"claim":"normal/compression/burst transitions and transition/compression/burst event emission","classification":"AUTHORITATIVE","locator":"mod.rs:1381-1487"},
+        {"claim":"changed mid values and prior baseline drive the volatility comparison","classification":"AUTHORITATIVE","locator":"mod.rs:2135-2161"},
+        {"claim":"state persistence uses v2 envelope","classification":"AUTHORITATIVE","locator":"mod.rs:1488-1493"},
+        {"claim":"direction semantics","classification":"NOT_APPLICABLE","locator":"mod.rs:1376-1487"},
+        {"claim":"detector-specific parameter version/hash in frozen lake","classification":"UNRESOLVED","locator":"manifest.json:config_hash","reason":"Only global configuration identity is frozen."}
+      ],
+      "parameter_version": null,
+      "parameter_linkage": "UNRESOLVED"
+    },
+    "feed_health": {
+      "producer_path": "crates/trinity-analytics/src/tick/mod.rs",
+      "detector_version": "v2",
+      "state_version": "trinity.analytics.tick.feed_health.v1",
+      "linkage_status": "EXACT",
+      "claims": [
+        {"claim":"feed-integrity event detector over event time, receipt time and source sequence","classification":"AUTHORITATIVE","locator":"mod.rs:1588-1759"},
+        {"claim":"event-time regression/gap, expected market closure, sequence regression/duplicate/gap and latency spike events are defined","classification":"AUTHORITATIVE","locator":"mod.rs:1607-1749"},
+        {"claim":"bad timestamp/sequence inputs do not advance the corresponding monotone reference","classification":"AUTHORITATIVE","locator":"mod.rs:1677-1702; 1752-1757"},
+        {"claim":"state persistence uses v1 envelope and sanitizes restored latency history","classification":"AUTHORITATIVE","locator":"mod.rs:1762-1775"},
+        {"claim":"direction semantics","classification":"NOT_APPLICABLE","locator":"mod.rs:1588-1759"},
+        {"claim":"detector-specific parameter version/hash in frozen lake","classification":"UNRESOLVED","locator":"manifest.json:config_hash","reason":"Only global configuration identity is frozen."}
+      ],
+      "parameter_version": null,
+      "parameter_linkage": "UNRESOLVED"
+    },
+    "quote_pressure": {
+      "producer_path": "crates/trinity-analytics/src/tick/mod.rs",
+      "detector_version": "v1",
+      "state_version": "trinity.analytics.tick.quote_pressure.v1",
+      "linkage_status": "EXACT",
+      "claims": [
+        {"claim":"event detector using prior/current bid and ask moves","classification":"AUTHORITATIVE","locator":"mod.rs:1818-1865"},
+        {"claim":"EMA pressure emits buy/sell events when absolute pressure crosses threshold","classification":"AUTHORITATIVE","locator":"mod.rs:1828-1858"},
+        {"claim":"payload semantics are price-only quote direction, not order flow","classification":"AUTHORITATIVE","locator":"mod.rs:1849-1856"},
+        {"claim":"state persistence uses v1 envelope","classification":"AUTHORITATIVE","locator":"mod.rs:1867-1873"},
+        {"claim":"detector-specific parameter version/hash in frozen lake","classification":"UNRESOLVED","locator":"manifest.json:config_hash","reason":"Only global configuration identity is frozen."}
+      ],
+      "parameter_version": null,
+      "parameter_linkage": "UNRESOLVED"
+    }
+  },
+  "overall_limits": [
+    "The exact TrinityR producer commit is linked by the frozen lake manifest.",
+    "The source registry and payload detector set agree at that commit.",
+    "Detector-specific parameter identity remains unresolved because only the global lake config_hash is available.",
+    "No claim in this artifact interprets behavioral outcomes or upgrades parameter-dependent claims to fully frozen semantics."
+  ]
+}

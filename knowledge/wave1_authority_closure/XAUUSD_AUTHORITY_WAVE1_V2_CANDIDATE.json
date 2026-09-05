@@ -1,0 +1,200 @@
+{
+  "artifact_type": "XAUUSD_AUTHORITY_WAVE1_V2_CANDIDATE",
+  "artifact_version": "V2-CANDIDATE",
+  "candidate_status": "CANDIDATE_NOT_FROZEN",
+  "created_utc": "2026-09-05T05:45:35Z",
+  "predecessor_v1": {
+    "path": "knowledge/wave1_authority_closure/XAUUSD_AUTHORITY_WAVE1_V1.json",
+    "sha256": "4df4ee34be9519f03b8b4c2f227218f22e1657c808672279a94020270a40848d"
+  },
+  "discoveryr_integration": {
+    "branch": "infra/i02-generic-runtime-harness",
+    "head": "b2ecab9b1b77c46987502c05262888d2784f9afc",
+    "parent": "ed96b0f71aca81c532e10dacd3e89faedb3d1943",
+    "main_merge": "HOLD"
+  },
+  "recovery_artifacts": [
+    {
+      "path": "knowledge/wave1_authority_closure/PRODUCER_LINKAGE.json",
+      "sha256": "ccddcf98bfe790a8b33d7373faeae911b7b87799c74ccead9fc65236f373bb3d",
+      "role": "producer identity and lake linkage assessment"
+    },
+    {
+      "path": "knowledge/wave1_authority_closure/TICK_AUTHORITY_RECOVERY.json",
+      "sha256": "c387d06f90c5e286b1de25bbb2f760f9471484cbac86d6b0f545b9e982a0696e",
+      "role": "tick producer authority"
+    },
+    {
+      "path": "knowledge/wave1_authority_closure/BAR_AUTHORITY_RECOVERY.json",
+      "sha256": "c9f5b3c711e39edb5ffc1ca118c2ab0721f17d907bc4eecd95e23a4fc58f2ab6",
+      "role": "bar producer authority and lineage"
+    }
+  ],
+  "source_scope": {
+    "lake_root": "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd",
+    "producer_sources": [
+      "F:\\TrinityR",
+      "F:\\Trinity",
+      "malickecase28-hash/TrinityR",
+      "malickecase28-hash/Trinity"
+    ],
+    "included": [
+      "frozen lake manifests and payload manifest",
+      "exact TrinityR Git object named by the frozen manifest",
+      "producer registry, tick implementations, bar implementations, and source contracts"
+    ],
+    "excluded": [
+      "Wave-1 researcher reruns",
+      "behavioral research outcomes",
+      "confirmation unlock",
+      "strategy code changes",
+      "fresh replay equivalence claims"
+    ]
+  },
+  "v1_correctly_established": [
+    "Eight final frozen reports are PASS 8/8 with repaired-report provenance preserved.",
+    "V1 syntheses correctly normalized stale locator defects, pseudo-conflicts, and BG independence wording.",
+    "The local F:\\TrinityR-research source search found no producer authority within its declared filesystem scope.",
+    "Confirmation remained LOCKED and behavioral research was not started."
+  ],
+  "v1_left_unresolved": [
+    "Producer implementation authority outside F:\\TrinityR-research.",
+    "Exact producer revision and source-file identity for the frozen lake.",
+    "Drift-Burst lifecycle, FVG causal lifecycle, and producer dependency lineage.",
+    "Whether the observed current source was the source revision used to generate the frozen lake."
+  ],
+  "producer_linkage": {
+    "lake_manifest": {
+      "path": "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd\\manifest.json",
+      "sha256": "1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af",
+      "payload_manifest_sha256": "78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed",
+      "trinityr_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "config_hash": "2fbbbc6ea5cbac6c20c9209a0f0861494145229d1279bafe500f64eb35f1f578",
+      "source_content_hash": "4df2ae85bb9eb22d460f8fd02eb21c1fcf71e40e3031bd8a96474981a9df77cc"
+    },
+    "trinityr": {
+      "repository": "F:\\TrinityR",
+      "declared_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "local_git_object_verified": true,
+      "commit_parent": "4c685ee28a886e476e2dfb96bb20b9682549a2b5",
+      "subject": "research: make performance gate advisory",
+      "source_identity_evidence": [
+        "crates/trinity-analytics/src/tick/betay_drift_burst.rs blob 1b8739fd1bd1a2c30ea93da3719f4c68eff55fbe",
+        "crates/trinity-analytics/src/tick/mod.rs blob 23df74f486b0ec4eaf285b757e803f241837e33f",
+        "crates/trinity-analytics/src/registry.rs blob 17df434a5956e95fad47f694ee96cb308a262456",
+        "crates/trinity-analytics/src/bar/mod.rs blob 289e835d7fa76eb9a7ffc07afa2bf9f9ef694473"
+      ],
+      "revision_linkage_status": "EXACT",
+      "ceiling": "The manifest and local Git object establish the declared TrinityR revision; they do not by themselves prove fresh replay equivalence."
+    },
+    "trinity": {
+      "repository": "F:\\Trinity",
+      "manifest_commit_link": null,
+      "linkage_status": "UNRESOLVED",
+      "use": "Reference-only source material; not promoted as frozen-lake producer authority."
+    },
+    "generator_and_replay": {
+      "linkage_status": "UNRESOLVED",
+      "reason": "The frozen manifest records producer identity and source/config hashes, but exact generator/config replay identity and fresh replay equivalence were not independently proven."
+    }
+  },
+  "newly_admitted_producer_sources": [
+    "TrinityR crates/trinity-analytics/src/tick/betay_drift_burst.rs",
+    "TrinityR crates/trinity-analytics/src/tick/mod.rs",
+    "TrinityR crates/trinity-analytics/src/registry.rs",
+    "TrinityR crates/trinity-analytics/src/bar/mod.rs",
+    "Trinity/BetaY/DRIFT_BURST_INTEGRATION_CONTRACT.md as unlinked reference material",
+    "Trinity/BetaY/engine/incremental/fvg.py as unlinked reference material"
+  ],
+  "authority_recovery": {
+    "AP-001": {
+      "producer_authority": "FOUND",
+      "revision_linkage": "EXACT",
+      "readiness": "PARTIAL_FREEZABLE",
+      "e1_readiness": "BLOCKED_BY_UNRESOLVED_PROVENANCE",
+      "newly_resolved": [
+        "IDLE/DEVELOPING/BURST/DECAY_RISK/DYING lifecycle",
+        "stable event identity and first-entry/origin lineage",
+        "weak/online/strong milestone fields and occurrence timestamps",
+        "recovery and terminal transitions",
+        "completed-event semantics, end reasons, and finalization fields",
+        "5/15/30/60-second horizon definitions and causal availability structure"
+      ],
+      "still_unresolved": [
+        "detector-specific parameter version/hash; only global config_hash is frozen",
+        "fresh replay equivalence and generator identity",
+        "claims marked PROVISIONAL or UNRESOLVED in TICK_AUTHORITY_RECOVERY.json"
+      ],
+      "e1_gate": "May prepare a scoped E1 using exact source semantics; parameter-dependent and replay-equivalence claims remain blocked."
+    },
+    "AP-002": {
+      "producer_authority": "FOUND",
+      "revision_linkage": "EXACT",
+      "readiness": "PARTIAL_FREEZABLE",
+      "e1_readiness": "BLOCKED_BY_UNRESOLVED_PROVENANCE",
+      "newly_resolved": [
+        "three-bar FVG formation and right-hand confirmation timing",
+        "formation-versus-confirmation provenance",
+        "zone identity, bounds, persistence, first-touch, fill, and invalidation lifecycle",
+        "causal availability and future touch/fill leakage restrictions"
+      ],
+      "still_unresolved": [
+        "cross-scale identity",
+        "fresh replay equivalence and exact generator/config linkage",
+        "claims marked unresolved in BAR_AUTHORITY_RECOVERY.json"
+      ],
+      "e1_gate": "May prepare a scoped E1 using exact linked TrinityR bar semantics; cross-scale and replay-equivalence claims remain blocked."
+    },
+    "TC-001": {
+      "producer_authority": "FOUND",
+      "revision_linkage": "EXACT",
+      "readiness": "PARTIAL_FREEZABLE",
+      "e2_eligibility": "ELIGIBLE_FOR_SCOPED_E2",
+      "newly_resolved": [
+        "native tick detector dispatch and registered detector/state versions",
+        "source-backed detector lifecycle, payload, availability, and dependency claims where classified AUTHORITATIVE"
+      ],
+      "still_unresolved": [
+        "detector-specific parameter identity",
+        "claims classified PROVISIONAL or UNRESOLVED in TICK_AUTHORITY_RECOVERY.json",
+        "behavioral identity and implementation effects not established by registry metadata alone"
+      ]
+    },
+    "BG-001": {
+      "producer_authority": "FOUND",
+      "revision_linkage": "EXACT",
+      "readiness": "PARTIAL_FREEZABLE",
+      "newly_resolved": [
+        "seven source-backed dependency edges from the exact TrinityR bar registry",
+        "causal parent-to-child availability relationships for those edges",
+        "FVG is registered without an upstream detector dependency in the recovered registry"
+      ],
+      "still_unresolved": [
+        "cross-scale identity",
+        "fresh replay equivalence",
+        "independence is not established for any of the 28 detector pairs"
+      ]
+    }
+  },
+  "bg_lineage_restrictions": {
+    "supported_dependency_edge_count": 7,
+    "supported_lineage_source": "BAR_AUTHORITY_RECOVERY.json",
+    "independence_status_for_all_28_pairs": "INDEPENDENCE_NOT_ESTABLISHED",
+    "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE",
+    "supported_edges_do_not_imply_independence": true
+  },
+  "safety_invariants": {
+    "confirmation": "LOCKED",
+    "behavioral_research_started": false,
+    "wave1_researchers_rerun": false,
+    "strategy_code_modified": false,
+    "v1_overwritten": false
+  },
+  "freeze_requirements": [
+    "Resolve detector-specific parameter identity or retain parameter-dependent claims as unresolved.",
+    "Resolve exact generator/replay identity or retain replay equivalence as unresolved.",
+    "Keep Trinity-side documents reference-only unless a lake-linked revision is recovered.",
+    "Do not promote cross-scale identity or independent confluence.",
+    "Do not replace V1 until these ceilings are explicitly accepted."
+  ]
+}

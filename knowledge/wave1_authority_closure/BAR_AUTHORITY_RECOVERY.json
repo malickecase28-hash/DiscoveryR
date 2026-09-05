@@ -1,0 +1,257 @@
+{
+  "artifact_type": "BAR_AUTHORITY_RECOVERY",
+  "artifact_version": "v1",
+  "created_utc": "2026-09-05T00:00:00Z",
+  "scope": {
+    "branch_under_review": "infra/i02-generic-runtime-harness",
+    "discoveryr_head_required": "b2ecab9b1b77c46987502c05262888d2784f9afc",
+    "lake_root": "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd",
+    "producer_repositories": [
+      "F:\\TrinityR",
+      "F:\\Trinity"
+    ],
+    "behavioral_outcomes_inspected": false,
+    "confirmation_unlocked": false,
+    "wave1_researchers_rerun": false
+  },
+  "producer_linkage": {
+    "lake_manifest": {
+      "path": "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd\\manifest.json",
+      "trinityr_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "config_hash": "2fbbbc6ea5cbac6c20c9209a0f0861494145229d1279bafe500f64eb35f1f578",
+      "source_content_hash": "4df2ae85bb9eb22d460f8fd02eb21c1fcf71e40e3031bd8a96474981a9df77cc",
+      "artifact_timeframe_scope_source_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "bar_resolutions": ["15s", "30s", "1m", "5m", "15m", "1h", "4h"],
+      "source": "explicit frozen manifest identity"
+    },
+    "ar01_artifact": {
+      "status": "NOT_PRESENT_LOCALLY",
+      "path": null
+    },
+    "trinityr_revision": {
+      "repository": "F:\\TrinityR",
+      "commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "commit_parent": "4c685ee28a886e476e2dfb96bb20b9682549a2b5",
+      "subject": "research: make performance gate advisory",
+      "source_version_linkage": "EXACT",
+      "evidence": "The frozen lake manifest and artifact_timeframe_scope both explicitly name this source commit."
+    },
+    "trinity_revision": {
+      "repository": "F:\\Trinity",
+      "status": "NOT_REQUIRED_FOR_LINKED_BAR_IMPLEMENTATION",
+      "source_version_linkage": "UNRESOLVED",
+      "evidence": "No Trinity-side revision is named by the frozen XAUUSD manifest."
+    },
+    "linkage_ceiling": "The exact TrinityR commit is linked by frozen manifest metadata. This proves declared producer revision identity, not an independently rerun replay of the lake."
+  },
+  "source_files": [
+    {
+      "repository": "F:\\TrinityR",
+      "commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "path": "crates/trinity-analytics/src/bar/mod.rs",
+      "git_blob": "289e835d7fa76eb9a7ffc07afa2bf9f9ef694473",
+      "sha256": "8dbaebc1793cd595d4283c610ec1f161a7373444cbf301391daf49ccc006b6a9",
+      "source_type": "PRODUCER_IMPLEMENTATION_AND_REGISTRY"
+    },
+    {
+      "repository": "F:\\TrinityR",
+      "commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "path": "crates/trinity-analytics/src/bar/micro_liquidity_v5.rs",
+      "git_blob": "ba8493bc689858893a19e505d1c089041593cfaf",
+      "sha256": null,
+      "source_type": "PRODUCER_IMPLEMENTATION"
+    },
+    {
+      "repository": "F:\\TrinityR",
+      "commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "path": "crates/trinity-analytics/src/bar/micro_liquidity_context.rs",
+      "git_blob": "718185e263fd74834953d77b85b428e4cc6fcd18",
+      "sha256": null,
+      "source_type": "PRODUCER_IMPLEMENTATION"
+    }
+  ],
+  "detectors": {
+    "fvg": {
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": "v4.2",
+      "state_version": "trinity.analytics.bar.fvg.v4.2",
+      "parameter_version": "v1",
+      "linkage_status": "EXACT",
+      "evidence": [
+        "Registration at bar/mod.rs:713-724 names fvg, state trinity.analytics.bar.fvg.v4.2, detector v4.2, parameter v1, min_gap_atr, and no upstream dependencies.",
+        "Lake manifest explicitly names trinityr_commit 211891e705d5e8ea132ef1391a0da4a9e5ff4376 and includes fvg in bar_detectors."
+      ],
+      "authority": {
+        "formation_predicate": {
+          "status": "AUTHORITATIVE",
+          "locator": "crates/trinity-analytics/src/bar/mod.rs:2525-2657",
+          "value": "Maintain the latest three completed bars. Bullish formation requires middle close > middle open and last low > first high. Bearish formation requires middle close < middle open and last high < first low. The gap must meet min_gap_atr against the formation ATR and the middle body must be at least 0.20 ATR."
+        },
+        "formation_vs_confirmation": {
+          "status": "AUTHORITATIVE",
+          "locator": "crates/trinity-analytics/src/bar/mod.rs:2534-2547,2572-2600,2624-2653",
+          "value": "The first bar supplies the origin edge, the middle bar is the impulse bar, and the third/latest completed bar supplies the non-overlap confirmation and detection event."
+        },
+        "lawful_known_available_time": {
+          "status": "PROVISIONAL",
+          "locator": "crates/trinity-analytics/src/bar/mod.rs:2465-2471,2525-2533",
+          "value": "The implementation processes CompletedBar values and emits the formation event on the third bar timestamp. Exact wall-clock availability relative to the lake timestamp and upstream bar-close publication is not independently proven by this artifact."
+        },
+        "zone_identity": {
+          "status": "AUTHORITATIVE",
+          "locator": "crates/trinity-analytics/src/bar/mod.rs:2362-2372,2570-2581,2624-2635",
+          "value": "A monotonically increasing zone_id identifies each active zone in detector state; bullish direction and origin_ts, impulse_ts, detection_ts are persisted."
+        },
+        "zone_bounds": {
+          "status": "AUTHORITATIVE",
+          "locator": "crates/trinity-analytics/src/bar/mod.rs:2577-2579,2632-2634",
+          "value": "Bullish bounds are lower=first high and upper=last low. Bearish bounds are lower=last high and upper=first low."
+        },
+        "first_touch": {
+          "status": "AUTHORITATIVE",
+          "locator": "crates/trinity-analytics/src/bar/mod.rs:2474-2491",
+          "value": "The first later bar whose range overlaps the zone emits fvg_first_touch; touch_basis is bar_range_overlap and touched is latched."
+        },
+        "fill": {
+          "status": "AUTHORITATIVE",
+          "locator": "crates/trinity-analytics/src/bar/mod.rs:2494-2514",
+          "value": "A bullish zone fills when a later bar low reaches the lower edge; a bearish zone fills when a later bar high reaches the upper edge. fill_basis is wick_reaches_far_edge."
+        },
+        "invalidation_and_persistence": {
+          "status": "AUTHORITATIVE",
+          "locator": "crates/trinity-analytics/src/bar/mod.rs:2517-2523,2661-2667",
+          "value": "Zones remain active while the far edge has not been reached, are retained across subsequent bars, and are serialized/restored with the v4.2 state envelope."
+        },
+        "lifecycle": {
+          "status": "AUTHORITATIVE",
+          "locator": "crates/trinity-analytics/src/bar/mod.rs:2474-2523",
+          "value": "Lifecycle is formation -> active zone -> optional first touch -> filled/removed. No separate cancellation event is declared; far-edge reach removes the zone after fvg_filled emission."
+        },
+        "native_scale_behavior": {
+          "status": "PROVISIONAL",
+          "locator": "lake manifest artifact_timeframe_scope and warmup.fvg; bar/mod.rs registration",
+          "value": "The frozen lake retains seven native bar resolutions and declares fvg warmup requirements. The source registration is timeframe-agnostic, but a per-scale replay/output identity is not separately proven here."
+        },
+        "future_touch_fill_leakage_restrictions": {
+          "status": "AUTHORITATIVE",
+          "locator": "crates/trinity-analytics/src/bar/mod.rs:2474-2523,2583-2600,2637-2653",
+          "value": "Formation payload is emitted before any later touch/fill processing for the active zones; touch and fill are emitted only on subsequent processed bars. Later touch/fill fields are not part of the formation payload."
+        },
+        "cross_scale_identity": {
+          "status": "UNRESOLVED",
+          "locator": "lake manifest artifact_timeframe_scope; no cross-scale key in linked fvg implementation",
+          "value": "No source-backed mapping establishes that zone_id or another identity persists across resolutions."
+        }
+      }
+    },
+    "raw3": {
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": "v3.1",
+      "state_version": "trinity.analytics.bar.raw3.v3.1",
+      "parameter_version": "v1",
+      "linkage_status": "EXACT",
+      "evidence": ["Registration at bar/mod.rs:687-698 names the version and zero upstream dependencies.", "The linked lake manifest includes raw3 in bar_detectors and names the same TrinityR commit."],
+      "authority": {"lifecycle": "PROVISIONAL", "payload_semantics": "PROVISIONAL", "availability": "PROVISIONAL", "lineage": "AUTHORITATIVE_NO_DECLARED_UPSTREAM_DEPENDENCIES", "locator": "crates/trinity-analytics/src/bar/mod.rs:687-698,2352-2356"}
+    },
+    "range": {
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": "v8.3",
+      "state_version": "trinity.analytics.bar.range.v8.3",
+      "parameter_version": "v1",
+      "linkage_status": "EXACT",
+      "evidence": ["Registration at bar/mod.rs:700-711 names range, sensitivity, and dependency raw3.", "Lake manifest includes range and raw3 at the linked commit."],
+      "authority": {"lifecycle": "PROVISIONAL", "payload_semantics": "PROVISIONAL", "availability": "PROVISIONAL", "lineage": "AUTHORITATIVE", "locator": "crates/trinity-analytics/src/bar/mod.rs:700-711", "lineage_note": "Range consumes the raw3 detector surface; detailed causal field semantics remain outside this narrow recovery."}
+    },
+    "bos_choch": {
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": "v5.1",
+      "state_version": "trinity.analytics.bar.bos_choch.v5.1",
+      "parameter_version": "v1",
+      "linkage_status": "EXACT",
+      "evidence": ["Registration at bar/mod.rs:726-737 names bos_choch, min_close_beyond_level_atr, and dependency swings.", "The frozen lake manifest includes bos_choch."],
+      "authority": {"lifecycle": "PROVISIONAL", "payload_semantics": "PROVISIONAL", "availability": "PROVISIONAL", "lineage": "AUTHORITATIVE", "locator": "crates/trinity-analytics/src/bar/mod.rs:726-737", "lineage_note": "The linked producer declares an upstream swings dependency; swings is outside the requested detector list but is named explicitly by source."}
+    },
+    "local_structure": {
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": "v3.2",
+      "state_version": "trinity.analytics.bar.local_structure.v3.2",
+      "parameter_version": "v1",
+      "linkage_status": "EXACT",
+      "evidence": ["Registration at bar/mod.rs:752-763 names local_structure and dependency raw3.", "The linked lake manifest includes local_structure."],
+      "authority": {"lifecycle": "PROVISIONAL", "payload_semantics": "PROVISIONAL", "availability": "PROVISIONAL", "lineage": "AUTHORITATIVE", "locator": "crates/trinity-analytics/src/bar/mod.rs:752-763"}
+    },
+    "order_blocks": {
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": "v5.1",
+      "state_version": "trinity.analytics.bar.order_blocks.v5.1",
+      "parameter_version": "v1",
+      "linkage_status": "EXACT",
+      "evidence": ["Registration at bar/mod.rs:739-750 names order_blocks and dependencies raw3 and bos_choch.", "Implementation locators at bar/mod.rs:3249-3549 consume causal raw3 anchors and invalidated source break identifiers."],
+      "authority": {"lifecycle": "PROVISIONAL", "payload_semantics": "PROVISIONAL", "availability": "PROVISIONAL", "lineage": "AUTHORITATIVE", "locator": "crates/trinity-analytics/src/bar/mod.rs:739-750,3249-3549"}
+    },
+    "micro_liquidity": {
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/micro_liquidity_v5.rs",
+      "detector_version": "v5",
+      "state_version": "trinity.analytics.bar.micro_liquidity.v5",
+      "parameter_version": "v1",
+      "linkage_status": "EXACT",
+      "evidence": ["Registration at bar/mod.rs:830-841 names micro_liquidity v5 with tolerance_fraction and no declared upstream dependency.", "The implementation is a separate linked source file at micro_liquidity_v5.rs."],
+      "authority": {"lifecycle": "PROVISIONAL", "payload_semantics": "PROVISIONAL", "availability": "PROVISIONAL", "lineage": "AUTHORITATIVE_NO_DECLARED_UPSTREAM_DEPENDENCIES", "locator": "crates/trinity-analytics/src/bar/mod.rs:830-841"}
+    },
+    "micro_liquidity_context": {
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/micro_liquidity_context.rs",
+      "detector_version": "v1",
+      "state_version": "trinity.analytics.bar.micro_liquidity_context.v1",
+      "parameter_version": "v1",
+      "linkage_status": "EXACT",
+      "evidence": ["Registration at bar/mod.rs:843-855 names micro_liquidity_context v1 and dependencies micro_liquidity and dealing_range.", "The implementation is a separate linked source file at micro_liquidity_context.rs."],
+      "authority": {"lifecycle": "PROVISIONAL", "payload_semantics": "PROVISIONAL", "availability": "PROVISIONAL", "lineage": "AUTHORITATIVE", "locator": "crates/trinity-analytics/src/bar/mod.rs:843-855", "lineage_note": "The producer declares both upstream dependencies; no independence claim is made."}
+    }
+  },
+  "dependency_edges": [
+    {"parent": "raw3", "child": "range", "relationship": "declared_detector_dependency", "producer_source": "F:\\TrinityR\\crates\\trinity-analytics\\src\\bar\\mod.rs:700-711", "producer_version": "raw3=v3.1; range=v8.3", "causal_availability_relationship": "range consumes raw3 output before its range processing", "status": "AUTHORITATIVE"},
+    {"parent": "swings", "child": "bos_choch", "relationship": "declared_detector_dependency", "producer_source": "F:\\TrinityR\\crates\\trinity-analytics\\src\\bar\\mod.rs:726-737", "producer_version": "swings=v4.1; bos_choch=v5.1", "causal_availability_relationship": "bos_choch is registered with swings as an upstream detector", "status": "AUTHORITATIVE"},
+    {"parent": "raw3", "child": "order_blocks", "relationship": "declared_detector_dependency", "producer_source": "F:\\TrinityR\\crates\\trinity-analytics\\src\\bar\\mod.rs:739-750", "producer_version": "raw3=v3.1; order_blocks=v5.1", "causal_availability_relationship": "order_blocks consumes causal raw3 anchors before block formation", "status": "AUTHORITATIVE"},
+    {"parent": "bos_choch", "child": "order_blocks", "relationship": "declared_detector_dependency", "producer_source": "F:\\TrinityR\\crates\\trinity-analytics\\src\\bar\\mod.rs:739-750", "producer_version": "bos_choch=v5.1; order_blocks=v5.1", "causal_availability_relationship": "order_blocks consumes source structure-break context from bos_choch", "status": "AUTHORITATIVE"},
+    {"parent": "raw3", "child": "local_structure", "relationship": "declared_detector_dependency", "producer_source": "F:\\TrinityR\\crates\\trinity-analytics\\src\\bar\\mod.rs:752-763", "producer_version": "raw3=v3.1; local_structure=v3.2", "causal_availability_relationship": "local_structure consumes raw3-derived structure", "status": "AUTHORITATIVE"},
+    {"parent": "micro_liquidity", "child": "micro_liquidity_context", "relationship": "declared_detector_dependency", "producer_source": "F:\\TrinityR\\crates\\trinity-analytics\\src\\bar\\mod.rs:843-855", "producer_version": "micro_liquidity=v5; micro_liquidity_context=v1", "causal_availability_relationship": "context consumes micro_liquidity output", "status": "AUTHORITATIVE"},
+    {"parent": "dealing_range", "child": "micro_liquidity_context", "relationship": "declared_detector_dependency", "producer_source": "F:\\TrinityR\\crates\\trinity-analytics\\src\\bar\\mod.rs:843-855", "producer_version": "dealing_range=v1.1; micro_liquidity_context=v1", "causal_availability_relationship": "context consumes dealing_range context", "status": "AUTHORITATIVE"}
+  ],
+  "explicit_no_edge_metadata": [
+    {"detector": "fvg", "status": "AUTHORITATIVE_METADATA_ONLY", "value": "registry dependency list is empty; this does not establish behavioral independence", "locator": "crates/trinity-analytics/src/bar/mod.rs:713-724"},
+    {"detector": "raw3", "status": "AUTHORITATIVE_METADATA_ONLY", "value": "registry dependency list is empty; this does not establish behavioral independence", "locator": "crates/trinity-analytics/src/bar/mod.rs:687-698"},
+    {"detector": "micro_liquidity", "status": "AUTHORITATIVE_METADATA_ONLY", "value": "registry dependency list is empty; this does not establish behavioral independence", "locator": "crates/trinity-analytics/src/bar/mod.rs:830-841"}
+  ],
+  "overall_status": {
+    "producer_authority_found": true,
+    "exact_trinityr_version_linkage": "ESTABLISHED_BY_FROZEN_MANIFEST",
+    "fvg_authority": "PARTIAL_FREEZABLE",
+    "bg_lineage_authority": "PARTIAL_FREEZABLE",
+    "cross_scale_identity": "UNRESOLVED",
+    "runtime_replay_equivalence": "UNRESOLVED",
+    "behavioral_research_started": false,
+    "confirmation": "LOCKED"
+  },
+  "limitations": [
+    "AR-01's assigned artifact was not present locally; linkage was taken directly from the frozen XAUUSD manifest.",
+    "No Trinity-side commit was named by the frozen lake manifest, so Trinity-side compatibility is unresolved and not used for authority promotion.",
+    "The artifact records source authority and declared dependencies only; it does not inspect behavioral outcomes or prove a fresh replay equivalence.",
+    "SHA-256 was not recomputed for the two separate micro-liquidity files in this artifact; their immutable Git blob identities are recorded instead of fabricating file hashes."
+  ]
+}

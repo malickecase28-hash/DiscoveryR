@@ -1,0 +1,295 @@
+{
+  "artifact": "PRODUCER_LINKAGE",
+  "artifact_version": "v1",
+  "created_utc": "2026-09-05T05:42:38.2365274Z",
+  "purpose": "Producer identity and version-linkage assessment for the frozen Fusion Markets XAUUSD analytical lake.",
+  "scope": {
+    "lake_root": "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd",
+    "read_only_sources": [
+      "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd\\manifest.json",
+      "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd\\payload_manifest.json",
+      "https://github.com/malickecase28-hash/TrinityR",
+      "https://github.com/malickecase28-hash/Trinity"
+    ],
+    "excluded": [
+      "Wave-1 researcher reruns",
+      "behavioral outcomes",
+      "confirmation state",
+      "strategy code changes",
+      "DiscoveryR infrastructure changes"
+    ]
+  },
+  "lake_identity": {
+    "manifest_sha256": "1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af",
+    "payload_manifest_sha256": "78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed",
+    "trinityr_commit_declared_by_manifest": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+    "metadata_repair_commit": "f90a1c17034bf62c89059e6b8a7556fd04b36bb5",
+    "config_hash": "2fbbbc6ea5cbac6c20c9209a0f0861494145229d1279bafe500f64eb35f1f578",
+    "source_content_hash": "4df2ae85bb9eb22d460f8fd02eb21c1fcf71e40e3031bd8a96474981a9df77cc",
+    "source_index_hash": "f5d75e9e1e16cd04320a20410ede753d9b2c37a44cc3b75240af7f6f5743281c",
+    "payload_contract": "ordered temporal Parquet parts preserve one logical bar+tick payload dataset; only the final shard finalizes the restored causal aggregator",
+    "payload_contract_schema": "trinity.research.tick-payload-contract.v1",
+    "lake_schema": "trinity.research.wide-parquet.v1",
+    "payload_manifest_schema": "trinity.research.wide-parquet.payload-inventory.v1",
+    "detectors_declared": {
+      "tick": ["drift_burst", "spread_state", "quote_dynamics", "quote_arrival", "micro_volatility", "feed_health", "quote_pressure"],
+      "bar": ["raw3", "range", "fvg", "bos_choch", "local_structure", "order_blocks", "micro_liquidity", "micro_liquidity_context"]
+    },
+    "evidence": ["E-LAKE-001", "E-LAKE-002", "E-LAKE-003"]
+  },
+  "producer_identity": {
+    "trinityr": {
+      "repository": "malickecase28-hash/TrinityR",
+      "url": "https://github.com/malickecase28-hash/TrinityR",
+      "manifest_declared_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "remote_head_observed": "e6580453f38a52aeefc476a2d31d0475ac31ba08",
+      "exact_commit_available": false,
+      "availability_evidence": ["E-SOURCE-001", "E-SOURCE-002"],
+      "linkage_status": "UNRESOLVED",
+      "reason": "The lake manifest declares the commit, but the connected remote does not expose that commit; exact source checkout and file identity could not be verified."
+    },
+    "trinity": {
+      "repository": "malickecase28-hash/Trinity",
+      "url": "https://github.com/malickecase28-hash/Trinity",
+      "commit_linked_from_lake": null,
+      "remote_head_observed": "5e2894601f5f234eb1e70c9c516d657631467a1d",
+      "reference_package": "BetaY/DRIFT_BURST_INTEGRATION_CONTRACT.md and BetaY/engine/incremental/fvg.py are present at the observed head",
+      "linkage_status": "UNRESOLVED",
+      "reason": "No Trinity commit or reference-package hash is recorded in the frozen lake manifest."
+    },
+    "wide_lake_generator": {
+      "repository": "malickecase28-hash/TrinityR",
+      "path": "crates/trinity-research-tools/src/bin/generate_wide_xauusd_parquet.rs",
+      "observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08",
+      "observed_file_sha256": "daf7bb0be2d73e388b60d84b5f94015259b0f8ffd1ab4b4d1ddfe2dd49ccc8d8",
+      "lake_generator_version": null,
+      "linkage_status": "UNRESOLVED"
+    },
+    "replay_code": {
+      "repository": "malickecase28-hash/TrinityR",
+      "path": "crates/trinity-replay/ and crates/trinity-research-tools/src/lake.rs",
+      "observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08",
+      "observed_file_sha256": "c4d53908602556536730c65e92d9b22834dde07799e00dd813568f7123cfd236",
+      "lake_identity_fields_supported_by_source": ["trinityr_commit", "source_index_hash", "source_content_hash", "manifest_sha256"],
+      "linkage_status": "UNRESOLVED"
+    }
+  },
+  "families": [
+    {
+      "family": "drift_burst",
+      "domain": "tick",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/tick/betay_drift_burst.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.tick.drift_burst.v4", "detector_version": "v3", "parameter_version": "v3", "source_sha256": "ebdb1ddd6e8f20e28a3ae04829f180bd2d61375be4143e2c89278a3ed8612769"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-SOURCE-003", "E-SOURCE-004"]
+    },
+    {
+      "family": "spread_state",
+      "domain": "tick",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/tick/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.tick.spread_state.v2", "detector_version": "v2", "parameter_version": "v2", "source_sha256": "a0df331e68e01414b69814bf80b7cc150407f6a869de0f83558e0efea73ac60d"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-SOURCE-004"]
+    },
+    {
+      "family": "quote_dynamics",
+      "domain": "tick",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/tick/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.tick.quote_dynamics.v2", "detector_version": "v2", "parameter_version": "v1", "source_sha256": "a0df331e68e01414b69814bf80b7cc150407f6a869de0f83558e0efea73ac60d"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-SOURCE-004"]
+    },
+    {
+      "family": "quote_arrival",
+      "domain": "tick",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/tick/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.tick.quote_arrival.v1", "detector_version": "v2", "parameter_version": "v1", "source_sha256": "a0df331e68e01414b69814bf80b7cc150407f6a869de0f83558e0efea73ac60d"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-SOURCE-004"]
+    },
+    {
+      "family": "micro_volatility",
+      "domain": "tick",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/tick/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.tick.micro_volatility.v2", "detector_version": "v3", "parameter_version": "v2", "source_sha256": "a0df331e68e01414b69814bf80b7cc150407f6a869de0f83558e0efea73ac60d"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-SOURCE-004"]
+    },
+    {
+      "family": "feed_health",
+      "domain": "tick",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/tick/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.tick.feed_health.v1", "detector_version": "v2", "parameter_version": "v1", "source_sha256": "a0df331e68e01414b69814bf80b7cc150407f6a869de0f83558e0efea73ac60d"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-SOURCE-004"]
+    },
+    {
+      "family": "quote_pressure",
+      "domain": "tick",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/tick/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.tick.quote_pressure.v1", "detector_version": "v1", "parameter_version": "v1", "source_sha256": "a0df331e68e01414b69814bf80b7cc150407f6a869de0f83558e0efea73ac60d"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-SOURCE-004"]
+    },
+    {
+      "family": "fvg",
+      "domain": "bar",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.bar.fvg.v4.2", "detector_version": "v4.2", "parameter_version": "v1", "source_sha256": "66500d2754cf162ffb498d86e352b5bb55445ddd49dd7ce21572f31a20530551"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-LAKE-003", "E-SOURCE-005"]
+    },
+    {
+      "family": "raw3",
+      "domain": "bar",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.bar.raw3.v3.1", "detector_version": "v3.1", "parameter_version": "v1", "source_sha256": "66500d2754cf162ffb498d86e352b5bb55445ddd49dd7ce21572f31a20530551"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-SOURCE-005"]
+    },
+    {
+      "family": "range",
+      "domain": "bar",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.bar.range.v8.3", "detector_version": "v8.3", "parameter_version": "v1", "dependencies": ["raw3"], "source_sha256": "66500d2754cf162ffb498d86e352b5bb55445ddd49dd7ce21572f31a20530551"},
+      "lake_sample_observation": {"detector_version": "v8", "evidence": "manifest.json sample blocks at lines 1148, 3080, 4044, 6096, 8200, 8916, 10972"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-LAKE-003", "E-SOURCE-005"]
+    },
+    {
+      "family": "bos_choch",
+      "domain": "bar",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.bar.bos_choch.v5.1", "detector_version": "v5.1", "parameter_version": "v1", "dependencies": ["swings"], "source_sha256": "66500d2754cf162ffb498d86e352b5bb55445ddd49dd7ce21572f31a20530551"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-SOURCE-005"]
+    },
+    {
+      "family": "local_structure",
+      "domain": "bar",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.bar.local_structure.v3.2", "detector_version": "v3.2", "parameter_version": "v1", "dependencies": ["raw3"], "source_sha256": "66500d2754cf162ffb498d86e352b5bb55445ddd49dd7ce21572f31a20530551"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-SOURCE-005"]
+    },
+    {
+      "family": "order_blocks",
+      "domain": "bar",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.bar.order_blocks.v5.1", "detector_version": "v5.1", "parameter_version": "v1", "dependencies": ["raw3", "bos_choch"], "source_sha256": "66500d2754cf162ffb498d86e352b5bb55445ddd49dd7ce21572f31a20530551"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-SOURCE-005"]
+    },
+    {
+      "family": "micro_liquidity",
+      "domain": "bar",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.bar.micro_liquidity.v5", "detector_version": "v5", "parameter_version": "v1", "source_sha256": "66500d2754cf162ffb498d86e352b5bb55445ddd49dd7ce21572f31a20530551"},
+      "lake_sample_observation": {"detector_version": "v5", "evidence": "manifest.json sample blocks at lines 1293, 3171, 4135, 6187, 8291, 9007, 11063"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-LAKE-003", "E-SOURCE-005"]
+    },
+    {
+      "family": "micro_liquidity_context",
+      "domain": "bar",
+      "producer_repo": "malickecase28-hash/TrinityR",
+      "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "producer_path": "crates/trinity-analytics/src/bar/mod.rs",
+      "detector_version": null,
+      "state_version": null,
+      "parameter_version": null,
+      "current_source_observation": {"observed_at_commit": "e6580453f38a52aeefc476a2d31d0475ac31ba08", "state_version": "trinity.analytics.bar.micro_liquidity_context.v1", "detector_version": "v1", "parameter_version": "v1", "dependencies": ["micro_liquidity", "dealing_range"], "source_sha256": "66500d2754cf162ffb498d86e352b5bb55445ddd49dd7ce21572f31a20530551"},
+      "lake_sample_observation": {"detector_version": "v1", "evidence": "manifest.json sample blocks at lines 1361, 3246, 4182, 6234, 8351, 9054, 11123"},
+      "linkage_status": "UNRESOLVED",
+      "evidence": ["E-LAKE-001", "E-LAKE-003", "E-SOURCE-005"]
+    }
+  ],
+  "evidence_index": [
+    {"id": "E-LAKE-001", "locator": "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd\\manifest.json", "fields": ["trinityr_commit", "config_hash", "source_content_hash", "source_index", "payload_contract", "schema_version", "tick_detectors", "bar_detectors"], "line_refs": [264, 11793, 11834, 11835, 12108, 12964, 13955, 13956]},
+    {"id": "E-LAKE-002", "locator": "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd\\payload_manifest.json", "fields": ["schema_version", "declared_tick_payload_contract", "shards", "inventory_scope"]},
+    {"id": "E-LAKE-003", "locator": "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd\\manifest.json", "fields": ["sample detector_version values", "detector samples", "tick payload contract"], "line_refs": [1148, 1225, 1293, 1361, 11527, 11659, 11680, 11698, 11724, 11751, 11768, 12630]},
+    {"id": "E-SOURCE-001", "locator": "https://github.com/malickecase28-hash/TrinityR.git", "observation": "git ls-remote exposes main/HEAD e6580453f38a52aeefc476a2d31d0475ac31ba08; requested manifest commit was not advertised"},
+    {"id": "E-SOURCE-002", "locator": "https://api.github.com/repos/malickecase28-hash/TrinityR/commits/211891e705d5e8ea132ef1391a0da4a9e5ff4376", "observation": "HTTP 404 Not Found; exact manifest commit cannot be fetched from the connected remote"},
+    {"id": "E-SOURCE-003", "locator": "TrinityR@e6580453f38a52aeefc476a2d31d0475ac31ba08:crates/trinity-analytics/src/tick/betay_drift_burst.rs", "sha256": "ebdb1ddd6e8f20e28a3ae04829f180bd2d61375be4143e2c89278a3ed8612769"},
+    {"id": "E-SOURCE-004", "locator": "TrinityR@e6580453f38a52aeefc476a2d31d0475ac31ba08:crates/trinity-analytics/src/tick/mod.rs", "sha256": "a0df331e68e01414b69814bf80b7cc150407f6a869de0f83558e0efea73ac60d", "observation": "registry declarations expose state, detector, and parameter versions"},
+    {"id": "E-SOURCE-005", "locator": "TrinityR@e6580453f38a52aeefc476a2d31d0475ac31ba08:crates/trinity-analytics/src/bar/mod.rs", "sha256": "66500d2754cf162ffb498d86e352b5bb55445ddd49dd7ce21572f31a20530551", "observation": "registry declarations expose state, detector, parameter versions, and dependencies"},
+    {"id": "E-SOURCE-006", "locator": "TrinityR@e6580453f38a52aeefc476a2d31d0475ac31ba08:crates/trinity-research-tools/src/lake.rs", "sha256": "c4d53908602556536730c65e92d9b22834dde07799e00dd813568f7123cfd236", "observation": "lake identity validation requires producer commit and source hashes"},
+    {"id": "E-SOURCE-007", "locator": "Trinity@5e2894601f5f234eb1e70c9c516d657631467a1d:BetaY/DRIFT_BURST_INTEGRATION_CONTRACT.md and BetaY/engine/incremental/fvg.py", "observation": "reference material exists at current Trinity head but is not linked by the frozen lake manifest"}
+  ],
+  "conclusion": {
+    "producer_authority_exists_in_observed_current_sources": true,
+    "exact_frozen_lake_producer_linkage_established": false,
+    "global_linkage_status": "UNRESOLVED",
+    "safe_statement": "The lake manifest identifies a TrinityR commit and source/config hashes, but the declared commit is unavailable from the connected remote and no Trinity reference package is recorded in the lake. Current-source semantics must not be promoted to exact frozen-lake authority until that missing linkage is recovered."
+  }
+}
