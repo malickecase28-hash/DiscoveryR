@@ -104,7 +104,7 @@ function Validate-SourcePath([string] $sourceId, [string] $relativePath, [string
 
 function Validate-Evidence([object] $item, [string] $where) {
     if (-not (Has-ExactKeys $item @('source_id', 'relative_path', 'locator', 'evidence_type', 'supports'))) {
-        Fail "$where has non-canonical authority_evidence keys"
+        Fail "$where has non-canonical evidence keys"
     }
     Require-SourceId $item.source_id "$where source_id"
     Require-SafeRelativePath $item.relative_path "$where relative_path"
@@ -221,11 +221,12 @@ foreach ($claim in $claims) {
     if ($claim.status -cin @('AUTHORITATIVE', 'PROVISIONAL') -and $evidence.Count -eq 0) {
         Fail "$($claim.status) claim $($claim.claim_id) has empty authority_evidence"
     }
-    foreach ($item in $evidence) { Validate-Evidence $item "claim $($claim.claim_id)" }
+    foreach ($item in $evidence) { Validate-Evidence $item "claim $($claim.claim_id) authority_evidence" }
 
     Require-Array $claim.counterevidence "counterevidence for $($claim.claim_id)"
+    foreach ($item in @($claim.counterevidence)) { Validate-Evidence $item "claim $($claim.claim_id) counterevidence" }
     Require-String $claim.future_information_risk "future_information_risk for $($claim.claim_id)"
-    Require-Array $claim.dependency_implications "dependency_implications for $($claim.claim_id)"
+    Require-StringArray $claim.dependency_implications "dependency_implications for $($claim.claim_id)"
     Require-StringValue $claim.notes "notes for $($claim.claim_id)"
 }
 
