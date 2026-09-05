@@ -1,0 +1,1198 @@
+{
+  "experiment_id": "AP-002-FVG-E1-NATIVE-STRATA",
+  "scope_id": "XAUUSD_DATA_SCOPE_V1",
+  "exposure_class": "E1_PHENOTYPE",
+  "confirmation_status": "LOCKED",
+  "scanner_commit": "bb27149c2f5218737b9b025e22b422a75fc7f354",
+  "preflight_hash": "804a5e3e09e9dff721147248862aca55525da5e48f85085d94d902a816cf4d99",
+  "sidecar_manifest_sha256": "b94064c358663ba9591f825c749f754f234a29de1a930531d24fab662cef6965",
+  "sidecar_rows": 2087782,
+  "logical_result_hash": "735bd7ab06ae2caf72e37447d207dec62c17932ee1684c4c393d8ace07684c52",
+  "tables": {
+    "strata": {
+      "n": 7,
+      "provenance": {
+        "scope_id": "XAUUSD_DATA_SCOPE_V1",
+        "development_view_manifest_sha256": "4842ac0dfe0b207b75f4a1003fd16f5d2a8d63f93b3ac4dde943ff33372c9613",
+        "sidecar_manifest_sha256": "b94064c358663ba9591f825c749f754f234a29de1a930531d24fab662cef6965",
+        "sidecar_sha256": "a0846a200f764a30e4b65f696e2ec80d6225409d6ac2f592679db9e47c20cb1d",
+        "source_parts": [
+          "15s/part-00000.parquet",
+          "15s/part-00001.parquet",
+          "15s/part-00002.parquet",
+          "15s/part-00003.parquet",
+          "15s/part-00004.parquet",
+          "30s/part-00000.parquet",
+          "30s/part-00001.parquet",
+          "30s/part-00002.parquet",
+          "30s/part-00003.parquet",
+          "30s/part-00004.parquet",
+          "1m/part-00000.parquet",
+          "1m/part-00001.parquet",
+          "1m/part-00002.parquet",
+          "1m/part-00003.parquet",
+          "1m/part-00004.parquet",
+          "5m/part-00000.parquet",
+          "5m/part-00001.parquet",
+          "5m/part-00002.parquet",
+          "5m/part-00003.parquet",
+          "5m/part-00004.parquet",
+          "15m/part-00000.parquet",
+          "15m/part-00001.parquet",
+          "15m/part-00002.parquet",
+          "15m/part-00003.parquet",
+          "15m/part-00004.parquet",
+          "1h/part-00000.parquet",
+          "1h/part-00001.parquet",
+          "1h/part-00002.parquet",
+          "1h/part-00003.parquet",
+          "1h/part-00004.parquet",
+          "4h/part-00000.parquet",
+          "4h/part-00001.parquet",
+          "4h/part-00002.parquet",
+          "4h/part-00003.parquet",
+          "4h/part-00004.parquet"
+        ],
+        "scanner_commit": "bb27149c2f5218737b9b025e22b422a75fc7f354"
+      },
+      "rows": [
+        {
+          "timeframe": "15s",
+          "n_bars": 1054977,
+          "lawful_bars_n": 1054977,
+          "unavailable_bars_n": 0,
+          "n_payload_rows": 469198,
+          "formation_payload_n": 227925,
+          "lawful_formation_n": 227925,
+          "formation_incidence": {
+            "numerator": 227925,
+            "denominator": 1054977,
+            "rate": 0.2160473640657569
+          },
+          "unavailable_formation_n": 0,
+          "bullish_n": 116319,
+          "bearish_n": 111606,
+          "first_touch_n": 226702,
+          "first_touch_rate": {
+            "numerator": 226702,
+            "denominator": 227925,
+            "rate": 0.9946341998464407
+          },
+          "fill_n": 226908,
+          "fill_rate": {
+            "numerator": 226908,
+            "denominator": 227925,
+            "rate": 0.995538005923001
+          },
+          "right_censored_n": 1017,
+          "right_censored_rate": {
+            "numerator": 1017,
+            "denominator": 227925,
+            "rate": 0.004461994076999013
+          },
+          "formed_touch_fill_n": 226226,
+          "formed_fill_without_prior_touch_n": 682,
+          "unavailable_touch_events_n": 0,
+          "unavailable_fill_events_n": 0,
+          "unavailable_outcome_events_n": 0,
+          "orphan_touch_n": 75,
+          "orphan_fill_n": 158,
+          "formation_to_touch_market_ms": {
+            "n": 226702,
+            "p05": 15000.0,
+            "p25": 15000.0,
+            "p50": 30000.0,
+            "p75": 120000.0,
+            "p95": 2850000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 226702,
+            "p05": 14387.0,
+            "p25": 15030.0,
+            "p50": 29995.0,
+            "p75": 119928.0,
+            "p95": 2850029.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 226908,
+            "p05": 15000.0,
+            "p25": 30000.0,
+            "p50": 105000.0,
+            "p75": 450000.0,
+            "p95": 10755000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 226908,
+            "p05": 14907.0,
+            "p25": 30260.0,
+            "p50": 104937.0,
+            "p75": 450259.0,
+            "p95": 10755030.0
+          },
+          "gap_atr": {
+            "n": 227925,
+            "p05": 0.22942437282650496,
+            "p25": 0.35889479105750455,
+            "p50": 0.5637750982359052,
+            "p75": 0.8908517559463468,
+            "p95": 1.6215600486536892
+          },
+          "fvg_quality": {
+            "n": 227925,
+            "p05": 0.4802596152483733,
+            "p25": 0.6748610215721376,
+            "p50": 0.7974431284971282,
+            "p75": 0.9024392537963624,
+            "p95": 0.9892857142858024
+          },
+          "horizons": [
+            {
+              "horizon_bars": 1,
+              "denominator": 227925,
+              "n": 227925,
+              "raw_return_bps": {
+                "n": 227925,
+                "p05": -3.184676494771341,
+                "p25": -0.8167643607598682,
+                "p50": 0.012368752079766428,
+                "p75": 0.8582645658533652,
+                "p95": 3.2224010248405595
+              },
+              "direction_adjusted_return_bps": {
+                "n": 227925,
+                "p05": -3.229925723242975,
+                "p25": -0.8621066638341255,
+                "p50": -0.0,
+                "p75": 0.8134719634176235,
+                "p95": 3.179148820749657
+              }
+            },
+            {
+              "horizon_bars": 3,
+              "denominator": 227925,
+              "n": 227924,
+              "raw_return_bps": {
+                "n": 227924,
+                "p05": -5.518119729244719,
+                "p25": -1.4808840877999803,
+                "p50": 0.037527958328636514,
+                "p75": 1.5830025105438539,
+                "p95": 5.65006701721782
+              },
+              "direction_adjusted_return_bps": {
+                "n": 227924,
+                "p05": -5.567923174634146,
+                "p25": -1.5888529422510673,
+                "p50": -0.05019765325966445,
+                "p75": 1.4694990771545797,
+                "p95": 5.616072838135652
+              }
+            },
+            {
+              "horizon_bars": 5,
+              "denominator": 227925,
+              "n": 227924,
+              "raw_return_bps": {
+                "n": 227924,
+                "p05": -7.102518334871962,
+                "p25": -1.9129093535212995,
+                "p50": 0.05925522112561754,
+                "p75": 2.0620905724858907,
+                "p95": 7.210123602119028
+              },
+              "direction_adjusted_return_bps": {
+                "n": 227924,
+                "p05": -7.118198825659374,
+                "p25": -2.0550544589443627,
+                "p50": -0.0761913054832803,
+                "p75": 1.9181108021939515,
+                "p95": 7.210188163553693
+              }
+            }
+          ]
+        },
+        {
+          "timeframe": "30s",
+          "n_bars": 527896,
+          "lawful_bars_n": 527896,
+          "unavailable_bars_n": 0,
+          "n_payload_rows": 210647,
+          "formation_payload_n": 99874,
+          "lawful_formation_n": 99874,
+          "formation_incidence": {
+            "numerator": 99874,
+            "denominator": 527896,
+            "rate": 0.18919256823313682
+          },
+          "unavailable_formation_n": 0,
+          "bullish_n": 51642,
+          "bearish_n": 48232,
+          "first_touch_n": 99313,
+          "first_touch_rate": {
+            "numerator": 99313,
+            "denominator": 99874,
+            "rate": 0.9943829224823277
+          },
+          "fill_n": 99232,
+          "fill_rate": {
+            "numerator": 99232,
+            "denominator": 99874,
+            "rate": 0.9935719005947494
+          },
+          "right_censored_n": 642,
+          "right_censored_rate": {
+            "numerator": 642,
+            "denominator": 99874,
+            "rate": 0.006428099405250616
+          },
+          "formed_touch_fill_n": 99019,
+          "formed_fill_without_prior_touch_n": 213,
+          "unavailable_touch_events_n": 0,
+          "unavailable_fill_events_n": 0,
+          "unavailable_outcome_events_n": 0,
+          "orphan_touch_n": 46,
+          "orphan_fill_n": 94,
+          "formation_to_touch_market_ms": {
+            "n": 99313,
+            "p05": 30000.0,
+            "p25": 30000.0,
+            "p50": 60000.0,
+            "p75": 240000.0,
+            "p95": 5520000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 99313,
+            "p05": 29500.0,
+            "p25": 30031.0,
+            "p50": 60004.0,
+            "p75": 239935.0,
+            "p95": 5548591.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 99232,
+            "p05": 30000.0,
+            "p25": 60000.0,
+            "p50": 210000.0,
+            "p75": 900000.0,
+            "p95": 20850000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 99232,
+            "p05": 29911.0,
+            "p25": 60197.0,
+            "p50": 209801.0,
+            "p75": 900015.0,
+            "p95": 20849936.0
+          },
+          "gap_atr": {
+            "n": 99874,
+            "p05": 0.2260473852446972,
+            "p25": 0.3398582104676943,
+            "p50": 0.5199482934721191,
+            "p75": 0.8098408373450671,
+            "p95": 1.4449232571892463
+          },
+          "fvg_quality": {
+            "n": 99874,
+            "p05": 0.47928383197440294,
+            "p25": 0.6645433706944934,
+            "p50": 0.7830765385550102,
+            "p75": 0.883734456470687,
+            "p95": 0.9803546941561474
+          },
+          "horizons": [
+            {
+              "horizon_bars": 1,
+              "denominator": 99874,
+              "n": 99874,
+              "raw_return_bps": {
+                "n": 99874,
+                "p05": -4.64506378628294,
+                "p25": -1.233208260995612,
+                "p50": 0.021646544400240882,
+                "p75": 1.3048840983323762,
+                "p95": 4.742496130291635
+              },
+              "direction_adjusted_return_bps": {
+                "n": 99874,
+                "p05": -4.714412460890248,
+                "p25": -1.3143864039061075,
+                "p50": -0.02746569877604134,
+                "p75": 1.220165264605902,
+                "p95": 4.679143726548871
+              }
+            },
+            {
+              "horizon_bars": 3,
+              "denominator": 99874,
+              "n": 99874,
+              "raw_return_bps": {
+                "n": 99874,
+                "p05": -7.983844455925912,
+                "p25": -2.156460376760239,
+                "p50": 0.06264571654639456,
+                "p75": 2.3092463976856994,
+                "p95": 8.09708742051185
+              },
+              "direction_adjusted_return_bps": {
+                "n": 99874,
+                "p05": -8.011139298452163,
+                "p25": -2.337683209836158,
+                "p50": -0.10667222942821847,
+                "p75": 2.1222638338369926,
+                "p95": 8.08567620861893
+              }
+            },
+            {
+              "horizon_bars": 5,
+              "denominator": 99874,
+              "n": 99874,
+              "raw_return_bps": {
+                "n": 99874,
+                "p05": -10.263997243640658,
+                "p25": -2.7503548336228243,
+                "p50": 0.09066604409308143,
+                "p75": 2.9937792721085237,
+                "p95": 10.294735359744625
+              },
+              "direction_adjusted_return_bps": {
+                "n": 99874,
+                "p05": -10.254567402187615,
+                "p25": -3.0031241455666837,
+                "p50": -0.14157415010538532,
+                "p75": 2.7254996327148007,
+                "p95": 10.308345957544452
+              }
+            }
+          ]
+        },
+        {
+          "timeframe": "1m",
+          "n_bars": 263976,
+          "lawful_bars_n": 263976,
+          "unavailable_bars_n": 0,
+          "n_payload_rows": 93905,
+          "formation_payload_n": 43706,
+          "lawful_formation_n": 43706,
+          "formation_incidence": {
+            "numerator": 43706,
+            "denominator": 263976,
+            "rate": 0.16556808194684366
+          },
+          "unavailable_formation_n": 0,
+          "bullish_n": 22920,
+          "bearish_n": 20786,
+          "first_touch_n": 43433,
+          "first_touch_rate": {
+            "numerator": 43433,
+            "denominator": 43706,
+            "rate": 0.9937537180249851
+          },
+          "fill_n": 43313,
+          "fill_rate": {
+            "numerator": 43313,
+            "denominator": 43706,
+            "rate": 0.9910080995744291
+          },
+          "right_censored_n": 393,
+          "right_censored_rate": {
+            "numerator": 393,
+            "denominator": 43706,
+            "rate": 0.00899190042557086
+          },
+          "formed_touch_fill_n": 43232,
+          "formed_fill_without_prior_touch_n": 81,
+          "unavailable_touch_events_n": 0,
+          "unavailable_fill_events_n": 0,
+          "unavailable_outcome_events_n": 0,
+          "orphan_touch_n": 32,
+          "orphan_fill_n": 60,
+          "formation_to_touch_market_ms": {
+            "n": 43433,
+            "p05": 60000.0,
+            "p25": 60000.0,
+            "p50": 120000.0,
+            "p75": 480000.0,
+            "p95": 11040000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 43433,
+            "p05": 59626.0,
+            "p25": 60028.0,
+            "p50": 120023.0,
+            "p75": 480015.0,
+            "p95": 11099971.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 43313,
+            "p05": 60000.0,
+            "p25": 120000.0,
+            "p50": 420000.0,
+            "p75": 1860000.0,
+            "p95": 40140000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 43313,
+            "p05": 59931.0,
+            "p25": 120174.0,
+            "p50": 419915.0,
+            "p75": 1860015.0,
+            "p95": 40019991.0
+          },
+          "gap_atr": {
+            "n": 43706,
+            "p05": 0.22311902565880337,
+            "p25": 0.325351158705192,
+            "p50": 0.4918222921280036,
+            "p75": 0.754465971014012,
+            "p95": 1.3434232011419958
+          },
+          "fvg_quality": {
+            "n": 43706,
+            "p05": 0.4837231009406264,
+            "p25": 0.6605972002316217,
+            "p50": 0.7737295996879832,
+            "p75": 0.8696540136437962,
+            "p95": 0.9719419342441536
+          },
+          "horizons": [
+            {
+              "horizon_bars": 1,
+              "denominator": 43706,
+              "n": 43706,
+              "raw_return_bps": {
+                "n": 43706,
+                "p05": -6.729226876631838,
+                "p25": -1.8165033798855588,
+                "p50": 0.05855409446819505,
+                "p75": 1.9561349671021755,
+                "p95": 6.833806021520096
+              },
+              "direction_adjusted_return_bps": {
+                "n": 43706,
+                "p05": -6.767779064762971,
+                "p25": -1.9975356717832895,
+                "p50": -0.07490973377244128,
+                "p75": 1.779727615904605,
+                "p95": 6.809333518480327
+              }
+            },
+            {
+              "horizon_bars": 3,
+              "denominator": 43706,
+              "n": 43706,
+              "raw_return_bps": {
+                "n": 43706,
+                "p05": -11.674971992114644,
+                "p25": -3.0524745289675583,
+                "p50": 0.10034329951336916,
+                "p75": 3.3437547021550498,
+                "p95": 11.448809009926473
+              },
+              "direction_adjusted_return_bps": {
+                "n": 43706,
+                "p05": -11.534300352726913,
+                "p25": -3.3834183250592593,
+                "p50": -0.20644765519616645,
+                "p75": 3.004076606435133,
+                "p95": 11.56759388910542
+              }
+            },
+            {
+              "horizon_bars": 5,
+              "denominator": 43706,
+              "n": 43706,
+              "raw_return_bps": {
+                "n": 43706,
+                "p05": -14.699412869494209,
+                "p25": -3.903896734910884,
+                "p50": 0.1351724800848065,
+                "p75": 4.304874432892038,
+                "p95": 14.601398383425126
+              },
+              "direction_adjusted_return_bps": {
+                "n": 43706,
+                "p05": -14.720856708095999,
+                "p25": -4.298821397015862,
+                "p50": -0.21392230104369248,
+                "p75": 3.896718304588459,
+                "p95": 14.584495965323022
+              }
+            }
+          ]
+        },
+        {
+          "timeframe": "5m",
+          "n_bars": 52841,
+          "lawful_bars_n": 52841,
+          "unavailable_bars_n": 0,
+          "n_payload_rows": 15784,
+          "formation_payload_n": 7140,
+          "lawful_formation_n": 7140,
+          "formation_incidence": {
+            "numerator": 7140,
+            "denominator": 52841,
+            "rate": 0.1351223481766053
+          },
+          "unavailable_formation_n": 0,
+          "bullish_n": 3876,
+          "bearish_n": 3264,
+          "first_touch_n": 7039,
+          "first_touch_rate": {
+            "numerator": 7039,
+            "denominator": 7140,
+            "rate": 0.9858543417366947
+          },
+          "fill_n": 6981,
+          "fill_rate": {
+            "numerator": 6981,
+            "denominator": 7140,
+            "rate": 0.9777310924369748
+          },
+          "right_censored_n": 159,
+          "right_censored_rate": {
+            "numerator": 159,
+            "denominator": 7140,
+            "rate": 0.02226890756302521
+          },
+          "formed_touch_fill_n": 6961,
+          "formed_fill_without_prior_touch_n": 20,
+          "unavailable_touch_events_n": 0,
+          "unavailable_fill_events_n": 0,
+          "unavailable_outcome_events_n": 0,
+          "orphan_touch_n": 8,
+          "orphan_fill_n": 18,
+          "formation_to_touch_market_ms": {
+            "n": 7039,
+            "p05": 300000.0,
+            "p25": 300000.0,
+            "p50": 600000.0,
+            "p75": 2400000.0,
+            "p95": 47400000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 7039,
+            "p05": 299769.0,
+            "p25": 300029.0,
+            "p50": 600022.0,
+            "p75": 2400040.0,
+            "p95": 47700073.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 6981,
+            "p05": 300000.0,
+            "p25": 600000.0,
+            "p50": 2100000.0,
+            "p75": 9900000.0,
+            "p95": 210300000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 6981,
+            "p05": 299946.0,
+            "p25": 600271.0,
+            "p50": 2100043.0,
+            "p75": 9600228.0,
+            "p95": 210300074.0
+          },
+          "gap_atr": {
+            "n": 7140,
+            "p05": 0.22129982078549237,
+            "p25": 0.3086306154146267,
+            "p50": 0.4570388131859418,
+            "p75": 0.7002795961402966,
+            "p95": 1.3473288450103869
+          },
+          "fvg_quality": {
+            "n": 7140,
+            "p05": 0.479043828825662,
+            "p25": 0.6431441264262305,
+            "p50": 0.7502745895673107,
+            "p75": 0.8472362455267175,
+            "p95": 0.959674215335671
+          },
+          "horizons": [
+            {
+              "horizon_bars": 1,
+              "denominator": 7140,
+              "n": 7140,
+              "raw_return_bps": {
+                "n": 7140,
+                "p05": -15.295965611870104,
+                "p25": -4.117952482408881,
+                "p50": 0.18172328188054526,
+                "p75": 4.785805301475823,
+                "p95": 15.698447014024225
+              },
+              "direction_adjusted_return_bps": {
+                "n": 7140,
+                "p05": -15.180207755255454,
+                "p25": -4.709475923255844,
+                "p50": -0.2247868961054964,
+                "p75": 4.193949754289461,
+                "p95": 15.872024314156212
+              }
+            },
+            {
+              "horizon_bars": 3,
+              "denominator": 7140,
+              "n": 7139,
+              "raw_return_bps": {
+                "n": 7139,
+                "p05": -25.88737489750864,
+                "p25": -6.474747250085607,
+                "p50": 0.667975353072389,
+                "p75": 8.215267296413444,
+                "p95": 26.873587356955827
+              },
+              "direction_adjusted_return_bps": {
+                "n": 7139,
+                "p05": -26.373550998010504,
+                "p25": -8.097408483737194,
+                "p50": -0.553263549802289,
+                "p75": 6.752092323517159,
+                "p95": 27.030695915388833
+              }
+            },
+            {
+              "horizon_bars": 5,
+              "denominator": 7140,
+              "n": 7139,
+              "raw_return_bps": {
+                "n": 7139,
+                "p05": -32.8661318302036,
+                "p25": -8.318534656366067,
+                "p50": 1.030300898120466,
+                "p75": 10.680103645766923,
+                "p95": 33.25048091411107
+              },
+              "direction_adjusted_return_bps": {
+                "n": 7139,
+                "p05": -32.94096788282391,
+                "p25": -10.245742768640804,
+                "p50": -0.5161606993284418,
+                "p75": 8.769309344613182,
+                "p95": 33.504129064586685
+              }
+            }
+          ]
+        },
+        {
+          "timeframe": "15m",
+          "n_bars": 17615,
+          "lawful_bars_n": 17615,
+          "unavailable_bars_n": 0,
+          "n_payload_rows": 4842,
+          "formation_payload_n": 2192,
+          "lawful_formation_n": 2192,
+          "formation_incidence": {
+            "numerator": 2192,
+            "denominator": 17615,
+            "rate": 0.12443939824013625
+          },
+          "unavailable_formation_n": 0,
+          "bullish_n": 1271,
+          "bearish_n": 921,
+          "first_touch_n": 2136,
+          "first_touch_rate": {
+            "numerator": 2136,
+            "denominator": 2192,
+            "rate": 0.9744525547445255
+          },
+          "fill_n": 2104,
+          "fill_rate": {
+            "numerator": 2104,
+            "denominator": 2192,
+            "rate": 0.9598540145985401
+          },
+          "right_censored_n": 88,
+          "right_censored_rate": {
+            "numerator": 88,
+            "denominator": 2192,
+            "rate": 0.040145985401459854
+          },
+          "formed_touch_fill_n": 2094,
+          "formed_fill_without_prior_touch_n": 10,
+          "unavailable_touch_events_n": 0,
+          "unavailable_fill_events_n": 0,
+          "unavailable_outcome_events_n": 0,
+          "orphan_touch_n": 7,
+          "orphan_fill_n": 13,
+          "formation_to_touch_market_ms": {
+            "n": 2136,
+            "p05": 900000.0,
+            "p25": 900000.0,
+            "p50": 1800000.0,
+            "p75": 7200000.0,
+            "p95": 167400000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 2136,
+            "p05": 899773.0,
+            "p25": 900016.0,
+            "p50": 1800000.0,
+            "p75": 7199926.0,
+            "p95": 167400009.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 2104,
+            "p05": 900000.0,
+            "p25": 1800000.0,
+            "p50": 7200000.0,
+            "p75": 30600000.0,
+            "p95": 505800000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 2104,
+            "p05": 899948.0,
+            "p25": 1800332.0,
+            "p50": 7199798.0,
+            "p75": 29700133.0,
+            "p95": 505799994.0
+          },
+          "gap_atr": {
+            "n": 2192,
+            "p05": 0.22050690902040437,
+            "p25": 0.3105388686631671,
+            "p50": 0.45913134991584376,
+            "p75": 0.705500840632245,
+            "p95": 1.4825745874674097
+          },
+          "fvg_quality": {
+            "n": 2192,
+            "p05": 0.494426588163126,
+            "p25": 0.6419421392985818,
+            "p50": 0.749743903392707,
+            "p75": 0.8346494192345,
+            "p95": 0.9551190899395744
+          },
+          "horizons": [
+            {
+              "horizon_bars": 1,
+              "denominator": 2192,
+              "n": 2192,
+              "raw_return_bps": {
+                "n": 2192,
+                "p05": -28.570710322070184,
+                "p25": -6.478697425846141,
+                "p50": 0.47047753469729026,
+                "p75": 8.30869859852365,
+                "p95": 29.003811350419895
+              },
+              "direction_adjusted_return_bps": {
+                "n": 2192,
+                "p05": -28.17287090682371,
+                "p25": -8.204091722833281,
+                "p50": -0.4547361503510272,
+                "p75": 6.879900446331945,
+                "p95": 29.482911518764176
+              }
+            },
+            {
+              "horizon_bars": 3,
+              "denominator": 2192,
+              "n": 2191,
+              "raw_return_bps": {
+                "n": 2191,
+                "p05": -49.06819531357187,
+                "p25": -11.605962124983863,
+                "p50": 1.0460521886831842,
+                "p75": 15.606101985875931,
+                "p95": 47.164393545465444
+              },
+              "direction_adjusted_return_bps": {
+                "n": 2191,
+                "p05": -47.76065603316134,
+                "p25": -14.483422766191648,
+                "p50": -0.671939559647686,
+                "p75": 13.069889192187745,
+                "p95": 47.814694921038615
+              }
+            },
+            {
+              "horizon_bars": 5,
+              "denominator": 2192,
+              "n": 2189,
+              "raw_return_bps": {
+                "n": 2189,
+                "p05": -58.878200572979566,
+                "p25": -14.129687159330066,
+                "p50": 2.456161983386763,
+                "p75": 20.70485105150783,
+                "p95": 64.00741113181776
+              },
+              "direction_adjusted_return_bps": {
+                "n": 2189,
+                "p05": -63.40562300456059,
+                "p25": -17.62021838428488,
+                "p50": -1.1139889158110838,
+                "p75": 16.922322971333433,
+                "p95": 60.750084265152395
+              }
+            }
+          ]
+        },
+        {
+          "timeframe": "1h",
+          "n_bars": 4406,
+          "lawful_bars_n": 4406,
+          "unavailable_bars_n": 0,
+          "n_payload_rows": 1141,
+          "formation_payload_n": 523,
+          "lawful_formation_n": 523,
+          "formation_incidence": {
+            "numerator": 523,
+            "denominator": 4406,
+            "rate": 0.11870177031320926
+          },
+          "unavailable_formation_n": 0,
+          "bullish_n": 305,
+          "bearish_n": 218,
+          "first_touch_n": 497,
+          "first_touch_rate": {
+            "numerator": 497,
+            "denominator": 523,
+            "rate": 0.9502868068833652
+          },
+          "fill_n": 482,
+          "fill_rate": {
+            "numerator": 482,
+            "denominator": 523,
+            "rate": 0.9216061185468452
+          },
+          "right_censored_n": 41,
+          "right_censored_rate": {
+            "numerator": 41,
+            "denominator": 523,
+            "rate": 0.07839388145315487
+          },
+          "formed_touch_fill_n": 478,
+          "formed_fill_without_prior_touch_n": 4,
+          "unavailable_touch_events_n": 0,
+          "unavailable_fill_events_n": 0,
+          "unavailable_outcome_events_n": 0,
+          "orphan_touch_n": 6,
+          "orphan_fill_n": 7,
+          "formation_to_touch_market_ms": {
+            "n": 497,
+            "p05": 3600000.0,
+            "p25": 3600000.0,
+            "p50": 7200000.0,
+            "p75": 32400000.0,
+            "p95": 694800000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 497,
+            "p05": 3599756.0,
+            "p25": 3600010.0,
+            "p50": 7200065.0,
+            "p75": 28800355.0,
+            "p95": 694799978.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 482,
+            "p05": 3600000.0,
+            "p25": 10800000.0,
+            "p50": 28800000.0,
+            "p75": 118800000.0,
+            "p95": 1450800000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 482,
+            "p05": 3599941.0,
+            "p25": 7204315.0,
+            "p50": 28800022.0,
+            "p75": 104400134.0,
+            "p95": 1450800035.0
+          },
+          "gap_atr": {
+            "n": 523,
+            "p05": 0.2206999485006978,
+            "p25": 0.3075359725307811,
+            "p50": 0.4543155779317776,
+            "p75": 0.7425183000913121,
+            "p95": 1.615544117218031
+          },
+          "fvg_quality": {
+            "n": 523,
+            "p05": 0.501061870459578,
+            "p25": 0.6526446700205921,
+            "p50": 0.7451844359717643,
+            "p75": 0.8399076054103884,
+            "p95": 0.9431758667644292
+          },
+          "horizons": [
+            {
+              "horizon_bars": 1,
+              "denominator": 523,
+              "n": 523,
+              "raw_return_bps": {
+                "n": 523,
+                "p05": -48.11989681315619,
+                "p25": -13.138752368787463,
+                "p50": 2.085169840678382,
+                "p75": 20.678621936285634,
+                "p95": 65.5200924989522
+              },
+              "direction_adjusted_return_bps": {
+                "n": 523,
+                "p05": -55.33097351018611,
+                "p25": -16.302518030230484,
+                "p50": -0.10798475255311414,
+                "p75": 15.42744072173609,
+                "p95": 49.532533584083836
+              }
+            },
+            {
+              "horizon_bars": 3,
+              "denominator": 523,
+              "n": 523,
+              "raw_return_bps": {
+                "n": 523,
+                "p05": -84.8746266013216,
+                "p25": -18.628789085654358,
+                "p50": 6.948470545246235,
+                "p75": 31.809809110599776,
+                "p95": 75.88600788015505
+              },
+              "direction_adjusted_return_bps": {
+                "n": 523,
+                "p05": -77.64310449029762,
+                "p25": -23.991595235588075,
+                "p50": 0.8520243051139529,
+                "p75": 28.440573911165757,
+                "p95": 82.8229602614961
+              }
+            },
+            {
+              "horizon_bars": 5,
+              "denominator": 523,
+              "n": 523,
+              "raw_return_bps": {
+                "n": 523,
+                "p05": -121.49712839881158,
+                "p25": -28.349868554896542,
+                "p50": 7.300917088554028,
+                "p75": 45.10278571716478,
+                "p95": 108.37759233266368
+              },
+              "direction_adjusted_return_bps": {
+                "n": 523,
+                "p05": -104.65375743850556,
+                "p25": -36.703226714261,
+                "p50": -1.5894635012590395,
+                "p75": 40.697896761316755,
+                "p95": 125.69073989161848
+              }
+            }
+          ]
+        },
+        {
+          "timeframe": "4h",
+          "n_bars": 1169,
+          "lawful_bars_n": 1169,
+          "unavailable_bars_n": 0,
+          "n_payload_rows": 349,
+          "formation_payload_n": 167,
+          "lawful_formation_n": 167,
+          "formation_incidence": {
+            "numerator": 167,
+            "denominator": 1169,
+            "rate": 0.14285714285714285
+          },
+          "unavailable_formation_n": 0,
+          "bullish_n": 101,
+          "bearish_n": 66,
+          "first_touch_n": 157,
+          "first_touch_rate": {
+            "numerator": 157,
+            "denominator": 167,
+            "rate": 0.9401197604790419
+          },
+          "fill_n": 141,
+          "fill_rate": {
+            "numerator": 141,
+            "denominator": 167,
+            "rate": 0.844311377245509
+          },
+          "right_censored_n": 26,
+          "right_censored_rate": {
+            "numerator": 26,
+            "denominator": 167,
+            "rate": 0.15568862275449102
+          },
+          "formed_touch_fill_n": 141,
+          "formed_fill_without_prior_touch_n": 0,
+          "unavailable_touch_events_n": 0,
+          "unavailable_fill_events_n": 0,
+          "unavailable_outcome_events_n": 0,
+          "orphan_touch_n": 3,
+          "orphan_fill_n": 6,
+          "formation_to_touch_market_ms": {
+            "n": 157,
+            "p05": 14400000.0,
+            "p25": 14400000.0,
+            "p50": 28800000.0,
+            "p75": 172800000.0,
+            "p95": 1281600000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 157,
+            "p05": 14399941.0,
+            "p25": 14400098.0,
+            "p50": 28800345.0,
+            "p75": 187199950.0,
+            "p95": 1281600259.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 141,
+            "p05": 14400000.0,
+            "p25": 28800000.0,
+            "p50": 72000000.0,
+            "p75": 446400000.0,
+            "p95": 2448000000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 141,
+            "p05": 14400004.0,
+            "p25": 28800095.0,
+            "p50": 71999975.0,
+            "p75": 446400257.0,
+            "p95": 2447999989.0
+          },
+          "gap_atr": {
+            "n": 167,
+            "p05": 0.22818171494368017,
+            "p25": 0.3455584705128958,
+            "p50": 0.5265826413121638,
+            "p75": 0.8733725555927251,
+            "p95": 1.6025190284541506
+          },
+          "fvg_quality": {
+            "n": 167,
+            "p05": 0.4877137413129099,
+            "p25": 0.6586118012537413,
+            "p50": 0.7562107507781961,
+            "p75": 0.8425316655041238,
+            "p95": 0.9535606181296734
+          },
+          "horizons": [
+            {
+              "horizon_bars": 1,
+              "denominator": 167,
+              "n": 167,
+              "raw_return_bps": {
+                "n": 167,
+                "p05": -84.099077053172,
+                "p25": -16.160607126972067,
+                "p50": 2.5310859733160855,
+                "p75": 33.172594413705845,
+                "p95": 125.59450093976925
+              },
+              "direction_adjusted_return_bps": {
+                "n": 167,
+                "p05": -124.45429934881503,
+                "p25": -26.06717090073668,
+                "p50": -1.1342246247411907,
+                "p75": 22.36967923270757,
+                "p95": 84.099077053172
+              }
+            },
+            {
+              "horizon_bars": 3,
+              "denominator": 167,
+              "n": 167,
+              "raw_return_bps": {
+                "n": 167,
+                "p05": -191.80656294688774,
+                "p25": -42.86147896783517,
+                "p50": 19.72932842133883,
+                "p75": 72.70001545176508,
+                "p95": 159.0888693022691
+              },
+              "direction_adjusted_return_bps": {
+                "n": 167,
+                "p05": -173.7850062348483,
+                "p25": -63.41646599457954,
+                "p50": -2.0941975216075823,
+                "p75": 57.278612694387,
+                "p95": 210.62113975769853
+              }
+            },
+            {
+              "horizon_bars": 5,
+              "denominator": 167,
+              "n": 167,
+              "raw_return_bps": {
+                "n": 167,
+                "p05": -320.25681932971,
+                "p25": -54.88838218780517,
+                "p50": 25.97982534223373,
+                "p75": 103.4012238892414,
+                "p95": 225.85874464244142
+              },
+              "direction_adjusted_return_bps": {
+                "n": 167,
+                "p05": -278.5638841546525,
+                "p25": -83.69637439344649,
+                "p50": 12.507608795350507,
+                "p75": 99.40307258816637,
+                "p95": 282.74316829401954
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "zones": {
+      "n": 381527,
+      "path": "E1_ZONES.jsonl",
+      "absolute_path": "\\\\?\\F:\\TrinityR-research\\ap-002-e1-native-strata\\.runs\\ap-002-e1-native-strata\\causal-rework-final-run-1\\E1_ZONES.jsonl",
+      "sha256": "0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd",
+      "logical_rows_sha256": "0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd",
+      "provenance": {
+        "scope_id": "XAUUSD_DATA_SCOPE_V1",
+        "development_view_manifest_sha256": "4842ac0dfe0b207b75f4a1003fd16f5d2a8d63f93b3ac4dde943ff33372c9613",
+        "sidecar_manifest_sha256": "b94064c358663ba9591f825c749f754f234a29de1a930531d24fab662cef6965",
+        "sidecar_sha256": "a0846a200f764a30e4b65f696e2ec80d6225409d6ac2f592679db9e47c20cb1d",
+        "source_parts": [
+          "15s/part-00000.parquet",
+          "15s/part-00001.parquet",
+          "15s/part-00002.parquet",
+          "15s/part-00003.parquet",
+          "15s/part-00004.parquet",
+          "30s/part-00000.parquet",
+          "30s/part-00001.parquet",
+          "30s/part-00002.parquet",
+          "30s/part-00003.parquet",
+          "30s/part-00004.parquet",
+          "1m/part-00000.parquet",
+          "1m/part-00001.parquet",
+          "1m/part-00002.parquet",
+          "1m/part-00003.parquet",
+          "1m/part-00004.parquet",
+          "5m/part-00000.parquet",
+          "5m/part-00001.parquet",
+          "5m/part-00002.parquet",
+          "5m/part-00003.parquet",
+          "5m/part-00004.parquet",
+          "15m/part-00000.parquet",
+          "15m/part-00001.parquet",
+          "15m/part-00002.parquet",
+          "15m/part-00003.parquet",
+          "15m/part-00004.parquet",
+          "1h/part-00000.parquet",
+          "1h/part-00001.parquet",
+          "1h/part-00002.parquet",
+          "1h/part-00003.parquet",
+          "1h/part-00004.parquet",
+          "4h/part-00000.parquet",
+          "4h/part-00001.parquet",
+          "4h/part-00002.parquet",
+          "4h/part-00003.parquet",
+          "4h/part-00004.parquet"
+        ],
+        "scanner_commit": "bb27149c2f5218737b9b025e22b422a75fc7f354"
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "experiment_id": "AP-002-FVG-E1-NATIVE-STRATA",
+  "review_artifact_type": "AP-002-E1-CAUSAL-REWORK",
+  "code_identity": "b632a9258b896e399d697f6418e1580328456e7a",
+  "scanner_identity": "bb27149c2f5218737b9b025e22b422a75fc7f354",
+  "scope_id": "XAUUSD_DATA_SCOPE_V1",
+  "confirmation_status": "LOCKED",
+  "supersedes_result_hash": "4562b87babf540dd191519eeb777d9e7fb6e2d34f417403246c007ff3f5a9e05",
+  "superseded_reason": "SUPERSEDED_CAUSAL_RESPONSE_AND_TAIL_AVAILABILITY",
+  "input_identity": {
+    "development_view_manifest_sha256": "4842ac0dfe0b207b75f4a1003fd16f5d2a8d63f93b3ac4dde943ff33372c9613",
+    "sidecar_manifest_sha256": "b94064c358663ba9591f825c749f754f234a29de1a930531d24fab662cef6965",
+    "sidecar_sha256": "a0846a200f764a30e4b65f696e2ec80d6225409d6ac2f592679db9e47c20cb1d",
+    "tick_rows": 54415940,
+    "sidecar_rows": 2087782
+  },
+  "review_artifacts": {
+    "E1_EXPERIMENT.json": {"sha256": "6a480b051a053f91c263532f4dc64ceccc84b47f18280cfeabbfb623680a30eb", "rows": null, "local_path": "docs/research/ap-002-e1-causal-rework/E1_EXPERIMENT.json"},
+    "E1_RESULTS.json": {"sha256": "d7acfbf2c20d20a540388facf08a4ce2c9c1c92f818a25dd394154724a5915a2", "rows": 7, "logical_result_hash": "735bd7ab06ae2caf72e37447d207dec62c17932ee1684c4c393d8ace07684c52", "local_path": "docs/research/ap-002-e1-causal-rework/E1_RESULTS.json"},
+    "PREFLIGHT.json": {"sha256": "f9f641a4f65c03c66c3b864dc2f071ab91eaee464d3bf98c23b9c055c9a94b9a", "rows": 54415940, "local_path": "docs/research/ap-002-e1-causal-rework/PREFLIGHT.json"},
+    "RUN_MANIFEST.json": {"rows": 2, "local_path": "docs/research/ap-002-e1-causal-rework/RUN_MANIFEST.json"},
+    "SCANNER_INTEGRITY_GATE.json": {"sha256": "4056e181c7d19688b887cb2d62ead02188561b68c466a781960d9d3b23bec8b6", "rows": 381527, "local_path": "docs/research/ap-002-e1-causal-rework/SCANNER_INTEGRITY_GATE.json"},
+    "REPRODUCIBILITY.json": {"rows": 2, "local_path": "docs/research/ap-002-e1-causal-rework/REPRODUCIBILITY.json"}
+  },
+  "zone_artifacts": {
+    "rows": 381527,
+    "physical_sha256": "0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd",
+    "logical_rows_sha256": "0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd",
+    "run_1_local_path": ".runs/ap-002-e1-native-strata/causal-rework-final-run-1/E1_ZONES.jsonl",
+    "run_2_local_path": ".runs/ap-002-e1-native-strata/causal-rework-final-run-2/E1_ZONES.jsonl",
+    "committed": false
+  }
+}

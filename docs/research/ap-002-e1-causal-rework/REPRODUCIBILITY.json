@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "scanner_commit": "bb27149c2f5218737b9b025e22b422a75fc7f354",
+  "integrity_gate_commit": "b632a9258b896e399d697f6418e1580328456e7a",
+  "superseded_result_hash": "4562b87babf540dd191519eeb777d9e7fb6e2d34f417403246c007ff3f5a9e05",
+  "superseded_reason": "SUPERSEDED_CAUSAL_RESPONSE_AND_TAIL_AVAILABILITY",
+  "runs": [
+    {
+      "run_id": "causal-rework-final-run-1",
+      "local_root": "F:\\TrinityR-research\\ap-002-e1-native-strata\\.runs\\ap-002-e1-native-strata\\causal-rework-final-run-1",
+      "logical_result_hash": "735bd7ab06ae2caf72e37447d207dec62c17932ee1684c4c393d8ace07684c52",
+      "preflight_hash": "804a5e3e09e9dff721147248862aca55525da5e48f85085d94d902a816cf4d99",
+      "zones_n": 381527,
+      "zones_physical_sha256": "0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd",
+      "zones_logical_rows_sha256": "0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd",
+      "e1_results_physical_sha256": "9f12a62c324fc1b3aa44a8fe0076c3212efa22014a778e51ca4154ab3295df13",
+      "preflight_physical_sha256": "b13994d81e5795614f7a5997ea787f4ea03520553870093e3278c5f112bffbb8",
+      "integrity_gate_physical_sha256": "6ed29a73ce48166b1408edfb497eae61c0296c762d8dcf7f5d572cb1d8838473"
+    },
+    {
+      "run_id": "causal-rework-final-run-2",
+      "local_root": "F:\\TrinityR-research\\ap-002-e1-native-strata\\.runs\\ap-002-e1-native-strata\\causal-rework-final-run-2",
+      "logical_result_hash": "735bd7ab06ae2caf72e37447d207dec62c17932ee1684c4c393d8ace07684c52",
+      "preflight_hash": "804a5e3e09e9dff721147248862aca55525da5e48f85085d94d902a816cf4d99",
+      "zones_n": 381527,
+      "zones_physical_sha256": "0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd",
+      "zones_logical_rows_sha256": "0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd",
+      "e1_results_physical_sha256": "b4ab0740624fb17d577a6332596b50ed5e9e9657a3a95ec5d9f58355d19e57bf",
+      "preflight_physical_sha256": "b13994d81e5795614f7a5997ea787f4ea03520553870093e3278c5f112bffbb8",
+      "integrity_gate_physical_sha256": "6ed29a73ce48166b1408edfb497eae61c0296c762d8dcf7f5d572cb1d8838473"
+    }
+  ],
+  "comparison": {
+    "same_logical_result_hash": true,
+    "same_preflight_hash": true,
+    "same_zone_row_count": true,
+    "same_zone_physical_hash": true,
+    "same_integrity_gate_status": true,
+    "unavailable_counters": {"formations": 0, "touches": 0, "fills": 0, "outcomes": 0},
+    "receipt_regressions": 0,
+    "confirmation_status": "LOCKED",
+    "e2_e3_present": false
+  }
+}

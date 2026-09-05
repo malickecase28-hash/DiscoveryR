@@ -1,0 +1,19 @@
+{
+  "gate_type": "SCANNER_INTEGRITY_GATE",
+  "status": "PASS",
+  "scientific_interpretation": false,
+  "confirmation_status": "LOCKED",
+  "zones_n": 381527,
+  "logical_rows_sha256": "0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd",
+  "checks": [
+    {"id": "native_identity", "status": "PASS", "evidence": "381527 unique (timeframe, zone_id) identities"},
+    {"id": "formation_outcome_separation", "status": "PASS", "evidence": "formation rows contain no later lifecycle fields"},
+    {"id": "formation_anchor_price", "status": "PASS", "evidence": "anchor bid/ask/mid and receipt identity are preserved"},
+    {"id": "lifecycle_availability", "status": "PASS", "evidence": "touch and fill event time are separate from availability time and source sequence"},
+    {"id": "prospective_response_causality", "status": "PASS", "evidence": "every response is on a later lawful native close and after the anchor receipt"},
+    {"id": "unavailable_lifecycle_gate", "status": "PASS", "evidence": "explicit unavailable touch/fill/outcome counters are present per stratum"},
+    {"id": "right_censoring", "status": "PASS", "evidence": "unfilled zones are active and censored at the final lawful native bar"},
+    {"id": "confirmation_locked_scope", "status": "PASS", "evidence": "E1 phenotype scope is locked; E2 and E3 are absent"},
+    {"id": "receipt_regression_preflight", "status": "PASS", "evidence": "0 regressions"}
+  ]
+}
