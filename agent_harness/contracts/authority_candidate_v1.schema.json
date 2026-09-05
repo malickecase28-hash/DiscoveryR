@@ -61,9 +61,9 @@
         "claim": {"type": "string", "minLength": 1},
         "status": {"enum": ["AUTHORITATIVE", "PROVISIONAL", "UNRESOLVED"]},
         "authority_evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
-        "counterevidence": {"type": "array"},
+        "counterevidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
         "future_information_risk": {"type": "string", "minLength": 1},
-        "dependency_implications": {"type": "array"},
+        "dependency_implications": {"type": "array", "items": {"type": "string", "minLength": 1}},
         "notes": {"type": "string"}
       },
       "allOf": [
