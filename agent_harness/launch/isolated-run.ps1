@@ -8,7 +8,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
-$approvedRoot = Join-Path $repo '.runs\wave1-native-v2'
+$approvedRoot = Join-Path $repo '.runs\wave1-native-v3'
 $requestedRoot = if ($RunRoot) { [IO.Path]::GetFullPath($RunRoot).TrimEnd('\') } else { $approvedRoot }
 if (-not $requestedRoot.Equals($approvedRoot.TrimEnd('\'), [StringComparison]::OrdinalIgnoreCase)) { throw "RunRoot must be the approved phase root: $approvedRoot" }
 
