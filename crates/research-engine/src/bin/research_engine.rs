@@ -1,9 +1,13 @@
+use research_contracts::submission::reject_unsafe_ancestors;
 use research_contracts::{
     ConfirmationContract, InstrumentScope, MethodChallenge, Question, ReproducibilityIdentity,
 };
 use research_engine::verify_identity;
 use serde_json::{json, Value};
-use std::{env, fs, path::Path};
+use std::{
+    env, fs,
+    path::{Component, Path, PathBuf},
+};
 
 fn read_json(path: &str) -> Result<Value, String> {
     let bytes = fs::read(path).map_err(|error| format!("read {path}: {error}"))?;
@@ -13,17 +17,42 @@ fn read_json(path: &str) -> Result<Value, String> {
 fn write_json(value: Value, output: Option<&str>) -> Result<(), String> {
     let bytes = serde_json::to_vec_pretty(&value).map_err(|error| error.to_string())?;
     if let Some(path) = output {
-        if let Some(parent) = Path::new(path).parent() {
+        let path = output_path(path)?;
+        if let Some(parent) = path.parent() {
             if !parent.as_os_str().is_empty() {
                 fs::create_dir_all(parent)
                     .map_err(|error| format!("create output root: {error}"))?;
             }
         }
-        fs::write(path, bytes).map_err(|error| format!("write {path}: {error}"))?;
+        fs::write(&path, bytes).map_err(|error| format!("write {}: {error}", path.display()))?;
     } else {
         println!("{}", String::from_utf8_lossy(&bytes));
     }
     Ok(())
+}
+
+fn output_path(path: &str) -> Result<PathBuf, String> {
+    let relative = Path::new(path);
+    if relative.as_os_str().is_empty()
+        || relative.is_absolute()
+        || relative.components().any(|component| {
+            matches!(
+                component,
+                Component::ParentDir | Component::RootDir | Component::Prefix(_)
+            )
+        })
+    {
+        return Err("output path must be relative and stay under the workspace".into());
+    }
+    let root = env::var_os("TRINITYR_WORKSPACE")
+        .map(PathBuf::from)
+        .unwrap_or(env::current_dir().map_err(|error| error.to_string())?);
+    reject_unsafe_ancestors(&root).map_err(|error| error.to_string())?;
+    let target = root.join(relative);
+    if let Some(parent) = target.parent() {
+        reject_unsafe_ancestors(parent).map_err(|error| error.to_string())?;
+    }
+    Ok(target)
 }
 
 fn value_as<T: serde::de::DeserializeOwned>(value: Value) -> Result<T, String> {
