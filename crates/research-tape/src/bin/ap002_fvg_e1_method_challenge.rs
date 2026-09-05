@@ -116,8 +116,10 @@ fn validate_zone(zone: &ZoneLifecycle, value: &serde_json::Value) -> Result<(), 
             Direction::Bullish => raw,
             Direction::Bearish => -raw,
         };
-        if !close_enough(outcome.raw_price_delta, outcome.outcome_close - zone.anchor_mid)
-            || !close_enough(outcome.raw_return_bps, raw)
+        if !close_enough(
+            outcome.raw_price_delta,
+            outcome.outcome_close - zone.anchor_mid,
+        ) || !close_enough(outcome.raw_return_bps, raw)
             || !close_enough(outcome.direction_adjusted_return_bps, adjusted)
         {
             return Err("prospective response arithmetic is inconsistent".into());
