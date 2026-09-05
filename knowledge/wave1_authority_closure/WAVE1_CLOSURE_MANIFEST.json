@@ -1,0 +1,53 @@
+{
+  "artifact_type": "WAVE1_CLOSURE_MANIFEST",
+  "state": "CLOSED",
+  "closed_utc": "2026-09-05T03:07:14Z",
+  "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+  "pr_merged": 1,
+  "isolation_policy": "WORKFLOW_BLINDED_ACCESS_CONTROLLED",
+  "hard_os_isolation_claimed": false,
+  "final_run_root": ".runs/wave1-native-v3",
+  "structural_gate": {
+    "result": "WAVE1_REPORT_GATE_PASS reports=8",
+    "validator": "agent_harness/validation/validate-wave1-authority-reports.ps1"
+  },
+  "scientific_review": {
+    "pass": 8,
+    "rework_repaired_and_reverified": 4,
+    "reject": 0,
+    "note": "Four reports carried systematic locator defects (off-by-one registry/inventory indices, permuted line locators). Narrow host-side locator repair was applied per the never-rerun-all-eight rule; every repaired locator was re-verified directly against the source files and the host gate re-passed 8/8. No scientific content was altered beyond cited locators and one unsupported Length=4 detail."
+  },
+  "pair_syntheses_complete": 4,
+  "canonical_authority_version": "XAUUSD_AUTHORITY_WAVE1_V1",
+  "canonical_version_sha256": "8d380bbe1199a9f34113367a164ef99c1829127fa0ac3f7aabfd1b59346f56d0",
+  "synthesis_candidates": [
+    "AP-001_AUTHORITY_CANDIDATE.json",
+    "AP-002_AUTHORITY_CANDIDATE.json",
+    "TC-001_AUTHORITY_CANDIDATE.json",
+    "BG-001_AUTHORITY_CANDIDATE.json"
+  ],
+  "e1_readiness": {
+    "AP-001": "BLOCKED_BY_MISSING_AUTHORITY",
+    "AP-002": "BLOCKED_BY_MISSING_AUTHORITY"
+  },
+  "tc001_family_eligibility": {
+    "feed_health": "E2_BLOCKED_PENDING_AUTHORITY",
+    "micro_volatility": "E2_BLOCKED_PENDING_AUTHORITY",
+    "quote_arrival": "E2_BLOCKED_PENDING_AUTHORITY",
+    "quote_dynamics": "E2_BLOCKED_PENDING_AUTHORITY",
+    "quote_pressure": "E2_BLOCKED_PENDING_AUTHORITY",
+    "spread_state": "E2_BLOCKED_PENDING_AUTHORITY"
+  },
+  "bg001_non_independent_confluence": "DO_NOT_TREAT_AS_INDEPENDENT_CONFLUENCE recorded: all 28 pairs among the eight scoped detectors",
+  "behavioral_research_performed": false,
+  "confirmation": "LOCKED",
+  "e1_launch": "REQUIRES EXPLICIT MASTER APPROVAL (FREEZE / REWORK / START E1 issued separately for AP-001 and AP-002)",
+  "old_run_supersession": {
+    "superseded_runs": [
+      "wave1-native-v2"
+    ],
+    "treatment": "Archived as prior-run material, marked superseded by failure class (stale run root / pre-hardening report gate). Not deleted, not treated as active evidence.",
+    "obsolete_branch_note": "reports/* historical report branches retained as archive; no further temporary repair branches to be created."
+  },
+  "handoff": "Return to master chat with full closure package: base SHA, gate PASS 8/8, scientific review 8/8, 16 artifact hashes, 4 syntheses, E1/E2/E3 readiness, unresolved ledger, registry hash, freeze artifact, supersession record."
+}

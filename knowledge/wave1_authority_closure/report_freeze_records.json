@@ -1,0 +1,110 @@
+{
+  "artifact_type": "WAVE1_REPORT_FREEZE_RECORDS",
+  "frozen_utc": "2026-09-05T03:06:48Z",
+  "reports": [
+    {
+      "program_id": "AP-001",
+      "role_id": "A-01",
+      "candidate_sha256": "8b09f80d87ed49517294fb44f0a0599f1da61d60faa51961238d7d9ff018cc51",
+      "review_md_sha256": "9111c1e129c1c84c7635331fe6bd9d7bdcc76707d0e30dcc977705b1757740d7",
+      "scientific_review_verdict": "REWORK",
+      "rework_note": "Scientifically sound report: all 20 UNRESOLVED claims reflect genuine absence of authority (verified against detectors_v1.json /16, which has empty lifecycle_vocabulary, empty roles, semantic_status UNRESOLVED, availability_semantics UNRESOLVED), statuses match evidence strength, no inference from f",
+      "locator_repair_applied": true,
+      "repaired_locators_reverified_against_source": true,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "AP-001",
+      "role_id": "A-02",
+      "candidate_sha256": "2873af71388cb2bef321d259fdfeda757e930c0b325e159b1192565df7133171",
+      "review_md_sha256": "122f2b57dbd063c0b30b6ac72581efb35fa9a4bd494f0b301f344db3848ff54b",
+      "scientific_review_verdict": "REWORK",
+      "rework_note": "Scientifically sound: all UNRESOLVED statuses match the verified registry entry content (empty lifecycle_vocabulary, empty roles, semantic_status and availability_semantics UNRESOLVED); source_inventory tick locators (/sources/7) are all correct and verified; no field-name inference, no occurrence/a",
+      "locator_repair_applied": true,
+      "repaired_locators_reverified_against_source": true,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "AP-002",
+      "role_id": "A-01",
+      "candidate_sha256": "d8ca92fd73cc1bf10d00f31fe5a11a16f6519752c63c9e30c79117f67aae8931",
+      "review_md_sha256": "d9bcf2394bf38e8320e2c8e2bf9b8fc0413ab67f1f71168a7b17c6921570d6ab",
+      "scientific_review_verdict": "PASS",
+      "rework_note": "",
+      "locator_repair_applied": false,
+      "repaired_locators_reverified_against_source": false,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "AP-002",
+      "role_id": "A-02",
+      "candidate_sha256": "15226e627d0393c011c82668519f2ee12d3805176de486f1d1b98b3311efa93a",
+      "review_md_sha256": "513a06468409701ae4142e6172a3e89794b3dc6c4964edcb00881684030ccfff",
+      "scientific_review_verdict": "PASS",
+      "rework_note": "",
+      "locator_repair_applied": false,
+      "repaired_locators_reverified_against_source": false,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "TC-001",
+      "role_id": "A-01",
+      "candidate_sha256": "939cf75d21d1f63975d35eba3b7d940cd92d22f179cfa3b3fcbbefd3e680a7cf",
+      "review_md_sha256": "14a594cd17c955c9a9cb49ef3eb268dae8238d6cfef1b89d832d359665ac9c12",
+      "scientific_review_verdict": "REWORK",
+      "rework_note": "Scientifically sound in substance: 90 claims, no invented persistence/reset/transition semantics, no availability/occurrence confusion, no inference from English field names alone, UNRESOLVED statuses backed by real (if mis-located) registry evidence, and AUTHORITATIVE statuses (payload structure, i",
+      "locator_repair_applied": true,
+      "repaired_locators_reverified_against_source": true,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "TC-001",
+      "role_id": "A-02",
+      "candidate_sha256": "c125b2e5580fa8309a930e1406d418725345717b7f7692b761f026671cba981f",
+      "review_md_sha256": "faadc903994a697cc165c640d60a93f907c2bd9b215b6f3a73efa6b5f1a66fcb",
+      "scientific_review_verdict": "PASS",
+      "rework_note": "",
+      "locator_repair_applied": false,
+      "repaired_locators_reverified_against_source": false,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "BG-001",
+      "role_id": "A-01",
+      "candidate_sha256": "30cecefd61e8a535129a12ef0bda8da02266ceb9512bfbae2cc90c609446b55a",
+      "review_md_sha256": "0a4299ff9a11be3fa8e4fc78b19ca7d330ac4ea32b1f3ab0017d976de36e832f",
+      "scientific_review_verdict": "PASS",
+      "rework_note": "",
+      "locator_repair_applied": false,
+      "repaired_locators_reverified_against_source": false,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "BG-001",
+      "role_id": "A-02",
+      "candidate_sha256": "132f0dc60be799b952c72cab6f14e637c52c9964e716cc1cd908ed2ebd9b4b8c",
+      "review_md_sha256": "ce063e8ef925da13c97b2dad65c4c4d0ded8803e9d314f3e0c3ef55f2b920246",
+      "scientific_review_verdict": "REWORK",
+      "rework_note": "Substance of all 24 claims is correct and evidence-backed: registry structural entries, UNRESOLVED semantic/availability status, empty derives_from, empty lifecycle_vocabulary, and no inferred lineage are all confirmed against the authoritative sources. Status strengths are appropriate (AUTHORITATIV",
+      "locator_repair_applied": true,
+      "repaired_locators_reverified_against_source": true,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "artifact_type": "AP-002_AUTHORITY_CANDIDATE",
+  "canonical_version": "XAUUSD_AUTHORITY_WAVE1_V1",
+  "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+  "input_reports": [
+    {
+      "report": "AP-002/A-01",
+      "sha256": "d8ca92fd73cc1bf10d00f31fe5a11a16f6519752c63c9e30c79117f67aae8931"
+    },
+    {
+      "report": "AP-002/A-02",
+      "sha256": "15226e627d0393c011c82668519f2ee12d3805176de486f1d1b98b3311efa93a"
+    }
+  ],
+  "reconciliation_table": [
+    {
+      "topic": "formation",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both reports: no approved source defines fvg formation predicates or lawful first-known event; registry marks semantics unresolved. Collapses to unresolved authority."
+    },
+    {
+      "topic": "object identity",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: no identity key or uniqueness/episode-equivalence rule anywhere in approved sources."
+    },
+    {
+      "topic": "detection/known time",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: availability_semantics explicitly UNRESOLVED in registry; no fvg known-time clock defined. Both correctly distinguish availability from occurrence."
+    },
+    {
+      "topic": "zone bounds",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: no bound fields, inclusivity, or mutation rule; only a nullable payload_fvg surface is declared."
+    },
+    {
+      "topic": "origin and impulse provenance",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: no origin/impulse definitions or provenance fields with formation-time availability."
+    },
+    {
+      "topic": "first touch",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: no touch predicate, boundary convention, or timestamp rule; empty lifecycle vocabulary cited."
+    },
+    {
+      "topic": "fill",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: no complete-fill predicate, completion measure, or known-time rule."
+    },
+    {
+      "topic": "partial-fill semantics if present",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: partial-fill existence, measurement, and transitions are not established by any approved source."
+    },
+    {
+      "topic": "invalidation",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: no invalidation predicate, precedence, or known time."
+    },
+    {
+      "topic": "lifecycle",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: registry lifecycle_vocabulary for fvg is empty; no state machine or transitions."
+    },
+    {
+      "topic": "object persistence/re-emission",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: generic feature surface does not define emission cardinality, update, re-emission, or removal."
+    },
+    {
+      "topic": "native scales",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: the seven-scale registry list (and matching seven XAUUSD bar sources) is structural inventory only; detector-semantic native-scale authority is missing. Hard blocker agreed."
+    },
+    {
+      "topic": "reconstruction",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: no payload decoder, field semantics, or episode assembly contract exists; reconstruction cannot be authorized."
+    },
+    {
+      "topic": "later touch/fill leakage into formation",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: protocol requires a causal clock and lifecycle-first ordering, but no field-level formation-known versus later-outcome partition exists. Hard blocker agreed."
+    },
+    {
+      "topic": "cross-scale identity",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both: multiple scales registered, but no cross-scale identity, lineage, or merge rule."
+    },
+    {
+      "topic": "structural registration",
+      "state": "ONLY_B",
+      "note": "A-02 states the structural registration fact as an explicit AUTHORITATIVE claim; A-01 embeds the same fact within its native-scales claim (C012) rather than as a standalone topic. Semantically consistent; no conflict."
+    }
+  ],
+  "reconciliation_counts": {
+    "AGREED_UNSUPPORTED": 15,
+    "ONLY_B": 1
+  },
+  "final_authoritative_claims": [],
+  "provisional_claims": [],
+  "unresolved_claims": [
+    "formation",
+    "object identity",
+    "detection/known time",
+    "zone bounds",
+    "origin and impulse provenance",
+    "first touch",
+    "fill",
+    "partial-fill semantics if present",
+    "invalidation",
+    "lifecycle",
+    "object persistence/re-emission",
+    "native scales",
+    "reconstruction",
+    "later touch/fill leakage into formation",
+    "cross-scale identity",
+    "structural registration"
+  ],
+  "conflicts": [],
+  "missing_authority": [
+    "fvg formation predicate, required inputs, and formation-known timestamp",
+    "fvg object identity key and episode equivalence/uniqueness rule",
+    "fvg detection/known-time definition and causal publication order",
+    "fvg zone bound fields, inclusivity, and mutability conventions",
+    "origin/impulse definitions, provenance fields, and their formation-time availability",
+    "first-touch predicate, boundary convention, and timestamp rule",
+    "complete-fill predicate, completion measure, and known time",
+    "partial-fill existence decision, measure, and transitions",
+    "invalidation predicate, precedence versus fill, and known time",
+    "lifecycle state vocabulary, transition graph, and terminal behavior",
+    "emission cardinality and persistence/update/re-emission contract",
+    "detector-semantic native-scale contract and per-scale causal emission semantics",
+    "payload_fvg decoder and reconstruction contract (null/missing/duplicate/update handling)",
+    "field-level formation-known versus later-outcome availability classification (leakage exclusion map)",
+    "cross-scale identity/lineage rule and merge policy"
+  ],
+  "future_information_restrictions": [
+    "No later-stage or completion information may define earlier-state cohorts (RESEARCH_RULES rule 4, lines 9-10). Only fields with an established availability map are eligible at anchor time."
+  ],
+  "lineage_restrictions": [
+    "No lineage for fvg established; empty derives_from in registry."
+  ],
+  "downstream_research_gates": [
+    "E1 PHENOTYPE for FVG requires: lawful formation availability, object identity, native scale, separation of formation-known fields from later touch/fill information."
+  ],
+  "e1_readiness": "BLOCKED_BY_MISSING_AUTHORITY",
+  "e1_readiness_rationale": "Both independently produced reports agree, and this review confirms from the primary sources, that all four hard blockers are open: (1) no lawful fvg formation availability (registry semantic_status and availability_semantics are UNRESOLVED; no formation predicate or known-time exists); (2) no object identity key or uniqueness rule; (3) no detector-semantic native-scale authority (the seven-scale registry list is structural only); and (4) formation-known fields are not separable from later touch/fill information (no field-level availability map exists). No E1 cohort can be lawfully frozen."
+}

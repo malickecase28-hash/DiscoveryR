@@ -1,0 +1,768 @@
+{
+  "artifact_type": "TC-001_AUTHORITY_CANDIDATE",
+  "canonical_version": "XAUUSD_AUTHORITY_WAVE1_V1",
+  "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+  "input_reports": [
+    {
+      "report": "TC-001/A-01",
+      "sha256": "939cf75d21d1f63975d35eba3b7d940cd92d22f179cfa3b3fcbbefd3e680a7cf"
+    },
+    {
+      "report": "TC-001/A-02",
+      "sha256": "c125b2e5580fa8309a930e1406d418725345717b7f7692b761f026671cba981f"
+    }
+  ],
+  "reconciliation_table": [
+    {
+      "family": "feed_health",
+      "topic": "payload",
+      "state": "AGREED_SUPPORTED",
+      "note": "Both reports cite the same real evidence: tick inventory declares payload_feed_health nullable LargeUtf8 (A-01 /sources/7/payload_columns; A-02 /sources/7/physical_schema/10, the more precise locator). Both agree it establishes existence/type only, not detector semantics. Status-label difference (A: AUTHORITATIVE structural, B: UNRESOLVED) is presentational."
+    },
+    {
+      "family": "feed_health",
+      "topic": "variants",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED; registry entry marks semantic_status UNRESOLVED. No approved source defines variants. A-01's locator line 19 is wrong but the underlying entry (index 22) supports it."
+    },
+    {
+      "family": "feed_health",
+      "topic": "purpose",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED on registry semantic_status UNRESOLVED."
+    },
+    {
+      "family": "feed_health",
+      "topic": "state/event/rolling nature",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED; no source defines the nature."
+    },
+    {
+      "family": "feed_health",
+      "topic": "identity",
+      "state": "CONFLICT",
+      "note": "A-01 claims AUTHORITATIVE structural tick-domain identity (registry domain tick, known_surfaces [tick], native_scales kind tick - evidence verified real and supporting); A-02 claims UNRESOLVED. Structural identity is established; semantic identity is not. Resolves in favor of A-01's narrower structural reading, but as filed the status pair conflicts."
+    },
+    {
+      "family": "feed_health",
+      "topic": "occurrence",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "feed_health",
+      "topic": "availability",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED; registry availability_semantics explicitly 'UNRESOLVED; authoritative manifest surface only.'"
+    },
+    {
+      "family": "feed_health",
+      "topic": "persistence",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED; neither invents persistence semantics."
+    },
+    {
+      "family": "feed_health",
+      "topic": "reset/replacement",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "feed_health",
+      "topic": "transitions",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "feed_health",
+      "topic": "direction if authoritative",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED; no directional authority exists."
+    },
+    {
+      "family": "feed_health",
+      "topic": "normalization",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "feed_health",
+      "topic": "history",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "feed_health",
+      "topic": "dependencies",
+      "state": "CONFLICT",
+      "note": "A-01 claims AUTHORITATIVE for the structural fact that derives_from is empty (verified true at registry index 22), with correct caveat that this does not prove behavioral independence; A-02 claims UNRESOLVED. Structural metadata is established; implementation dependency closure is not. Resolves toward A-01's structural reading; as filed the pair conflicts."
+    },
+    {
+      "family": "feed_health",
+      "topic": "future-field mapping",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "payload",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural declaration verified (physical_schema index 9). Both agree existence/type only, no semantics."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "variants",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED (registry index 21)."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "purpose",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "state/event/rolling nature",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "identity",
+      "state": "CONFLICT",
+      "note": "Same pattern as feed_health: A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "occurrence",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "availability",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "persistence",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "reset/replacement",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "transitions",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "direction if authoritative",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "normalization",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "history",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "dependencies",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED; structural fact vs semantic closure."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "future-field mapping",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "payload",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural declaration verified (physical_schema index 8)."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "variants",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED (registry index 20; A-01's line 21 locator is also correct here)."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "purpose",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "state/event/rolling nature",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "identity",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "occurrence",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "availability",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "persistence",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "reset/replacement",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "transitions",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "direction if authoritative",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "normalization",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "history",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "dependencies",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "future-field mapping",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "payload",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural declaration verified (physical_schema index 7)."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "variants",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED (registry index 19)."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "purpose",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "state/event/rolling nature",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "identity",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "occurrence",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "availability",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "persistence",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "reset/replacement",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "transitions",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "direction if authoritative",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "normalization",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "history",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "dependencies",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "future-field mapping",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "payload",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural declaration verified (physical_schema index 11)."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "variants",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED (registry index 23)."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "purpose",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "state/event/rolling nature",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "identity",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "occurrence",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "availability",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "persistence",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "reset/replacement",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "transitions",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "direction if authoritative",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "normalization",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "history",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "dependencies",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "future-field mapping",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "payload",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural declaration verified (physical_schema index 6)."
+    },
+    {
+      "family": "spread_state",
+      "topic": "variants",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED (registry index 18)."
+    },
+    {
+      "family": "spread_state",
+      "topic": "purpose",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "state/event/rolling nature",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "identity",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "occurrence",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "availability",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "persistence",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "reset/replacement",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "transitions",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "direction if authoritative",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED; no bid/ask-derived directional authority exists in approved sources."
+    },
+    {
+      "family": "spread_state",
+      "topic": "normalization",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "history",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "dependencies",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "future-field mapping",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both UNRESOLVED."
+    }
+  ],
+  "reconciliation_counts": {
+    "AGREED_SUPPORTED": 6,
+    "AGREED_UNSUPPORTED": 72,
+    "CONFLICT": 12
+  },
+  "final_authoritative_claims": [
+    "payload",
+    "payload",
+    "payload",
+    "payload",
+    "payload",
+    "payload"
+  ],
+  "provisional_claims": [],
+  "unresolved_claims": [
+    "variants",
+    "purpose",
+    "state/event/rolling nature",
+    "occurrence",
+    "availability",
+    "persistence",
+    "reset/replacement",
+    "transitions",
+    "direction if authoritative",
+    "normalization",
+    "history",
+    "future-field mapping",
+    "variants",
+    "purpose",
+    "state/event/rolling nature",
+    "occurrence",
+    "availability",
+    "persistence",
+    "reset/replacement",
+    "transitions",
+    "direction if authoritative",
+    "normalization",
+    "history",
+    "future-field mapping",
+    "variants",
+    "purpose",
+    "state/event/rolling nature",
+    "occurrence",
+    "availability",
+    "persistence",
+    "reset/replacement",
+    "transitions",
+    "direction if authoritative",
+    "normalization",
+    "history",
+    "future-field mapping",
+    "variants",
+    "purpose",
+    "state/event/rolling nature",
+    "occurrence",
+    "availability",
+    "persistence",
+    "reset/replacement",
+    "transitions",
+    "direction if authoritative",
+    "normalization",
+    "history",
+    "future-field mapping",
+    "variants",
+    "purpose",
+    "state/event/rolling nature",
+    "occurrence",
+    "availability",
+    "persistence",
+    "reset/replacement",
+    "transitions",
+    "direction if authoritative",
+    "normalization",
+    "history",
+    "future-field mapping",
+    "variants",
+    "purpose",
+    "state/event/rolling nature",
+    "occurrence",
+    "availability",
+    "persistence",
+    "reset/replacement",
+    "transitions",
+    "direction if authoritative",
+    "normalization",
+    "history",
+    "future-field mapping"
+  ],
+  "conflicts": [
+    {
+      "family": "feed_health",
+      "topic": "identity",
+      "state": "CONFLICT",
+      "note": "A-01 claims AUTHORITATIVE structural tick-domain identity (registry domain tick, known_surfaces [tick], native_scales kind tick - evidence verified real and supporting); A-02 claims UNRESOLVED. Structural identity is established; semantic identity is not. Resolves in favor of A-01's narrower structural reading, but as filed the status pair conflicts."
+    },
+    {
+      "family": "feed_health",
+      "topic": "dependencies",
+      "state": "CONFLICT",
+      "note": "A-01 claims AUTHORITATIVE for the structural fact that derives_from is empty (verified true at registry index 22), with correct caveat that this does not prove behavioral independence; A-02 claims UNRESOLVED. Structural metadata is established; implementation dependency closure is not. Resolves toward A-01's structural reading; as filed the pair conflicts."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "identity",
+      "state": "CONFLICT",
+      "note": "Same pattern as feed_health: A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "dependencies",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED; structural fact vs semantic closure."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "identity",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "dependencies",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "identity",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "dependencies",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "identity",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "dependencies",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "identity",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+    },
+    {
+      "family": "spread_state",
+      "topic": "dependencies",
+      "state": "CONFLICT",
+      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
+    }
+  ],
+  "missing_authority": [
+    "Detector-specific authority specification for feed_health covering: variants, purpose, state/event/rolling nature, occurrence, availability, persistence, reset/replacement, transitions, direction, normalization, history, dependencies (beyond empty derives_from), future-field mapping, and payload interpretation. Until present, E2 remains blocked.",
+    "Detector-specific authority specification for micro_volatility covering the same 14 semantic topics (structural payload column already established at tick physical_schema index 9).",
+    "Detector-specific authority specification for quote_arrival covering the same 14 semantic topics (structural payload column already established at index 8).",
+    "Detector-specific authority specification for quote_dynamics covering the same 14 semantic topics (structural payload column already established at index 7).",
+    "Detector-specific authority specification for quote_pressure covering the same 14 semantic topics (structural payload column already established at index 11).",
+    "Detector-specific authority specification for spread_state covering the same 14 semantic topics (structural payload column already established at index 6)."
+  ],
+  "future_information_restrictions": [
+    "No later-stage or completion information may define earlier-state cohorts (RESEARCH_RULES rule 4, lines 9-10). Only fields with an established availability map are eligible at anchor time."
+  ],
+  "lineage_restrictions": [
+    "No tick-family lineage established; registry derives_from empty."
+  ],
+  "downstream_research_gates": [
+    "E2 SAME_DOMAIN conditioning usable only where causal timing and payload interpretation are established by evidence; currently no family qualifies."
+  ],
+  "family_eligibility": [
+    {
+      "family": "feed_health",
+      "state": "E2_BLOCKED_PENDING_AUTHORITY",
+      "rationale": "Registry (detectors_v1.json index 22) explicitly declares semantic_status UNRESOLVED and availability_semantics 'UNRESOLVED; authoritative manifest surface only'. Only structural facts are established (payload column existence/type at tick physical_schema index 10; empty derives_from; tick-domain surface). No approved source establishes causal timing, occurrence, availability, or payload interpretation. Both reports agree on blocking."
+    },
+    {
+      "family": "micro_volatility",
+      "state": "E2_BLOCKED_PENDING_AUTHORITY",
+      "rationale": "Registry index 21 semantic_status UNRESOLVED; only structural payload column (physical_schema index 9) and surface identity established. No causal-timing or payload-interpretation authority. Both reports agree."
+    },
+    {
+      "family": "quote_arrival",
+      "state": "E2_BLOCKED_PENDING_AUTHORITY",
+      "rationale": "Registry index 20 semantic_status UNRESOLVED; only structural payload column (physical_schema index 8) established. No causal-timing or payload-interpretation authority. Both reports agree."
+    },
+    {
+      "family": "quote_dynamics",
+      "state": "E2_BLOCKED_PENDING_AUTHORITY",
+      "rationale": "Registry index 19 semantic_status UNRESOLVED; only structural payload column (physical_schema index 7) established. No causal-timing or payload-interpretation authority. Both reports agree."
+    },
+    {
+      "family": "quote_pressure",
+      "state": "E2_BLOCKED_PENDING_AUTHORITY",
+      "rationale": "Registry index 23 semantic_status UNRESOLVED; only structural payload column (physical_schema index 11) established. No causal-timing or payload-interpretation authority. Both reports agree."
+    },
+    {
+      "family": "spread_state",
+      "state": "E2_BLOCKED_PENDING_AUTHORITY",
+      "rationale": "Registry index 18 semantic_status UNRESOLVED; only structural payload column (physical_schema index 6) established. Despite the suggestive name and the presence of bid/ask columns in the tick schema, no approved source establishes spread semantics, direction, or causal timing; name-based inference is prohibited. Both reports agree."
+    }
+  ]
+}

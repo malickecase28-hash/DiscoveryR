@@ -1,0 +1,180 @@
+{
+  "artifact_type": "AP-001_AUTHORITY_CANDIDATE",
+  "canonical_version": "XAUUSD_AUTHORITY_WAVE1_V1",
+  "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+  "input_reports": [
+    {
+      "report": "AP-001/A-01",
+      "sha256": "8b09f80d87ed49517294fb44f0a0599f1da61d60faa51961238d7d9ff018cc51"
+    },
+    {
+      "report": "AP-001/A-02",
+      "sha256": "2873af71388cb2bef321d259fdfeda757e930c0b325e159b1192565df7133171"
+    }
+  ],
+  "reconciliation_table": [
+    {
+      "topic": "payload surface",
+      "state": "AGREED_SUPPORTED",
+      "note": "Both establish nullable LargeUtf8 payload_drift_burst on the tick source with tick registry surface, scoped as structural-only authority. Each report has one wrong index (A: /sources/6, B: /17) but the union of corrected locators verifies the claim."
+    },
+    {
+      "topic": "state/event/snapshot representation",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both correctly unresolved: registry semantic_status/availability_semantics UNRESOLVED; no representation contract exists."
+    },
+    {
+      "topic": "lifecycle vocabulary",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both cite the empty lifecycle_vocabulary (verified at /16)."
+    },
+    {
+      "topic": "lawful anchor availability",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both find event_ts_ns/received_ts_ns as structural coordinates with no detector anchor rule; no lawful anchor time is defined."
+    },
+    {
+      "topic": "occurrence versus availability",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Both unresolved; availability_semantics explicitly UNRESOLVED in registry; neither confuses the two."
+    },
+    {
+      "topic": "episode/object identity and segmentation",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "No segmentation or identity authority in any approved source."
+    },
+    {
+      "topic": "first-state-entry semantics",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "No entry predicate or timestamp authority exists."
+    },
+    {
+      "topic": "repeated-state persistence",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "No persistence/refresh/merge rule; neither invents one."
+    },
+    {
+      "topic": "transition rules",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "No transition contract exists."
+    },
+    {
+      "topic": "milestones",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "No milestone vocabulary or timing."
+    },
+    {
+      "topic": "completion",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "No completion predicate; both note protocol forbids future completion defining earlier cohorts."
+    },
+    {
+      "topic": "terminal/end state",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "No terminal-state vocabulary or end predicate."
+    },
+    {
+      "topic": "censoring",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "No censoring or window-boundary rule."
+    },
+    {
+      "topic": "recovery/reset",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "No reset predicate; neither fabricates reset semantics."
+    },
+    {
+      "topic": "future-information mapping",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "No field-level as-of availability map exists; protocol supplies only the governing constraint."
+    },
+    {
+      "topic": "fields lawful per lifecycle stage",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Structural schema presence is agreed not to constitute stage-legality authority."
+    },
+    {
+      "topic": "later-summary fields",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "No summary-field designation or availability timing."
+    },
+    {
+      "topic": "native scale",
+      "state": "AGREED_SUPPORTED",
+      "note": "Both AUTHORITATIVE on registry native_scales {kind: tick}, known_surfaces [tick], verified; B additionally cites the verified tick source scale. Correctly scoped as structural scale authority only."
+    },
+    {
+      "topic": "direction semantics",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Roles empty, semantics unresolved; both note missing directionality alone does not hard-block E1."
+    },
+    {
+      "topic": "strength/intensity fields",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Payload is opaque LargeUtf8 with no declared subfields or units; neither infers meaning from the field name."
+    },
+    {
+      "topic": "multi-horizon fields",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Only tick native scale registered; no horizon projection authority."
+    },
+    {
+      "topic": "end-reason semantics",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "No end-reason vocabulary, field, or as-of rule."
+    }
+  ],
+  "reconciliation_counts": {
+    "AGREED_SUPPORTED": 2,
+    "AGREED_UNSUPPORTED": 20
+  },
+  "final_authoritative_claims": [
+    "payload surface",
+    "native scale"
+  ],
+  "provisional_claims": [],
+  "unresolved_claims": [
+    "state/event/snapshot representation",
+    "lifecycle vocabulary",
+    "lawful anchor availability",
+    "occurrence versus availability",
+    "episode/object identity and segmentation",
+    "first-state-entry semantics",
+    "repeated-state persistence",
+    "transition rules",
+    "milestones",
+    "completion",
+    "terminal/end state",
+    "censoring",
+    "recovery/reset",
+    "future-information mapping",
+    "fields lawful per lifecycle stage",
+    "later-summary fields",
+    "direction semantics",
+    "strength/intensity fields",
+    "multi-horizon fields",
+    "end-reason semantics"
+  ],
+  "conflicts": [],
+  "missing_authority": [
+    "Detector-specific lawful anchor time and availability rule (which timestamp governs, when the detector result is known)",
+    "State/event/snapshot representation contract for the payload_drift_burst payload",
+    "Lifecycle vocabulary with meanings (registry lifecycle_vocabulary is empty)",
+    "Episode/object identity and segmentation rules",
+    "First-state-entry predicate and as-of timestamp",
+    "Field-level as-of availability map (which fields are lawful at which lifecycle stage; which are later summaries)",
+    "Completion/terminal/end-reason, censoring, recovery/reset, persistence, and transition predicates",
+    "Payload schema with direction, strength/intensity units, and any multi-horizon definitions"
+  ],
+  "future_information_restrictions": [
+    "No later-stage or completion information may define earlier-state cohorts (RESEARCH_RULES rule 4, lines 9-10). Only fields with an established availability map are eligible at anchor time."
+  ],
+  "lineage_restrictions": [
+    "No lineage for drift_burst established; empty derives_from in registry."
+  ],
+  "downstream_research_gates": [
+    "E1 PHENOTYPE for drift_burst requires: lawful anchor time, lawful episode segmentation, state-entry definition, availability map without later-information leakage."
+  ],
+  "e1_readiness": "BLOCKED_BY_MISSING_AUTHORITY",
+  "e1_readiness_rationale": "Both independent reports, fully verified against the mounted sources, agree that four hard blockers are unresolved: (1) no lawful detector anchor time (event_ts_ns vs received_ts_ns precedence undefined; availability_semantics UNRESOLVED); (2) no lawful episode/object segmentation or identity rule (lifecycle_vocabulary empty); (3) no state-entry definition (no first-entry predicate or as-of timestamp); (4) no field-level future-information/availability map, so later information cannot be excluded from earlier states. Missing directionality is present but is explicitly not a blocker. E1 phenotype study cannot launch until detector-specific authority is published."
+}

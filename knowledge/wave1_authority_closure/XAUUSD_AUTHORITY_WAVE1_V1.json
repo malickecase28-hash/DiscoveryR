@@ -1,0 +1,366 @@
+{
+  "artifact_type": "XAUUSD_AUTHORITY_WAVE1_V1",
+  "frozen_utc": "2026-09-05T03:06:48Z",
+  "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+  "approved_source_identities": [
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\agent_harness\\assignments\\AP-001\\A-01.json",
+      "sha256": "85d03f3a0b7242e5efc72dbcf0361a3928468eea7dfb1b65ed55c7d07d1136e0",
+      "bytes": 699
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\agent_harness\\assignments\\AP-001\\A-02.json",
+      "sha256": "3e796115b6b1fb2a3f05cd3e29dec725c694634825d8141bbc80d6751fdce347",
+      "bytes": 699
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\agent_harness\\assignments\\AP-002\\A-01.json",
+      "sha256": "c776e50674102725c22146adac45b153d17029f5d6937856c14ee0e95cf24961",
+      "bytes": 551
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\agent_harness\\assignments\\AP-002\\A-02.json",
+      "sha256": "492ebfc40fb11627a189924e49b39cc373f3c30216da0421fed62245d26067b6",
+      "bytes": 551
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\agent_harness\\assignments\\BG-001\\A-01.json",
+      "sha256": "d140da123b63388eed9c325b542edf8925aed97a077b9af129b8063f1af0dffa",
+      "bytes": 557
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\agent_harness\\assignments\\BG-001\\A-02.json",
+      "sha256": "deea14f800dbd7dcbd8a957d921b5f3b1b5faf1015c811b681b326eb9531609a",
+      "bytes": 557
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\agent_harness\\assignments\\TC-001\\A-01.json",
+      "sha256": "7a5f23cc10eb1e663616f82d54015592b41903fd06b4af3e3a6ea34151e7a41f",
+      "bytes": 558
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\agent_harness\\assignments\\TC-001\\A-02.json",
+      "sha256": "5f9f9a4e33ed47988412ba27acfc8402079c350a24abfd1afa896e111e9328de",
+      "bytes": 558
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\contracts\\detector_registry_entry_v1.schema.json",
+      "sha256": "131a8457736d6442bba4db110a795ece00b822aa2de4193df18d229765c115cd",
+      "bytes": 3067
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\contracts\\experiment_contract_v1.schema.json",
+      "sha256": "27db2ffbbd4387a38d29d14d11b98d2c9d29cbe1651627b44d9b085c268baafa",
+      "bytes": 4203
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\contracts\\knowledge_record_v1.schema.json",
+      "sha256": "e1fe6693aaea7e46fe81212a898083ceb2dd02a833594a24fa06057703b89815",
+      "bytes": 5190
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\contracts\\run_manifest_v1.schema.json",
+      "sha256": "d37d0f4413edc948afdc2825e4b6f94ca1641a5cc8e104713dc7fc4bdd8e66c8",
+      "bytes": 816
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\instruments\\XAUUSD\\instrument_config.json",
+      "sha256": "879378d5df956cd70ac9c8cc699d488ff260f689d8c97754ca9f45a7e6e8f6da",
+      "bytes": 198
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\instruments\\XAUUSD\\source_inventory.json",
+      "sha256": "62838cf49e4df5fa301cc7263eab55dfa1684b029344f0bb9ea61f87696503ef",
+      "bytes": 33963
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\protocol\\AGENT_ACCESS.md",
+      "sha256": "cfca7df0ffd36293ad4a6eb58dee94a0034975dfa7a859cbce53bffe3332b567",
+      "bytes": 405
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\protocol\\RESEARCH_RULES.md",
+      "sha256": "eec15d6609484c7582ca8bd0fd26c26842f6b1999771275d417d110179f07515",
+      "bytes": 2580
+    },
+    {
+      "path": "F:\\TrinityR-research\\Research Program\\registry\\detectors_v1.json",
+      "sha256": "9894e2bee36c781eb6e28980ce5f5aaa6d3d91fd5b4a38c0488000b9e3113ac9",
+      "bytes": 9039
+    },
+    {
+      "path": "F:\\TrinityR-research\\schemas\\bars_canonical_v1.json",
+      "sha256": "629adbb5545d99d68d241bb930593946928ed8d6a83815777a825da5c7db146f",
+      "bytes": 864
+    },
+    {
+      "path": "F:\\TrinityR-research\\schemas\\dataset_manifest_v1.json",
+      "sha256": "9cd412215b0dfacccf24770dd3e9e257f7fb78ee4cbb26b70b212e388a71c18d",
+      "bytes": 1792
+    },
+    {
+      "path": "F:\\TrinityR-research\\schemas\\equity_exposure_v1.json",
+      "sha256": "f3d8ae1f1be61934785c3e14c1f85f56a58b33028b94420888231ba0e919f4d3",
+      "bytes": 797
+    },
+    {
+      "path": "F:\\TrinityR-research\\schemas\\experiment_v1.json",
+      "sha256": "06aea96799ddf912ee40707b82c65883acd056aed49f658d795d56ee942f176e",
+      "bytes": 2234
+    },
+    {
+      "path": "F:\\TrinityR-research\\schemas\\feature_generic_v1.json",
+      "sha256": "8fcd47cf06ee38373dafdffb07b65a1ec549a340f5623d8e80c34c8a7dda8d30",
+      "bytes": 825
+    },
+    {
+      "path": "F:\\TrinityR-research\\schemas\\hypothesis_v1.json",
+      "sha256": "628f80960d6634de6dc338dd384e501a3fea1fd6b1d1e3db66dde596c1b9ed49",
+      "bytes": 2076
+    },
+    {
+      "path": "F:\\TrinityR-research\\schemas\\lake_manifest_v1.json",
+      "sha256": "20f47dad17438be01abb8786137acb2f7fea2e275b98b3fb90379c7cb65e3223",
+      "bytes": 3516
+    },
+    {
+      "path": "F:\\TrinityR-research\\schemas\\metrics_v1.json",
+      "sha256": "ec65af78817deade17da8b5b726df60d58223b545ceea9f4d202ca626e24533b",
+      "bytes": 792
+    },
+    {
+      "path": "F:\\TrinityR-research\\schemas\\strategy_run_v1.json",
+      "sha256": "660e6647cd30b4df229911332312cc43d587231d485b930ca3091f574b0b1a2b",
+      "bytes": 4792
+    },
+    {
+      "path": "F:\\TrinityR-research\\schemas\\strategy_signal_v1.json",
+      "sha256": "61bf8a06a7095e251812e994936c944e8e352e2c231a455ff5ef612d202214f2",
+      "bytes": 796
+    },
+    {
+      "path": "F:\\TrinityR-research\\schemas\\study_v1.json",
+      "sha256": "5ffdd3a16b33896fd63aea536f5e34d2c18d65d4a3443782d763e4849980e093",
+      "bytes": 791
+    },
+    {
+      "path": "F:\\TrinityR-research\\schemas\\trade_v1.json",
+      "sha256": "ccd85635861fbf29e845f4514d53067bb875f0d68b2bf59a5e6a90d928d0697d",
+      "bytes": 1344
+    }
+  ],
+  "individual_report_hashes": [
+    {
+      "program_id": "AP-001",
+      "role_id": "A-01",
+      "candidate_sha256": "8b09f80d87ed49517294fb44f0a0599f1da61d60faa51961238d7d9ff018cc51",
+      "review_md_sha256": "9111c1e129c1c84c7635331fe6bd9d7bdcc76707d0e30dcc977705b1757740d7",
+      "scientific_review_verdict": "REWORK",
+      "locator_repair_applied": true,
+      "repaired_locators_reverified_against_source": true,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "AP-001",
+      "role_id": "A-02",
+      "candidate_sha256": "2873af71388cb2bef321d259fdfeda757e930c0b325e159b1192565df7133171",
+      "review_md_sha256": "122f2b57dbd063c0b30b6ac72581efb35fa9a4bd494f0b301f344db3848ff54b",
+      "scientific_review_verdict": "REWORK",
+      "locator_repair_applied": true,
+      "repaired_locators_reverified_against_source": true,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "AP-002",
+      "role_id": "A-01",
+      "candidate_sha256": "d8ca92fd73cc1bf10d00f31fe5a11a16f6519752c63c9e30c79117f67aae8931",
+      "review_md_sha256": "d9bcf2394bf38e8320e2c8e2bf9b8fc0413ab67f1f71168a7b17c6921570d6ab",
+      "scientific_review_verdict": "PASS",
+      "locator_repair_applied": false,
+      "repaired_locators_reverified_against_source": false,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "AP-002",
+      "role_id": "A-02",
+      "candidate_sha256": "15226e627d0393c011c82668519f2ee12d3805176de486f1d1b98b3311efa93a",
+      "review_md_sha256": "513a06468409701ae4142e6172a3e89794b3dc6c4964edcb00881684030ccfff",
+      "scientific_review_verdict": "PASS",
+      "locator_repair_applied": false,
+      "repaired_locators_reverified_against_source": false,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "TC-001",
+      "role_id": "A-01",
+      "candidate_sha256": "939cf75d21d1f63975d35eba3b7d940cd92d22f179cfa3b3fcbbefd3e680a7cf",
+      "review_md_sha256": "14a594cd17c955c9a9cb49ef3eb268dae8238d6cfef1b89d832d359665ac9c12",
+      "scientific_review_verdict": "REWORK",
+      "locator_repair_applied": true,
+      "repaired_locators_reverified_against_source": true,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "TC-001",
+      "role_id": "A-02",
+      "candidate_sha256": "c125b2e5580fa8309a930e1406d418725345717b7f7692b761f026671cba981f",
+      "review_md_sha256": "faadc903994a697cc165c640d60a93f907c2bd9b215b6f3a73efa6b5f1a66fcb",
+      "scientific_review_verdict": "PASS",
+      "locator_repair_applied": false,
+      "repaired_locators_reverified_against_source": false,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "BG-001",
+      "role_id": "A-01",
+      "candidate_sha256": "30cecefd61e8a535129a12ef0bda8da02266ceb9512bfbae2cc90c609446b55a",
+      "review_md_sha256": "0a4299ff9a11be3fa8e4fc78b19ca7d330ac4ea32b1f3ab0017d976de36e832f",
+      "scientific_review_verdict": "PASS",
+      "locator_repair_applied": false,
+      "repaired_locators_reverified_against_source": false,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    },
+    {
+      "program_id": "BG-001",
+      "role_id": "A-02",
+      "candidate_sha256": "132f0dc60be799b952c72cab6f14e637c52c9964e716cc1cd908ed2ebd9b4b8c",
+      "review_md_sha256": "ce063e8ef925da13c97b2dad65c4c4d0ded8803e9d314f3e0c3ef55f2b920246",
+      "scientific_review_verdict": "REWORK",
+      "locator_repair_applied": true,
+      "repaired_locators_reverified_against_source": true,
+      "post_repair_host_gate": "PASS",
+      "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+      "frozen_utc": "2026-09-05T03:06:48Z"
+    }
+  ],
+  "scientific_review": [
+    {
+      "program_id": "AP-001",
+      "review_A": "REWORK",
+      "review_B": "REWORK",
+      "review_file_sha256": "ebf3fb373e51b8cd54727734d374399ffeb1953611384c3f093ef00358a592c1"
+    },
+    {
+      "program_id": "AP-002",
+      "review_A": "PASS",
+      "review_B": "PASS",
+      "review_file_sha256": "363bd7456ac62fc40c5aab2952cbf6666e87fd5be910dd70570a1e76e0810c7a"
+    },
+    {
+      "program_id": "TC-001",
+      "review_A": "REWORK",
+      "review_B": "PASS",
+      "review_file_sha256": "f298850001b91ea7b610cfe8e980f97553d64ce1987c5f5e691b5b2f782b02f4"
+    },
+    {
+      "program_id": "BG-001",
+      "review_A": "PASS",
+      "review_B": "REWORK",
+      "review_file_sha256": "7d43cbf07e0bfa1fe236d229bbc8bbbc429cd920e3e7c758485b7682476e15d6"
+    }
+  ],
+  "synthesis_hashes": [
+    {
+      "program_id": "AP-001",
+      "synthesis_sha256": "387bd3b028d0cc64e67d2cc213842968e68f204dd0f662783d645385fa1f92e3"
+    },
+    {
+      "program_id": "AP-002",
+      "synthesis_sha256": "df5dc58bd58a4af8310f36a421241a7d644ecbef08f296f2756e013ebfa642c2"
+    },
+    {
+      "program_id": "TC-001",
+      "synthesis_sha256": "8404459297b3d0cf458706b60a1e2fd728c51074c6300699c04d0b026c7f13a2"
+    },
+    {
+      "program_id": "BG-001",
+      "synthesis_sha256": "f52fd1d25028387e174eda1a327135b9d3eed36d9d4d28c1495530a526f85f2a"
+    }
+  ],
+  "registry_hash": "9894e2bee36c781eb6e28980ce5f5aaa6d3d91fd5b4a38c0488000b9e3113ac9",
+  "registry_update_note": "Synthesis established only structural facts (payload surfaces, tick/bar surface identity, empty derives_from, UNRESOLVED semantic/availability status). Registry already declares exactly these; no registry mutation is authorized by Wave-1 evidence.",
+  "freeze_timestamp": "2026-09-05T03:06:48Z",
+  "unresolved_list": [
+    "AP-001: AP001-A01-C002 state/event/snapshot representation",
+    "AP-001: AP001-A01-C003 lifecycle vocabulary",
+    "AP-001: AP001-A01-C004 lawful anchor time",
+    "AP-001: AP001-A01-C005 occurrence vs availability",
+    "AP-001: AP001-A01-C006 episode identity/segmentation",
+    "AP-001: AP001-A01-C007 first-state-entry",
+    "AP-001: AP001-A01-C008 repeated-state persistence",
+    "AP-001: AP001-A01-C009 transition rules",
+    "AP-001: AP001-A01-C010 milestones",
+    "AP-001: AP001-A01-C011 completion",
+    "AP-001: AP001-A01-C012 terminal state",
+    "AP-001: AP001-A01-C013 censoring",
+    "AP-001: AP001-A01-C014 recovery/reset",
+    "AP-001: AP001-A01-C015 future-information mapping",
+    "AP-001: AP001-A01-C016 stage field legality",
+    "AP-001: AP001-A01-C017 later-summary fields",
+    "AP-001: AP001-A01-C019 direction semantics",
+    "AP-001: AP001-A01-C020 strength/intensity",
+    "AP-001: AP001-A01-C021 multi-horizon fields",
+    "AP-001: AP001-A01-C022 end-reason semantics",
+    "AP-001: AP001-A02-C002 through AP001-A02-C017 and AP001-A02-C019 through AP001-A02-C022 (same topics, matched semantically; one shared unresolved authority set)",
+    "AP-002: AP-002/A-01 C001 formation",
+    "AP-002: AP-002/A-01 C002 object identity",
+    "AP-002: AP-002/A-01 C003 detection/known time",
+    "AP-002: AP-002/A-01 C004 zone bounds",
+    "AP-002: AP-002/A-01 C005 origin and impulse provenance",
+    "AP-002: AP-002/A-01 C006 first touch",
+    "AP-002: AP-002/A-01 C007 fill",
+    "AP-002: AP-002/A-01 C008 partial-fill semantics if present",
+    "AP-002: AP-002/A-01 C009 invalidation",
+    "AP-002: AP-002/A-01 C010 lifecycle",
+    "AP-002: AP-002/A-01 C011 object persistence/re-emission",
+    "AP-002: AP-002/A-01 C012 native scales",
+    "AP-002: AP-002/A-01 C013 reconstruction",
+    "AP-002: AP-002/A-01 C014 later touch/fill leakage into formation",
+    "AP-002: AP-002/A-01 C015 cross-scale identity",
+    "AP-002: AP-002/A-02 C002 formation",
+    "AP-002: AP-002/A-02 C003 object identity",
+    "AP-002: AP-002/A-02 C004 detection/known time",
+    "AP-002: AP-002/A-02 C005 zone bounds",
+    "AP-002: AP-002/A-02 C006 origin and impulse provenance",
+    "AP-002: AP-002/A-02 C007 first touch",
+    "AP-002: AP-002/A-02 C008 fill and partial-fill semantics",
+    "AP-002: AP-002/A-02 C009 invalidation",
+    "AP-002: AP-002/A-02 C010 lifecycle",
+    "AP-002: AP-002/A-02 C011 object persistence/re-emission",
+    "AP-002: AP-002/A-02 C012 native scales",
+    "AP-002: AP-002/A-02 C013 reconstruction",
+    "AP-002: AP-002/A-02 C014 later touch/fill leakage into formation",
+    "AP-002: AP-002/A-02 C015 cross-scale identity",
+    "TC-001: feed_health: variants, purpose, state/event/rolling nature, identity semantics (provider/implementation lineage), occurrence, availability, persistence, reset/replacement, transitions, direction if authoritative, normalization, history, dependencies closure, future-field mapping, payload semantics.",
+    "TC-001: micro_volatility: same topic set as feed_health (all 15 topics unresolved at the semantic level).",
+    "TC-001: quote_arrival: same topic set (all 15 topics unresolved at the semantic level).",
+    "TC-001: quote_dynamics: same topic set (all 15 topics unresolved at the semantic level).",
+    "TC-001: quote_pressure: same topic set (all 15 topics unresolved at the semantic level).",
+    "TC-001: spread_state: same topic set (all 15 topics unresolved at the semantic level).",
+    "TC-001: Report A (A-01) defect ledger: 5 of 6 families carry cyclically permuted detectors_v1.json line locators (feed_health cited as line 19 = spread_state; micro_volatility line 20 = quote_dynamics; quote_dynamics line 22 = micro_volatility; quote_pressure line 23 = feed_health; spread_state line 24 = quote_pressure); correct lines are 23, 22, 20, 24, 19 respectively (quote_arrival's line 21 is correct). Payload type/nullability should be cited to /sources/7/physical_schema/{10,9,8,7,11,6} rather than the name-only payload_columns array. Report is otherwise substantively correct; rework is locator-fix only.",
+    "TC-001: Reconciliation conflicts (12): identity and dependencies topics for all six families - A-01 labels the structural facts AUTHORITATIVE (verified true), A-02 labels them UNRESOLVED. Recommended collapse: structural facts stand as established; semantic identity and dependency closure remain unresolved authority.",
+    "BG-001: raw3: payload semantics, lifecycle, availability, lineage — all UNRESOLVED",
+    "BG-001: range: payload semantics, lifecycle, availability, lineage — all UNRESOLVED",
+    "BG-001: fvg: payload semantics, lifecycle, availability, lineage — all UNRESOLVED",
+    "BG-001: bos_choch: payload semantics, lifecycle, availability, lineage — all UNRESOLVED",
+    "BG-001: local_structure: payload semantics, lifecycle, availability, lineage — all UNRESOLVED",
+    "BG-001: order_blocks: payload semantics, lifecycle, availability, lineage — all UNRESOLVED",
+    "BG-001: micro_liquidity: payload semantics, lifecycle, availability, lineage — all UNRESOLVED",
+    "BG-001: micro_liquidity_context: payload semantics, lifecycle, availability, lineage — all UNRESOLVED",
+    "BG-001: All 28 pairwise confluence-independence questions among the 8 subjects are unresolved pending lineage authority"
+  ]
+}
