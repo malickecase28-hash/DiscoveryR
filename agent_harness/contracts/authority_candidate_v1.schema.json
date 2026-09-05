@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "trinity.research.authority_candidate.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_type", "program_id", "role_id", "subjects", "claims", "unresolved_questions", "sources_consulted"],
+  "properties": {
+    "artifact_type": {"const": "AUTHORITY_CANDIDATE"},
+    "program_id": {"type": "string", "minLength": 1},
+    "role_id": {"type": "string", "minLength": 1},
+    "subjects": {"type": "array"},
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/claim"}
+    },
+    "unresolved_questions": {"type": "array"},
+    "sources_consulted": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/source"}
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "relative_path", "locator", "evidence_type", "supports"],
+      "properties": {
+        "source_id": {"type": "string", "minLength": 1},
+        "relative_path": {"type": "string", "minLength": 1},
+        "locator": {"type": "string", "minLength": 1},
+        "evidence_type": {"type": "string", "minLength": 1},
+        "supports": {"type": "string", "minLength": 1}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "relative_path", "locator"],
+      "properties": {
+        "source_id": {"type": "string", "minLength": 1},
+        "relative_path": {"type": "string", "minLength": 1},
+        "locator": {"type": "string", "minLength": 1}
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claim_id", "subject", "topic", "claim", "status", "authority_evidence", "counterevidence", "future_information_risk", "dependency_implications", "notes"],
+      "properties": {
+        "claim_id": {"type": "string", "minLength": 1},
+        "subject": {"type": "string", "minLength": 1},
+        "topic": {"type": "string", "minLength": 1},
+        "claim": {"type": "string", "minLength": 1},
+        "status": {"enum": ["AUTHORITATIVE", "PROVISIONAL", "UNRESOLVED"]},
+        "authority_evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+        "counterevidence": {"type": "array"},
+        "future_information_risk": {"type": "string"},
+        "dependency_implications": {"type": "array"},
+        "notes": {"type": "string"}
+      }
+    }
+  }
+}
