@@ -1,0 +1,76 @@
+{
+  "artifact_type": "WAVE1_REPORT_REPAIR_MANIFEST",
+  "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
+  "created_utc": "2026-09-05T03:32:35Z",
+  "source_run_root": ".runs/wave1-native-v3",
+  "pre_repair_artifact_status": "PRE_REPAIR_FILES_NOT_RETAINED_IN_GIT_OR_FROZEN_RUN_ARTIFACTS",
+  "reports": [
+    {
+      "program_id": "TC-001",
+      "role_id": "A-01",
+      "pre_repair_candidate_sha256": null,
+      "pre_repair_candidate_hash_status": "NOT_AVAILABLE_IN_RETAINED_ARTIFACTS",
+      "post_repair_candidate_sha256": "939cf75d21d1f63975d35eba3b7d940cd92d22f179cfa3b3fcbbefd3e680a7cf",
+      "pre_repair_review_sha256": null,
+      "pre_repair_review_hash_status": "NOT_AVAILABLE_IN_RETAINED_ARTIFACTS",
+      "post_repair_review_sha256": "14a594cd17c955c9a9cb49ef3eb268dae8238d6cfef1b89d832d359665ac9c12",
+      "exact_changed_locators_or_fields": [
+        "detectors_v1.json locators: feed_health /23, micro_volatility /22, quote_dynamics /20, quote_pressure /24, spread_state /19",
+        "payload type/nullability locators: /sources/7/physical_schema/{10,9,8,7,11,6}"
+      ],
+      "repair_reason": "Host-side locator correction after source re-verification; scientific conclusions unchanged.",
+      "scientific_conclusion_changed": false,
+      "post_repair_host_gate": "PASS"
+    },
+    {
+      "program_id": "AP-001",
+      "role_id": "A-01",
+      "pre_repair_candidate_sha256": null,
+      "pre_repair_candidate_hash_status": "NOT_AVAILABLE_IN_RETAINED_ARTIFACTS",
+      "post_repair_candidate_sha256": "8b09f80d87ed49517294fb44f0a0599f1da61d60faa51961238d7d9ff018cc51",
+      "pre_repair_review_sha256": null,
+      "pre_repair_review_hash_status": "NOT_AVAILABLE_IN_RETAINED_ARTIFACTS",
+      "post_repair_review_sha256": "9111c1e129c1c84c7635331fe6bd9d7bdcc76707d0e30dcc977705b1757740d7",
+      "exact_changed_locators_or_fields": [
+        "authority_evidence[].locator: tick source index corrected to /sources/7",
+        "authority_evidence[].locator: registry index corrected to /16"
+      ],
+      "repair_reason": "Host-side locator correction after source re-verification; scientific conclusions unchanged.",
+      "scientific_conclusion_changed": false,
+      "post_repair_host_gate": "PASS"
+    },
+    {
+      "program_id": "BG-001",
+      "role_id": "A-02",
+      "pre_repair_candidate_sha256": null,
+      "pre_repair_candidate_hash_status": "NOT_AVAILABLE_IN_RETAINED_ARTIFACTS",
+      "post_repair_candidate_sha256": "132f0dc60be799b952c72cab6f14e637c52c9964e716cc1cd908ed2ebd9b4b8c",
+      "pre_repair_review_sha256": null,
+      "pre_repair_review_hash_status": "NOT_AVAILABLE_IN_RETAINED_ARTIFACTS",
+      "post_repair_review_sha256": "ce063e8ef925da13c97b2dad65c4c4d0ded8803e9d314f3e0c3ef55f2b920246",
+      "exact_changed_locators_or_fields": [
+        "registry index locators: order_blocks /5; local_structure /6"
+      ],
+      "repair_reason": "Host-side locator correction after source re-verification; scientific conclusions unchanged.",
+      "scientific_conclusion_changed": false,
+      "post_repair_host_gate": "PASS"
+    },
+    {
+      "program_id": "AP-001",
+      "role_id": "A-02",
+      "pre_repair_candidate_sha256": null,
+      "pre_repair_candidate_hash_status": "NOT_AVAILABLE_IN_RETAINED_ARTIFACTS",
+      "post_repair_candidate_sha256": "2873af71388cb2bef321d259fdfeda757e930c0b325e159b1192565df7133171",
+      "pre_repair_review_sha256": null,
+      "pre_repair_review_hash_status": "NOT_AVAILABLE_IN_RETAINED_ARTIFACTS",
+      "post_repair_review_sha256": "122f2b57dbd063c0b30b6ac72581efb35fa9a4bd494f0b301f344db3848ff54b",
+      "exact_changed_locators_or_fields": [
+        "authority_evidence[].locator: tick source index corrected to /sources/7",
+        "authority_evidence[].locator: registry index corrected to /16"
+      ],
+      "repair_reason": "Host-side locator correction after source re-verification; scientific conclusions unchanged.",
+      "scientific_conclusion_changed": false,
+      "post_repair_host_gate": "PASS"
+    }
+  ]
+}

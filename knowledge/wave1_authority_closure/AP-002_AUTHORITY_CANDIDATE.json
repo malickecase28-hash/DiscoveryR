@@ -69,9 +69,9 @@
       "note": "Both: generic feature surface does not define emission cardinality, update, re-emission, or removal."
     },
     {
-      "topic": "native scales",
-      "state": "AGREED_UNSUPPORTED",
-      "note": "Both: the seven-scale registry list (and matching seven XAUUSD bar sources) is structural inventory only; detector-semantic native-scale authority is missing. Hard blocker agreed."
+      "topic": "registered bar source/native scales",
+      "state": "AGREED_SUPPORTED",
+      "note": "The final reports agree that the registry and seven XAUUSD bar source groups structurally register 15s, 30s, 1m, 5m, 15m, 1h, and 4h. This establishes registered surface metadata only."
     },
     {
       "topic": "reconstruction",
@@ -90,15 +90,23 @@
     },
     {
       "topic": "structural registration",
-      "state": "ONLY_B",
-      "note": "A-02 states the structural registration fact as an explicit AUTHORITATIVE claim; A-01 embeds the same fact within its native-scales claim (C012) rather than as a standalone topic. Semantically consistent; no conflict."
+      "state": "AGREED_SUPPORTED",
+      "note": "The registry structurally declares fvg on the bar surface with the explicit seven-scale registration. Both final reports support this fact at different claim granularity."
+    },
+    {
+      "topic": "per-scale detector emission semantics",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Registered scale coverage does not establish detector computation, emission timing, or per-scale causal semantics. Those remain unresolved."
     }
   ],
   "reconciliation_counts": {
-    "AGREED_UNSUPPORTED": 15,
-    "ONLY_B": 1
+    "AGREED_SUPPORTED": 2,
+    "AGREED_UNSUPPORTED": 15
   },
-  "final_authoritative_claims": [],
+  "final_authoritative_claims": [
+    "registered bar source/native scales",
+    "structural registration"
+  ],
   "provisional_claims": [],
   "unresolved_claims": [
     "formation",
@@ -112,11 +120,10 @@
     "invalidation",
     "lifecycle",
     "object persistence/re-emission",
-    "native scales",
     "reconstruction",
     "later touch/fill leakage into formation",
     "cross-scale identity",
-    "structural registration"
+    "per-scale detector emission semantics"
   ],
   "conflicts": [],
   "missing_authority": [
@@ -146,5 +153,7 @@
     "E1 PHENOTYPE for FVG requires: lawful formation availability, object identity, native scale, separation of formation-known fields from later touch/fill information."
   ],
   "e1_readiness": "BLOCKED_BY_MISSING_AUTHORITY",
-  "e1_readiness_rationale": "Both independently produced reports agree, and this review confirms from the primary sources, that all four hard blockers are open: (1) no lawful fvg formation availability (registry semantic_status and availability_semantics are UNRESOLVED; no formation predicate or known-time exists); (2) no object identity key or uniqueness rule; (3) no detector-semantic native-scale authority (the seven-scale registry list is structural only); and (4) formation-known fields are not separable from later touch/fill information (no field-level availability map exists). No E1 cohort can be lawfully frozen."
+  "e1_readiness_rationale": "The final reports support the registered seven bar source/native scales as structural metadata, while per-scale detector emission semantics, formation availability, object identity, and leakage exclusion remain unresolved. Targeted non-legacy producer-source discovery found no producer implementation, producer config, or transformation contract in the permitted active scope; this is not a claim about excluded material. FVG E1 remains blocked by missing authority.",
+  "authority_source_scope": "CURRENT_APPROVED_SOURCE_SET",
+  "producer_authority_included": false
 }

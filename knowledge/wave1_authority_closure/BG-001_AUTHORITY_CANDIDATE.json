@@ -40,8 +40,8 @@
     },
     {
       "topic": "registry index mapping for order_blocks vs local_structure",
-      "state": "CONFLICT",
-      "note": "A-01 maps order_blocks->/5, local_structure->/6 (verified correct). A-02 transposes them ($[5] local_structure, $[6] order_blocks). A-01 is right; A-02 needs locator fix."
+      "state": "AGREED_SUPPORTED",
+      "note": "Final post-repair reports agree: order_blocks maps to registry index /5 and local_structure maps to /6. The locator transposition was repaired and independently reverified."
     },
     {
       "topic": "confluence independence treatment",
@@ -50,14 +50,12 @@
     }
   ],
   "reconciliation_counts": {
-    "AGREED_SUPPORTED": 3,
-    "AGREED_UNSUPPORTED": 3,
-    "CONFLICT": 1
+    "AGREED_SUPPORTED": 4,
+    "AGREED_UNSUPPORTED": 3
   },
   "final_authoritative_claims": [
     "structural registration / payload surface for all 8 subjects (bar surface, 7 scales, nullable LargeUtf8 payload columns)",
-    "detector identity/aliasing (registered id, domain bar, no authorized aliases)",
-    "confluence independence treatment"
+    "detector identity/aliasing (registered id, domain bar, no authorized aliases)"
   ],
   "provisional_claims": [],
   "unresolved_claims": [
@@ -65,13 +63,7 @@
     "availability semantics for all 8 subjects",
     "lineage edges among the 8 subjects"
   ],
-  "conflicts": [
-    {
-      "topic": "registry index mapping for order_blocks vs local_structure",
-      "state": "CONFLICT",
-      "note": "A-01 maps order_blocks->/5, local_structure->/6 (verified correct). A-02 transposes them ($[5] local_structure, $[6] order_blocks). A-01 is right; A-02 needs locator fix."
-    }
-  ],
+  "conflicts": [],
   "missing_authority": [
     "Detector payload contracts defining field-level payload semantics for each of the 8 subjects",
     "Lifecycle vocabulary and transition/episode-identity rules per subject",
@@ -82,123 +74,236 @@
   "future_information_restrictions": [
     "No later-stage or completion information may define earlier-state cohorts (RESEARCH_RULES rule 4, lines 9-10). Only fields with an established availability map are eligible at anchor time."
   ],
-  "lineage_restrictions": [],
+  "lineage_restrictions": [
+    {
+      "pair": [
+        "range",
+        "raw3"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "fvg",
+        "raw3"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "bos_choch",
+        "raw3"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "local_structure",
+        "raw3"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "order_blocks",
+        "raw3"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "micro_liquidity",
+        "raw3"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "micro_liquidity_context",
+        "raw3"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "fvg",
+        "range"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "bos_choch",
+        "range"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "local_structure",
+        "range"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "order_blocks",
+        "range"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "micro_liquidity",
+        "range"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "micro_liquidity_context",
+        "range"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "bos_choch",
+        "fvg"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "fvg",
+        "local_structure"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "fvg",
+        "order_blocks"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "fvg",
+        "micro_liquidity"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "fvg",
+        "micro_liquidity_context"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "bos_choch",
+        "local_structure"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "bos_choch",
+        "order_blocks"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "bos_choch",
+        "micro_liquidity"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "bos_choch",
+        "micro_liquidity_context"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "local_structure",
+        "order_blocks"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "local_structure",
+        "micro_liquidity"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "local_structure",
+        "micro_liquidity_context"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "micro_liquidity",
+        "order_blocks"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "micro_liquidity_context",
+        "order_blocks"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    },
+    {
+      "pair": [
+        "micro_liquidity",
+        "micro_liquidity_context"
+      ],
+      "status": "INDEPENDENCE_NOT_ESTABLISHED",
+      "restriction": "DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
+    }
+  ],
   "downstream_research_gates": [
-    "E3 CROSS_DOMAIN confluence claims involving any scoped detector pair are restricted by the non-independent-confluence set until lineage/availability authority exists."
+    "For all 28 scoped detector pairs, independence is not established; do not claim independent confluence until lineage and availability authority exists."
   ],
   "supported_lineage": [],
-  "do_not_treat_as_independent_confluence": [
-    [
-      "range",
-      "raw3"
-    ],
-    [
-      "fvg",
-      "raw3"
-    ],
-    [
-      "bos_choch",
-      "raw3"
-    ],
-    [
-      "local_structure",
-      "raw3"
-    ],
-    [
-      "order_blocks",
-      "raw3"
-    ],
-    [
-      "micro_liquidity",
-      "raw3"
-    ],
-    [
-      "micro_liquidity_context",
-      "raw3"
-    ],
-    [
-      "fvg",
-      "range"
-    ],
-    [
-      "bos_choch",
-      "range"
-    ],
-    [
-      "local_structure",
-      "range"
-    ],
-    [
-      "order_blocks",
-      "range"
-    ],
-    [
-      "micro_liquidity",
-      "range"
-    ],
-    [
-      "micro_liquidity_context",
-      "range"
-    ],
-    [
-      "bos_choch",
-      "fvg"
-    ],
-    [
-      "fvg",
-      "local_structure"
-    ],
-    [
-      "fvg",
-      "order_blocks"
-    ],
-    [
-      "fvg",
-      "micro_liquidity"
-    ],
-    [
-      "fvg",
-      "micro_liquidity_context"
-    ],
-    [
-      "bos_choch",
-      "local_structure"
-    ],
-    [
-      "bos_choch",
-      "order_blocks"
-    ],
-    [
-      "bos_choch",
-      "micro_liquidity"
-    ],
-    [
-      "bos_choch",
-      "micro_liquidity_context"
-    ],
-    [
-      "local_structure",
-      "order_blocks"
-    ],
-    [
-      "local_structure",
-      "micro_liquidity"
-    ],
-    [
-      "local_structure",
-      "micro_liquidity_context"
-    ],
-    [
-      "micro_liquidity",
-      "order_blocks"
-    ],
-    [
-      "micro_liquidity_context",
-      "order_blocks"
-    ],
-    [
-      "micro_liquidity",
-      "micro_liquidity_context"
-    ]
-  ]
+  "authority_source_scope": "CURRENT_APPROVED_SOURCE_SET",
+  "producer_authority_included": false
 }

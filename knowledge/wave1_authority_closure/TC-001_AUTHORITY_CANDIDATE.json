@@ -23,7 +23,7 @@
       "family": "feed_health",
       "topic": "variants",
       "state": "AGREED_UNSUPPORTED",
-      "note": "Both UNRESOLVED; registry entry marks semantic_status UNRESOLVED. No approved source defines variants. A-01's locator line 19 is wrong but the underlying entry (index 22) supports it."
+      "note": "Both UNRESOLVED; registry entry marks semantic_status UNRESOLVED. No approved source defines variants. The final frozen reports identify the verified registry entry at index 22."
     },
     {
       "family": "feed_health",
@@ -39,9 +39,15 @@
     },
     {
       "family": "feed_health",
-      "topic": "identity",
-      "state": "CONFLICT",
-      "note": "A-01 claims AUTHORITATIVE structural tick-domain identity (registry domain tick, known_surfaces [tick], native_scales kind tick - evidence verified real and supporting); A-02 claims UNRESOLVED. Structural identity is established; semantic identity is not. Resolves in favor of A-01's narrower structural reading, but as filed the status pair conflicts."
+      "topic": "registered tick-domain identity / surface",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural fact supported: the registry and XAUUSD inventory register this family on the tick surface with tick native scale. Semantic detector identity, provider identity, and implementation lineage remain unresolved."
+    },
+    {
+      "family": "feed_health",
+      "topic": "semantic detector identity",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Structural registration does not establish behavioral or implementation identity semantics; those remain unresolved."
     },
     {
       "family": "feed_health",
@@ -93,9 +99,15 @@
     },
     {
       "family": "feed_health",
-      "topic": "dependencies",
-      "state": "CONFLICT",
-      "note": "A-01 claims AUTHORITATIVE for the structural fact that derives_from is empty (verified true at registry index 22), with correct caveat that this does not prove behavioral independence; A-02 claims UNRESOLVED. Structural metadata is established; implementation dependency closure is not. Resolves toward A-01's structural reading; as filed the pair conflicts."
+      "topic": "registry derives_from metadata",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural metadata supported: the registry declares derives_from=[]. This does not establish implementation dependency closure or behavioral independence."
+    },
+    {
+      "family": "feed_health",
+      "topic": "implementation dependency closure",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Empty registry derives_from metadata does not establish the implementation or informational dependency graph; that remains unresolved."
     },
     {
       "family": "feed_health",
@@ -129,9 +141,15 @@
     },
     {
       "family": "micro_volatility",
-      "topic": "identity",
-      "state": "CONFLICT",
-      "note": "Same pattern as feed_health: A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+      "topic": "registered tick-domain identity / surface",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural fact supported: the registry and XAUUSD inventory register this family on the tick surface with tick native scale. Semantic detector identity, provider identity, and implementation lineage remain unresolved."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "semantic detector identity",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Structural registration does not establish behavioral or implementation identity semantics; those remain unresolved."
     },
     {
       "family": "micro_volatility",
@@ -183,9 +201,15 @@
     },
     {
       "family": "micro_volatility",
-      "topic": "dependencies",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED; structural fact vs semantic closure."
+      "topic": "registry derives_from metadata",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural metadata supported: the registry declares derives_from=[]. This does not establish implementation dependency closure or behavioral independence."
+    },
+    {
+      "family": "micro_volatility",
+      "topic": "implementation dependency closure",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Empty registry derives_from metadata does not establish the implementation or informational dependency graph; that remains unresolved."
     },
     {
       "family": "micro_volatility",
@@ -219,9 +243,15 @@
     },
     {
       "family": "quote_arrival",
-      "topic": "identity",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+      "topic": "registered tick-domain identity / surface",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural fact supported: the registry and XAUUSD inventory register this family on the tick surface with tick native scale. Semantic detector identity, provider identity, and implementation lineage remain unresolved."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "semantic detector identity",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Structural registration does not establish behavioral or implementation identity semantics; those remain unresolved."
     },
     {
       "family": "quote_arrival",
@@ -273,9 +303,15 @@
     },
     {
       "family": "quote_arrival",
-      "topic": "dependencies",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
+      "topic": "registry derives_from metadata",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural metadata supported: the registry declares derives_from=[]. This does not establish implementation dependency closure or behavioral independence."
+    },
+    {
+      "family": "quote_arrival",
+      "topic": "implementation dependency closure",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Empty registry derives_from metadata does not establish the implementation or informational dependency graph; that remains unresolved."
     },
     {
       "family": "quote_arrival",
@@ -309,9 +345,15 @@
     },
     {
       "family": "quote_dynamics",
-      "topic": "identity",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+      "topic": "registered tick-domain identity / surface",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural fact supported: the registry and XAUUSD inventory register this family on the tick surface with tick native scale. Semantic detector identity, provider identity, and implementation lineage remain unresolved."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "semantic detector identity",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Structural registration does not establish behavioral or implementation identity semantics; those remain unresolved."
     },
     {
       "family": "quote_dynamics",
@@ -363,9 +405,15 @@
     },
     {
       "family": "quote_dynamics",
-      "topic": "dependencies",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
+      "topic": "registry derives_from metadata",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural metadata supported: the registry declares derives_from=[]. This does not establish implementation dependency closure or behavioral independence."
+    },
+    {
+      "family": "quote_dynamics",
+      "topic": "implementation dependency closure",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Empty registry derives_from metadata does not establish the implementation or informational dependency graph; that remains unresolved."
     },
     {
       "family": "quote_dynamics",
@@ -399,9 +447,15 @@
     },
     {
       "family": "quote_pressure",
-      "topic": "identity",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+      "topic": "registered tick-domain identity / surface",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural fact supported: the registry and XAUUSD inventory register this family on the tick surface with tick native scale. Semantic detector identity, provider identity, and implementation lineage remain unresolved."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "semantic detector identity",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Structural registration does not establish behavioral or implementation identity semantics; those remain unresolved."
     },
     {
       "family": "quote_pressure",
@@ -453,9 +507,15 @@
     },
     {
       "family": "quote_pressure",
-      "topic": "dependencies",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
+      "topic": "registry derives_from metadata",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural metadata supported: the registry declares derives_from=[]. This does not establish implementation dependency closure or behavioral independence."
+    },
+    {
+      "family": "quote_pressure",
+      "topic": "implementation dependency closure",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Empty registry derives_from metadata does not establish the implementation or informational dependency graph; that remains unresolved."
     },
     {
       "family": "quote_pressure",
@@ -489,9 +549,15 @@
     },
     {
       "family": "spread_state",
-      "topic": "identity",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
+      "topic": "registered tick-domain identity / surface",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural fact supported: the registry and XAUUSD inventory register this family on the tick surface with tick native scale. Semantic detector identity, provider identity, and implementation lineage remain unresolved."
+    },
+    {
+      "family": "spread_state",
+      "topic": "semantic detector identity",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Structural registration does not establish behavioral or implementation identity semantics; those remain unresolved."
     },
     {
       "family": "spread_state",
@@ -543,9 +609,15 @@
     },
     {
       "family": "spread_state",
-      "topic": "dependencies",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
+      "topic": "registry derives_from metadata",
+      "state": "AGREED_SUPPORTED",
+      "note": "Structural metadata supported: the registry declares derives_from=[]. This does not establish implementation dependency closure or behavioral independence."
+    },
+    {
+      "family": "spread_state",
+      "topic": "implementation dependency closure",
+      "state": "AGREED_UNSUPPORTED",
+      "note": "Empty registry derives_from metadata does not establish the implementation or informational dependency graph; that remains unresolved."
     },
     {
       "family": "spread_state",
@@ -555,167 +627,117 @@
     }
   ],
   "reconciliation_counts": {
-    "AGREED_SUPPORTED": 6,
-    "AGREED_UNSUPPORTED": 72,
-    "CONFLICT": 12
+    "AGREED_SUPPORTED": 18,
+    "AGREED_UNSUPPORTED": 84
   },
   "final_authoritative_claims": [
-    "payload",
-    "payload",
-    "payload",
-    "payload",
-    "payload",
-    "payload"
+    "feed_health: payload",
+    "feed_health: registered tick-domain identity / surface",
+    "feed_health: registry derives_from metadata",
+    "micro_volatility: payload",
+    "micro_volatility: registered tick-domain identity / surface",
+    "micro_volatility: registry derives_from metadata",
+    "quote_arrival: payload",
+    "quote_arrival: registered tick-domain identity / surface",
+    "quote_arrival: registry derives_from metadata",
+    "quote_dynamics: payload",
+    "quote_dynamics: registered tick-domain identity / surface",
+    "quote_dynamics: registry derives_from metadata",
+    "quote_pressure: payload",
+    "quote_pressure: registered tick-domain identity / surface",
+    "quote_pressure: registry derives_from metadata",
+    "spread_state: payload",
+    "spread_state: registered tick-domain identity / surface",
+    "spread_state: registry derives_from metadata"
   ],
   "provisional_claims": [],
   "unresolved_claims": [
-    "variants",
-    "purpose",
-    "state/event/rolling nature",
-    "occurrence",
-    "availability",
-    "persistence",
-    "reset/replacement",
-    "transitions",
-    "direction if authoritative",
-    "normalization",
-    "history",
-    "future-field mapping",
-    "variants",
-    "purpose",
-    "state/event/rolling nature",
-    "occurrence",
-    "availability",
-    "persistence",
-    "reset/replacement",
-    "transitions",
-    "direction if authoritative",
-    "normalization",
-    "history",
-    "future-field mapping",
-    "variants",
-    "purpose",
-    "state/event/rolling nature",
-    "occurrence",
-    "availability",
-    "persistence",
-    "reset/replacement",
-    "transitions",
-    "direction if authoritative",
-    "normalization",
-    "history",
-    "future-field mapping",
-    "variants",
-    "purpose",
-    "state/event/rolling nature",
-    "occurrence",
-    "availability",
-    "persistence",
-    "reset/replacement",
-    "transitions",
-    "direction if authoritative",
-    "normalization",
-    "history",
-    "future-field mapping",
-    "variants",
-    "purpose",
-    "state/event/rolling nature",
-    "occurrence",
-    "availability",
-    "persistence",
-    "reset/replacement",
-    "transitions",
-    "direction if authoritative",
-    "normalization",
-    "history",
-    "future-field mapping",
-    "variants",
-    "purpose",
-    "state/event/rolling nature",
-    "occurrence",
-    "availability",
-    "persistence",
-    "reset/replacement",
-    "transitions",
-    "direction if authoritative",
-    "normalization",
-    "history",
-    "future-field mapping"
+    "feed_health: variants",
+    "feed_health: purpose",
+    "feed_health: state/event/rolling nature",
+    "feed_health: semantic detector identity",
+    "feed_health: occurrence",
+    "feed_health: availability",
+    "feed_health: persistence",
+    "feed_health: reset/replacement",
+    "feed_health: transitions",
+    "feed_health: direction if authoritative",
+    "feed_health: normalization",
+    "feed_health: history",
+    "feed_health: implementation dependency closure",
+    "feed_health: future-field mapping",
+    "micro_volatility: variants",
+    "micro_volatility: purpose",
+    "micro_volatility: state/event/rolling nature",
+    "micro_volatility: semantic detector identity",
+    "micro_volatility: occurrence",
+    "micro_volatility: availability",
+    "micro_volatility: persistence",
+    "micro_volatility: reset/replacement",
+    "micro_volatility: transitions",
+    "micro_volatility: direction if authoritative",
+    "micro_volatility: normalization",
+    "micro_volatility: history",
+    "micro_volatility: implementation dependency closure",
+    "micro_volatility: future-field mapping",
+    "quote_arrival: variants",
+    "quote_arrival: purpose",
+    "quote_arrival: state/event/rolling nature",
+    "quote_arrival: semantic detector identity",
+    "quote_arrival: occurrence",
+    "quote_arrival: availability",
+    "quote_arrival: persistence",
+    "quote_arrival: reset/replacement",
+    "quote_arrival: transitions",
+    "quote_arrival: direction if authoritative",
+    "quote_arrival: normalization",
+    "quote_arrival: history",
+    "quote_arrival: implementation dependency closure",
+    "quote_arrival: future-field mapping",
+    "quote_dynamics: variants",
+    "quote_dynamics: purpose",
+    "quote_dynamics: state/event/rolling nature",
+    "quote_dynamics: semantic detector identity",
+    "quote_dynamics: occurrence",
+    "quote_dynamics: availability",
+    "quote_dynamics: persistence",
+    "quote_dynamics: reset/replacement",
+    "quote_dynamics: transitions",
+    "quote_dynamics: direction if authoritative",
+    "quote_dynamics: normalization",
+    "quote_dynamics: history",
+    "quote_dynamics: implementation dependency closure",
+    "quote_dynamics: future-field mapping",
+    "quote_pressure: variants",
+    "quote_pressure: purpose",
+    "quote_pressure: state/event/rolling nature",
+    "quote_pressure: semantic detector identity",
+    "quote_pressure: occurrence",
+    "quote_pressure: availability",
+    "quote_pressure: persistence",
+    "quote_pressure: reset/replacement",
+    "quote_pressure: transitions",
+    "quote_pressure: direction if authoritative",
+    "quote_pressure: normalization",
+    "quote_pressure: history",
+    "quote_pressure: implementation dependency closure",
+    "quote_pressure: future-field mapping",
+    "spread_state: variants",
+    "spread_state: purpose",
+    "spread_state: state/event/rolling nature",
+    "spread_state: semantic detector identity",
+    "spread_state: occurrence",
+    "spread_state: availability",
+    "spread_state: persistence",
+    "spread_state: reset/replacement",
+    "spread_state: transitions",
+    "spread_state: direction if authoritative",
+    "spread_state: normalization",
+    "spread_state: history",
+    "spread_state: implementation dependency closure",
+    "spread_state: future-field mapping"
   ],
-  "conflicts": [
-    {
-      "family": "feed_health",
-      "topic": "identity",
-      "state": "CONFLICT",
-      "note": "A-01 claims AUTHORITATIVE structural tick-domain identity (registry domain tick, known_surfaces [tick], native_scales kind tick - evidence verified real and supporting); A-02 claims UNRESOLVED. Structural identity is established; semantic identity is not. Resolves in favor of A-01's narrower structural reading, but as filed the status pair conflicts."
-    },
-    {
-      "family": "feed_health",
-      "topic": "dependencies",
-      "state": "CONFLICT",
-      "note": "A-01 claims AUTHORITATIVE for the structural fact that derives_from is empty (verified true at registry index 22), with correct caveat that this does not prove behavioral independence; A-02 claims UNRESOLVED. Structural metadata is established; implementation dependency closure is not. Resolves toward A-01's structural reading; as filed the pair conflicts."
-    },
-    {
-      "family": "micro_volatility",
-      "topic": "identity",
-      "state": "CONFLICT",
-      "note": "Same pattern as feed_health: A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
-    },
-    {
-      "family": "micro_volatility",
-      "topic": "dependencies",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED; structural fact vs semantic closure."
-    },
-    {
-      "family": "quote_arrival",
-      "topic": "identity",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
-    },
-    {
-      "family": "quote_arrival",
-      "topic": "dependencies",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
-    },
-    {
-      "family": "quote_dynamics",
-      "topic": "identity",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
-    },
-    {
-      "family": "quote_dynamics",
-      "topic": "dependencies",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
-    },
-    {
-      "family": "quote_pressure",
-      "topic": "identity",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
-    },
-    {
-      "family": "quote_pressure",
-      "topic": "dependencies",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
-    },
-    {
-      "family": "spread_state",
-      "topic": "identity",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE structural tick identity (verified), A-02 UNRESOLVED."
-    },
-    {
-      "family": "spread_state",
-      "topic": "dependencies",
-      "state": "CONFLICT",
-      "note": "A-01 AUTHORITATIVE (empty derives_from, verified), A-02 UNRESOLVED."
-    }
-  ],
+  "conflicts": [],
   "missing_authority": [
     "Detector-specific authority specification for feed_health covering: variants, purpose, state/event/rolling nature, occurrence, availability, persistence, reset/replacement, transitions, direction, normalization, history, dependencies (beyond empty derives_from), future-field mapping, and payload interpretation. Until present, E2 remains blocked.",
     "Detector-specific authority specification for micro_volatility covering the same 14 semantic topics (structural payload column already established at tick physical_schema index 9).",
@@ -737,32 +759,34 @@
     {
       "family": "feed_health",
       "state": "E2_BLOCKED_PENDING_AUTHORITY",
-      "rationale": "Registry (detectors_v1.json index 22) explicitly declares semantic_status UNRESOLVED and availability_semantics 'UNRESOLVED; authoritative manifest surface only'. Only structural facts are established (payload column existence/type at tick physical_schema index 10; empty derives_from; tick-domain surface). No approved source establishes causal timing, occurrence, availability, or payload interpretation. Both reports agree on blocking."
+      "rationale": "Structural tick-domain registration, payload-surface metadata, and empty derives_from metadata are supported for feed_health. Semantic detector identity, causal availability, payload interpretation, and implementation dependency closure remain UNRESOLVED. E2 remains blocked pending detector-specific authority."
     },
     {
       "family": "micro_volatility",
       "state": "E2_BLOCKED_PENDING_AUTHORITY",
-      "rationale": "Registry index 21 semantic_status UNRESOLVED; only structural payload column (physical_schema index 9) and surface identity established. No causal-timing or payload-interpretation authority. Both reports agree."
+      "rationale": "Structural tick-domain registration, payload-surface metadata, and empty derives_from metadata are supported for micro_volatility. Semantic detector identity, causal availability, payload interpretation, and implementation dependency closure remain UNRESOLVED. E2 remains blocked pending detector-specific authority."
     },
     {
       "family": "quote_arrival",
       "state": "E2_BLOCKED_PENDING_AUTHORITY",
-      "rationale": "Registry index 20 semantic_status UNRESOLVED; only structural payload column (physical_schema index 8) established. No causal-timing or payload-interpretation authority. Both reports agree."
+      "rationale": "Structural tick-domain registration, payload-surface metadata, and empty derives_from metadata are supported for quote_arrival. Semantic detector identity, causal availability, payload interpretation, and implementation dependency closure remain UNRESOLVED. E2 remains blocked pending detector-specific authority."
     },
     {
       "family": "quote_dynamics",
       "state": "E2_BLOCKED_PENDING_AUTHORITY",
-      "rationale": "Registry index 19 semantic_status UNRESOLVED; only structural payload column (physical_schema index 7) established. No causal-timing or payload-interpretation authority. Both reports agree."
+      "rationale": "Structural tick-domain registration, payload-surface metadata, and empty derives_from metadata are supported for quote_dynamics. Semantic detector identity, causal availability, payload interpretation, and implementation dependency closure remain UNRESOLVED. E2 remains blocked pending detector-specific authority."
     },
     {
       "family": "quote_pressure",
       "state": "E2_BLOCKED_PENDING_AUTHORITY",
-      "rationale": "Registry index 23 semantic_status UNRESOLVED; only structural payload column (physical_schema index 11) established. No causal-timing or payload-interpretation authority. Both reports agree."
+      "rationale": "Structural tick-domain registration, payload-surface metadata, and empty derives_from metadata are supported for quote_pressure. Semantic detector identity, causal availability, payload interpretation, and implementation dependency closure remain UNRESOLVED. E2 remains blocked pending detector-specific authority."
     },
     {
       "family": "spread_state",
       "state": "E2_BLOCKED_PENDING_AUTHORITY",
-      "rationale": "Registry index 18 semantic_status UNRESOLVED; only structural payload column (physical_schema index 6) established. Despite the suggestive name and the presence of bid/ask columns in the tick schema, no approved source establishes spread semantics, direction, or causal timing; name-based inference is prohibited. Both reports agree."
+      "rationale": "Structural tick-domain registration, payload-surface metadata, and empty derives_from metadata are supported for spread_state. Semantic detector identity, causal availability, payload interpretation, and implementation dependency closure remain UNRESOLVED. E2 remains blocked pending detector-specific authority."
     }
-  ]
+  ],
+  "authority_source_scope": "CURRENT_APPROVED_SOURCE_SET",
+  "producer_authority_included": false
 }

@@ -1,7 +1,7 @@
 {
   "artifact_type": "WAVE1_CLOSURE_MANIFEST",
-  "state": "CLOSED",
-  "closed_utc": "2026-09-05T03:07:14Z",
+  "state": "AUTHORITY_PRIMARY_RUN_CLOSED",
+  "closed_utc": "2026-09-05T03:32:35Z",
   "authority_base_sha": "ca68f0d7fced618a8d9567590f11f65ec6dd5eb1",
   "pr_merged": 1,
   "isolation_policy": "WORKFLOW_BLINDED_ACCESS_CONTROLLED",
@@ -12,14 +12,16 @@
     "validator": "agent_harness/validation/validate-wave1-authority-reports.ps1"
   },
   "scientific_review": {
-    "pass": 8,
+    "initial_pass": 4,
+    "initial_rework": 4,
+    "final_pass": 8,
     "rework_repaired_and_reverified": 4,
     "reject": 0,
-    "note": "Four reports carried systematic locator defects (off-by-one registry/inventory indices, permuted line locators). Narrow host-side locator repair was applied per the never-rerun-all-eight rule; every repaired locator was re-verified directly against the source files and the host gate re-passed 8/8. No scientific content was altered beyond cited locators and one unsupported Length=4 detail."
+    "note": "Initial REWORK verdicts are preserved per report; all four repaired reports are final PASS after locator-only repair and re-verification. No primary research run was rerun."
   },
   "pair_syntheses_complete": 4,
   "canonical_authority_version": "XAUUSD_AUTHORITY_WAVE1_V1",
-  "canonical_version_sha256": "8d380bbe1199a9f34113367a164ef99c1829127fa0ac3f7aabfd1b59346f56d0",
+  "canonical_version_sha256": "4df4ee34be9519f03b8b4c2f227218f22e1657c808672279a94020270a40848d",
   "synthesis_candidates": [
     "AP-001_AUTHORITY_CANDIDATE.json",
     "AP-002_AUTHORITY_CANDIDATE.json",
@@ -38,7 +40,6 @@
     "quote_pressure": "E2_BLOCKED_PENDING_AUTHORITY",
     "spread_state": "E2_BLOCKED_PENDING_AUTHORITY"
   },
-  "bg001_non_independent_confluence": "DO_NOT_TREAT_AS_INDEPENDENT_CONFLUENCE recorded: all 28 pairs among the eight scoped detectors",
   "behavioral_research_performed": false,
   "confirmation": "LOCKED",
   "e1_launch": "REQUIRES EXPLICIT MASTER APPROVAL (FREEZE / REWORK / START E1 issued separately for AP-001 and AP-002)",
@@ -49,5 +50,10 @@
     "treatment": "Archived as prior-run material, marked superseded by failure class (stale run root / pre-hardening report gate). Not deleted, not treated as active evidence.",
     "obsolete_branch_note": "reports/* historical report branches retained as archive; no further temporary repair branches to be created."
   },
-  "handoff": "Return to master chat with full closure package: base SHA, gate PASS 8/8, scientific review 8/8, 16 artifact hashes, 4 syntheses, E1/E2/E3 readiness, unresolved ledger, registry hash, freeze artifact, supersession record."
+  "handoff": "Primary Wave-1 authority run closed with final report gate PASS 8/8 and final scientific review PASS 8/8. Targeted producer-authority discovery found no producer implementation, producer config, or transformation contract in the permitted active non-legacy scope. E1 remains blocked by missing authority; confirmation remains LOCKED.",
+  "e1_authority_status": "BLOCKED_BY_MISSING_AUTHORITY",
+  "authority_source_scope": "CURRENT_APPROVED_SOURCE_SET",
+  "producer_authority_included": false,
+  "producer_authority_discovery_status": "PRODUCER_AUTHORITY_NOT_FOUND",
+  "bg001_lineage_restriction_status": "INDEPENDENCE_NOT_ESTABLISHED for all 28 pairs; DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
 }

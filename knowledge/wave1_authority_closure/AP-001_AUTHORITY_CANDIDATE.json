@@ -16,7 +16,7 @@
     {
       "topic": "payload surface",
       "state": "AGREED_SUPPORTED",
-      "note": "Both establish nullable LargeUtf8 payload_drift_burst on the tick source with tick registry surface, scoped as structural-only authority. Each report has one wrong index (A: /sources/6, B: /17) but the union of corrected locators verifies the claim."
+      "note": "Both establish nullable LargeUtf8 payload_drift_burst on the tick source with tick registry surface, scoped as structural-only authority. Final post-repair locators in both frozen reports were independently verified against the source files."
     },
     {
       "topic": "state/event/snapshot representation",
@@ -176,5 +176,7 @@
     "E1 PHENOTYPE for drift_burst requires: lawful anchor time, lawful episode segmentation, state-entry definition, availability map without later-information leakage."
   ],
   "e1_readiness": "BLOCKED_BY_MISSING_AUTHORITY",
-  "e1_readiness_rationale": "Both independent reports, fully verified against the mounted sources, agree that four hard blockers are unresolved: (1) no lawful detector anchor time (event_ts_ns vs received_ts_ns precedence undefined; availability_semantics UNRESOLVED); (2) no lawful episode/object segmentation or identity rule (lifecycle_vocabulary empty); (3) no state-entry definition (no first-entry predicate or as-of timestamp); (4) no field-level future-information/availability map, so later information cannot be excluded from earlier states. Missing directionality is present but is explicitly not a blocker. E1 phenotype study cannot launch until detector-specific authority is published."
+  "e1_readiness_rationale": "Both final post-repair reports agree that the hard blockers remain unresolved within the current approved authority-source set: lawful anchor/availability timing, episode/object segmentation and identity, first-state-entry semantics, and field-level future-information mapping. Targeted non-legacy producer-source discovery found no producer implementation, producer config, or transformation contract in the permitted active scope; this is not a claim about excluded material. E1 remains blocked by missing authority.",
+  "authority_source_scope": "CURRENT_APPROVED_SOURCE_SET",
+  "producer_authority_included": false
 }
