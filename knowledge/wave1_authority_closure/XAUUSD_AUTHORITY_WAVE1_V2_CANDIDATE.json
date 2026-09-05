@@ -1,7 +1,7 @@
 {
   "artifact_type": "XAUUSD_AUTHORITY_WAVE1_V2_CANDIDATE",
   "artifact_version": "V2-CANDIDATE",
-  "candidate_status": "CANDIDATE_NOT_FROZEN",
+  "candidate_status": "READY_FOR_CANONICAL_FREEZE",
   "created_utc": "2026-09-05T05:45:35Z",
   "predecessor_v1": {
     "path": "knowledge/wave1_authority_closure/XAUUSD_AUTHORITY_WAVE1_V1.json",
@@ -9,24 +9,34 @@
   },
   "discoveryr_integration": {
     "branch": "infra/i02-generic-runtime-harness",
-    "head": "b2ecab9b1b77c46987502c05262888d2784f9afc",
-    "parent": "ed96b0f71aca81c532e10dacd3e89faedb3d1943",
+    "head": "6c916c4ac407a29edefd8379aa62e830a900a547",
+    "parent": "b2ecab9b1b77c46987502c05262888d2784f9afc",
     "main_merge": "HOLD"
   },
   "recovery_artifacts": [
     {
       "path": "knowledge/wave1_authority_closure/PRODUCER_LINKAGE.json",
-      "sha256": "ccddcf98bfe790a8b33d7373faeae911b7b87799c74ccead9fc65236f373bb3d",
-      "role": "producer identity and lake linkage assessment"
+      "sha256": "36d7dbf0f43cf57b5c1056808c0591e19483c46becbd8e13578368cc83df593d",
+      "role": "reconciled producer identity and lake linkage assessment"
+    },
+    {
+      "path": "knowledge/wave1_authority_closure/PRODUCER_LINKAGE_V2.json",
+      "sha256": "2b75ef033384709c6a81dac3a1b2b11bb35d178998be11d68a7bf9996c511dfc",
+      "role": "reconciled four-part producer linkage facts and AP-001 gate closure"
+    },
+    {
+      "path": "knowledge/wave1_authority_closure/AP-001_AUTHORITY_V1_CANDIDATE.json",
+      "sha256": "b0fae1bdbf7f6f01878ba75d7150c864e75ee9a2bcc24658cbd939cb606480e3",
+      "role": "AP-001 authority gate closure"
     },
     {
       "path": "knowledge/wave1_authority_closure/TICK_AUTHORITY_RECOVERY.json",
-      "sha256": "c387d06f90c5e286b1de25bbb2f760f9471484cbac86d6b0f545b9e982a0696e",
+      "sha256": "ab65bffe3eeca467cb3a688664ca2b21db109c7a35469e2673452ace3266875d",
       "role": "tick producer authority"
     },
     {
       "path": "knowledge/wave1_authority_closure/BAR_AUTHORITY_RECOVERY.json",
-      "sha256": "c9f5b3c711e39edb5ffc1ca118c2ab0721f17d907bc4eecd95e23a4fc58f2ab6",
+      "sha256": "84ac5565fb60a8325597c8d45adbc3c173c7620a57c12cf539c6ab3db83628ab",
       "role": "bar producer authority and lineage"
     }
   ],
@@ -95,6 +105,9 @@
     },
     "generator_and_replay": {
       "linkage_status": "UNRESOLVED",
+      "generator_source_linkage": "EXACT",
+      "generator_source": "F:\\TrinityR@211891e705d5e8ea132ef1391a0da4a9e5ff4376:crates/trinity-research-tools/src/bin/generate_wide_parquet.rs",
+      "detector_configuration_construction": "The linked generator constructs bar and enabled tick DetectorConfig values with empty DetectorParams maps; detector defaults are therefore code-frozen at the linked producer commit.",
       "reason": "The frozen manifest records producer identity and source/config hashes, but exact generator/config replay identity and fresh replay equivalence were not independently proven."
     }
   },
@@ -110,69 +123,71 @@
     "AP-001": {
       "producer_authority": "FOUND",
       "revision_linkage": "EXACT",
-      "readiness": "PARTIAL_FREEZABLE",
-      "e1_readiness": "BLOCKED_BY_UNRESOLVED_PROVENANCE",
+      "readiness": "FREEZABLE",
+      "e1_readiness": "READY_FOR_E1",
       "newly_resolved": [
         "IDLE/DEVELOPING/BURST/DECAY_RISK/DYING lifecycle",
         "stable event identity and first-entry/origin lineage",
         "weak/online/strong milestone fields and occurrence timestamps",
         "recovery and terminal transitions",
         "completed-event semantics, end reasons, and finalization fields",
-        "5/15/30/60-second horizon definitions and causal availability structure"
+        "5/15/30/60-second horizon definitions",
+        "external parameter count is zero; parameter identity is NOT_APPLICABLE and thresholds are code-frozen at the linked producer commit",
+        "lawful materialized-lake availability: a fact emitted while processing source tick i is available at received_ts_ns(i), with source_sequence(i) as the equal-receipt causal tie-break",
+        "same-step state and completed-event materialization on the current tick row"
       ],
       "still_unresolved": [
-        "detector-specific parameter version/hash; only global config_hash is frozen",
+        "connected GitHub remote does not expose the retained historical commit",
         "fresh replay equivalence and generator identity",
-        "claims marked PROVISIONAL or UNRESOLVED in TICK_AUTHORITY_RECOVERY.json"
+        "Trinity-side reference revision is not linked"
       ],
-      "e1_gate": "May prepare a scoped E1 using exact source semantics; parameter-dependent and replay-equivalence claims remain blocked."
+      "e1_gate": "READY_FOR_E1 using the exact producer lifecycle and the frozen-lake received_ts_ns availability rule; fresh replay equivalence is outside this gate."
     },
     "AP-002": {
       "producer_authority": "FOUND",
       "revision_linkage": "EXACT",
-      "readiness": "PARTIAL_FREEZABLE",
-      "e1_readiness": "BLOCKED_BY_UNRESOLVED_PROVENANCE",
+      "readiness": "FREEZABLE_NATIVE_STRATA",
+      "e1_readiness": "READY_FOR_E1_NATIVE_STRATA",
       "newly_resolved": [
         "three-bar FVG formation and right-hand confirmation timing",
         "formation-versus-confirmation provenance",
         "zone identity, bounds, persistence, first-touch, fill, and invalidation lifecycle",
-        "causal availability and future touch/fill leakage restrictions"
+        "formation-versus-confirmation causal ordering and the future-touch/fill leakage boundary",
+        "lawful native-stratum availability: an FVG fact emitted while processing completed bar i is available at bar_close_ts(i)=CompletedBar.end_ts(i) and is attached to that same timeframe row",
+        "linked generator supplies an empty FVG parameter map, so min_gap_atr uses the code-frozen default 0.20",
+        "native-stratum identity is (timeframe, zone_id); the producer defines no cross-scale identity or merge operation"
       ],
       "still_unresolved": [
-        "cross-scale identity",
-        "fresh replay equivalence and exact generator/config linkage",
-        "claims marked unresolved in BAR_AUTHORITY_RECOVERY.json"
+        "fresh replay equivalence",
+        "Trinity-side reference revision is not linked"
       ],
-      "e1_gate": "May prepare a scoped E1 using exact linked TrinityR bar semantics; cross-scale and replay-equivalence claims remain blocked."
+      "e1_gate": "READY_FOR_E1_NATIVE_STRATA; cross-scale identity is prohibited by scope and fresh replay equivalence is outside the authority gate."
     },
     "TC-001": {
       "producer_authority": "FOUND",
       "revision_linkage": "EXACT",
-      "readiness": "PARTIAL_FREEZABLE",
+      "readiness": "FREEZABLE",
       "e2_eligibility": "ELIGIBLE_FOR_SCOPED_E2",
       "newly_resolved": [
         "native tick detector dispatch and registered detector/state versions",
         "source-backed detector lifecycle, payload, availability, and dependency claims where classified AUTHORITATIVE"
       ],
       "still_unresolved": [
-        "detector-specific parameter identity",
-        "claims classified PROVISIONAL or UNRESOLVED in TICK_AUTHORITY_RECOVERY.json",
-        "behavioral identity and implementation effects not established by registry metadata alone"
+        "fresh replay equivalence",
+        "behavioral outcomes, which are intentionally outside this authority recovery"
       ]
     },
     "BG-001": {
       "producer_authority": "FOUND",
       "revision_linkage": "EXACT",
-      "readiness": "PARTIAL_FREEZABLE",
+      "readiness": "FREEZABLE_WITH_LINEAGE_RESTRICTIONS",
       "newly_resolved": [
         "seven source-backed dependency edges from the exact TrinityR bar registry",
         "causal parent-to-child availability relationships for those edges",
         "FVG is registered without an upstream detector dependency in the recovered registry"
       ],
       "still_unresolved": [
-        "cross-scale identity",
-        "fresh replay equivalence",
-        "independence is not established for any of the 28 detector pairs"
+        "fresh replay equivalence"
       ]
     }
   },
@@ -190,11 +205,22 @@
     "strategy_code_modified": false,
     "v1_overwritten": false
   },
+  "ap001_gate_closure": {
+    "artifact": "knowledge/wave1_authority_closure/AP-001_AUTHORITY_V1_CANDIDATE.json",
+    "linkage_artifact": "knowledge/wave1_authority_closure/PRODUCER_LINKAGE_V2.json",
+    "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+    "external_parameter_count": 0,
+    "parameter_identity": "NOT_APPLICABLE",
+    "lawful_availability_rule": "available_time = received_ts_ns(i) for a fact emitted while processing source tick i; source_sequence(i) breaks equal received_ts_ns values",
+    "authority": "FREEZABLE",
+    "e1_readiness": "READY_FOR_E1",
+    "e1_started": false
+  },
   "freeze_requirements": [
-    "Resolve detector-specific parameter identity or retain parameter-dependent claims as unresolved.",
-    "Resolve exact generator/replay identity or retain replay equivalence as unresolved.",
+    "Keep non-AP-001 detector parameter identities and replay equivalence explicitly scoped where they remain unresolved.",
+    "Retain fresh replay equivalence as a separate non-authority ceiling; the exact generator source and default-parameter construction are recorded.",
     "Keep Trinity-side documents reference-only unless a lake-linked revision is recovered.",
-    "Do not promote cross-scale identity or independent confluence.",
+    "Keep cross-scale identity scoped to native strata and prohibit cross-scale joins; do not claim independent confluence.",
     "Do not replace V1 until these ceilings are explicitly accepted."
   ]
 }

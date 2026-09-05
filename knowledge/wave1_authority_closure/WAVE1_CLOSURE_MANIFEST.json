@@ -20,25 +20,28 @@
     "note": "Initial REWORK verdicts are preserved per report; all four repaired reports are final PASS after locator-only repair and re-verification. No primary research run was rerun."
   },
   "pair_syntheses_complete": 4,
-  "canonical_authority_version": "XAUUSD_AUTHORITY_WAVE1_V1",
-  "canonical_version_sha256": "4df4ee34be9519f03b8b4c2f227218f22e1657c808672279a94020270a40848d",
+  "historical_authority_version": "XAUUSD_AUTHORITY_WAVE1_V1",
+  "historical_version_sha256": "4df4ee34be9519f03b8b4c2f227218f22e1657c808672279a94020270a40848d",
+  "canonical_authority_version": "XAUUSD_AUTHORITY_WAVE1_V2_CANDIDATE",
+  "canonical_version_sha256": "a4264485cd41148b2e8f074dd92dac8018118bb457867bda6707e45ecde83bd3",
   "synthesis_candidates": [
     "AP-001_AUTHORITY_CANDIDATE.json",
     "AP-002_AUTHORITY_CANDIDATE.json",
     "TC-001_AUTHORITY_CANDIDATE.json",
     "BG-001_AUTHORITY_CANDIDATE.json"
   ],
+  "authority_recovery_candidate": "XAUUSD_AUTHORITY_WAVE1_V2_CANDIDATE.json",
   "e1_readiness": {
-    "AP-001": "BLOCKED_BY_MISSING_AUTHORITY",
-    "AP-002": "BLOCKED_BY_MISSING_AUTHORITY"
+    "AP-001": "READY_FOR_E1",
+    "AP-002": "READY_FOR_E1_NATIVE_STRATA"
   },
   "tc001_family_eligibility": {
-    "feed_health": "E2_BLOCKED_PENDING_AUTHORITY",
-    "micro_volatility": "E2_BLOCKED_PENDING_AUTHORITY",
-    "quote_arrival": "E2_BLOCKED_PENDING_AUTHORITY",
-    "quote_dynamics": "E2_BLOCKED_PENDING_AUTHORITY",
-    "quote_pressure": "E2_BLOCKED_PENDING_AUTHORITY",
-    "spread_state": "E2_BLOCKED_PENDING_AUTHORITY"
+    "feed_health": "ELIGIBLE_FOR_SCOPED_E2",
+    "micro_volatility": "ELIGIBLE_FOR_SCOPED_E2",
+    "quote_arrival": "ELIGIBLE_FOR_SCOPED_E2",
+    "quote_dynamics": "ELIGIBLE_FOR_SCOPED_E2",
+    "quote_pressure": "ELIGIBLE_FOR_SCOPED_E2",
+    "spread_state": "ELIGIBLE_FOR_SCOPED_E2"
   },
   "behavioral_research_performed": false,
   "confirmation": "LOCKED",
@@ -50,10 +53,10 @@
     "treatment": "Archived as prior-run material, marked superseded by failure class (stale run root / pre-hardening report gate). Not deleted, not treated as active evidence.",
     "obsolete_branch_note": "reports/* historical report branches retained as archive; no further temporary repair branches to be created."
   },
-  "handoff": "Primary Wave-1 authority run closed with final report gate PASS 8/8 and final scientific review PASS 8/8. Targeted producer-authority discovery found no producer implementation, producer config, or transformation contract in the permitted active non-legacy scope. E1 remains blocked by missing authority; confirmation remains LOCKED.",
-  "e1_authority_status": "BLOCKED_BY_MISSING_AUTHORITY",
-  "authority_source_scope": "CURRENT_APPROVED_SOURCE_SET",
-  "producer_authority_included": false,
-  "producer_authority_discovery_status": "PRODUCER_AUTHORITY_NOT_FOUND",
+  "handoff": "Wave-1 primary reports and targeted producer recovery are closed. The exact manifest-linked local TrinityR producer object, generator default-parameter construction, detector lifecycle authority, and native-stratum availability contracts are recorded in V2. AP-001 and AP-002 are ready for scoped E1; E2 remains unstarted; confirmation remains LOCKED.",
+  "e1_authority_status": "READY_FOR_E1",
+  "authority_source_scope": "MANIFEST_LINKED_PRODUCER_SOURCE_AND_SERIALIZATION_PATH",
+  "producer_authority_included": true,
+  "producer_authority_discovery_status": "PRODUCER_AUTHORITY_RECOVERED_EXACT_LOCAL_OBJECT",
   "bg001_lineage_restriction_status": "INDEPENDENCE_NOT_ESTABLISHED for all 28 pairs; DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE"
 }

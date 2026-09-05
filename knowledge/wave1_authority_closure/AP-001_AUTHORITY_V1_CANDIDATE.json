@@ -1,0 +1,39 @@
+{
+  "artifact_type": "AP-001_AUTHORITY_V1_CANDIDATE",
+  "artifact_version": "v1-candidate",
+  "status": "FREEZABLE",
+  "program_id": "AP-001",
+  "source_linkage_artifact": "PRODUCER_LINKAGE_V2.json",
+  "source_linkage_status": "EXACT_LOCAL_AND_MANIFEST_DECLARED",
+  "authority_scope": "Drift-Burst producer lifecycle and materialized XAUUSD causal availability contract at TrinityR commit 211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+  "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+  "parameter_identity": "NOT_APPLICABLE",
+  "parameter_semantics": "CODE_FROZEN_AT_PRODUCER_COMMIT",
+  "lawful_availability_rule": "For a drift_burst fact emitted while processing source tick i, available_time = received_ts_ns(i), with source_sequence(i) as the causal tie-break for equal receipt timestamps. The payload is attached to the same current tick row after synchronous processing and before the next source row is admitted.",
+  "authoritative_claims": [
+    "IDLE -> DEVELOPING -> BURST -> DECAY_RISK -> DYING lifecycle vocabulary",
+    "stable event_id and episode identity",
+    "weak, online, strong, decay-risk, and dying milestone fields",
+    "5s, 15s, 30s, and 60s horizon definitions",
+    "state transitions, recoveries, terminal rules, end_reason, and completed-event emission",
+    "future-only finalized fields are emitted only in drift_burst_completed payloads",
+    "current-tick synchronous emission and same-row materialization",
+    "event_ts_ns is occurrence time; received_ts_ns is the lawful availability coordinate"
+  ],
+  "remaining_non_blocking_limits": [
+    "connected GitHub remote does not expose the historical commit",
+    "fresh full-corpus replay equivalence was not run",
+    "Trinity-side reference revision is not linked"
+  ],
+  "e1_readiness": "READY_FOR_E1",
+  "e1_started": false,
+  "confirmation": "LOCKED",
+  "behavioral_research_started": false,
+  "evidence": [
+    "PRODUCER_LINKAGE_V2.json",
+    "TICK_AUTHORITY_RECOVERY.json",
+    "F:\\TrinityR\\crates\\trinity-analytics\\src\\tick\\betay_drift_burst.rs",
+    "F:\\TrinityR\\crates\\trinity-replay\\src\\lib.rs",
+    "F:\\TrinityR\\crates\\trinity-research-tools\\src\\wide_parquet.rs"
+  ]
+}

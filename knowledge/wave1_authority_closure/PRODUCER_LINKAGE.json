@@ -43,10 +43,15 @@
       "url": "https://github.com/malickecase28-hash/TrinityR",
       "manifest_declared_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
       "remote_head_observed": "e6580453f38a52aeefc476a2d31d0475ac31ba08",
-      "exact_commit_available": false,
+      "exact_commit_available": true,
+      "local_object_available": true,
+      "local_object_repository": "F:\\TrinityR",
+      "local_object_commit_type": "commit",
+      "local_object_parent": "4c685ee28a886e476e2dfb96bb20b9682549a2b5",
       "availability_evidence": ["E-SOURCE-001", "E-SOURCE-002"],
-      "linkage_status": "UNRESOLVED",
-      "reason": "The lake manifest declares the commit, but the connected remote does not expose that commit; exact source checkout and file identity could not be verified."
+      "remote_linkage_status": "NOT_AVAILABLE",
+      "linkage_status": "EXACT",
+      "reason": "The lake manifest declares 211891e705d5e8ea132ef1391a0da4a9e5ff4376 and that immutable commit plus required source blobs are verified in the retained local F:\\TrinityR object database. The connected remote does not expose the historical object; that remote limitation does not invalidate the local exact linkage."
     },
     "trinity": {
       "repository": "malickecase28-hash/Trinity",
@@ -274,6 +279,59 @@
       "evidence": ["E-LAKE-001", "E-LAKE-003", "E-SOURCE-005"]
     }
   ],
+  "reconciled_linkage": {
+    "canonical_for_current_closure": true,
+    "manifest_revision_linkage": {
+      "status": "EXACT",
+      "commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "evidence": "Frozen lake manifest declares the commit and the retained local F:\\TrinityR object database resolves it as an immutable commit."
+    },
+    "local_git_object_linkage": {
+      "status": "EXACT",
+      "repository": "F:\\TrinityR",
+      "commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "parent": "4c685ee28a886e476e2dfb96bb20b9682549a2b5",
+      "required_source_blobs_verified": true,
+      "evidence": "git cat-file and git show immutable-object checks passed for the producer, registry, replay, and wide-lake materialization paths."
+    },
+    "connected_remote_linkage": {
+      "status": "NOT_AVAILABLE",
+      "repository": "https://github.com/malickecase28-hash/TrinityR",
+      "observed_head": "e6580453f38a52aeefc476a2d31d0475ac31ba08",
+      "effect": "Remote absence does not downgrade the exact manifest/local-object linkage."
+    },
+    "generator_replay_equivalence": {
+      "status": "UNRESOLVED",
+      "generator_source_linkage": "EXACT",
+      "generator_source": "F:\\TrinityR@211891e705d5e8ea132ef1391a0da4a9e5ff4376:crates/trinity-research-tools/src/bin/generate_wide_parquet.rs",
+      "generator_blob": "c731c80b5b17d12ecc0e56cb548712fa80204afe",
+      "generator_sha256": "31a690d02b606d4f7478c06c76f05f7b4005f3302b131b45ff1f4ceab50709af",
+      "detector_configuration_construction": "The linked generator constructs every bar DetectorConfig and every enabled tick DetectorConfig with DetectorParams::new(), so code defaults are used and no external detector parameter map is supplied.",
+      "effect": "Fresh replay equivalence was not run and is not required for the AP-001 authority gate because the exact source path and frozen-row availability mapping are established."
+    },
+    "family_source_resolution": {
+      "status": "EXACT_SOURCE_REVISION",
+      "scope": "Registry versions, detector implementations, generator parameter construction, and BG dependency edges are authoritative at the exact linked TrinityR commit; this does not assert fresh replay equivalence.",
+      "supersedes": "The earlier families[*].current_source_observation and linkage_status fields were remote-head-only observations. The canonical family resolution below uses the exact manifest-linked local Git object.",
+      "families": {
+        "drift_burst": {"state_version": "trinity.analytics.tick.drift_burst.v4", "detector_version": "v3", "parameter_version": "v3", "external_parameters": 0, "status": "EXACT"},
+        "spread_state": {"state_version": "trinity.analytics.tick.spread_state.v2", "detector_version": "v2", "parameter_version": "v2", "external_parameters": 0, "status": "EXACT"},
+        "quote_dynamics": {"state_version": "trinity.analytics.tick.quote_dynamics.v2", "detector_version": "v2", "parameter_version": "v2", "external_parameters": 0, "status": "EXACT"},
+        "quote_arrival": {"state_version": "trinity.analytics.tick.quote_arrival.v1", "detector_version": "v2", "parameter_version": "v1", "external_parameters": 0, "status": "EXACT"},
+        "micro_volatility": {"state_version": "trinity.analytics.tick.micro_volatility.v2", "detector_version": "v3", "parameter_version": "v2", "external_parameters": 0, "status": "EXACT"},
+        "feed_health": {"state_version": "trinity.analytics.tick.feed_health.v1", "detector_version": "v2", "parameter_version": "v1", "external_parameters": 0, "status": "EXACT"},
+        "quote_pressure": {"state_version": "trinity.analytics.tick.quote_pressure.v1", "detector_version": "v1", "parameter_version": "v1", "external_parameters": 0, "status": "EXACT"},
+        "fvg": {"state_version": "trinity.analytics.bar.fvg.v4.2", "detector_version": "v4.2", "parameter_version": "v1", "external_parameters": 0, "default_min_gap_atr": 0.20, "status": "EXACT"},
+        "raw3": {"state_version": "trinity.analytics.bar.raw3.v3.1", "detector_version": "v3.1", "parameter_version": "v1", "external_parameters": 0, "status": "EXACT"},
+        "range": {"state_version": "trinity.analytics.bar.range.v8.3", "detector_version": "v8.3", "parameter_version": "v1", "external_parameters": 0, "dependencies": ["raw3"], "status": "EXACT"},
+        "bos_choch": {"state_version": "trinity.analytics.bar.bos_choch.v5.1", "detector_version": "v5.1", "parameter_version": "v1", "external_parameters": 0, "dependencies": ["swings"], "status": "EXACT"},
+        "local_structure": {"state_version": "trinity.analytics.bar.local_structure.v3.2", "detector_version": "v3.2", "parameter_version": "v1", "external_parameters": 0, "dependencies": ["raw3"], "status": "EXACT"},
+        "order_blocks": {"state_version": "trinity.analytics.bar.order_blocks.v5.1", "detector_version": "v5.1", "parameter_version": "v1", "external_parameters": 0, "dependencies": ["raw3", "bos_choch"], "status": "EXACT"},
+        "micro_liquidity": {"state_version": "trinity.analytics.bar.micro_liquidity.v5", "detector_version": "v5", "parameter_version": "v1", "external_parameters": 0, "status": "EXACT"},
+        "micro_liquidity_context": {"state_version": "trinity.analytics.bar.micro_liquidity_context.v1", "detector_version": "v1", "parameter_version": "v1", "external_parameters": 0, "dependencies": ["micro_liquidity", "dealing_range"], "status": "EXACT"}
+      }
+    }
+  },
   "evidence_index": [
     {"id": "E-LAKE-001", "locator": "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd\\manifest.json", "fields": ["trinityr_commit", "config_hash", "source_content_hash", "source_index", "payload_contract", "schema_version", "tick_detectors", "bar_detectors"], "line_refs": [264, 11793, 11834, 11835, 12108, 12964, 13955, 13956]},
     {"id": "E-LAKE-002", "locator": "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd\\payload_manifest.json", "fields": ["schema_version", "declared_tick_payload_contract", "shards", "inventory_scope"]},
@@ -288,8 +346,8 @@
   ],
   "conclusion": {
     "producer_authority_exists_in_observed_current_sources": true,
-    "exact_frozen_lake_producer_linkage_established": false,
-    "global_linkage_status": "UNRESOLVED",
-    "safe_statement": "The lake manifest identifies a TrinityR commit and source/config hashes, but the declared commit is unavailable from the connected remote and no Trinity reference package is recorded in the lake. Current-source semantics must not be promoted to exact frozen-lake authority until that missing linkage is recovered."
+    "exact_frozen_lake_producer_linkage_established": true,
+    "global_linkage_status": "EXACT_SOURCE_AND_AVAILABILITY_SCOPE_WITH_REPLAY_CEILING",
+    "safe_statement": "The frozen lake manifest and retained local TrinityR Git object establish the exact producer revision for source semantics. The connected remote is NOT_AVAILABLE and fresh generator/replay equivalence remains outside the authority gate."
   }
 }

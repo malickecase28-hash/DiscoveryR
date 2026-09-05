@@ -1,0 +1,105 @@
+{
+  "artifact": "PRODUCER_LINKAGE_V2",
+  "artifact_version": "v2",
+  "status": "PASS_AP001_LINKAGE_RECONCILED",
+  "created_utc": "2026-09-05T06:15:00Z",
+  "discoveryr_base_commit": "6c916c4ac407a29edefd8379aa62e830a900a547",
+  "lake_identity": {
+    "manifest_path": "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd\\manifest.json",
+    "manifest_sha256": "1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af",
+    "payload_manifest_sha256": "78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed",
+    "manifest_declared_trinityr_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+    "config_hash": "2fbbbc6ea5cbac6c20c9209a0f0861494145229d1279bafe500f64eb35f1f578",
+    "source_content_hash": "4df2ae85bb9eb22d460f8fd02eb21c1fcf71e40e3031bd8a96474981a9df77cc"
+  },
+  "linkage_facts": {
+    "manifest_revision_linkage": {
+      "status": "EXACT",
+      "fact": "The frozen lake manifest explicitly records TrinityR commit 211891e705d5e8ea132ef1391a0da4a9e5ff4376.",
+      "evidence": "manifest.json:12964 and artifact_timeframe_scope source_commit"
+    },
+    "local_git_object_linkage": {
+      "status": "EXACT",
+      "repository": "F:\\TrinityR",
+      "commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "commit_parent": "4c685ee28a886e476e2dfb96bb20b9682549a2b5",
+      "subject": "research: make performance gate advisory",
+      "immutable_checks": [
+        "git -C F:\\TrinityR cat-file -t 211891e705d5e8ea132ef1391a0da4a9e5ff4376 -> commit",
+        "git -C F:\\TrinityR cat-file -p 211891e705d5e8ea132ef1391a0da4a9e5ff4376 -> parent/tree object verified",
+        "git -C F:\\TrinityR show 211891e705d5e8ea132ef1391a0da4a9e5ff4376:<required path> -> source blobs verified"
+      ],
+      "source_blobs": [
+        {"path": "crates/trinity-analytics/src/tick/betay_drift_burst.rs", "git_blob": "1b8739fd1bd1a2c30ea93da3719f4c68eff55fbe", "sha256": "e83b4d023c4d53c96bbcef6b79358ae2427d58c98d233e94a95357be1cf172ef"},
+        {"path": "crates/trinity-analytics/src/tick/mod.rs", "git_blob": "23df74f486b0ec4eaf285b757e803f241837e33f", "sha256": "eefea2b9446817e87c46c9e451b1713cb2142c3df0abf0972fba4332838400d1"},
+        {"path": "crates/trinity-analytics/src/registry.rs", "git_blob": "17df434a5956e95fad47f694ee96cb308a262456", "sha256": "a4ae8fe9281ffa75526887ecd3210c7fb8db0703a49089a8acfa570c2e3d10a8"},
+        {"path": "crates/trinity-analytics/src/feature.rs", "git_blob": "300ccd78293f9d5b4b054fd8a53cfdb771b81644", "sha256": "f461c6bc7872adf2cb9b1393e08e35f54628d13e83dc0ac60da3bfc03a70fa8c"},
+        {"path": "crates/trinity-analytics/src/adapter.rs", "git_blob": "947b1c452f03d1f0123b968bbb7e09a3476196ff", "sha256": "2d403b87fbb2e84267852fffbd098ce6c19d925522e96e5e81daac3b375b3242"},
+        {"path": "crates/trinity-marketdata/src/lib.rs", "git_blob": "a35d3f014af94c0428e092e51e60935250cd8255", "sha256": "10726da4f71714c51f2c457f964d8823a6d04af1ec3711be57068c99da5f0198"},
+        {"path": "crates/trinity-replay/src/lib.rs", "git_blob": "428ae2b8d93d4dcfb8184c91f63ea3e3ee572722", "sha256": "557daba264bb5f3b90e5902b1f593a8dc58299232f2be7ae5811d67201ff46b6"},
+        {"path": "crates/trinity-research-tools/src/wide_parquet.rs", "git_blob": "e1a09e8bd6eb0274c9e8918486edde7fdc7bcee3", "sha256": "715594f6d0e72575237c0e6b6254116b3186b52b247a36632760499f1517ad97"},
+        {"path": "crates/trinity-research-tools/src/bin/generate_wide_parquet.rs", "git_blob": "c731c80b5b17d12ecc0e56cb548712fa80204afe", "sha256": "31a690d02b606d4f7478c06c76f05f7b4005f3302b131b45ff1f4ceab50709af"}
+      ],
+      "note": "The local repository is distinct from DiscoveryR and from the connected GitHub remote; its object database is the retained local producer source used for this authority recovery."
+    },
+    "connected_remote_linkage": {
+      "status": "NOT_AVAILABLE",
+      "repository": "https://github.com/malickecase28-hash/TrinityR",
+      "observed_head": "e6580453f38a52aeefc476a2d31d0475ac31ba08",
+      "evidence": "git ls-remote and GitHub object lookup do not expose 211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "effect": "Does not downgrade manifest or local Git-object linkage."
+    },
+    "generator_replay_equivalence": {
+      "status": "UNRESOLVED",
+      "generator_source_linkage": "EXACT",
+      "generator_source": "crates/trinity-research-tools/src/bin/generate_wide_parquet.rs",
+      "generator_blob": "c731c80b5b17d12ecc0e56cb548712fa80204afe",
+      "generator_sha256": "31a690d02b606d4f7478c06c76f05f7b4005f3302b131b45ff1f4ceab50709af",
+      "detector_configuration_construction": "The linked generator constructs every bar DetectorConfig and every enabled tick DetectorConfig with DetectorParams::new(), so the exact producer defaults are used and no external detector parameter map is supplied.",
+      "effect": "Not required for the AP-001 authority gate once the exact source path and materialization availability rule are established; fresh replay was not run."
+    }
+  },
+  "drift_burst_parameter_identity": {
+    "external_parameter_count": 0,
+    "parameter_identity": "NOT_APPLICABLE",
+    "parameter_semantics": "CODE_FROZEN_AT_PRODUCER_COMMIT",
+    "evidence": [
+      "betay_drift_burst.rs:587-590 configured(params) calls ensure_known(params, &[]) and returns Default",
+      "tick/mod.rs:300-318 drift_burst registration declares parameters=[]",
+      "betay_drift_burst.rs:11-20 and :54-85 define code constants/default thresholds and horizons"
+    ],
+    "global_lake_config_hash": "2fbbbc6ea5cbac6c20c9209a0f0861494145229d1279bafe500f64eb35f1f578",
+    "decision": "The missing detector-specific hash is not a blocker because this exact detector accepts no external parameter map."
+  },
+  "lawful_availability_contract": {
+    "status": "EXACT",
+    "rule": "For a drift_burst state or completed event emitted while processing source tick i, available_time = received_ts_ns(i); source_sequence(i) is the causal tie-break when received_ts_ns values are equal.",
+    "occurrence_time": "The emitted feature event_time_ns is tick.event_time_ns and is retained as the row event_ts_ns; it identifies market/source occurrence time, not availability.",
+    "availability_time": "The frozen row received_ts_ns is CanonicalTick.received_time_ns, the source receipt/ingestion timestamp. It is preserved by replay and serialized into the same XAUUSD row.",
+    "same_step_emission": true,
+    "completed_event_same_step": true,
+    "evidence": [
+      "trinity-marketdata/src/lib.rs:37-45 defines event_time_ns and received_time_ns as separate CanonicalTick fields",
+      "trinity-analytics/src/tick/betay_drift_burst.rs:1154-1188 emits state and completed events with the current tick.event_time_ns",
+      "trinity-replay/src/lib.rs:568-575 writes the current tick before adapter processing and :680-714 writes detector output after that same process_tick call",
+      "trinity-research-tools/src/wide_parquet.rs:1278-1294 stores event_ts_ns=tick.event_time_ns and received_ts_ns=tick.received_time_ns",
+      "trinity-research-tools/src/wide_parquet.rs:1147-1219 requires payload event_time_ns to match the pending current tick row and attaches it there",
+      "trinity-research-tools/src/wide_parquet.rs:1069-1082 flushes the completed current row before the next tick"
+    ],
+    "future_row_required": false,
+    "event_time_is_availability": false
+  },
+  "trinity_reference": {
+    "status": "UNRESOLVED",
+    "reason": "No Trinity-side revision is recorded in the frozen lake manifest; Trinity material remains reference-only."
+  },
+  "decision": {
+    "ap001": "FREEZABLE",
+    "ap001_e1": "READY_FOR_E1",
+    "ap002": "FREEZABLE_NATIVE_STRATA",
+    "ap002_e1": "READY_FOR_E1_NATIVE_STRATA",
+    "confirmation": "LOCKED",
+    "behavioral_research_started": false,
+    "wave1_researchers_rerun": false
+  }
+}

@@ -4,7 +4,7 @@
   "created_utc": "2026-09-05T00:00:00Z",
   "scope": {
     "branch_under_review": "infra/i02-generic-runtime-harness",
-    "discoveryr_head_required": "b2ecab9b1b77c46987502c05262888d2784f9afc",
+    "discoveryr_head_required": "6c916c4ac407a29edefd8379aa62e830a900a547",
     "lake_root": "F:\\TrinityR-research\\analytical_lake\\fusion_markets\\xauusd",
     "producer_repositories": [
       "F:\\TrinityR",
@@ -42,7 +42,16 @@
       "source_version_linkage": "UNRESOLVED",
       "evidence": "No Trinity-side revision is named by the frozen XAUUSD manifest."
     },
-    "linkage_ceiling": "The exact TrinityR commit is linked by frozen manifest metadata. This proves declared producer revision identity, not an independently rerun replay of the lake."
+    "linkage_ceiling": "The exact TrinityR commit is linked by frozen manifest metadata. This proves declared producer revision identity, not an independently rerun replay of the lake.",
+    "generator_parameter_resolution": {
+      "status": "EXACT_GENERATOR_DEFAULTS",
+      "generator_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+      "generator_path": "crates/trinity-research-tools/src/bin/generate_wide_parquet.rs",
+      "generator_blob": "c731c80b5b17d12ecc0e56cb548712fa80204afe",
+      "generator_sha256": "31a690d02b606d4f7478c06c76f05f7b4005f3302b131b45ff1f4ceab50709af",
+      "rule": "The linked generator constructs every bar DetectorConfig with DetectorParams::new(); code defaults are therefore the parameter identity for the frozen generation path.",
+      "fvg_default_min_gap_atr": 0.20
+    }
   },
   "source_files": [
     {
@@ -58,7 +67,7 @@
       "commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
       "path": "crates/trinity-analytics/src/bar/micro_liquidity_v5.rs",
       "git_blob": "ba8493bc689858893a19e505d1c089041593cfaf",
-      "sha256": null,
+      "sha256": "77b72a555af21a46004e4f66cef15d0459598d88498a7b0aeffe441a8c5cd44f",
       "source_type": "PRODUCER_IMPLEMENTATION"
     },
     {
@@ -95,9 +104,9 @@
           "value": "The first bar supplies the origin edge, the middle bar is the impulse bar, and the third/latest completed bar supplies the non-overlap confirmation and detection event."
         },
         "lawful_known_available_time": {
-          "status": "PROVISIONAL",
-          "locator": "crates/trinity-analytics/src/bar/mod.rs:2465-2471,2525-2533",
-          "value": "The implementation processes CompletedBar values and emits the formation event on the third bar timestamp. Exact wall-clock availability relative to the lake timestamp and upstream bar-close publication is not independently proven by this artifact."
+          "status": "AUTHORITATIVE",
+          "locator": "crates/trinity-marketdata/src/lib.rs:106-145; crates/trinity-replay/src/lib.rs:605-668; crates/trinity-research-tools/src/wide_parquet.rs:1212-1260; crates/trinity-analytics/src/bar/mod.rs:2465-2471,2525-2533",
+          "value": "For an FVG fact emitted while processing completed bar i, available_time = bar_close_ts(i) = CompletedBar.end_ts(i). CompletedBar.ts equals end_ts; replay processes the completed bar after the pending row is keyed by (timeframe, end_ts * 1_000_000), and the payload is attached to that same row before the next bar is admitted."
         },
         "zone_identity": {
           "status": "AUTHORITATIVE",
@@ -130,9 +139,9 @@
           "value": "Lifecycle is formation -> active zone -> optional first touch -> filled/removed. No separate cancellation event is declared; far-edge reach removes the zone after fvg_filled emission."
         },
         "native_scale_behavior": {
-          "status": "PROVISIONAL",
-          "locator": "lake manifest artifact_timeframe_scope and warmup.fvg; bar/mod.rs registration",
-          "value": "The frozen lake retains seven native bar resolutions and declares fvg warmup requirements. The source registration is timeframe-agnostic, but a per-scale replay/output identity is not separately proven here."
+          "status": "AUTHORITATIVE",
+          "locator": "manifest.json:bar_parts,timeframes; trinity-analytics/src/adapter.rs:152-191,540-550; trinity-research-tools/src/wide_parquet.rs:1212-1260",
+          "value": "Each configured timeframe is a separate bar-detector runtime and a separate Parquet stratum. FVG formation, touch, and fill semantics apply independently within the row's timeframe."
         },
         "future_touch_fill_leakage_restrictions": {
           "status": "AUTHORITATIVE",
@@ -140,9 +149,14 @@
           "value": "Formation payload is emitted before any later touch/fill processing for the active zones; touch and fill are emitted only on subsequent processed bars. Later touch/fill fields are not part of the formation payload."
         },
         "cross_scale_identity": {
-          "status": "UNRESOLVED",
-          "locator": "lake manifest artifact_timeframe_scope; no cross-scale key in linked fvg implementation",
-          "value": "No source-backed mapping establishes that zone_id or another identity persists across resolutions."
+          "status": "AUTHORITATIVE_SCOPE_RESTRICTION",
+          "locator": "trinity-analytics/src/bar/mod.rs:2362-2372; trinity-analytics/src/adapter.rs:152-191,540-550; trinity-research-tools/src/wide_parquet.rs:1212-1260",
+          "value": "The producer defines no cross-scale identity or merge operation. The lawful native-stratum identity is (timeframe, zone_id); cross-scale joins and identity claims are prohibited rather than left implicit."
+        },
+        "parameter_identity": {
+          "status": "AUTHORITATIVE",
+          "locator": "trinity-research-tools/src/bin/generate_wide_parquet.rs:1632-1644; trinity-analytics/src/bar/mod.rs:713-724,2425-2449",
+          "value": "The linked generator constructs every bar DetectorConfig with an empty DetectorParams map. FVG therefore uses the code-frozen default min_gap_atr=0.20 at the linked producer commit; no external FVG parameter is supplied by the frozen generator path."
         }
       }
     },
@@ -241,9 +255,9 @@
   "overall_status": {
     "producer_authority_found": true,
     "exact_trinityr_version_linkage": "ESTABLISHED_BY_FROZEN_MANIFEST",
-    "fvg_authority": "PARTIAL_FREEZABLE",
-    "bg_lineage_authority": "PARTIAL_FREEZABLE",
-    "cross_scale_identity": "UNRESOLVED",
+    "fvg_authority": "FREEZABLE_NATIVE_STRATA",
+    "bg_lineage_authority": "FREEZABLE_WITH_LINEAGE_RESTRICTIONS",
+    "cross_scale_identity": "NATIVE_STRATA_ONLY_NO_CROSS_SCALE_IDENTITY",
     "runtime_replay_equivalence": "UNRESOLVED",
     "behavioral_research_started": false,
     "confirmation": "LOCKED"
