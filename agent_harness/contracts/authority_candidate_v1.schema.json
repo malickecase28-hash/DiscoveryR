@@ -65,7 +65,13 @@
         "future_information_risk": {"type": "string", "minLength": 1},
         "dependency_implications": {"type": "array"},
         "notes": {"type": "string"}
-      }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"enum": ["AUTHORITATIVE", "PROVISIONAL"]}}},
+          "then": {"properties": {"authority_evidence": {"minItems": 1}}}
+        }
+      ]
     }
   }
 }
