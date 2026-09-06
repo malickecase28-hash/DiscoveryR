@@ -5,8 +5,9 @@ use development_view::materialize;
 use std::path::PathBuf;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let lake = PathBuf::from(std::env::var("TRINITYR_ANALYTICAL_LAKE")?);
-    let mut source = lake.join("fusion_markets/xauusd");
+    let mut source = std::env::var("TRINITYR_ANALYTICAL_LAKE")
+        .ok()
+        .map(|lake| PathBuf::from(lake).join("fusion_markets/xauusd"));
     let mut inventory = PathBuf::from("instruments/XAUUSD/source_inventory.json");
     let mut view = PathBuf::from(r"F:\TrinityR-views\XAUUSD\XAUUSD_DATA_SCOPE_V1\development");
     let mut audit = PathBuf::from(r"F:\TrinityR-views\XAUUSD\XAUUSD_DATA_SCOPE_V1\build-audit");
@@ -17,7 +18,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
         match arg.as_str() {
-            "--source-root" => source = args.next().ok_or("missing --source-root")?.into(),
+            "--source-root" => source = Some(args.next().ok_or("missing --source-root")?.into()),
             "--inventory" => inventory = args.next().ok_or("missing --inventory")?.into(),
             "--view-root" => view = args.next().ok_or("missing --view-root")?.into(),
             "--audit-root" => audit = args.next().ok_or("missing --audit-root")?.into(),
@@ -38,6 +39,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let code = code.ok_or(
         "DISCOVERYR_CODE_IDENTITY must be set to the worker commit SHA, or supply --code-identity",
     )?;
+    let source = source
+        .ok_or("TRINITYR_ANALYTICAL_LAKE must be set, or supply --source-root")?;
     let identity = materialize(&source, &inventory, &view, &audit, &code, batch, copy)?;
     println!("{identity}");
     Ok(())
