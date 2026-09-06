@@ -12,7 +12,7 @@ use research_tape::{AnchorInstance, ContextObservation, SourceRef};
 
 fn complete_identity() -> CompleteReproducibilityIdentity {
     CompleteReproducibilityIdentity {
-        instrument_identity: "instrument-x".into(),
+        instrument_identity: "xauusd".into(),
         producer_commit_identity: "producer-commit".into(),
         producer_source_identity: "producer-source".into(),
         producer_blob_identity: "producer-blob".into(),
@@ -133,6 +133,8 @@ fn population_runner_accepts_many_anchor_times_and_preserves_cross_scale_identit
     assert_eq!(report.scope_end_ns, Some(200));
     assert_eq!(report.discoveries.len(), 1);
     assert!(!report.discoveries[0].same_native_scale);
+    assert_eq!(report.discoveries[0].anchor_population, 2);
+    assert_eq!(report.discoveries[0].observations, 2);
     assert_eq!(report.discoveries[0].value, Some(1.0));
     assert_eq!(report.candidate_ids.len(), 1);
 }
@@ -142,6 +144,20 @@ fn future_context_is_rejected_per_anchor_not_by_one_global_timestamp() {
     let mut value = input();
     value.records[1].contexts[0].available_time = 201;
     assert!(run_population_research(&value).is_err());
+}
+
+#[test]
+fn missing_context_does_not_remove_the_anchor_population() {
+    let mut value = input();
+    value.records[1].contexts.clear();
+    let report = run_population_research(&value).unwrap();
+    let discovery = &report.discoveries[0];
+    assert_eq!(discovery.anchor_population, 2);
+    assert_eq!(discovery.context_present, 1);
+    assert_eq!(discovery.missing_context, 1);
+    assert_eq!(discovery.observations, 1);
+    assert!(discovery.value.is_none());
+    assert!(report.candidate_ids.is_empty());
 }
 
 #[test]
@@ -158,4 +174,26 @@ fn lineage_dependent_context_is_rejected_as_independent_context() {
     let mut value = input();
     value.detectors[1].derives_from = vec!["anchor".into()];
     assert!(run_population_research(&value).is_err());
+}
+
+#[test]
+fn generic_metric_cannot_masquerade_as_an_unimplemented_semantic_operator() {
+    let mut value = input();
+    value.metric_requests[0].operator = "nesting".into();
+    assert!(run_population_research(&value).is_err());
+}
+
+#[test]
+fn phenotype_only_e1_requires_no_context_metric() {
+    let mut value = input();
+    value.metric_requests.clear();
+    for record in &mut value.records {
+        record.contexts.clear();
+    }
+    let report = run_population_research(&value).unwrap();
+    assert_eq!(report.anchor_instances, 2);
+    assert!(report.discoveries.is_empty());
+    assert!(report.candidate_ids.is_empty());
+    assert_eq!(report.phenotypes[0].anchor_instances, 2);
+    assert_eq!(report.phenotypes[0].value_samples, 2);
 }
