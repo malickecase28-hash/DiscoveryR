@@ -1,5 +1,6 @@
 pub mod fvg_availability;
 pub mod fvg_e1;
+pub mod fvg_e1b;
 
 use arrow_array::{Array, Float64Array, Int64Array, LargeStringArray, RecordBatch, StringArray};
 use parquet::arrow::{
