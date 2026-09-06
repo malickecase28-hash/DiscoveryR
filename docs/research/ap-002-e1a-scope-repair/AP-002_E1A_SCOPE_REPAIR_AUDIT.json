@@ -1,0 +1,4506 @@
+{
+  "a1_total": 1010,
+  "a2_orphan_fill_total": 358,
+  "a2_orphan_total": 536,
+  "a2_orphan_touch_total": 178,
+  "all_orphans_left_truncated": true,
+  "artifact_type": "AP-002_E1A_SCOPE_REPAIR_AUDIT",
+  "development_start_inclusive": "2025-07-31T16:15:00Z",
+  "elapsed_millis": 12223,
+  "formed_zones_total": 381498,
+  "malformed_payloads": 0,
+  "payload_rows_parsed": 795804,
+  "prospective_sign_counts": {
+    "corrected_result": {
+      "cells": 21,
+      "direction_adjusted_negative": 18,
+      "direction_adjusted_positive": 2,
+      "direction_adjusted_zero": 1,
+      "raw_median_positive": 21
+    },
+    "superseded_result": {
+      "cells": 21,
+      "direction_adjusted_negative": 18,
+      "direction_adjusted_positive": 2,
+      "direction_adjusted_zero": 1,
+      "raw_median_positive": 21
+    }
+  },
+  "reconciled_with_scanner_counters": true,
+  "results_delta_vs_superseded": [
+    {
+      "bullish_share_new": 0.5103528162556108,
+      "bullish_share_old": 0.5103389272787101,
+      "fill_rate_new": 0.9955376926755856,
+      "fill_rate_old": 0.995538005923001,
+      "formations_new": 227909,
+      "formations_old": 227925,
+      "formed_fill_without_prior_touch_new": 682,
+      "formed_fill_without_prior_touch_old": 682,
+      "orphan_fill_new": 159,
+      "orphan_fill_old": 158,
+      "orphan_touch_new": 75,
+      "orphan_touch_old": 75,
+      "timeframe": "15s"
+    },
+    {
+      "bullish_share_new": 0.5170929044920193,
+      "bullish_share_old": 0.5170715101027294,
+      "fill_rate_new": 0.99357138565678,
+      "fill_rate_old": 0.9935719005947494,
+      "formations_new": 99866,
+      "formations_old": 99874,
+      "formed_fill_without_prior_touch_new": 213,
+      "formed_fill_without_prior_touch_old": 213,
+      "orphan_fill_new": 94,
+      "orphan_fill_old": 94,
+      "orphan_touch_new": 47,
+      "orphan_touch_old": 46,
+      "timeframe": "30s"
+    },
+    {
+      "bullish_share_new": 0.5244731241848013,
+      "bullish_share_old": 0.5244131240561937,
+      "fill_rate_new": 0.9910070707764124,
+      "fill_rate_old": 0.9910080995744291,
+      "formations_new": 43701,
+      "formations_old": 43706,
+      "formed_fill_without_prior_touch_new": 81,
+      "formed_fill_without_prior_touch_old": 81,
+      "orphan_fill_new": 62,
+      "orphan_fill_old": 60,
+      "orphan_touch_new": 33,
+      "orphan_touch_old": 32,
+      "timeframe": "1m"
+    },
+    {
+      "bullish_share_new": 0.5428571428571428,
+      "bullish_share_old": 0.5428571428571428,
+      "fill_rate_new": 0.9777310924369748,
+      "fill_rate_old": 0.9777310924369748,
+      "formations_new": 7140,
+      "formations_old": 7140,
+      "formed_fill_without_prior_touch_new": 20,
+      "formed_fill_without_prior_touch_old": 20,
+      "orphan_fill_new": 18,
+      "orphan_fill_old": 18,
+      "orphan_touch_new": 8,
+      "orphan_touch_old": 8,
+      "timeframe": "5m"
+    },
+    {
+      "bullish_share_new": 0.5798357664233577,
+      "bullish_share_old": 0.5798357664233577,
+      "fill_rate_new": 0.95985401459854,
+      "fill_rate_old": 0.95985401459854,
+      "formations_new": 2192,
+      "formations_old": 2192,
+      "formed_fill_without_prior_touch_new": 10,
+      "formed_fill_without_prior_touch_old": 10,
+      "orphan_fill_new": 12,
+      "orphan_fill_old": 13,
+      "orphan_touch_new": 7,
+      "orphan_touch_old": 7,
+      "timeframe": "15m"
+    },
+    {
+      "bullish_share_new": 0.5831739961759083,
+      "bullish_share_old": 0.5831739961759083,
+      "fill_rate_new": 0.9216061185468452,
+      "fill_rate_old": 0.9216061185468452,
+      "formations_new": 523,
+      "formations_old": 523,
+      "formed_fill_without_prior_touch_new": 4,
+      "formed_fill_without_prior_touch_old": 4,
+      "orphan_fill_new": 7,
+      "orphan_fill_old": 7,
+      "orphan_touch_new": 5,
+      "orphan_touch_old": 6,
+      "timeframe": "1h"
+    },
+    {
+      "bullish_share_new": 0.6047904191616766,
+      "bullish_share_old": 0.6047904191616766,
+      "fill_rate_new": 0.844311377245509,
+      "fill_rate_old": 0.844311377245509,
+      "formations_new": 167,
+      "formations_old": 167,
+      "formed_fill_without_prior_touch_new": 0,
+      "formed_fill_without_prior_touch_old": 0,
+      "orphan_fill_new": 6,
+      "orphan_fill_old": 6,
+      "orphan_touch_new": 3,
+      "orphan_touch_old": 3,
+      "timeframe": "4h"
+    }
+  ],
+  "scanner_logical_result_hash": "1b701c016bd1effa300742ee74ce73d6e0e96313d62847d231391061dc94dca6",
+  "strata": {
+    "15m": {
+      "all_orphans_left_truncated": true,
+      "first_formed_detection_ts": 1753981200000,
+      "formed_fill_without_prior_touch_n": 10,
+      "formed_n": 2192,
+      "orphan_detection_max": 1753970400000,
+      "orphan_events": [
+        {
+          "detection_ts": 1753920900000,
+          "event_bar_close_ts": 1754013600000,
+          "event_ts": 1754013600000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 197
+        },
+        {
+          "detection_ts": 1753880400000,
+          "event_bar_close_ts": 1754052300000,
+          "event_ts": 1754052300000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 190
+        },
+        {
+          "detection_ts": 1753881300000,
+          "event_bar_close_ts": 1754052300000,
+          "event_ts": 1754052300000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 191
+        },
+        {
+          "detection_ts": 1753970400000,
+          "event_bar_close_ts": 1754052300000,
+          "event_ts": 1754052300000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 201
+        },
+        {
+          "detection_ts": 1753880400000,
+          "event_bar_close_ts": 1754052300000,
+          "event_ts": 1754052300000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 190
+        },
+        {
+          "detection_ts": 1753881300000,
+          "event_bar_close_ts": 1754052300000,
+          "event_ts": 1754052300000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 191
+        },
+        {
+          "detection_ts": 1753970400000,
+          "event_bar_close_ts": 1754052300000,
+          "event_ts": 1754052300000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 201
+        },
+        {
+          "detection_ts": 1753433100000,
+          "event_bar_close_ts": 1754054100000,
+          "event_ts": 1754054100000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 163
+        },
+        {
+          "detection_ts": 1753433100000,
+          "event_bar_close_ts": 1754055000000,
+          "event_ts": 1754055000000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 163
+        },
+        {
+          "detection_ts": 1753430400000,
+          "event_bar_close_ts": 1754077500000,
+          "event_ts": 1754077500000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 162
+        },
+        {
+          "detection_ts": 1753430400000,
+          "event_bar_close_ts": 1754077500000,
+          "event_ts": 1754077500000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 162
+        },
+        {
+          "detection_ts": 1753410600000,
+          "event_bar_close_ts": 1754308800000,
+          "event_ts": 1754308800000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 161
+        },
+        {
+          "detection_ts": 1753287300000,
+          "event_bar_close_ts": 1754595900000,
+          "event_ts": 1754595900000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 145
+        },
+        {
+          "detection_ts": 1753288200000,
+          "event_bar_close_ts": 1754595900000,
+          "event_ts": 1754595900000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 146
+        },
+        {
+          "detection_ts": 1753287300000,
+          "event_bar_close_ts": 1756389600000,
+          "event_ts": 1756389600000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 145
+        },
+        {
+          "detection_ts": 1753277400000,
+          "event_bar_close_ts": 1756407600000,
+          "event_ts": 1756407600000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 144
+        },
+        {
+          "detection_ts": 1753276500000,
+          "event_bar_close_ts": 1756411200000,
+          "event_ts": 1756411200000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 143
+        },
+        {
+          "detection_ts": 1753276500000,
+          "event_bar_close_ts": 1756411200000,
+          "event_ts": 1756411200000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 143
+        },
+        {
+          "detection_ts": 1753266600000,
+          "event_bar_close_ts": 1756476900000,
+          "event_ts": 1756476900000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 140
+        }
+      ],
+      "orphan_fill_n": 12,
+      "orphan_touch_n": 7
+    },
+    "15s": {
+      "all_orphans_left_truncated": true,
+      "first_formed_detection_ts": 1753978530000,
+      "formed_fill_without_prior_touch_n": 682,
+      "formed_n": 227909,
+      "orphan_detection_max": 1753978500000,
+      "orphan_events": [
+        {
+          "detection_ts": 1753978500000,
+          "event_bar_close_ts": 1753978515000,
+          "event_ts": 1753978515000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 20570
+        },
+        {
+          "detection_ts": 1753978320000,
+          "event_bar_close_ts": 1753978515000,
+          "event_ts": 1753978515000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20567
+        },
+        {
+          "detection_ts": 1753978500000,
+          "event_bar_close_ts": 1753978620000,
+          "event_ts": 1753978620000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20570
+        },
+        {
+          "detection_ts": 1753978185000,
+          "event_bar_close_ts": 1753979175000,
+          "event_ts": 1753979175000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20566
+        },
+        {
+          "detection_ts": 1753977765000,
+          "event_bar_close_ts": 1753979880000,
+          "event_ts": 1753979880000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20557
+        },
+        {
+          "detection_ts": 1753977660000,
+          "event_bar_close_ts": 1753980030000,
+          "event_ts": 1753980030000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 20555
+        },
+        {
+          "detection_ts": 1753977690000,
+          "event_bar_close_ts": 1753980030000,
+          "event_ts": 1753980030000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20556
+        },
+        {
+          "detection_ts": 1753977660000,
+          "event_bar_close_ts": 1753980045000,
+          "event_ts": 1753980045000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20555
+        },
+        {
+          "detection_ts": 1753976310000,
+          "event_bar_close_ts": 1753980120000,
+          "event_ts": 1753980120000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 20541
+        },
+        {
+          "detection_ts": 1753976310000,
+          "event_bar_close_ts": 1753980360000,
+          "event_ts": 1753980360000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20541
+        },
+        {
+          "detection_ts": 1753976235000,
+          "event_bar_close_ts": 1753980495000,
+          "event_ts": 1753980495000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 20539
+        },
+        {
+          "detection_ts": 1753976235000,
+          "event_bar_close_ts": 1753980495000,
+          "event_ts": 1753980495000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20539
+        },
+        {
+          "detection_ts": 1753926600000,
+          "event_bar_close_ts": 1753999275000,
+          "event_ts": 1753999275000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 19774
+        },
+        {
+          "detection_ts": 1753926615000,
+          "event_bar_close_ts": 1753999275000,
+          "event_ts": 1753999275000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 19775
+        },
+        {
+          "detection_ts": 1753926600000,
+          "event_bar_close_ts": 1754004000000,
+          "event_ts": 1754004000000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19774
+        },
+        {
+          "detection_ts": 1753926615000,
+          "event_bar_close_ts": 1754004000000,
+          "event_ts": 1754004000000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19775
+        },
+        {
+          "detection_ts": 1753926480000,
+          "event_bar_close_ts": 1754006355000,
+          "event_ts": 1754006355000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 19773
+        },
+        {
+          "detection_ts": 1753926480000,
+          "event_bar_close_ts": 1754006415000,
+          "event_ts": 1754006415000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19773
+        },
+        {
+          "detection_ts": 1753925760000,
+          "event_bar_close_ts": 1754006835000,
+          "event_ts": 1754006835000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19765
+        },
+        {
+          "detection_ts": 1753921830000,
+          "event_bar_close_ts": 1754013105000,
+          "event_ts": 1754013105000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19707
+        },
+        {
+          "detection_ts": 1753919445000,
+          "event_bar_close_ts": 1754013195000,
+          "event_ts": 1754013195000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19671
+        },
+        {
+          "detection_ts": 1753919430000,
+          "event_bar_close_ts": 1754013285000,
+          "event_ts": 1754013285000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 19670
+        },
+        {
+          "detection_ts": 1753919430000,
+          "event_bar_close_ts": 1754013300000,
+          "event_ts": 1754013300000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19670
+        },
+        {
+          "detection_ts": 1753971555000,
+          "event_bar_close_ts": 1754027580000,
+          "event_ts": 1754027580000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 20486
+        },
+        {
+          "detection_ts": 1753971555000,
+          "event_bar_close_ts": 1754027580000,
+          "event_ts": 1754027580000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20486
+        },
+        {
+          "detection_ts": 1753975260000,
+          "event_bar_close_ts": 1754027580000,
+          "event_ts": 1754027580000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20529
+        },
+        {
+          "detection_ts": 1753970250000,
+          "event_bar_close_ts": 1754050950000,
+          "event_ts": 1754050950000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20475
+        },
+        {
+          "detection_ts": 1753969305000,
+          "event_bar_close_ts": 1754051415000,
+          "event_ts": 1754051415000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 20467
+        },
+        {
+          "detection_ts": 1753968555000,
+          "event_bar_close_ts": 1754051415000,
+          "event_ts": 1754051415000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20463
+        },
+        {
+          "detection_ts": 1753969305000,
+          "event_bar_close_ts": 1754051415000,
+          "event_ts": 1754051415000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20467
+        },
+        {
+          "detection_ts": 1753953555000,
+          "event_bar_close_ts": 1754051430000,
+          "event_ts": 1754051430000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 20252
+        },
+        {
+          "detection_ts": 1753952835000,
+          "event_bar_close_ts": 1754051430000,
+          "event_ts": 1754051430000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20238
+        },
+        {
+          "detection_ts": 1753953450000,
+          "event_bar_close_ts": 1754051430000,
+          "event_ts": 1754051430000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20251
+        },
+        {
+          "detection_ts": 1753953555000,
+          "event_bar_close_ts": 1754051430000,
+          "event_ts": 1754051430000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20252
+        },
+        {
+          "detection_ts": 1753879935000,
+          "event_bar_close_ts": 1754051475000,
+          "event_ts": 1754051475000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19193
+        },
+        {
+          "detection_ts": 1753950315000,
+          "event_bar_close_ts": 1754051475000,
+          "event_ts": 1754051475000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 20196
+        },
+        {
+          "detection_ts": 1753879920000,
+          "event_bar_close_ts": 1754051490000,
+          "event_ts": 1754051490000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 19192
+        },
+        {
+          "detection_ts": 1753879920000,
+          "event_bar_close_ts": 1754051505000,
+          "event_ts": 1754051505000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19192
+        },
+        {
+          "detection_ts": 1753879830000,
+          "event_bar_close_ts": 1754051535000,
+          "event_ts": 1754051535000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 19191
+        },
+        {
+          "detection_ts": 1753879830000,
+          "event_bar_close_ts": 1754051535000,
+          "event_ts": 1754051535000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19191
+        },
+        {
+          "detection_ts": 1753879725000,
+          "event_bar_close_ts": 1754051595000,
+          "event_ts": 1754051595000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19190
+        },
+        {
+          "detection_ts": 1753879710000,
+          "event_bar_close_ts": 1754051610000,
+          "event_ts": 1754051610000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 19189
+        },
+        {
+          "detection_ts": 1753879665000,
+          "event_bar_close_ts": 1754051610000,
+          "event_ts": 1754051610000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19188
+        },
+        {
+          "detection_ts": 1753879710000,
+          "event_bar_close_ts": 1754051610000,
+          "event_ts": 1754051610000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19189
+        },
+        {
+          "detection_ts": 1753879425000,
+          "event_bar_close_ts": 1754051625000,
+          "event_ts": 1754051625000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19185
+        },
+        {
+          "detection_ts": 1753878645000,
+          "event_bar_close_ts": 1754051640000,
+          "event_ts": 1754051640000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 19178
+        },
+        {
+          "detection_ts": 1753878645000,
+          "event_bar_close_ts": 1754051655000,
+          "event_ts": 1754051655000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19178
+        },
+        {
+          "detection_ts": 1753878315000,
+          "event_bar_close_ts": 1754051670000,
+          "event_ts": 1754051670000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 19174
+        },
+        {
+          "detection_ts": 1753878315000,
+          "event_bar_close_ts": 1754051685000,
+          "event_ts": 1754051685000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19174
+        },
+        {
+          "detection_ts": 1753870170000,
+          "event_bar_close_ts": 1754051835000,
+          "event_ts": 1754051835000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19056
+        },
+        {
+          "detection_ts": 1753869555000,
+          "event_bar_close_ts": 1754051850000,
+          "event_ts": 1754051850000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 19049
+        },
+        {
+          "detection_ts": 1753705305000,
+          "event_bar_close_ts": 1754051865000,
+          "event_ts": 1754051865000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16540
+        },
+        {
+          "detection_ts": 1753704615000,
+          "event_bar_close_ts": 1754052150000,
+          "event_ts": 1754052150000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 16530
+        },
+        {
+          "detection_ts": 1753704615000,
+          "event_bar_close_ts": 1754052150000,
+          "event_ts": 1754052150000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16530
+        },
+        {
+          "detection_ts": 1753704555000,
+          "event_bar_close_ts": 1754052165000,
+          "event_ts": 1754052165000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 16528
+        },
+        {
+          "detection_ts": 1753704555000,
+          "event_bar_close_ts": 1754052165000,
+          "event_ts": 1754052165000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16528
+        },
+        {
+          "detection_ts": 1753704570000,
+          "event_bar_close_ts": 1754052165000,
+          "event_ts": 1754052165000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16529
+        },
+        {
+          "detection_ts": 1753694565000,
+          "event_bar_close_ts": 1754052255000,
+          "event_ts": 1754052255000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16378
+        },
+        {
+          "detection_ts": 1753683420000,
+          "event_bar_close_ts": 1754052375000,
+          "event_ts": 1754052375000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 16203
+        },
+        {
+          "detection_ts": 1753687560000,
+          "event_bar_close_ts": 1754052375000,
+          "event_ts": 1754052375000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 16281
+        },
+        {
+          "detection_ts": 1753687575000,
+          "event_bar_close_ts": 1754052375000,
+          "event_ts": 1754052375000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 16282
+        },
+        {
+          "detection_ts": 1753687590000,
+          "event_bar_close_ts": 1754052375000,
+          "event_ts": 1754052375000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 16283
+        },
+        {
+          "detection_ts": 1753683420000,
+          "event_bar_close_ts": 1754052375000,
+          "event_ts": 1754052375000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16203
+        },
+        {
+          "detection_ts": 1753683435000,
+          "event_bar_close_ts": 1754052375000,
+          "event_ts": 1754052375000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16204
+        },
+        {
+          "detection_ts": 1753687560000,
+          "event_bar_close_ts": 1754052375000,
+          "event_ts": 1754052375000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16281
+        },
+        {
+          "detection_ts": 1753687575000,
+          "event_bar_close_ts": 1754052375000,
+          "event_ts": 1754052375000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16282
+        },
+        {
+          "detection_ts": 1753687590000,
+          "event_bar_close_ts": 1754052375000,
+          "event_ts": 1754052375000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16283
+        },
+        {
+          "detection_ts": 1753687605000,
+          "event_bar_close_ts": 1754052375000,
+          "event_ts": 1754052375000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16284
+        },
+        {
+          "detection_ts": 1753682535000,
+          "event_bar_close_ts": 1754052390000,
+          "event_ts": 1754052390000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 16185
+        },
+        {
+          "detection_ts": 1753682550000,
+          "event_bar_close_ts": 1754052390000,
+          "event_ts": 1754052390000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16186
+        },
+        {
+          "detection_ts": 1753682970000,
+          "event_bar_close_ts": 1754052390000,
+          "event_ts": 1754052390000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16196
+        },
+        {
+          "detection_ts": 1753682535000,
+          "event_bar_close_ts": 1754052450000,
+          "event_ts": 1754052450000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16185
+        },
+        {
+          "detection_ts": 1753436250000,
+          "event_bar_close_ts": 1754053815000,
+          "event_ts": 1754053815000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 15216
+        },
+        {
+          "detection_ts": 1753450725000,
+          "event_bar_close_ts": 1754053815000,
+          "event_ts": 1754053815000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 15458
+        },
+        {
+          "detection_ts": 1753436250000,
+          "event_bar_close_ts": 1754053815000,
+          "event_ts": 1754053815000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15216
+        },
+        {
+          "detection_ts": 1753436295000,
+          "event_bar_close_ts": 1754053815000,
+          "event_ts": 1754053815000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15217
+        },
+        {
+          "detection_ts": 1753437840000,
+          "event_bar_close_ts": 1754053815000,
+          "event_ts": 1754053815000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15244
+        },
+        {
+          "detection_ts": 1753450725000,
+          "event_bar_close_ts": 1754053815000,
+          "event_ts": 1754053815000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15458
+        },
+        {
+          "detection_ts": 1753432935000,
+          "event_bar_close_ts": 1754053890000,
+          "event_ts": 1754053890000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15156
+        },
+        {
+          "detection_ts": 1753431570000,
+          "event_bar_close_ts": 1754054100000,
+          "event_ts": 1754054100000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 15139
+        },
+        {
+          "detection_ts": 1753431885000,
+          "event_bar_close_ts": 1754054100000,
+          "event_ts": 1754054100000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 15141
+        },
+        {
+          "detection_ts": 1753431885000,
+          "event_bar_close_ts": 1754054100000,
+          "event_ts": 1754054100000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15141
+        },
+        {
+          "detection_ts": 1753431570000,
+          "event_bar_close_ts": 1754054175000,
+          "event_ts": 1754054175000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15139
+        },
+        {
+          "detection_ts": 1753431420000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 15134
+        },
+        {
+          "detection_ts": 1753431435000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 15135
+        },
+        {
+          "detection_ts": 1753431480000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 15137
+        },
+        {
+          "detection_ts": 1753431420000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15134
+        },
+        {
+          "detection_ts": 1753431435000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15135
+        },
+        {
+          "detection_ts": 1753431450000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15136
+        },
+        {
+          "detection_ts": 1753431480000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15137
+        },
+        {
+          "detection_ts": 1753431495000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15138
+        },
+        {
+          "detection_ts": 1753431105000,
+          "event_bar_close_ts": 1754054205000,
+          "event_ts": 1754054205000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 15129
+        },
+        {
+          "detection_ts": 1753430790000,
+          "event_bar_close_ts": 1754054205000,
+          "event_ts": 1754054205000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15127
+        },
+        {
+          "detection_ts": 1753431105000,
+          "event_bar_close_ts": 1754054205000,
+          "event_ts": 1754054205000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15129
+        },
+        {
+          "detection_ts": 1753431120000,
+          "event_bar_close_ts": 1754054205000,
+          "event_ts": 1754054205000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15130
+        },
+        {
+          "detection_ts": 1753430625000,
+          "event_bar_close_ts": 1754058255000,
+          "event_ts": 1754058255000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15124
+        },
+        {
+          "detection_ts": 1753429110000,
+          "event_bar_close_ts": 1754076675000,
+          "event_ts": 1754076675000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 15099
+        },
+        {
+          "detection_ts": 1753429125000,
+          "event_bar_close_ts": 1754076675000,
+          "event_ts": 1754076675000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15100
+        },
+        {
+          "detection_ts": 1753429110000,
+          "event_bar_close_ts": 1754076690000,
+          "event_ts": 1754076690000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15099
+        },
+        {
+          "detection_ts": 1753428945000,
+          "event_bar_close_ts": 1754076750000,
+          "event_ts": 1754076750000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 15096
+        },
+        {
+          "detection_ts": 1753428945000,
+          "event_bar_close_ts": 1754076750000,
+          "event_ts": 1754076750000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15096
+        },
+        {
+          "detection_ts": 1753428960000,
+          "event_bar_close_ts": 1754076750000,
+          "event_ts": 1754076750000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15097
+        },
+        {
+          "detection_ts": 1753428900000,
+          "event_bar_close_ts": 1754076780000,
+          "event_ts": 1754076780000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 15095
+        },
+        {
+          "detection_ts": 1753428855000,
+          "event_bar_close_ts": 1754076825000,
+          "event_ts": 1754076825000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 15094
+        },
+        {
+          "detection_ts": 1753428855000,
+          "event_bar_close_ts": 1754076825000,
+          "event_ts": 1754076825000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15094
+        },
+        {
+          "detection_ts": 1753428900000,
+          "event_bar_close_ts": 1754076825000,
+          "event_ts": 1754076825000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15095
+        },
+        {
+          "detection_ts": 1753428750000,
+          "event_bar_close_ts": 1754076990000,
+          "event_ts": 1754076990000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 15091
+        },
+        {
+          "detection_ts": 1753428750000,
+          "event_bar_close_ts": 1754076990000,
+          "event_ts": 1754076990000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15091
+        },
+        {
+          "detection_ts": 1753428780000,
+          "event_bar_close_ts": 1754076990000,
+          "event_ts": 1754076990000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15092
+        },
+        {
+          "detection_ts": 1753420770000,
+          "event_bar_close_ts": 1754077140000,
+          "event_ts": 1754077140000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 14968
+        },
+        {
+          "detection_ts": 1753420770000,
+          "event_bar_close_ts": 1754077140000,
+          "event_ts": 1754077140000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14968
+        },
+        {
+          "detection_ts": 1753420785000,
+          "event_bar_close_ts": 1754077140000,
+          "event_ts": 1754077140000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14969
+        },
+        {
+          "detection_ts": 1753420710000,
+          "event_bar_close_ts": 1754077170000,
+          "event_ts": 1754077170000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14966
+        },
+        {
+          "detection_ts": 1753419975000,
+          "event_bar_close_ts": 1754080350000,
+          "event_ts": 1754080350000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 14952
+        },
+        {
+          "detection_ts": 1753419990000,
+          "event_bar_close_ts": 1754080350000,
+          "event_ts": 1754080350000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 14953
+        },
+        {
+          "detection_ts": 1753419990000,
+          "event_bar_close_ts": 1754080350000,
+          "event_ts": 1754080350000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14953
+        },
+        {
+          "detection_ts": 1753419975000,
+          "event_bar_close_ts": 1754080455000,
+          "event_ts": 1754080455000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14952
+        },
+        {
+          "detection_ts": 1753419960000,
+          "event_bar_close_ts": 1754080530000,
+          "event_ts": 1754080530000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 14951
+        },
+        {
+          "detection_ts": 1753419960000,
+          "event_bar_close_ts": 1754080560000,
+          "event_ts": 1754080560000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14951
+        },
+        {
+          "detection_ts": 1753416930000,
+          "event_bar_close_ts": 1754080860000,
+          "event_ts": 1754080860000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 14895
+        },
+        {
+          "detection_ts": 1753416930000,
+          "event_bar_close_ts": 1754080860000,
+          "event_ts": 1754080860000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14895
+        },
+        {
+          "detection_ts": 1753416945000,
+          "event_bar_close_ts": 1754080860000,
+          "event_ts": 1754080860000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14896
+        },
+        {
+          "detection_ts": 1753416765000,
+          "event_bar_close_ts": 1754081505000,
+          "event_ts": 1754081505000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14891
+        },
+        {
+          "detection_ts": 1753416780000,
+          "event_bar_close_ts": 1754081505000,
+          "event_ts": 1754081505000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14892
+        },
+        {
+          "detection_ts": 1753416720000,
+          "event_bar_close_ts": 1754081550000,
+          "event_ts": 1754081550000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 14890
+        },
+        {
+          "detection_ts": 1753416720000,
+          "event_bar_close_ts": 1754081550000,
+          "event_ts": 1754081550000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14890
+        },
+        {
+          "detection_ts": 1753412205000,
+          "event_bar_close_ts": 1754305605000,
+          "event_ts": 1754305605000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 14819
+        },
+        {
+          "detection_ts": 1753412220000,
+          "event_bar_close_ts": 1754305605000,
+          "event_ts": 1754305605000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14820
+        },
+        {
+          "detection_ts": 1753412205000,
+          "event_bar_close_ts": 1754305620000,
+          "event_ts": 1754305620000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14819
+        },
+        {
+          "detection_ts": 1753411200000,
+          "event_bar_close_ts": 1754306070000,
+          "event_ts": 1754306070000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14807
+        },
+        {
+          "detection_ts": 1753410840000,
+          "event_bar_close_ts": 1754306175000,
+          "event_ts": 1754306175000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 14802
+        },
+        {
+          "detection_ts": 1753410855000,
+          "event_bar_close_ts": 1754306175000,
+          "event_ts": 1754306175000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14803
+        },
+        {
+          "detection_ts": 1753410840000,
+          "event_bar_close_ts": 1754306205000,
+          "event_ts": 1754306205000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14802
+        },
+        {
+          "detection_ts": 1753410675000,
+          "event_bar_close_ts": 1754306445000,
+          "event_ts": 1754306445000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 14798
+        },
+        {
+          "detection_ts": 1753410675000,
+          "event_bar_close_ts": 1754306445000,
+          "event_ts": 1754306445000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14798
+        },
+        {
+          "detection_ts": 1753410690000,
+          "event_bar_close_ts": 1754306445000,
+          "event_ts": 1754306445000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14799
+        },
+        {
+          "detection_ts": 1753409655000,
+          "event_bar_close_ts": 1754306460000,
+          "event_ts": 1754306460000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14777
+        },
+        {
+          "detection_ts": 1753409475000,
+          "event_bar_close_ts": 1754306490000,
+          "event_ts": 1754306490000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 14774
+        },
+        {
+          "detection_ts": 1753409490000,
+          "event_bar_close_ts": 1754306490000,
+          "event_ts": 1754306490000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14775
+        },
+        {
+          "detection_ts": 1753409475000,
+          "event_bar_close_ts": 1754306505000,
+          "event_ts": 1754306505000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14774
+        },
+        {
+          "detection_ts": 1753409385000,
+          "event_bar_close_ts": 1754306670000,
+          "event_ts": 1754306670000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14771
+        },
+        {
+          "detection_ts": 1753409130000,
+          "event_bar_close_ts": 1754307915000,
+          "event_ts": 1754307915000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 14768
+        },
+        {
+          "detection_ts": 1753409145000,
+          "event_bar_close_ts": 1754307915000,
+          "event_ts": 1754307915000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14769
+        },
+        {
+          "detection_ts": 1753408920000,
+          "event_bar_close_ts": 1754308275000,
+          "event_ts": 1754308275000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 14763
+        },
+        {
+          "detection_ts": 1753408935000,
+          "event_bar_close_ts": 1754308275000,
+          "event_ts": 1754308275000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 14764
+        },
+        {
+          "detection_ts": 1753408935000,
+          "event_bar_close_ts": 1754308275000,
+          "event_ts": 1754308275000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14764
+        },
+        {
+          "detection_ts": 1753409130000,
+          "event_bar_close_ts": 1754308275000,
+          "event_ts": 1754308275000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14768
+        },
+        {
+          "detection_ts": 1753408920000,
+          "event_bar_close_ts": 1754308305000,
+          "event_ts": 1754308305000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14763
+        },
+        {
+          "detection_ts": 1753408815000,
+          "event_bar_close_ts": 1754309115000,
+          "event_ts": 1754309115000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14762
+        },
+        {
+          "detection_ts": 1753405605000,
+          "event_bar_close_ts": 1754312640000,
+          "event_ts": 1754312640000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14718
+        },
+        {
+          "detection_ts": 1753371720000,
+          "event_bar_close_ts": 1754313360000,
+          "event_ts": 1754313360000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14283
+        },
+        {
+          "detection_ts": 1753368930000,
+          "event_bar_close_ts": 1754313540000,
+          "event_ts": 1754313540000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14243
+        },
+        {
+          "detection_ts": 1753368900000,
+          "event_bar_close_ts": 1754313660000,
+          "event_ts": 1754313660000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 14242
+        },
+        {
+          "detection_ts": 1753336995000,
+          "event_bar_close_ts": 1754315205000,
+          "event_ts": 1754315205000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13732
+        },
+        {
+          "detection_ts": 1753336845000,
+          "event_bar_close_ts": 1754315235000,
+          "event_ts": 1754315235000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13730
+        },
+        {
+          "detection_ts": 1753335570000,
+          "event_bar_close_ts": 1754315265000,
+          "event_ts": 1754315265000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13708
+        },
+        {
+          "detection_ts": 1753335495000,
+          "event_bar_close_ts": 1754315280000,
+          "event_ts": 1754315280000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13707
+        },
+        {
+          "detection_ts": 1753333320000,
+          "event_bar_close_ts": 1754315295000,
+          "event_ts": 1754315295000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 13674
+        },
+        {
+          "detection_ts": 1753333380000,
+          "event_bar_close_ts": 1754315295000,
+          "event_ts": 1754315295000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13675
+        },
+        {
+          "detection_ts": 1753333320000,
+          "event_bar_close_ts": 1754315430000,
+          "event_ts": 1754315430000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13674
+        },
+        {
+          "detection_ts": 1753332075000,
+          "event_bar_close_ts": 1754315535000,
+          "event_ts": 1754315535000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13654
+        },
+        {
+          "detection_ts": 1753329930000,
+          "event_bar_close_ts": 1754315580000,
+          "event_ts": 1754315580000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13616
+        },
+        {
+          "detection_ts": 1753329345000,
+          "event_bar_close_ts": 1754315700000,
+          "event_ts": 1754315700000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 13606
+        },
+        {
+          "detection_ts": 1753329330000,
+          "event_bar_close_ts": 1754405655000,
+          "event_ts": 1754405655000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 13605
+        },
+        {
+          "detection_ts": 1753329345000,
+          "event_bar_close_ts": 1754405655000,
+          "event_ts": 1754405655000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13606
+        },
+        {
+          "detection_ts": 1753325655000,
+          "event_bar_close_ts": 1754405670000,
+          "event_ts": 1754405670000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13549
+        },
+        {
+          "detection_ts": 1753329330000,
+          "event_bar_close_ts": 1754405670000,
+          "event_ts": 1754405670000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13605
+        },
+        {
+          "detection_ts": 1753324755000,
+          "event_bar_close_ts": 1754406375000,
+          "event_ts": 1754406375000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13539
+        },
+        {
+          "detection_ts": 1753321875000,
+          "event_bar_close_ts": 1754409045000,
+          "event_ts": 1754409045000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 13501
+        },
+        {
+          "detection_ts": 1753321890000,
+          "event_bar_close_ts": 1754409045000,
+          "event_ts": 1754409045000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13502
+        },
+        {
+          "detection_ts": 1753321875000,
+          "event_bar_close_ts": 1754409735000,
+          "event_ts": 1754409735000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13501
+        },
+        {
+          "detection_ts": 1753320090000,
+          "event_bar_close_ts": 1754551605000,
+          "event_ts": 1754551605000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13482
+        },
+        {
+          "detection_ts": 1753298790000,
+          "event_bar_close_ts": 1754551650000,
+          "event_ts": 1754551650000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 13184
+        },
+        {
+          "detection_ts": 1753298790000,
+          "event_bar_close_ts": 1754551650000,
+          "event_ts": 1754551650000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13184
+        },
+        {
+          "detection_ts": 1753298805000,
+          "event_bar_close_ts": 1754551650000,
+          "event_ts": 1754551650000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13185
+        },
+        {
+          "detection_ts": 1753298700000,
+          "event_bar_close_ts": 1754551950000,
+          "event_ts": 1754551950000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13183
+        },
+        {
+          "detection_ts": 1753297800000,
+          "event_bar_close_ts": 1754552055000,
+          "event_ts": 1754552055000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13170
+        },
+        {
+          "detection_ts": 1753297680000,
+          "event_bar_close_ts": 1754552175000,
+          "event_ts": 1754552175000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13169
+        },
+        {
+          "detection_ts": 1753286430000,
+          "event_bar_close_ts": 1754595480000,
+          "event_ts": 1754595480000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13033
+        },
+        {
+          "detection_ts": 1753286280000,
+          "event_bar_close_ts": 1754598585000,
+          "event_ts": 1754598585000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 13032
+        },
+        {
+          "detection_ts": 1753286265000,
+          "event_bar_close_ts": 1754599200000,
+          "event_ts": 1754599200000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 13031
+        },
+        {
+          "detection_ts": 1753286280000,
+          "event_bar_close_ts": 1754599200000,
+          "event_ts": 1754599200000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13032
+        },
+        {
+          "detection_ts": 1753286250000,
+          "event_bar_close_ts": 1754604015000,
+          "event_ts": 1754604015000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 13030
+        },
+        {
+          "detection_ts": 1753286250000,
+          "event_bar_close_ts": 1754604015000,
+          "event_ts": 1754604015000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13030
+        },
+        {
+          "detection_ts": 1753286265000,
+          "event_bar_close_ts": 1754604015000,
+          "event_ts": 1754604015000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13031
+        },
+        {
+          "detection_ts": 1753286175000,
+          "event_bar_close_ts": 1754604225000,
+          "event_ts": 1754604225000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13027
+        },
+        {
+          "detection_ts": 1753286100000,
+          "event_bar_close_ts": 1754604315000,
+          "event_ts": 1754604315000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 13025
+        },
+        {
+          "detection_ts": 1753286070000,
+          "event_bar_close_ts": 1756389150000,
+          "event_ts": 1756389150000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 13024
+        },
+        {
+          "detection_ts": 1753286070000,
+          "event_bar_close_ts": 1756389150000,
+          "event_ts": 1756389150000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13024
+        },
+        {
+          "detection_ts": 1753286100000,
+          "event_bar_close_ts": 1756389150000,
+          "event_ts": 1756389150000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13025
+        },
+        {
+          "detection_ts": 1753285485000,
+          "event_bar_close_ts": 1756390365000,
+          "event_ts": 1756390365000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13016
+        },
+        {
+          "detection_ts": 1753285200000,
+          "event_bar_close_ts": 1756390515000,
+          "event_ts": 1756390515000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 13010
+        },
+        {
+          "detection_ts": 1753285215000,
+          "event_bar_close_ts": 1756390515000,
+          "event_ts": 1756390515000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13011
+        },
+        {
+          "detection_ts": 1753285200000,
+          "event_bar_close_ts": 1756392030000,
+          "event_ts": 1756392030000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13010
+        },
+        {
+          "detection_ts": 1753284795000,
+          "event_bar_close_ts": 1756392045000,
+          "event_ts": 1756392045000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 13006
+        },
+        {
+          "detection_ts": 1753284795000,
+          "event_bar_close_ts": 1756392045000,
+          "event_ts": 1756392045000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13006
+        },
+        {
+          "detection_ts": 1753284810000,
+          "event_bar_close_ts": 1756392045000,
+          "event_ts": 1756392045000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13007
+        },
+        {
+          "detection_ts": 1753283910000,
+          "event_bar_close_ts": 1756397640000,
+          "event_ts": 1756397640000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12992
+        },
+        {
+          "detection_ts": 1753283850000,
+          "event_bar_close_ts": 1756398045000,
+          "event_ts": 1756398045000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12991
+        },
+        {
+          "detection_ts": 1753283835000,
+          "event_bar_close_ts": 1756398120000,
+          "event_ts": 1756398120000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12990
+        },
+        {
+          "detection_ts": 1753283835000,
+          "event_bar_close_ts": 1756398420000,
+          "event_ts": 1756398420000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12990
+        },
+        {
+          "detection_ts": 1753280115000,
+          "event_bar_close_ts": 1756398615000,
+          "event_ts": 1756398615000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12936
+        },
+        {
+          "detection_ts": 1753280115000,
+          "event_bar_close_ts": 1756399785000,
+          "event_ts": 1756399785000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12936
+        },
+        {
+          "detection_ts": 1753279890000,
+          "event_bar_close_ts": 1756403580000,
+          "event_ts": 1756403580000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12932
+        },
+        {
+          "detection_ts": 1753279875000,
+          "event_bar_close_ts": 1756403595000,
+          "event_ts": 1756403595000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12931
+        },
+        {
+          "detection_ts": 1753279875000,
+          "event_bar_close_ts": 1756406370000,
+          "event_ts": 1756406370000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12931
+        },
+        {
+          "detection_ts": 1753279860000,
+          "event_bar_close_ts": 1756406760000,
+          "event_ts": 1756406760000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12930
+        },
+        {
+          "detection_ts": 1753279860000,
+          "event_bar_close_ts": 1756407195000,
+          "event_ts": 1756407195000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12930
+        },
+        {
+          "detection_ts": 1753275450000,
+          "event_bar_close_ts": 1756410870000,
+          "event_ts": 1756410870000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12876
+        },
+        {
+          "detection_ts": 1753274940000,
+          "event_bar_close_ts": 1756474890000,
+          "event_ts": 1756474890000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12872
+        },
+        {
+          "detection_ts": 1753274910000,
+          "event_bar_close_ts": 1756474950000,
+          "event_ts": 1756474950000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12870
+        },
+        {
+          "detection_ts": 1753274925000,
+          "event_bar_close_ts": 1756474950000,
+          "event_ts": 1756474950000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12871
+        },
+        {
+          "detection_ts": 1753274925000,
+          "event_bar_close_ts": 1756474950000,
+          "event_ts": 1756474950000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12871
+        },
+        {
+          "detection_ts": 1753274940000,
+          "event_bar_close_ts": 1756474950000,
+          "event_ts": 1756474950000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12872
+        },
+        {
+          "detection_ts": 1753274910000,
+          "event_bar_close_ts": 1756475505000,
+          "event_ts": 1756475505000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12870
+        },
+        {
+          "detection_ts": 1753273290000,
+          "event_bar_close_ts": 1756475760000,
+          "event_ts": 1756475760000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12841
+        },
+        {
+          "detection_ts": 1753273260000,
+          "event_bar_close_ts": 1756475865000,
+          "event_ts": 1756475865000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12840
+        },
+        {
+          "detection_ts": 1753273260000,
+          "event_bar_close_ts": 1756475940000,
+          "event_ts": 1756475940000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12840
+        },
+        {
+          "detection_ts": 1753264905000,
+          "event_bar_close_ts": 1756476060000,
+          "event_ts": 1756476060000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12714
+        },
+        {
+          "detection_ts": 1753264860000,
+          "event_bar_close_ts": 1756476075000,
+          "event_ts": 1756476075000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12712
+        },
+        {
+          "detection_ts": 1753264875000,
+          "event_bar_close_ts": 1756476075000,
+          "event_ts": 1756476075000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12713
+        },
+        {
+          "detection_ts": 1753264860000,
+          "event_bar_close_ts": 1756476075000,
+          "event_ts": 1756476075000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12712
+        },
+        {
+          "detection_ts": 1753264875000,
+          "event_bar_close_ts": 1756476075000,
+          "event_ts": 1756476075000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12713
+        },
+        {
+          "detection_ts": 1753263285000,
+          "event_bar_close_ts": 1756476315000,
+          "event_ts": 1756476315000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12691
+        },
+        {
+          "detection_ts": 1753263285000,
+          "event_bar_close_ts": 1756476315000,
+          "event_ts": 1756476315000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12691
+        },
+        {
+          "detection_ts": 1753263315000,
+          "event_bar_close_ts": 1756476315000,
+          "event_ts": 1756476315000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12692
+        },
+        {
+          "detection_ts": 1753262640000,
+          "event_bar_close_ts": 1756476330000,
+          "event_ts": 1756476330000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12679
+        },
+        {
+          "detection_ts": 1753262640000,
+          "event_bar_close_ts": 1756476330000,
+          "event_ts": 1756476330000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12679
+        },
+        {
+          "detection_ts": 1753262655000,
+          "event_bar_close_ts": 1756476330000,
+          "event_ts": 1756476330000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12680
+        },
+        {
+          "detection_ts": 1753230555000,
+          "event_bar_close_ts": 1756476615000,
+          "event_ts": 1756476615000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12194
+        },
+        {
+          "detection_ts": 1753230555000,
+          "event_bar_close_ts": 1756476765000,
+          "event_ts": 1756476765000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12194
+        },
+        {
+          "detection_ts": 1753230510000,
+          "event_bar_close_ts": 1756476810000,
+          "event_ts": 1756476810000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12193
+        },
+        {
+          "detection_ts": 1753230345000,
+          "event_bar_close_ts": 1756476825000,
+          "event_ts": 1756476825000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12189
+        },
+        {
+          "detection_ts": 1753230345000,
+          "event_bar_close_ts": 1756477860000,
+          "event_ts": 1756477860000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12189
+        }
+      ],
+      "orphan_fill_n": 159,
+      "orphan_touch_n": 75
+    },
+    "1h": {
+      "all_orphans_left_truncated": true,
+      "first_formed_detection_ts": 1754056800000,
+      "formed_fill_without_prior_touch_n": 4,
+      "formed_n": 523,
+      "orphan_detection_max": 1753930800000,
+      "orphan_events": [
+        {
+          "detection_ts": 1753930800000,
+          "event_bar_close_ts": 1754006400000,
+          "event_ts": 1754006400000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 40
+        },
+        {
+          "detection_ts": 1753923600000,
+          "event_bar_close_ts": 1754013600000,
+          "event_ts": 1754013600000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 39
+        },
+        {
+          "detection_ts": 1753884000000,
+          "event_bar_close_ts": 1754053200000,
+          "event_ts": 1754053200000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 34
+        },
+        {
+          "detection_ts": 1753711200000,
+          "event_bar_close_ts": 1754053200000,
+          "event_ts": 1754053200000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 30
+        },
+        {
+          "detection_ts": 1753884000000,
+          "event_bar_close_ts": 1754053200000,
+          "event_ts": 1754053200000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 34
+        },
+        {
+          "detection_ts": 1753437600000,
+          "event_bar_close_ts": 1754056800000,
+          "event_ts": 1754056800000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 27
+        },
+        {
+          "detection_ts": 1753437600000,
+          "event_bar_close_ts": 1754056800000,
+          "event_ts": 1754056800000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 27
+        },
+        {
+          "detection_ts": 1753416000000,
+          "event_bar_close_ts": 1754308800000,
+          "event_ts": 1754308800000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 26
+        },
+        {
+          "detection_ts": 1753416000000,
+          "event_bar_close_ts": 1754308800000,
+          "event_ts": 1754308800000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 26
+        },
+        {
+          "detection_ts": 1753290000000,
+          "event_bar_close_ts": 1754596800000,
+          "event_ts": 1754596800000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 24
+        },
+        {
+          "detection_ts": 1753293600000,
+          "event_bar_close_ts": 1754596800000,
+          "event_ts": 1754596800000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 25
+        },
+        {
+          "detection_ts": 1753290000000,
+          "event_bar_close_ts": 1756393200000,
+          "event_ts": 1756393200000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 24
+        }
+      ],
+      "orphan_fill_n": 7,
+      "orphan_touch_n": 5
+    },
+    "1m": {
+      "all_orphans_left_truncated": true,
+      "first_formed_detection_ts": 1753979160000,
+      "formed_fill_without_prior_touch_n": 81,
+      "formed_n": 43701,
+      "orphan_detection_max": 1753978380000,
+      "orphan_events": [
+        {
+          "detection_ts": 1753978380000,
+          "event_bar_close_ts": 1753978560000,
+          "event_ts": 1753978560000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 3761
+        },
+        {
+          "detection_ts": 1753978380000,
+          "event_bar_close_ts": 1753978560000,
+          "event_ts": 1753978560000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3761
+        },
+        {
+          "detection_ts": 1753977780000,
+          "event_bar_close_ts": 1753979880000,
+          "event_ts": 1753979880000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 3758
+        },
+        {
+          "detection_ts": 1753977840000,
+          "event_bar_close_ts": 1753979880000,
+          "event_ts": 1753979880000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3759
+        },
+        {
+          "detection_ts": 1753977720000,
+          "event_bar_close_ts": 1753980060000,
+          "event_ts": 1753980060000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 3757
+        },
+        {
+          "detection_ts": 1753977720000,
+          "event_bar_close_ts": 1753980060000,
+          "event_ts": 1753980060000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3757
+        },
+        {
+          "detection_ts": 1753977780000,
+          "event_bar_close_ts": 1753980060000,
+          "event_ts": 1753980060000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3758
+        },
+        {
+          "detection_ts": 1753976400000,
+          "event_bar_close_ts": 1753980180000,
+          "event_ts": 1753980180000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3753
+        },
+        {
+          "detection_ts": 1753976340000,
+          "event_bar_close_ts": 1753980360000,
+          "event_ts": 1753980360000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 3752
+        },
+        {
+          "detection_ts": 1753976340000,
+          "event_bar_close_ts": 1753980480000,
+          "event_ts": 1753980480000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3752
+        },
+        {
+          "detection_ts": 1753921920000,
+          "event_bar_close_ts": 1754013120000,
+          "event_ts": 1754013120000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3590
+        },
+        {
+          "detection_ts": 1753919520000,
+          "event_bar_close_ts": 1754013240000,
+          "event_ts": 1754013240000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3581
+        },
+        {
+          "detection_ts": 1753919340000,
+          "event_bar_close_ts": 1754013300000,
+          "event_ts": 1754013300000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3580
+        },
+        {
+          "detection_ts": 1753971600000,
+          "event_bar_close_ts": 1754027580000,
+          "event_ts": 1754027580000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 3736
+        },
+        {
+          "detection_ts": 1753971600000,
+          "event_bar_close_ts": 1754027580000,
+          "event_ts": 1754027580000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3736
+        },
+        {
+          "detection_ts": 1753971660000,
+          "event_bar_close_ts": 1754027580000,
+          "event_ts": 1754027580000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3737
+        },
+        {
+          "detection_ts": 1753969380000,
+          "event_bar_close_ts": 1754051460000,
+          "event_ts": 1754051460000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 3734
+        },
+        {
+          "detection_ts": 1753953660000,
+          "event_bar_close_ts": 1754051460000,
+          "event_ts": 1754051460000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3697
+        },
+        {
+          "detection_ts": 1753968660000,
+          "event_bar_close_ts": 1754051460000,
+          "event_ts": 1754051460000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3733
+        },
+        {
+          "detection_ts": 1753969380000,
+          "event_bar_close_ts": 1754051460000,
+          "event_ts": 1754051460000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3734
+        },
+        {
+          "detection_ts": 1753879980000,
+          "event_bar_close_ts": 1754051520000,
+          "event_ts": 1754051520000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 3497
+        },
+        {
+          "detection_ts": 1753880040000,
+          "event_bar_close_ts": 1754051520000,
+          "event_ts": 1754051520000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 3498
+        },
+        {
+          "detection_ts": 1753879980000,
+          "event_bar_close_ts": 1754051520000,
+          "event_ts": 1754051520000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3497
+        },
+        {
+          "detection_ts": 1753880040000,
+          "event_bar_close_ts": 1754051520000,
+          "event_ts": 1754051520000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3498
+        },
+        {
+          "detection_ts": 1753880100000,
+          "event_bar_close_ts": 1754051520000,
+          "event_ts": 1754051520000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3499
+        },
+        {
+          "detection_ts": 1753879800000,
+          "event_bar_close_ts": 1754051580000,
+          "event_ts": 1754051580000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 3496
+        },
+        {
+          "detection_ts": 1753879740000,
+          "event_bar_close_ts": 1754051640000,
+          "event_ts": 1754051640000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 3495
+        },
+        {
+          "detection_ts": 1753879740000,
+          "event_bar_close_ts": 1754051640000,
+          "event_ts": 1754051640000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3495
+        },
+        {
+          "detection_ts": 1753879800000,
+          "event_bar_close_ts": 1754051640000,
+          "event_ts": 1754051640000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3496
+        },
+        {
+          "detection_ts": 1753878720000,
+          "event_bar_close_ts": 1754051700000,
+          "event_ts": 1754051700000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3493
+        },
+        {
+          "detection_ts": 1753870260000,
+          "event_bar_close_ts": 1754051880000,
+          "event_ts": 1754051880000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3474
+        },
+        {
+          "detection_ts": 1753704600000,
+          "event_bar_close_ts": 1754052180000,
+          "event_ts": 1754052180000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 3016
+        },
+        {
+          "detection_ts": 1753704660000,
+          "event_bar_close_ts": 1754052180000,
+          "event_ts": 1754052180000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 3017
+        },
+        {
+          "detection_ts": 1753704600000,
+          "event_bar_close_ts": 1754052180000,
+          "event_ts": 1754052180000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3016
+        },
+        {
+          "detection_ts": 1753704660000,
+          "event_bar_close_ts": 1754052180000,
+          "event_ts": 1754052180000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3017
+        },
+        {
+          "detection_ts": 1753704720000,
+          "event_bar_close_ts": 1754052180000,
+          "event_ts": 1754052180000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 3018
+        },
+        {
+          "detection_ts": 1753682640000,
+          "event_bar_close_ts": 1754052420000,
+          "event_ts": 1754052420000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2967
+        },
+        {
+          "detection_ts": 1753682640000,
+          "event_bar_close_ts": 1754052420000,
+          "event_ts": 1754052420000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2967
+        },
+        {
+          "detection_ts": 1753687680000,
+          "event_bar_close_ts": 1754052420000,
+          "event_ts": 1754052420000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2980
+        },
+        {
+          "detection_ts": 1753450800000,
+          "event_bar_close_ts": 1754053800000,
+          "event_ts": 1754053800000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2825
+        },
+        {
+          "detection_ts": 1753436340000,
+          "event_bar_close_ts": 1754053860000,
+          "event_ts": 1754053860000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2784
+        },
+        {
+          "detection_ts": 1753450800000,
+          "event_bar_close_ts": 1754053860000,
+          "event_ts": 1754053860000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2825
+        },
+        {
+          "detection_ts": 1753432140000,
+          "event_bar_close_ts": 1754054040000,
+          "event_ts": 1754054040000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2769
+        },
+        {
+          "detection_ts": 1753432140000,
+          "event_bar_close_ts": 1754054100000,
+          "event_ts": 1754054100000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2769
+        },
+        {
+          "detection_ts": 1753431480000,
+          "event_bar_close_ts": 1754054220000,
+          "event_ts": 1754054220000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2765
+        },
+        {
+          "detection_ts": 1753431540000,
+          "event_bar_close_ts": 1754054220000,
+          "event_ts": 1754054220000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2766
+        },
+        {
+          "detection_ts": 1753431480000,
+          "event_bar_close_ts": 1754054220000,
+          "event_ts": 1754054220000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2765
+        },
+        {
+          "detection_ts": 1753431540000,
+          "event_bar_close_ts": 1754054220000,
+          "event_ts": 1754054220000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2766
+        },
+        {
+          "detection_ts": 1753431660000,
+          "event_bar_close_ts": 1754054220000,
+          "event_ts": 1754054220000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2767
+        },
+        {
+          "detection_ts": 1753429020000,
+          "event_bar_close_ts": 1754076720000,
+          "event_ts": 1754076720000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2761
+        },
+        {
+          "detection_ts": 1753428960000,
+          "event_bar_close_ts": 1754076780000,
+          "event_ts": 1754076780000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2760
+        },
+        {
+          "detection_ts": 1753429020000,
+          "event_bar_close_ts": 1754076780000,
+          "event_ts": 1754076780000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2761
+        },
+        {
+          "detection_ts": 1753428960000,
+          "event_bar_close_ts": 1754076840000,
+          "event_ts": 1754076840000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2760
+        },
+        {
+          "detection_ts": 1753420800000,
+          "event_bar_close_ts": 1754077200000,
+          "event_ts": 1754077200000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2740
+        },
+        {
+          "detection_ts": 1753420800000,
+          "event_bar_close_ts": 1754077200000,
+          "event_ts": 1754077200000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2740
+        },
+        {
+          "detection_ts": 1753420080000,
+          "event_bar_close_ts": 1754077800000,
+          "event_ts": 1754077800000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2737
+        },
+        {
+          "detection_ts": 1753420080000,
+          "event_bar_close_ts": 1754080380000,
+          "event_ts": 1754080380000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2737
+        },
+        {
+          "detection_ts": 1753417020000,
+          "event_bar_close_ts": 1754080860000,
+          "event_ts": 1754080860000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2725
+        },
+        {
+          "detection_ts": 1753412280000,
+          "event_bar_close_ts": 1754305620000,
+          "event_ts": 1754305620000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2716
+        },
+        {
+          "detection_ts": 1753410900000,
+          "event_bar_close_ts": 1754306220000,
+          "event_ts": 1754306220000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2715
+        },
+        {
+          "detection_ts": 1753410780000,
+          "event_bar_close_ts": 1754306340000,
+          "event_ts": 1754306340000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2714
+        },
+        {
+          "detection_ts": 1753408860000,
+          "event_bar_close_ts": 1754308320000,
+          "event_ts": 1754308320000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2711
+        },
+        {
+          "detection_ts": 1753408920000,
+          "event_bar_close_ts": 1754308320000,
+          "event_ts": 1754308320000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2712
+        },
+        {
+          "detection_ts": 1753408980000,
+          "event_bar_close_ts": 1754308320000,
+          "event_ts": 1754308320000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2713
+        },
+        {
+          "detection_ts": 1753408920000,
+          "event_bar_close_ts": 1754308320000,
+          "event_ts": 1754308320000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2712
+        },
+        {
+          "detection_ts": 1753408980000,
+          "event_bar_close_ts": 1754308320000,
+          "event_ts": 1754308320000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2713
+        },
+        {
+          "detection_ts": 1753408860000,
+          "event_bar_close_ts": 1754309160000,
+          "event_ts": 1754309160000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2711
+        },
+        {
+          "detection_ts": 1753333440000,
+          "event_bar_close_ts": 1754315280000,
+          "event_ts": 1754315280000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2497
+        },
+        {
+          "detection_ts": 1753335660000,
+          "event_bar_close_ts": 1754315280000,
+          "event_ts": 1754315280000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2508
+        },
+        {
+          "detection_ts": 1753333440000,
+          "event_bar_close_ts": 1754315340000,
+          "event_ts": 1754315340000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2497
+        },
+        {
+          "detection_ts": 1753332120000,
+          "event_bar_close_ts": 1754315580000,
+          "event_ts": 1754315580000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2492
+        },
+        {
+          "detection_ts": 1753320180000,
+          "event_bar_close_ts": 1754551620000,
+          "event_ts": 1754551620000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2467
+        },
+        {
+          "detection_ts": 1753298880000,
+          "event_bar_close_ts": 1754551680000,
+          "event_ts": 1754551680000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2417
+        },
+        {
+          "detection_ts": 1753298760000,
+          "event_bar_close_ts": 1754551980000,
+          "event_ts": 1754551980000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2416
+        },
+        {
+          "detection_ts": 1753298760000,
+          "event_bar_close_ts": 1754551980000,
+          "event_ts": 1754551980000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2416
+        },
+        {
+          "detection_ts": 1753286460000,
+          "event_bar_close_ts": 1754595480000,
+          "event_ts": 1754595480000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2389
+        },
+        {
+          "detection_ts": 1753286520000,
+          "event_bar_close_ts": 1754595480000,
+          "event_ts": 1754595480000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2390
+        },
+        {
+          "detection_ts": 1753286460000,
+          "event_bar_close_ts": 1754595720000,
+          "event_ts": 1754595720000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2389
+        },
+        {
+          "detection_ts": 1753286340000,
+          "event_bar_close_ts": 1754597280000,
+          "event_ts": 1754597280000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2388
+        },
+        {
+          "detection_ts": 1753286340000,
+          "event_bar_close_ts": 1754599200000,
+          "event_ts": 1754599200000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2388
+        },
+        {
+          "detection_ts": 1753286220000,
+          "event_bar_close_ts": 1754604060000,
+          "event_ts": 1754604060000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2387
+        },
+        {
+          "detection_ts": 1753286160000,
+          "event_bar_close_ts": 1754604240000,
+          "event_ts": 1754604240000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2386
+        },
+        {
+          "detection_ts": 1753286220000,
+          "event_bar_close_ts": 1754604240000,
+          "event_ts": 1754604240000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2387
+        },
+        {
+          "detection_ts": 1753286160000,
+          "event_bar_close_ts": 1756389180000,
+          "event_ts": 1756389180000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2386
+        },
+        {
+          "detection_ts": 1753283940000,
+          "event_bar_close_ts": 1756397640000,
+          "event_ts": 1756397640000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2382
+        },
+        {
+          "detection_ts": 1753283940000,
+          "event_bar_close_ts": 1756398060000,
+          "event_ts": 1756398060000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2382
+        },
+        {
+          "detection_ts": 1753279980000,
+          "event_bar_close_ts": 1756403580000,
+          "event_ts": 1756403580000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2373
+        },
+        {
+          "detection_ts": 1753275720000,
+          "event_bar_close_ts": 1756407300000,
+          "event_ts": 1756407300000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2363
+        },
+        {
+          "detection_ts": 1753275000000,
+          "event_bar_close_ts": 1756474920000,
+          "event_ts": 1756474920000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2362
+        },
+        {
+          "detection_ts": 1753275000000,
+          "event_bar_close_ts": 1756474980000,
+          "event_ts": 1756474980000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2362
+        },
+        {
+          "detection_ts": 1753273380000,
+          "event_bar_close_ts": 1756475760000,
+          "event_ts": 1756475760000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2359
+        },
+        {
+          "detection_ts": 1753265040000,
+          "event_bar_close_ts": 1756476060000,
+          "event_ts": 1756476060000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2338
+        },
+        {
+          "detection_ts": 1753264920000,
+          "event_bar_close_ts": 1756476120000,
+          "event_ts": 1756476120000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 2337
+        },
+        {
+          "detection_ts": 1753264920000,
+          "event_bar_close_ts": 1756476120000,
+          "event_ts": 1756476120000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2337
+        },
+        {
+          "detection_ts": 1753263360000,
+          "event_bar_close_ts": 1756476360000,
+          "event_ts": 1756476360000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 2335
+        }
+      ],
+      "orphan_fill_n": 62,
+      "orphan_touch_n": 33
+    },
+    "30s": {
+      "all_orphans_left_truncated": true,
+      "first_formed_detection_ts": 1753978530000,
+      "formed_fill_without_prior_touch_n": 213,
+      "formed_n": 99866,
+      "orphan_detection_max": 1753978320000,
+      "orphan_events": [
+        {
+          "detection_ts": 1753978320000,
+          "event_bar_close_ts": 1753978530000,
+          "event_ts": 1753978530000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 8777
+        },
+        {
+          "detection_ts": 1753978320000,
+          "event_bar_close_ts": 1753979130000,
+          "event_ts": 1753979130000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8777
+        },
+        {
+          "detection_ts": 1753977720000,
+          "event_bar_close_ts": 1753979880000,
+          "event_ts": 1753979880000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 8771
+        },
+        {
+          "detection_ts": 1753977780000,
+          "event_bar_close_ts": 1753979880000,
+          "event_ts": 1753979880000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8772
+        },
+        {
+          "detection_ts": 1753977690000,
+          "event_bar_close_ts": 1753980030000,
+          "event_ts": 1753980030000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 8770
+        },
+        {
+          "detection_ts": 1753977720000,
+          "event_bar_close_ts": 1753980030000,
+          "event_ts": 1753980030000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8771
+        },
+        {
+          "detection_ts": 1753977690000,
+          "event_bar_close_ts": 1753980060000,
+          "event_ts": 1753980060000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8770
+        },
+        {
+          "detection_ts": 1753976340000,
+          "event_bar_close_ts": 1753980180000,
+          "event_ts": 1753980180000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8763
+        },
+        {
+          "detection_ts": 1753976250000,
+          "event_bar_close_ts": 1753980510000,
+          "event_ts": 1753980510000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 8762
+        },
+        {
+          "detection_ts": 1753976250000,
+          "event_bar_close_ts": 1753980510000,
+          "event_ts": 1753980510000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8762
+        },
+        {
+          "detection_ts": 1753926630000,
+          "event_bar_close_ts": 1753999290000,
+          "event_ts": 1753999290000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 8439
+        },
+        {
+          "detection_ts": 1753926630000,
+          "event_bar_close_ts": 1754004000000,
+          "event_ts": 1754004000000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8439
+        },
+        {
+          "detection_ts": 1753926510000,
+          "event_bar_close_ts": 1754006370000,
+          "event_ts": 1754006370000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 8438
+        },
+        {
+          "detection_ts": 1753926510000,
+          "event_bar_close_ts": 1754006430000,
+          "event_ts": 1754006430000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8438
+        },
+        {
+          "detection_ts": 1753921860000,
+          "event_bar_close_ts": 1754013120000,
+          "event_ts": 1754013120000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8413
+        },
+        {
+          "detection_ts": 1753919460000,
+          "event_bar_close_ts": 1754013300000,
+          "event_ts": 1754013300000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8394
+        },
+        {
+          "detection_ts": 1753971570000,
+          "event_bar_close_ts": 1754027580000,
+          "event_ts": 1754027580000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 8729
+        },
+        {
+          "detection_ts": 1753971570000,
+          "event_bar_close_ts": 1754027580000,
+          "event_ts": 1754027580000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8729
+        },
+        {
+          "detection_ts": 1753971600000,
+          "event_bar_close_ts": 1754027580000,
+          "event_ts": 1754027580000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8730
+        },
+        {
+          "detection_ts": 1753969350000,
+          "event_bar_close_ts": 1754051430000,
+          "event_ts": 1754051430000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 8723
+        },
+        {
+          "detection_ts": 1753950330000,
+          "event_bar_close_ts": 1754051430000,
+          "event_ts": 1754051430000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8620
+        },
+        {
+          "detection_ts": 1753953600000,
+          "event_bar_close_ts": 1754051430000,
+          "event_ts": 1754051430000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8640
+        },
+        {
+          "detection_ts": 1753969350000,
+          "event_bar_close_ts": 1754051430000,
+          "event_ts": 1754051430000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8723
+        },
+        {
+          "detection_ts": 1753879950000,
+          "event_bar_close_ts": 1754051490000,
+          "event_ts": 1754051490000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 8183
+        },
+        {
+          "detection_ts": 1753879950000,
+          "event_bar_close_ts": 1754051490000,
+          "event_ts": 1754051490000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8183
+        },
+        {
+          "detection_ts": 1753879860000,
+          "event_bar_close_ts": 1754051550000,
+          "event_ts": 1754051550000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 8182
+        },
+        {
+          "detection_ts": 1753879860000,
+          "event_bar_close_ts": 1754051550000,
+          "event_ts": 1754051550000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8182
+        },
+        {
+          "detection_ts": 1753879680000,
+          "event_bar_close_ts": 1754051610000,
+          "event_ts": 1754051610000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 8179
+        },
+        {
+          "detection_ts": 1753879680000,
+          "event_bar_close_ts": 1754051610000,
+          "event_ts": 1754051610000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8179
+        },
+        {
+          "detection_ts": 1753879740000,
+          "event_bar_close_ts": 1754051610000,
+          "event_ts": 1754051610000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8180
+        },
+        {
+          "detection_ts": 1753878660000,
+          "event_bar_close_ts": 1754051640000,
+          "event_ts": 1754051640000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 8174
+        },
+        {
+          "detection_ts": 1753879440000,
+          "event_bar_close_ts": 1754051640000,
+          "event_ts": 1754051640000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8177
+        },
+        {
+          "detection_ts": 1753878330000,
+          "event_bar_close_ts": 1754051670000,
+          "event_ts": 1754051670000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 8171
+        },
+        {
+          "detection_ts": 1753878660000,
+          "event_bar_close_ts": 1754051670000,
+          "event_ts": 1754051670000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8174
+        },
+        {
+          "detection_ts": 1753878330000,
+          "event_bar_close_ts": 1754051700000,
+          "event_ts": 1754051700000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8171
+        },
+        {
+          "detection_ts": 1753869570000,
+          "event_bar_close_ts": 1754051850000,
+          "event_ts": 1754051850000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8114
+        },
+        {
+          "detection_ts": 1753870200000,
+          "event_bar_close_ts": 1754051850000,
+          "event_ts": 1754051850000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 8118
+        },
+        {
+          "detection_ts": 1753704660000,
+          "event_bar_close_ts": 1754052150000,
+          "event_ts": 1754052150000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 7055
+        },
+        {
+          "detection_ts": 1753704570000,
+          "event_bar_close_ts": 1754052180000,
+          "event_ts": 1754052180000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 7053
+        },
+        {
+          "detection_ts": 1753704600000,
+          "event_bar_close_ts": 1754052180000,
+          "event_ts": 1754052180000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 7054
+        },
+        {
+          "detection_ts": 1753704570000,
+          "event_bar_close_ts": 1754052180000,
+          "event_ts": 1754052180000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 7053
+        },
+        {
+          "detection_ts": 1753704600000,
+          "event_bar_close_ts": 1754052180000,
+          "event_ts": 1754052180000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 7054
+        },
+        {
+          "detection_ts": 1753682580000,
+          "event_bar_close_ts": 1754052390000,
+          "event_ts": 1754052390000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6918
+        },
+        {
+          "detection_ts": 1753683000000,
+          "event_bar_close_ts": 1754052390000,
+          "event_ts": 1754052390000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6924
+        },
+        {
+          "detection_ts": 1753687590000,
+          "event_bar_close_ts": 1754052390000,
+          "event_ts": 1754052390000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6957
+        },
+        {
+          "detection_ts": 1753682580000,
+          "event_bar_close_ts": 1754052390000,
+          "event_ts": 1754052390000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6918
+        },
+        {
+          "detection_ts": 1753683000000,
+          "event_bar_close_ts": 1754052390000,
+          "event_ts": 1754052390000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6924
+        },
+        {
+          "detection_ts": 1753683450000,
+          "event_bar_close_ts": 1754052390000,
+          "event_ts": 1754052390000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6928
+        },
+        {
+          "detection_ts": 1753687590000,
+          "event_bar_close_ts": 1754052390000,
+          "event_ts": 1754052390000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6957
+        },
+        {
+          "detection_ts": 1753687620000,
+          "event_bar_close_ts": 1754052390000,
+          "event_ts": 1754052390000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6958
+        },
+        {
+          "detection_ts": 1753436280000,
+          "event_bar_close_ts": 1754053830000,
+          "event_ts": 1754053830000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6485
+        },
+        {
+          "detection_ts": 1753450740000,
+          "event_bar_close_ts": 1754053830000,
+          "event_ts": 1754053830000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6584
+        },
+        {
+          "detection_ts": 1753436280000,
+          "event_bar_close_ts": 1754053830000,
+          "event_ts": 1754053830000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6485
+        },
+        {
+          "detection_ts": 1753450740000,
+          "event_bar_close_ts": 1754053830000,
+          "event_ts": 1754053830000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6584
+        },
+        {
+          "detection_ts": 1753450770000,
+          "event_bar_close_ts": 1754053830000,
+          "event_ts": 1754053830000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6585
+        },
+        {
+          "detection_ts": 1753431450000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6446
+        },
+        {
+          "detection_ts": 1753431480000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6447
+        },
+        {
+          "detection_ts": 1753431510000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6448
+        },
+        {
+          "detection_ts": 1753431450000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6446
+        },
+        {
+          "detection_ts": 1753431480000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6447
+        },
+        {
+          "detection_ts": 1753431510000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6448
+        },
+        {
+          "detection_ts": 1753431600000,
+          "event_bar_close_ts": 1754054190000,
+          "event_ts": 1754054190000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6449
+        },
+        {
+          "detection_ts": 1753429140000,
+          "event_bar_close_ts": 1754076690000,
+          "event_ts": 1754076690000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6434
+        },
+        {
+          "detection_ts": 1753428990000,
+          "event_bar_close_ts": 1754076720000,
+          "event_ts": 1754076720000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6433
+        },
+        {
+          "detection_ts": 1753428960000,
+          "event_bar_close_ts": 1754076750000,
+          "event_ts": 1754076750000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6432
+        },
+        {
+          "detection_ts": 1753428960000,
+          "event_bar_close_ts": 1754076750000,
+          "event_ts": 1754076750000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6432
+        },
+        {
+          "detection_ts": 1753428990000,
+          "event_bar_close_ts": 1754076750000,
+          "event_ts": 1754076750000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6433
+        },
+        {
+          "detection_ts": 1753428930000,
+          "event_bar_close_ts": 1754076780000,
+          "event_ts": 1754076780000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6431
+        },
+        {
+          "detection_ts": 1753428930000,
+          "event_bar_close_ts": 1754076840000,
+          "event_ts": 1754076840000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6431
+        },
+        {
+          "detection_ts": 1753428780000,
+          "event_bar_close_ts": 1754076990000,
+          "event_ts": 1754076990000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6430
+        },
+        {
+          "detection_ts": 1753428780000,
+          "event_bar_close_ts": 1754076990000,
+          "event_ts": 1754076990000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6430
+        },
+        {
+          "detection_ts": 1753420740000,
+          "event_bar_close_ts": 1754077170000,
+          "event_ts": 1754077170000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6379
+        },
+        {
+          "detection_ts": 1753420020000,
+          "event_bar_close_ts": 1754077800000,
+          "event_ts": 1754077800000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6372
+        },
+        {
+          "detection_ts": 1753419990000,
+          "event_bar_close_ts": 1754080350000,
+          "event_ts": 1754080350000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6371
+        },
+        {
+          "detection_ts": 1753419990000,
+          "event_bar_close_ts": 1754080350000,
+          "event_ts": 1754080350000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6371
+        },
+        {
+          "detection_ts": 1753420020000,
+          "event_bar_close_ts": 1754080350000,
+          "event_ts": 1754080350000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6372
+        },
+        {
+          "detection_ts": 1753416960000,
+          "event_bar_close_ts": 1754080860000,
+          "event_ts": 1754080860000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6344
+        },
+        {
+          "detection_ts": 1753416780000,
+          "event_bar_close_ts": 1754081520000,
+          "event_ts": 1754081520000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6342
+        },
+        {
+          "detection_ts": 1753416810000,
+          "event_bar_close_ts": 1754081520000,
+          "event_ts": 1754081520000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6343
+        },
+        {
+          "detection_ts": 1753412250000,
+          "event_bar_close_ts": 1754305620000,
+          "event_ts": 1754305620000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6310
+        },
+        {
+          "detection_ts": 1753410870000,
+          "event_bar_close_ts": 1754306220000,
+          "event_ts": 1754306220000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6305
+        },
+        {
+          "detection_ts": 1753409670000,
+          "event_bar_close_ts": 1754306460000,
+          "event_ts": 1754306460000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6294
+        },
+        {
+          "detection_ts": 1753409520000,
+          "event_bar_close_ts": 1754306490000,
+          "event_ts": 1754306490000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6293
+        },
+        {
+          "detection_ts": 1753408950000,
+          "event_bar_close_ts": 1754308290000,
+          "event_ts": 1754308290000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6291
+        },
+        {
+          "detection_ts": 1753408830000,
+          "event_bar_close_ts": 1754308320000,
+          "event_ts": 1754308320000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 6290
+        },
+        {
+          "detection_ts": 1753408950000,
+          "event_bar_close_ts": 1754308320000,
+          "event_ts": 1754308320000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6291
+        },
+        {
+          "detection_ts": 1753408830000,
+          "event_bar_close_ts": 1754309130000,
+          "event_ts": 1754309130000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6290
+        },
+        {
+          "detection_ts": 1753371750000,
+          "event_bar_close_ts": 1754313360000,
+          "event_ts": 1754313360000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 6085
+        },
+        {
+          "detection_ts": 1753335510000,
+          "event_bar_close_ts": 1754315280000,
+          "event_ts": 1754315280000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5847
+        },
+        {
+          "detection_ts": 1753335510000,
+          "event_bar_close_ts": 1754315280000,
+          "event_ts": 1754315280000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5847
+        },
+        {
+          "detection_ts": 1753335600000,
+          "event_bar_close_ts": 1754315280000,
+          "event_ts": 1754315280000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5848
+        },
+        {
+          "detection_ts": 1753333350000,
+          "event_bar_close_ts": 1754315310000,
+          "event_ts": 1754315310000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5828
+        },
+        {
+          "detection_ts": 1753333350000,
+          "event_bar_close_ts": 1754315310000,
+          "event_ts": 1754315310000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5828
+        },
+        {
+          "detection_ts": 1753333410000,
+          "event_bar_close_ts": 1754315310000,
+          "event_ts": 1754315310000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5829
+        },
+        {
+          "detection_ts": 1753332090000,
+          "event_bar_close_ts": 1754315550000,
+          "event_ts": 1754315550000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5819
+        },
+        {
+          "detection_ts": 1753329960000,
+          "event_bar_close_ts": 1754315580000,
+          "event_ts": 1754315580000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5801
+        },
+        {
+          "detection_ts": 1753324470000,
+          "event_bar_close_ts": 1754406480000,
+          "event_ts": 1754406480000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5770
+        },
+        {
+          "detection_ts": 1753321920000,
+          "event_bar_close_ts": 1754409060000,
+          "event_ts": 1754409060000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5750
+        },
+        {
+          "detection_ts": 1753320120000,
+          "event_bar_close_ts": 1754551620000,
+          "event_ts": 1754551620000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5739
+        },
+        {
+          "detection_ts": 1753298820000,
+          "event_bar_close_ts": 1754551650000,
+          "event_ts": 1754551650000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5603
+        },
+        {
+          "detection_ts": 1753298730000,
+          "event_bar_close_ts": 1754551950000,
+          "event_ts": 1754551950000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5602
+        },
+        {
+          "detection_ts": 1753297830000,
+          "event_bar_close_ts": 1754552070000,
+          "event_ts": 1754552070000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5598
+        },
+        {
+          "detection_ts": 1753286460000,
+          "event_bar_close_ts": 1754552400000,
+          "event_ts": 1754552400000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5547
+        },
+        {
+          "detection_ts": 1753286430000,
+          "event_bar_close_ts": 1754595480000,
+          "event_ts": 1754595480000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5546
+        },
+        {
+          "detection_ts": 1753286460000,
+          "event_bar_close_ts": 1754595480000,
+          "event_ts": 1754595480000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5547
+        },
+        {
+          "detection_ts": 1753286430000,
+          "event_bar_close_ts": 1754595510000,
+          "event_ts": 1754595510000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5546
+        },
+        {
+          "detection_ts": 1753286280000,
+          "event_bar_close_ts": 1754599200000,
+          "event_ts": 1754599200000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5544
+        },
+        {
+          "detection_ts": 1753286310000,
+          "event_bar_close_ts": 1754599200000,
+          "event_ts": 1754599200000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5545
+        },
+        {
+          "detection_ts": 1753286190000,
+          "event_bar_close_ts": 1754604030000,
+          "event_ts": 1754604030000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5543
+        },
+        {
+          "detection_ts": 1753286280000,
+          "event_bar_close_ts": 1754604030000,
+          "event_ts": 1754604030000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5544
+        },
+        {
+          "detection_ts": 1753286100000,
+          "event_bar_close_ts": 1756389150000,
+          "event_ts": 1756389150000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5541
+        },
+        {
+          "detection_ts": 1753286100000,
+          "event_bar_close_ts": 1756389150000,
+          "event_ts": 1756389150000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5541
+        },
+        {
+          "detection_ts": 1753286130000,
+          "event_bar_close_ts": 1756389150000,
+          "event_ts": 1756389150000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5542
+        },
+        {
+          "detection_ts": 1753285230000,
+          "event_bar_close_ts": 1756390530000,
+          "event_ts": 1756390530000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5539
+        },
+        {
+          "detection_ts": 1753284840000,
+          "event_bar_close_ts": 1756392060000,
+          "event_ts": 1756392060000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5538
+        },
+        {
+          "detection_ts": 1753283880000,
+          "event_bar_close_ts": 1756397670000,
+          "event_ts": 1756397670000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5534
+        },
+        {
+          "detection_ts": 1753283880000,
+          "event_bar_close_ts": 1756398060000,
+          "event_ts": 1756398060000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5534
+        },
+        {
+          "detection_ts": 1753283850000,
+          "event_bar_close_ts": 1756398120000,
+          "event_ts": 1756398120000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5533
+        },
+        {
+          "detection_ts": 1753283850000,
+          "event_bar_close_ts": 1756398150000,
+          "event_ts": 1756398150000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5533
+        },
+        {
+          "detection_ts": 1753280130000,
+          "event_bar_close_ts": 1756398630000,
+          "event_ts": 1756398630000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5508
+        },
+        {
+          "detection_ts": 1753280130000,
+          "event_bar_close_ts": 1756399800000,
+          "event_ts": 1756399800000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5508
+        },
+        {
+          "detection_ts": 1753279920000,
+          "event_bar_close_ts": 1756403580000,
+          "event_ts": 1756403580000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5506
+        },
+        {
+          "detection_ts": 1753279890000,
+          "event_bar_close_ts": 1756403610000,
+          "event_ts": 1756403610000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5505
+        },
+        {
+          "detection_ts": 1753279890000,
+          "event_bar_close_ts": 1756407210000,
+          "event_ts": 1756407210000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5505
+        },
+        {
+          "detection_ts": 1753275660000,
+          "event_bar_close_ts": 1756407270000,
+          "event_ts": 1756407270000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5487
+        },
+        {
+          "detection_ts": 1753274970000,
+          "event_bar_close_ts": 1756474890000,
+          "event_ts": 1756474890000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5486
+        },
+        {
+          "detection_ts": 1753274940000,
+          "event_bar_close_ts": 1756474950000,
+          "event_ts": 1756474950000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5485
+        },
+        {
+          "detection_ts": 1753274970000,
+          "event_bar_close_ts": 1756474950000,
+          "event_ts": 1756474950000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5486
+        },
+        {
+          "detection_ts": 1753274940000,
+          "event_bar_close_ts": 1756475520000,
+          "event_ts": 1756475520000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5485
+        },
+        {
+          "detection_ts": 1753273320000,
+          "event_bar_close_ts": 1756475760000,
+          "event_ts": 1756475760000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5473
+        },
+        {
+          "detection_ts": 1753264890000,
+          "event_bar_close_ts": 1756476090000,
+          "event_ts": 1756476090000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5425
+        },
+        {
+          "detection_ts": 1753264890000,
+          "event_bar_close_ts": 1756476090000,
+          "event_ts": 1756476090000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5425
+        },
+        {
+          "detection_ts": 1753264800000,
+          "event_bar_close_ts": 1756476180000,
+          "event_ts": 1756476180000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5424
+        },
+        {
+          "detection_ts": 1753263300000,
+          "event_bar_close_ts": 1756476330000,
+          "event_ts": 1756476330000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5415
+        },
+        {
+          "detection_ts": 1753262670000,
+          "event_bar_close_ts": 1756476330000,
+          "event_ts": 1756476330000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5408
+        },
+        {
+          "detection_ts": 1753263300000,
+          "event_bar_close_ts": 1756476330000,
+          "event_ts": 1756476330000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5415
+        },
+        {
+          "detection_ts": 1753263330000,
+          "event_bar_close_ts": 1756476330000,
+          "event_ts": 1756476330000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5416
+        },
+        {
+          "detection_ts": 1753230570000,
+          "event_bar_close_ts": 1756476630000,
+          "event_ts": 1756476630000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5209
+        },
+        {
+          "detection_ts": 1753230570000,
+          "event_bar_close_ts": 1756476630000,
+          "event_ts": 1756476630000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5209
+        },
+        {
+          "detection_ts": 1753230360000,
+          "event_bar_close_ts": 1756476840000,
+          "event_ts": 1756476840000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 5207
+        },
+        {
+          "detection_ts": 1753230360000,
+          "event_bar_close_ts": 1756477860000,
+          "event_ts": 1756477860000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 5207
+        }
+      ],
+      "orphan_fill_n": 94,
+      "orphan_touch_n": 47
+    },
+    "4h": {
+      "all_orphans_left_truncated": true,
+      "first_formed_detection_ts": 1754078400000,
+      "formed_fill_without_prior_touch_n": 0,
+      "formed_n": 167,
+      "orphan_detection_max": 1753948800000,
+      "orphan_events": [
+        {
+          "detection_ts": 1753948800000,
+          "event_bar_close_ts": 1754020800000,
+          "event_ts": 1754020800000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 16
+        },
+        {
+          "detection_ts": 1753459200000,
+          "event_bar_close_ts": 1754064000000,
+          "event_ts": 1754064000000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 13
+        },
+        {
+          "detection_ts": 1753459200000,
+          "event_bar_close_ts": 1754064000000,
+          "event_ts": 1754064000000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 13
+        },
+        {
+          "detection_ts": 1753905600000,
+          "event_bar_close_ts": 1754064000000,
+          "event_ts": 1754064000000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 15
+        },
+        {
+          "detection_ts": 1753444800000,
+          "event_bar_close_ts": 1754078400000,
+          "event_ts": 1754078400000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 12
+        },
+        {
+          "detection_ts": 1753444800000,
+          "event_bar_close_ts": 1754078400000,
+          "event_ts": 1754078400000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 12
+        },
+        {
+          "detection_ts": 1753300800000,
+          "event_bar_close_ts": 1754596800000,
+          "event_ts": 1754596800000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 10
+        },
+        {
+          "detection_ts": 1753315200000,
+          "event_bar_close_ts": 1754596800000,
+          "event_ts": 1754596800000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 11
+        },
+        {
+          "detection_ts": 1753300800000,
+          "event_bar_close_ts": 1756411200000,
+          "event_ts": 1756411200000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 10
+        }
+      ],
+      "orphan_fill_n": 6,
+      "orphan_touch_n": 3
+    },
+    "5m": {
+      "all_orphans_left_truncated": true,
+      "first_formed_detection_ts": 1753980300000,
+      "formed_fill_without_prior_touch_n": 20,
+      "formed_n": 7140,
+      "orphan_detection_max": 1753969800000,
+      "orphan_events": [
+        {
+          "detection_ts": 1753927200000,
+          "event_bar_close_ts": 1753999500000,
+          "event_ts": 1753999500000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 637
+        },
+        {
+          "detection_ts": 1753880100000,
+          "event_bar_close_ts": 1754051700000,
+          "event_ts": 1754051700000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 626
+        },
+        {
+          "detection_ts": 1753969800000,
+          "event_bar_close_ts": 1754051700000,
+          "event_ts": 1754051700000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 660
+        },
+        {
+          "detection_ts": 1753879200000,
+          "event_bar_close_ts": 1754051700000,
+          "event_ts": 1754051700000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 625
+        },
+        {
+          "detection_ts": 1753880100000,
+          "event_bar_close_ts": 1754051700000,
+          "event_ts": 1754051700000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 626
+        },
+        {
+          "detection_ts": 1753880400000,
+          "event_bar_close_ts": 1754051700000,
+          "event_ts": 1754051700000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 627
+        },
+        {
+          "detection_ts": 1753969800000,
+          "event_bar_close_ts": 1754051700000,
+          "event_ts": 1754051700000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 660
+        },
+        {
+          "detection_ts": 1753431900000,
+          "event_bar_close_ts": 1754054100000,
+          "event_ts": 1754054100000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 521
+        },
+        {
+          "detection_ts": 1753432500000,
+          "event_bar_close_ts": 1754054100000,
+          "event_ts": 1754054100000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 522
+        },
+        {
+          "detection_ts": 1753431900000,
+          "event_bar_close_ts": 1754054400000,
+          "event_ts": 1754054400000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 521
+        },
+        {
+          "detection_ts": 1753429200000,
+          "event_bar_close_ts": 1754076900000,
+          "event_ts": 1754076900000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 519
+        },
+        {
+          "detection_ts": 1753429500000,
+          "event_bar_close_ts": 1754076900000,
+          "event_ts": 1754076900000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 520
+        },
+        {
+          "detection_ts": 1753429200000,
+          "event_bar_close_ts": 1754077200000,
+          "event_ts": 1754077200000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 519
+        },
+        {
+          "detection_ts": 1753410000000,
+          "event_bar_close_ts": 1754306700000,
+          "event_ts": 1754306700000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 516
+        },
+        {
+          "detection_ts": 1753409400000,
+          "event_bar_close_ts": 1754308500000,
+          "event_ts": 1754308500000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 515
+        },
+        {
+          "detection_ts": 1753409400000,
+          "event_bar_close_ts": 1754308500000,
+          "event_ts": 1754308500000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 515
+        },
+        {
+          "detection_ts": 1753333800000,
+          "event_bar_close_ts": 1754315400000,
+          "event_ts": 1754315400000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 482
+        },
+        {
+          "detection_ts": 1753286700000,
+          "event_bar_close_ts": 1754595600000,
+          "event_ts": 1754595600000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 465
+        },
+        {
+          "detection_ts": 1753287000000,
+          "event_bar_close_ts": 1754595600000,
+          "event_ts": 1754595600000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 466
+        },
+        {
+          "detection_ts": 1753286400000,
+          "event_bar_close_ts": 1754604300000,
+          "event_ts": 1754604300000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 464
+        },
+        {
+          "detection_ts": 1753286700000,
+          "event_bar_close_ts": 1754604300000,
+          "event_ts": 1754604300000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 465
+        },
+        {
+          "detection_ts": 1753286400000,
+          "event_bar_close_ts": 1756383000000,
+          "event_ts": 1756383000000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 464
+        },
+        {
+          "detection_ts": 1753276200000,
+          "event_bar_close_ts": 1756407300000,
+          "event_ts": 1756407300000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 458
+        },
+        {
+          "detection_ts": 1753275600000,
+          "event_bar_close_ts": 1756411200000,
+          "event_ts": 1756411200000,
+          "first_touch_observed": null,
+          "kind": "touch",
+          "zone_id": 457
+        },
+        {
+          "detection_ts": 1753275600000,
+          "event_bar_close_ts": 1756411200000,
+          "event_ts": 1756411200000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 457
+        },
+        {
+          "detection_ts": 1753265400000,
+          "event_bar_close_ts": 1756476300000,
+          "event_ts": 1756476300000,
+          "first_touch_observed": true,
+          "kind": "fill",
+          "zone_id": 452
+        }
+      ],
+      "orphan_fill_n": 18,
+      "orphan_touch_n": 8
+    }
+  },
+  "zone_rows_parsed": 381498
+}

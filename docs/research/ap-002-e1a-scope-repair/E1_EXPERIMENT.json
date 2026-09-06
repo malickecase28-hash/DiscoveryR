@@ -1,0 +1,48 @@
+{
+  "experiment_id": "AP-002-FVG-E1-NATIVE-STRATA",
+  "objective": "Characterize FVG formation and native lifecycle behavior in XAUUSD development data.",
+  "instrument": "XAUUSD",
+  "development_scope": "XAUUSD_DATA_SCOPE_V1 DEVELOPMENT only",
+  "exposure_class": "E1_PHENOTYPE",
+  "confirmation_status": "LOCKED",
+  "native_strata": [
+    "15s",
+    "30s",
+    "1m",
+    "5m",
+    "15m",
+    "1h",
+    "4h"
+  ],
+  "lawful_identity": "(timeframe, zone_id); cross-scale identity prohibited",
+  "formation_anchor": "boundary-crossing trigger tick mid=(bid+ask)/2; bar close is not the formation anchor",
+  "formation_availability": "Frozen sidecar available_time_ns and trigger source identity; source_sequence breaks equal receipts.",
+  "lifecycle_fields": [
+    "formation",
+    "anchor_tick",
+    "active_persistence",
+    "first_touch",
+    "fill",
+    "removal",
+    "market_duration",
+    "known_duration",
+    "right_censoring",
+    "gap_atr",
+    "fvg_quality",
+    "prospective_response"
+  ],
+  "prospective_response": "Native closes 1, 3, and 5 lawful bars after formation; raw and direction-adjusted returns use anchor_mid.",
+  "response_horizons_bars": [
+    1,
+    3,
+    5
+  ],
+  "exclusions": [
+    "E2",
+    "E3",
+    "confirmation",
+    "strategy rules",
+    "generic invalidation labels",
+    "other detector outcomes"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+ "artifact_type": "AP-002_E1A_SCOPE_REPAIR_REPRODUCIBILITY",
+ "comparison": "scope-repair-run-1 vs scope-repair-run-2 (independent fresh executions on the corrected development view)",
+ "logical_result_hash": {
+  "run_1": "1b701c016bd1effa300742ee74ce73d6e0e96313d62847d231391061dc94dca6",
+  "run_2": "1b701c016bd1effa300742ee74ce73d6e0e96313d62847d231391061dc94dca6",
+  "identical": true
+ },
+ "deterministic_preflight_hash": {
+  "run_1": "e28026c31704b2f0a962b5129a13a64eee41ebc65c1545ab2b2ed5619adddce7",
+  "run_2": "e28026c31704b2f0a962b5129a13a64eee41ebc65c1545ab2b2ed5619adddce7",
+  "identical": true
+ },
+ "preflight": {
+  "rows_scanned": 51969691,
+  "regressions": [
+   0,
+   0
+  ]
+ },
+ "zones": {
+  "rows": 381498,
+  "logical_rows_sha256_run_1": "83ed4a83eb554fbb60ed3c08afe2d3e57f3b41ff306c841a3248c0f8d7dc5e00",
+  "logical_rows_sha256_run_2": "83ed4a83eb554fbb60ed3c08afe2d3e57f3b41ff306c841a3248c0f8d7dc5e00",
+  "identical": true,
+  "physical_sha256_run_1": "83ed4a83eb554fbb60ed3c08afe2d3e57f3b41ff306c841a3248c0f8d7dc5e00",
+  "physical_sha256_run_2": "83ed4a83eb554fbb60ed3c08afe2d3e57f3b41ff306c841a3248c0f8d7dc5e00"
+ },
+ "integrity_gate": {
+  "run_1": "PASS",
+  "run_2": "PASS",
+  "checks": [
+   9,
+   9
+  ]
+ },
+ "generated_utc_epoch": 1788681269,
+ "note": "E1_RESULTS.json differs between runs only in the run-specific absolute local zone path; the logical result hash excludes it and is stable."
+}

@@ -1,0 +1,105 @@
+{
+ "artifact_type": "AP-002_E1A_SYNTHESIS",
+ "generated": "2026-09-06",
+ "program": "AP-002 FVG",
+ "exposure": "E1A FORMATION + LIFECYCLE PHENOTYPE (DEVELOPMENT)",
+ "instrument": "XAUUSD",
+ "basis": "Corrected evidence after scope repair. Supersedes 735bd7ab06ae2caf72e37447d207dec62c17932ee1684c4c393d8ace07684c52 (SUPERSEDED_SCOPE_BOUNDARY_MISALIGNMENT).",
+ "accepted_scanner_evidence": {
+  "logical_result_hash": "1b701c016bd1effa300742ee74ce73d6e0e96313d62847d231391061dc94dca6",
+  "zones": 381498,
+  "preflight_rows": 51969691,
+  "preflight_regressions": 0,
+  "deterministic_preflight_hash": "e28026c31704b2f0a962b5129a13a64eee41ebc65c1545ab2b2ed5619adddce7",
+  "scanner_integrity_gate": "PASS (9/9 checks, both runs)",
+  "reproducibility": "two independent fresh executions, identical logical hash, identical preflight hash, identical zone logical rows hash (REPRODUCIBILITY.json)",
+  "development_start_inclusive": "2025-07-31T16:15:00Z",
+  "development_end_exclusive": "2026-05-05T12:39:00Z",
+  "development_view_identity": "943c845d0fa8f2d8bcc1c0fffeddc84863ceb1bf1ec6e2cc66c16072794c092f",
+  "sidecar_sha256": "8882dfca1e34aab71df411ee0837a7203b01462e3ada565119e66e48c4e15929"
+ },
+ "artifact_sha256": "see ARTIFACT_SHA256.json (P-01/P-02 reviews, reconciliation, method challenge, anomaly audit, corrected evidence package)",
+ "frozen_reviews": {
+  "P-01": "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1_PHENOTYPE_REVIEW_P01.json",
+  "P-02": "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1_PHENOTYPE_REVIEW_P02.json",
+  "reconciliation": "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1A_RECONCILIATION.md",
+  "method_challenge": "docs/research/ap-002-e1-causal-rework/challenge/AP-002_E1_METHOD_CHALLENGE.json",
+  "note": "Reviews, reconciliation and challenge were produced against the superseded evidence; the scope-repair audit shows every reviewed quantity and classification is unchanged on the corrected cohort except formation counts (-29) and orphan counts (+1/+2)."
+ },
+ "canonical_observations": [
+  "381,498 lawful FVG formations across 7 native XAUUSD strata (15s/30s/1m/5m/15m/1h/4h) inside the frozen development window; cross-scale object identity prohibited.",
+  "Median formation-to-first-touch is 2 native bars at every stratum; median formation-to-fill is 7/7/7/7/8/8/5 native bars (15s..4h).",
+  "Rapid lifecycle body + materially long-lived right tail (p95 fill in hundreds of native bars at fine/mid strata); tail estimates are increasingly limited by administrative right censoring at coarser strata (censoring 0.45% at 15s rising to 15.57% at 4h).",
+  "fill_rate + right_censored_rate = 1 by scanner construction (accounting complement); censoring rises materially with native scale and coarse-scale fill fractions are window-censored lower bounds, not lifetime probabilities.",
+  "Bullish formation share descriptively rises with native scale (51.0% at 15s to 60.5% at 4h): OBSERVED, not generalized, not confirmed.",
+  "Raw prospective median returns are positive in 21/21 stratum-horizon cells; direction-adjusted medians are 18 negative / 1 zero (15s h1 exactly 0.0; the serialized -0.0 is a sign-bit artifact) / 2 positive (1h h3 +0.85 bps n=523; 4h h5 +12.51 bps n=167).",
+  "Event-level availability delays are small in the distribution body (touch p50 92-119 ms, fill p50 85-115 ms at every stratum; p95 0.34-1.63 s) but can have large session-gap tails (max ~2.1 days)."
+ ],
+ "resolved_anomalies": [
+  {
+   "id": "A1",
+   "name": "fill without recorded first touch",
+   "observation": "1,010 in-window formed zones filled without an emitted first-touch event (682/213/81/20/10/4/0).",
+   "explanation": "Linked producer semantics permit a gap-through/far-edge fill without overlap: FIRST TOUCH = bar range overlaps the active zone; FILL = bullish bar low <= lower far edge / bearish bar high >= upper far edge, independent of the overlap predicate.",
+   "status": "RESOLVED_EXPECTED_SEMANTIC_CASE",
+   "note": "The reconciliation premise 'a filling bar necessarily overlaps the zone' was false and is removed from the canonical record. FIRST_TOUCH E1B cohort excludes gap-through fills (first_touch_observed=false), never imputed."
+  },
+  {
+   "id": "A2",
+   "name": "orphan lifecycle events",
+   "observation": "536 orphan lifecycle events (178 touch / 358 fill) on the corrected cohort.",
+   "explanation": "Detector state whose formation predates the development cohort boundary; every orphan zone was detected strictly before its stratum's first lawful in-window formation (detection window 2025-07-22 .. 2025-07-31T16:15:00Z, two events exactly at the boundary instant).",
+   "status": "LEFT_TRUNCATED_PRE_DEVELOPMENT_STATE",
+   "note": "Excluded from in-window formed-zone cohorts; not missing formations."
+  },
+  {
+   "id": "SCOPE",
+   "name": "development view start-boundary misalignment",
+   "observation": "The superseded evidence was generated from a view beginning 2025-07-31T16:00:00Z instead of the frozen 16:15:00Z scope boundary (29 pre-boundary formations, pre-boundary preflight stream).",
+   "explanation": "View builder implemented only the end-exclusive filter; repaired and re-materialized per director ruling.",
+   "status": "REPAIRED_AND_RE_RUN"
+  }
+ ],
+ "rejected_interpretations": [
+  "'a filling bar necessarily overlaps the zone' - false under the linked producer implementation; removed from the canonical record.",
+  "'1h has strongest clock dependence' - produced by comparing separate marginal quantiles rather than paired per-event delays; rejected.",
+  "P-02 A4 '4h coverage excess' from N-bars x timeframe - not a valid observed-coverage estimator (sparse buckets/session gaps); METHODOLOGICALLY_UNSUPPORTED_AS_STATED.",
+  "P-01 '19/21 negative' direction-adjusted medians - corrected to 18 negative / 1 zero / 2 positive against the committed results.",
+  "Anomaly interpretation of A1 (unexplained/serialization defect) - does not survive; the observation does.",
+  "Orphans as missing formations - rejected (left-truncated pre-development state)."
+ ],
+ "e1b_requirements": [
+  "One E1B stage-anchor extension with two anchors: FIRST_TOUCH (required) and FILL (approved, second priority).",
+  "FIRST_TOUCH cohort rule: formation -> actual emitted fvg_first_touch -> cohort. Gap-through fills with first_touch_observed=false are NOT imputed as touch and are excluded from the first-touch anchor cohort.",
+  "FILL cohort: all lawful fvg_filled events, stratified by first_touch_observed true/false.",
+  "FIRST_TOUCH E1B is BLOCKED_PENDING_MEASUREMENT_CONTRACT: the measurement contract (touch-cohort denominator, gap-through handling, anchor clock) must be frozen before launch.",
+  "Tail reporting: add p99, max, censor-aware unconditional quantile reporting, and a 'max identifiable unconditional quantile = 1 - censor fraction' line per stratum. No large survival-analysis subsystem.",
+  "Paired per-event information-delay distributions (touch/fill available_time - event time) with the anchor clock declared."
+ ],
+ "question_generator_candidates": [
+  "Direction-adjusted median pattern (18/1/2) as DESCRIPTIVE_DIRECTIONAL_ASYMMETRY requiring a formal drift-aware null test.",
+  "Bullish formation-share gradient with native scale: development-window drift vs real asymmetry (drift-controlled null).",
+  "Gap-through-fill frequency vs session-gap density.",
+  "Lifecycle tail beyond p95 (weeks-long zones).",
+  "4h incidence uptick (small-n).",
+  "first_touch_observed true/false stratification at the FILL anchor."
+ ],
+ "must_not_claim": [
+  "No edge/alpha/profitability/strategy/predictive-advantage claims (E1 is locked phenotype; nothing tested; confirmation LOCKED).",
+  "Fill fraction is not a hazard or lifetime probability (window censoring + accounting complement).",
+  "The negative direction-adjusted medians are not a tradable reversal effect (no null test run).",
+  "4h h5 +12.5 bps and 1h h3 are small-sample medians, not established sign reversals.",
+  "Strata are not interchangeable; no pooling; no cross-scale zone identity.",
+  "Higher-timeframe FVGs are not established as structurally bullish.",
+  "No clock-dependence claims from mixed marginal quantiles.",
+  "Orphans are not missing formations; A1 cases are not an unexplained anomaly.",
+  "Nothing transfers to E2/E3/confirmation/live."
+ ],
+ "final_state": {
+  "E1A_FORMATION_PHENOTYPE": "FROZEN",
+  "FIRST_TOUCH_E1B": "BLOCKED_PENDING_MEASUREMENT_CONTRACT",
+  "FILL_E1B": "READY_SECOND_PRIORITY",
+  "QUESTION_GENERATOR_ELIGIBILITY": "PARTIAL",
+  "CONFIRMATION": "LOCKED"
+ }
+}

@@ -1,0 +1,15 @@
+{
+  "code_identity": "763f4533389ec67adc86bea87e529a9be98c8b80",
+  "confirmation_status": "LOCKED",
+  "contract_hash": "9b5609c98088660bee8ce32cf9a112ed92f6d3c9a6f965efa5eac65c8f427e51",
+  "executed_utc": "1788677243",
+  "experiment_id": "AP-002-FVG-E1-NATIVE-STRATA",
+  "input_identity": "5727233e9f8920ab25a4715f59b1d07dcffd8c9ff82e474d8aa642855924a4f4",
+  "lab": "TOOLSMITH",
+  "output_identity": "1b701c016bd1effa300742ee74ce73d6e0e96313d62847d231391061dc94dca6",
+  "researcher_id": "AP-002-E1-NATIVE-STRATA-TOOLSMITH",
+  "run_id": "scope-repair-run-1",
+  "sidecar_identity": "8882dfca1e34aab71df411ee0837a7203b01462e3ada565119e66e48c4e15929",
+  "superseded_reason": "SUPERSEDED_CAUSAL_RESPONSE_AND_TAIL_AVAILABILITY",
+  "supersedes": "4562b87babf540dd191519eeb777d9e7fb6e2d34f417403246c007ff3f5a9e05"
+}
