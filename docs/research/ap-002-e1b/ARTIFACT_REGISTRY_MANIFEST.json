@@ -1,0 +1,36 @@
+{
+ "entries": [
+  {
+   "logical_name": "E1B_EXPERIMENT.json",
+   "path": "docs/research/ap-002-e1b/E1B_EXPERIMENT.json"
+  },
+  {
+   "logical_name": "E1B_RESULTS.json",
+   "path": "docs/research/ap-002-e1b/E1B_RESULTS.json"
+  },
+  {
+   "logical_name": "PREFLIGHT.json",
+   "path": "docs/research/ap-002-e1b/PREFLIGHT.json"
+  },
+  {
+   "logical_name": "RUN_MANIFEST.json",
+   "path": "docs/research/ap-002-e1b/RUN_MANIFEST.json"
+  },
+  {
+   "logical_name": "E1B_SCANNER_INTEGRITY_GATE.json",
+   "path": "docs/research/ap-002-e1b/E1B_SCANNER_INTEGRITY_GATE.json"
+  },
+  {
+   "logical_name": "REPRODUCIBILITY.json",
+   "path": "docs/research/ap-002-e1b/REPRODUCIBILITY.json"
+  },
+  {
+   "logical_name": "AP-002_E1B_EXPERIMENT_CONTRACT.json",
+   "path": "docs/research/ap-002-e1b/AP-002_E1B_EXPERIMENT_CONTRACT.json"
+  },
+  {
+   "logical_name": "AP-002_E1B_EXPERIMENT_CONTRACT.md",
+   "path": "docs/research/ap-002-e1b/AP-002_E1B_EXPERIMENT_CONTRACT.md"
+  }
+ ]
+}

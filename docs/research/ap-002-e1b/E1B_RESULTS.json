@@ -1,0 +1,3900 @@
+{
+  "experiment_id": "AP-002-FVG-E1B-STAGE-ANCHORS",
+  "scope_id": "XAUUSD_DATA_SCOPE_V1",
+  "exposure_class": "E1_PHENOTYPE",
+  "confirmation_status": "LOCKED",
+  "scanner_commit": "1b6dbd887857621bd40e198f8f2ef88a979f7aa2",
+  "preflight_hash": "3b466d9f320cd60ed1937f456c115b8d3a8deebc62dc6b0d8c9f7f05deb296bd",
+  "sidecar_manifest_sha256": "dd1a4d95a9df7c4b02954f9e0a476a7c318bd84362446412dcf4695a6de76e55",
+  "sidecar_rows": 1922771,
+  "logical_result_hash": "2a7a142cadb36449d14d4128361d11ce99a3a4d7d8a004dd539bc4dc32fb823c",
+  "tables": {
+    "strata": {
+      "n": 7,
+      "provenance": {
+        "scope_id": "XAUUSD_DATA_SCOPE_V1",
+        "development_view_manifest_sha256": "5727233e9f8920ab25a4715f59b1d07dcffd8c9ff82e474d8aa642855924a4f4",
+        "sidecar_manifest_sha256": "dd1a4d95a9df7c4b02954f9e0a476a7c318bd84362446412dcf4695a6de76e55",
+        "sidecar_sha256": "8882dfca1e34aab71df411ee0837a7203b01462e3ada565119e66e48c4e15929",
+        "source_parts": [
+          "15s/part-00000.parquet",
+          "15s/part-00001.parquet",
+          "15s/part-00002.parquet",
+          "15s/part-00003.parquet",
+          "15s/part-00004.parquet",
+          "30s/part-00000.parquet",
+          "30s/part-00001.parquet",
+          "30s/part-00002.parquet",
+          "30s/part-00003.parquet",
+          "30s/part-00004.parquet",
+          "1m/part-00000.parquet",
+          "1m/part-00001.parquet",
+          "1m/part-00002.parquet",
+          "1m/part-00003.parquet",
+          "1m/part-00004.parquet",
+          "5m/part-00000.parquet",
+          "5m/part-00001.parquet",
+          "5m/part-00002.parquet",
+          "5m/part-00003.parquet",
+          "5m/part-00004.parquet",
+          "15m/part-00000.parquet",
+          "15m/part-00001.parquet",
+          "15m/part-00002.parquet",
+          "15m/part-00003.parquet",
+          "15m/part-00004.parquet",
+          "1h/part-00000.parquet",
+          "1h/part-00001.parquet",
+          "1h/part-00002.parquet",
+          "1h/part-00003.parquet",
+          "1h/part-00004.parquet",
+          "4h/part-00000.parquet",
+          "4h/part-00001.parquet",
+          "4h/part-00002.parquet",
+          "4h/part-00003.parquet",
+          "4h/part-00004.parquet"
+        ],
+        "scanner_commit": "1b6dbd887857621bd40e198f8f2ef88a979f7aa2"
+      },
+      "rows": [
+        {
+          "timeframe": "15s",
+          "lawful_formation_n": 227909,
+          "touch_anchors_n": 226686,
+          "fill_anchors_n": 226892,
+          "touched_fill_n": 226210,
+          "gap_through_fill_n": 682,
+          "same_bar_touch_fill_n": 79865,
+          "touch_incidence": {
+            "numerator": 226686,
+            "denominator": 227909,
+            "rate": 0.9946338231487128
+          },
+          "formation_to_touch_market_ms": {
+            "n": 226686,
+            "p05": 15000.0,
+            "p25": 15000.0,
+            "p50": 30000.0,
+            "p75": 120000.0,
+            "p95": 2850000.0,
+            "p99": 52425000.0,
+            "max": 10241055000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 226686,
+            "p05": 14387.0,
+            "p25": 15030.0,
+            "p50": 29995.0,
+            "p75": 119928.0,
+            "p95": 2850191.0,
+            "p99": 52529989.0,
+            "max": 10241055027.0
+          },
+          "touch_to_fill_market_ms": {
+            "n": 226210,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 15000.0,
+            "p75": 120000.0,
+            "p95": 3060000.0,
+            "p99": 58275000.0,
+            "max": 10241085000.0
+          },
+          "touch_to_fill_known_ms": {
+            "n": 226210,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 15353.0,
+            "p75": 119056.0,
+            "p95": 3074019.0,
+            "p99": 58710059.0,
+            "max": 10241085047.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 226892,
+            "p05": 15000.0,
+            "p25": 30000.0,
+            "p50": 105000.0,
+            "p75": 450000.0,
+            "p95": 10755000.0,
+            "p99": 212670000.0,
+            "max": 10241100000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 226892,
+            "p05": 14907.0,
+            "p25": 30260.0,
+            "p50": 104937.0,
+            "p75": 450259.0,
+            "p95": 10755030.0,
+            "p99": 212265167.0,
+            "max": 10241099602.0
+          },
+          "fill_right_censor_fraction": 0.0044623073244145686,
+          "fill_max_identifiable_quantile": 0.9955376926755855,
+          "touch_to_fill_right_censor_fraction": 0.00209982089762932,
+          "touch_to_fill_max_identifiable_quantile": 0.9979001791023707,
+          "orphan_touch_n": 75,
+          "orphan_fill_n": 159,
+          "n_bars": 1054917,
+          "first_touch": {
+            "anchors_n": 226686,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 226686,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 226686,
+                  "p05": -1.4650000000001455,
+                  "p25": -0.3500000000003638,
+                  "p50": 0.005000000000109139,
+                  "p75": 0.36999999999898137,
+                  "p95": 1.4949999999998909,
+                  "p99": 3.464999999999236,
+                  "max": 33.11999999999989
+                },
+                "raw_return_bps": {
+                  "n": 226686,
+                  "p05": -3.2409955359868357,
+                  "p25": -0.8256309725920535,
+                  "p50": 0.011927367105536062,
+                  "p75": 0.8634238249471364,
+                  "p95": 3.296132499981764,
+                  "p99": 7.384591879284147,
+                  "max": 67.66085812813581
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 226686,
+                  "p05": -3.217187675660252,
+                  "p25": -0.81800594690373,
+                  "p50": 0.013637188066667139,
+                  "p75": 0.8698128472543861,
+                  "p95": 3.316096761564474,
+                  "p99": 7.471004735282424,
+                  "max": 67.99732851629592
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 115617,
+                    "direction_adjusted_p50": 0.027350689168343576
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 111069,
+                    "direction_adjusted_p50": -0.0
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 113343,
+                    "direction_adjusted_p50": 0.015073089410880779,
+                    "threshold": 0.56437207354277
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 113343,
+                    "direction_adjusted_p50": 0.012189963513487936,
+                    "threshold": 0.56437207354277
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 113343,
+                    "direction_adjusted_p50": 0.012251463742783929,
+                    "threshold": 0.7976536144158917
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 113343,
+                    "direction_adjusted_p50": 0.014847435180133952,
+                    "threshold": 0.7976536144158917
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 226686,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 226686,
+                  "p05": -2.525000000000091,
+                  "p25": -0.6399999999998727,
+                  "p50": 0.010000000000218279,
+                  "p75": 0.6700000000000728,
+                  "p95": 2.5950000000002547,
+                  "p99": 5.744999999999891,
+                  "max": 77.88999999999942
+                },
+                "raw_return_bps": {
+                  "n": 226686,
+                  "p05": -5.590792543039793,
+                  "p25": -1.5013490996135324,
+                  "p50": 0.027282673047769993,
+                  "p75": 1.5773861641849005,
+                  "p95": 5.722715795485385,
+                  "p99": 12.175986205785593,
+                  "max": 151.8702522266753
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 226686,
+                  "p05": -5.5744033629741985,
+                  "p25": -1.5008032259374704,
+                  "p50": 0.030293391497306244,
+                  "p75": 1.5734403272753112,
+                  "p95": 5.7330102132938014,
+                  "p99": 12.601220094602144,
+                  "max": 192.64433100800724
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 115617,
+                    "direction_adjusted_p50": 0.05942635737223128
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 111069,
+                    "direction_adjusted_p50": -0.0
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 113343,
+                    "direction_adjusted_p50": 0.03886970776690042,
+                    "threshold": 0.56437207354277
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 113343,
+                    "direction_adjusted_p50": 0.027433035958574832,
+                    "threshold": 0.56437207354277
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 113343,
+                    "direction_adjusted_p50": 0.03132017677366038,
+                    "threshold": 0.7976536144158917
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 113343,
+                    "direction_adjusted_p50": 0.030053675864384382,
+                    "threshold": 0.7976536144158917
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 226686,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 226686,
+                  "p05": -3.280000000000655,
+                  "p25": -0.8299999999999272,
+                  "p50": 0.01499999999987267,
+                  "p75": 0.875,
+                  "p95": 3.344999999999345,
+                  "p99": 7.3400000000001455,
+                  "max": 65.36999999999898
+                },
+                "raw_return_bps": {
+                  "n": 226686,
+                  "p05": -7.240707758379085,
+                  "p25": -1.9542821407427249,
+                  "p50": 0.036286840217520044,
+                  "p75": 2.0669031633877486,
+                  "p95": 7.3628265516342655,
+                  "p99": 15.57807830058983,
+                  "max": 151.5009081466254
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 226686,
+                  "p05": -7.231478514721066,
+                  "p25": -1.978145250948918,
+                  "p50": 0.036203288707536356,
+                  "p75": 2.04351647481185,
+                  "p95": 7.3729575465596,
+                  "p99": 16.129523753480505,
+                  "max": 182.64963766820395
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 115617,
+                    "direction_adjusted_p50": 0.07256946712398697
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 111069,
+                    "direction_adjusted_p50": -0.0
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 113343,
+                    "direction_adjusted_p50": 0.030362928078614272,
+                    "threshold": 0.56437207354277
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 113343,
+                    "direction_adjusted_p50": 0.040728220584931696,
+                    "threshold": 0.56437207354277
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 113343,
+                    "direction_adjusted_p50": 0.029976738051926542,
+                    "threshold": 0.7976536144158917
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 113343,
+                    "direction_adjusted_p50": 0.04107775711428049,
+                    "threshold": 0.7976536144158917
+                  }
+                ]
+              }
+            ]
+          },
+          "fill": {
+            "anchors_n": 226892,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 226892,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 226892,
+                  "p05": -1.5400000000008731,
+                  "p25": -0.35500000000138243,
+                  "p50": 0.009999999999308784,
+                  "p75": 0.3850000000002183,
+                  "p95": 1.5949999999993452,
+                  "p99": 3.790000000000873,
+                  "max": 33.11999999999989
+                },
+                "raw_return_bps": {
+                  "n": 226892,
+                  "p05": -3.4091777415956552,
+                  "p25": -0.8440725684582209,
+                  "p50": 0.020849991606437194,
+                  "p75": 0.9057931944752635,
+                  "p95": 3.507841487325398,
+                  "p99": 8.083112876052391,
+                  "max": 67.66085812813581
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 226892,
+                  "p05": -3.403842938675582,
+                  "p25": -0.8392571947516021,
+                  "p50": 0.021425755470656963,
+                  "p75": 0.9101732258411586,
+                  "p95": 3.517337622584661,
+                  "p99": 8.070977414042249,
+                  "max": 67.99732851629592
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 115665,
+                    "direction_adjusted_p50": 0.040151236323144296
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 111227,
+                    "direction_adjusted_p50": -0.0
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 113446,
+                    "direction_adjusted_p50": 0.02142385053054726,
+                    "threshold": 0.5632869877940201
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 113446,
+                    "direction_adjusted_p50": 0.021425066900239056,
+                    "threshold": 0.5632869877940201
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 113446,
+                    "direction_adjusted_p50": 0.019720540224909367,
+                    "threshold": 0.7972825964374909
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 113446,
+                    "direction_adjusted_p50": 0.0231684205144983,
+                    "threshold": 0.7972825964374909
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 226892,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 226892,
+                  "p05": -2.625,
+                  "p25": -0.6500000000005457,
+                  "p50": 0.015000000000327418,
+                  "p75": 0.6999999999989086,
+                  "p95": 2.7299999999995634,
+                  "p99": 6.244999999998981,
+                  "max": 77.88999999999942
+                },
+                "raw_return_bps": {
+                  "n": 226892,
+                  "p05": -5.7864326802375645,
+                  "p25": -1.5258754569173956,
+                  "p50": 0.038746886930649,
+                  "p75": 1.640217297650385,
+                  "p95": 6.007288284950364,
+                  "p99": 13.232741250503594,
+                  "max": 151.8702522266753
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 226892,
+                  "p05": -5.795515315831661,
+                  "p25": -1.5083068405945426,
+                  "p50": 0.06622613044596995,
+                  "p75": 1.653707657263251,
+                  "p95": 5.994890805965427,
+                  "p99": 13.371778157812301,
+                  "max": 151.8702522266753
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 115665,
+                    "direction_adjusted_p50": 0.104643479664347
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 111227,
+                    "direction_adjusted_p50": 0.027106294623096546
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 113446,
+                    "direction_adjusted_p50": 0.05610570314390822,
+                    "threshold": 0.5632869877940201
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 113446,
+                    "direction_adjusted_p50": 0.07535690916265873,
+                    "threshold": 0.5632869877940201
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 113446,
+                    "direction_adjusted_p50": 0.053420444269861554,
+                    "threshold": 0.7972825964374909
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 113446,
+                    "direction_adjusted_p50": 0.08025746595130535,
+                    "threshold": 0.7972825964374909
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 226892,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 226892,
+                  "p05": -3.4049999999997453,
+                  "p25": -0.8450000000002547,
+                  "p50": 0.020000000000436557,
+                  "p75": 0.9050000000002001,
+                  "p95": 3.4899999999997817,
+                  "p99": 7.850000000000364,
+                  "max": 77.02000000000044
+                },
+                "raw_return_bps": {
+                  "n": 226892,
+                  "p05": -7.475251493871409,
+                  "p25": -1.9919822713559734,
+                  "p50": 0.05469988225969743,
+                  "p75": 2.1402800709356873,
+                  "p95": 7.6495574658095755,
+                  "p99": 16.807251296908984,
+                  "max": 151.5009081466254
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 226892,
+                  "p05": -7.531948012822355,
+                  "p25": -1.9782808739201272,
+                  "p50": 0.0850051906313083,
+                  "p75": 2.1498146356626804,
+                  "p95": 7.606155749131981,
+                  "p99": 16.96031993809543,
+                  "max": 297.26225711305483
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 115665,
+                    "direction_adjusted_p50": 0.1415432173910808
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 111227,
+                    "direction_adjusted_p50": 0.029667824205572898
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 113446,
+                    "direction_adjusted_p50": 0.0599852136461459,
+                    "threshold": 0.5632869877940201
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 113446,
+                    "direction_adjusted_p50": 0.10629778971264937,
+                    "threshold": 0.5632869877940201
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 113446,
+                    "direction_adjusted_p50": 0.06656977066859314,
+                    "threshold": 0.7972825964374909
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 113446,
+                    "direction_adjusted_p50": 0.10369940209844475,
+                    "threshold": 0.7972825964374909
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "timeframe": "30s",
+          "lawful_formation_n": 99866,
+          "touch_anchors_n": 99305,
+          "fill_anchors_n": 99224,
+          "touched_fill_n": 99011,
+          "gap_through_fill_n": 213,
+          "same_bar_touch_fill_n": 35055,
+          "touch_incidence": {
+            "numerator": 99305,
+            "denominator": 99866,
+            "rate": 0.9943824725131677
+          },
+          "formation_to_touch_market_ms": {
+            "n": 99305,
+            "p05": 30000.0,
+            "p25": 30000.0,
+            "p50": 60000.0,
+            "p75": 240000.0,
+            "p95": 5520000.0,
+            "p99": 108570000.0,
+            "max": 10240950000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 99305,
+            "p05": 29500.0,
+            "p25": 30031.0,
+            "p50": 60003.0,
+            "p75": 239935.0,
+            "p95": 5548897.0,
+            "p99": 112530062.0,
+            "max": 10240949782.0
+          },
+          "touch_to_fill_market_ms": {
+            "n": 99011,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 30000.0,
+            "p75": 210000.0,
+            "p95": 5640000.0,
+            "p99": 131820000.0,
+            "max": 10240740000.0
+          },
+          "touch_to_fill_known_ms": {
+            "n": 99011,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 30226.0,
+            "p75": 210118.0,
+            "p95": 5639871.0,
+            "p99": 131489883.0,
+            "max": 10240739972.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 99224,
+            "p05": 30000.0,
+            "p25": 60000.0,
+            "p50": 210000.0,
+            "p75": 900000.0,
+            "p95": 20850000.0,
+            "p99": 344430000.0,
+            "max": 10241040000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 99224,
+            "p05": 29911.0,
+            "p25": 60196.0,
+            "p50": 209801.0,
+            "p75": 900012.0,
+            "p95": 20849944.0,
+            "p99": 344429577.0,
+            "max": 10241039808.0
+          },
+          "fill_right_censor_fraction": 0.006428614343219914,
+          "fill_max_identifiable_quantile": 0.99357138565678,
+          "touch_to_fill_right_censor_fraction": 0.002960576003222396,
+          "touch_to_fill_max_identifiable_quantile": 0.9970394239967776,
+          "orphan_touch_n": 47,
+          "orphan_fill_n": 94,
+          "n_bars": 527866,
+          "first_touch": {
+            "anchors_n": 99305,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 99305,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 99305,
+                  "p05": -2.130000000000109,
+                  "p25": -0.5200000000004366,
+                  "p50": 0.009999999999763531,
+                  "p75": 0.5499999999997272,
+                  "p95": 2.155000000000655,
+                  "p99": 4.900000000000546,
+                  "max": 68.35500000000047
+                },
+                "raw_return_bps": {
+                  "n": 99305,
+                  "p05": -4.730083748472953,
+                  "p25": -1.2250251727729327,
+                  "p50": 0.021087325779610623,
+                  "p75": 1.2944543744056058,
+                  "p95": 4.7728559706937626,
+                  "p99": 10.466016336190997,
+                  "max": 133.27886880157325
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 99305,
+                  "p05": -4.693867311842199,
+                  "p25": -1.2324761043233046,
+                  "p50": 0.014114405727369356,
+                  "p75": 1.288579208775018,
+                  "p95": 4.821012472136595,
+                  "p99": 10.722963256806725,
+                  "max": 133.27886880157325
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 51299,
+                    "direction_adjusted_p50": 0.029745748217763504
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 48006,
+                    "direction_adjusted_p50": -0.0
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 49653,
+                    "direction_adjusted_p50": 0.021166395382569442,
+                    "threshold": 0.5200813554779776
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 49652,
+                    "direction_adjusted_p50": 0.011565774562278535,
+                    "threshold": 0.5200813554779776
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 49653,
+                    "direction_adjusted_p50": 0.010990544832519803,
+                    "threshold": 0.7832045817529603
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 49652,
+                    "direction_adjusted_p50": 0.020721673731482915,
+                    "threshold": 0.7832045817529603
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 99305,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 99305,
+                  "p05": -3.699999999999818,
+                  "p25": -0.9200000000000728,
+                  "p50": 0.024999999999636202,
+                  "p75": 0.9800000000013824,
+                  "p95": 3.744999999999891,
+                  "p99": 8.175000000000182,
+                  "max": 78.53999999999996
+                },
+                "raw_return_bps": {
+                  "n": 99305,
+                  "p05": -8.151152631555389,
+                  "p25": -2.1703019223863174,
+                  "p50": 0.05779383590337032,
+                  "p75": 2.310728842388881,
+                  "p95": 8.215832688461608,
+                  "p99": 17.65788188056135,
+                  "max": 164.60375212529513
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 99305,
+                  "p05": -8.096329957554444,
+                  "p25": -2.190507356231696,
+                  "p50": 0.04819281753454451,
+                  "p75": 2.297840347746976,
+                  "p95": 8.244491543164068,
+                  "p99": 18.071115722641913,
+                  "max": 132.5769012451536
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 51299,
+                    "direction_adjusted_p50": 0.10448618916434775
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 48006,
+                    "direction_adjusted_p50": -0.0
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 49653,
+                    "direction_adjusted_p50": 0.044515405297548896,
+                    "threshold": 0.5200813554779776
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 49652,
+                    "direction_adjusted_p50": 0.05487585709224305,
+                    "threshold": 0.5200813554779776
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 49653,
+                    "direction_adjusted_p50": 0.04312408091765937,
+                    "threshold": 0.7832045817529603
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 49652,
+                    "direction_adjusted_p50": 0.05664173957976661,
+                    "threshold": 0.7832045817529603
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 99305,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 99305,
+                  "p05": -4.75,
+                  "p25": -1.1899999999995998,
+                  "p50": 0.03000000000020009,
+                  "p75": 1.2750000000005457,
+                  "p95": 4.739999999999782,
+                  "p99": 10.684999999999945,
+                  "max": 108.52999999999975
+                },
+                "raw_return_bps": {
+                  "n": 99305,
+                  "p05": -10.43623874781051,
+                  "p25": -2.806323451346674,
+                  "p50": 0.07375320211868387,
+                  "p75": 3.016730980046668,
+                  "p95": 10.406195938140668,
+                  "p99": 22.859155933087532,
+                  "max": 251.9134910549002
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 99305,
+                  "p05": -10.345589033675092,
+                  "p25": -2.8495791976356992,
+                  "p50": 0.04441966813960893,
+                  "p75": 2.972806181867702,
+                  "p95": 10.51729337157973,
+                  "p99": 23.226991168281998,
+                  "max": 204.88250536827792
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 51299,
+                    "direction_adjusted_p50": 0.11749347258504637
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 48006,
+                    "direction_adjusted_p50": -0.030032104320173104
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 49653,
+                    "direction_adjusted_p50": 0.02541034531328677,
+                    "threshold": 0.5200813554779776
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 49652,
+                    "direction_adjusted_p50": 0.05975464741764856,
+                    "threshold": 0.5200813554779776
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 49653,
+                    "direction_adjusted_p50": 0.043941300281290736,
+                    "threshold": 0.7832045817529603
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 49652,
+                    "direction_adjusted_p50": 0.044492562327635564,
+                    "threshold": 0.7832045817529603
+                  }
+                ]
+              }
+            ]
+          },
+          "fill": {
+            "anchors_n": 99224,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 99224,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 99224,
+                  "p05": -2.244999999999891,
+                  "p25": -0.5349999999998545,
+                  "p50": 0.015000000000327418,
+                  "p75": 0.5799999999999272,
+                  "p95": 2.3299999999999272,
+                  "p99": 5.420000000000073,
+                  "max": 68.35500000000047
+                },
+                "raw_return_bps": {
+                  "n": 99224,
+                  "p05": -4.971507112885774,
+                  "p25": -1.260526077818403,
+                  "p50": 0.040019729727628836,
+                  "p75": 1.3641353655363515,
+                  "p95": 5.136585939080311,
+                  "p99": 11.672884575769801,
+                  "max": 133.27886880157325
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 99224,
+                  "p05": -4.935661966589586,
+                  "p25": -1.254931882297429,
+                  "p50": 0.029926545293866794,
+                  "p75": 1.3683634373304394,
+                  "p95": 5.170253342413851,
+                  "p99": 11.673138272999699,
+                  "max": 133.27886880157325
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 51235,
+                    "direction_adjusted_p50": 0.07206687806223057
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 47989,
+                    "direction_adjusted_p50": -2.102963014163413e-12
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 49612,
+                    "direction_adjusted_p50": 0.028159178203157994,
+                    "threshold": 0.5192143684098494
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 49612,
+                    "direction_adjusted_p50": 0.03537473041799232,
+                    "threshold": 0.5192143684098494
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 49612,
+                    "direction_adjusted_p50": 0.029946709829149622,
+                    "threshold": 0.7828379169034563
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 49612,
+                    "direction_adjusted_p50": 0.029920232660382254,
+                    "threshold": 0.7828379169034563
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 99224,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 99224,
+                  "p05": -3.9000000000005457,
+                  "p25": -0.9450000000006185,
+                  "p50": 0.030000000000654836,
+                  "p75": 1.0249999999996362,
+                  "p95": 3.930000000000291,
+                  "p99": 8.775000000000546,
+                  "max": 78.53999999999996
+                },
+                "raw_return_bps": {
+                  "n": 99224,
+                  "p05": -8.599020362196578,
+                  "p25": -2.2245871658066005,
+                  "p50": 0.07726460132117276,
+                  "p75": 2.4157640795831266,
+                  "p95": 8.637261720904037,
+                  "p99": 18.941894773742078,
+                  "max": 164.60375212529513
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 99224,
+                  "p05": -8.571896516150996,
+                  "p25": -2.1928639756938604,
+                  "p50": 0.10918656012763123,
+                  "p75": 2.4466569589628184,
+                  "p95": 8.665745266367825,
+                  "p99": 19.152830126220373,
+                  "max": 107.4085811453203
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 51235,
+                    "direction_adjusted_p50": 0.18121621450101988
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 47989,
+                    "direction_adjusted_p50": 0.03745332379376683
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 49612,
+                    "direction_adjusted_p50": 0.08468628494829188,
+                    "threshold": 0.5192143684098494
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 49612,
+                    "direction_adjusted_p50": 0.1364097581255816,
+                    "threshold": 0.5192143684098494
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 49612,
+                    "direction_adjusted_p50": 0.10518067410140974,
+                    "threshold": 0.7828379169034563
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 49612,
+                    "direction_adjusted_p50": 0.1165775625501153,
+                    "threshold": 0.7828379169034563
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 99223,
+                "end_of_window_missing": 1,
+                "raw_price_delta": {
+                  "n": 99223,
+                  "p05": -4.979999999999563,
+                  "p25": -1.2049999999999272,
+                  "p50": 0.04500000000007276,
+                  "p75": 1.319999999999709,
+                  "p95": 4.994999999999891,
+                  "p99": 11.779999999998836,
+                  "max": 108.52999999999975
+                },
+                "raw_return_bps": {
+                  "n": 99223,
+                  "p05": -10.955534291350046,
+                  "p25": -2.835792463287095,
+                  "p50": 0.10974689622049144,
+                  "p75": 3.1108480194068076,
+                  "p95": 10.953016665053456,
+                  "p99": 25.73311671728921,
+                  "max": 251.9134910549002
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 99223,
+                  "p05": -10.856261505547394,
+                  "p25": -2.8189535765933007,
+                  "p50": 0.1620079560629601,
+                  "p75": 3.126248537968186,
+                  "p95": 11.071065802152324,
+                  "p99": 25.485823510670542,
+                  "max": 192.66100224632322
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 51234,
+                    "direction_adjusted_p50": 0.26781192785332447
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 47989,
+                    "direction_adjusted_p50": 0.054450216166565826
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 49612,
+                    "direction_adjusted_p50": 0.11844920380049709,
+                    "threshold": 0.5192143684098494
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 49611,
+                    "direction_adjusted_p50": 0.20325693836711503,
+                    "threshold": 0.5192143684098494
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 49612,
+                    "direction_adjusted_p50": 0.14946994221727555,
+                    "threshold": 0.7828379169034563
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 49611,
+                    "direction_adjusted_p50": 0.1769639402789333,
+                    "threshold": 0.7828379169034563
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "timeframe": "1m",
+          "lawful_formation_n": 43701,
+          "touch_anchors_n": 43428,
+          "fill_anchors_n": 43308,
+          "touched_fill_n": 43227,
+          "gap_through_fill_n": 81,
+          "same_bar_touch_fill_n": 15286,
+          "touch_incidence": {
+            "numerator": 43428,
+            "denominator": 43701,
+            "rate": 0.9937530033637674
+          },
+          "formation_to_touch_market_ms": {
+            "n": 43428,
+            "p05": 60000.0,
+            "p25": 60000.0,
+            "p50": 120000.0,
+            "p75": 480000.0,
+            "p95": 11100000.0,
+            "p99": 217800000.0,
+            "max": 10240920000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 43428,
+            "p05": 59626.0,
+            "p25": 60028.0,
+            "p50": 120023.0,
+            "p75": 480014.0,
+            "p95": 11099991.0,
+            "p99": 217799992.0,
+            "max": 10240919957.0
+          },
+          "touch_to_fill_market_ms": {
+            "n": 43227,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 60000.0,
+            "p75": 420000.0,
+            "p95": 10860000.0,
+            "p99": 214920000.0,
+            "max": 10240740000.0
+          },
+          "touch_to_fill_known_ms": {
+            "n": 43227,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 60164.0,
+            "p75": 420033.0,
+            "p95": 10859988.0,
+            "p99": 214800245.0,
+            "max": 10240739675.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 43308,
+            "p05": 60000.0,
+            "p25": 120000.0,
+            "p50": 420000.0,
+            "p75": 1860000.0,
+            "p95": 40200000.0,
+            "p99": 642060000.0,
+            "max": 10241040000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 43308,
+            "p05": 59931.0,
+            "p25": 120174.0,
+            "p50": 419915.0,
+            "p75": 1860013.0,
+            "p95": 40079967.0,
+            "p99": 642060103.0,
+            "max": 10241039984.0
+          },
+          "fill_right_censor_fraction": 0.00899292922358756,
+          "fill_max_identifiable_quantile": 0.9910070707764125,
+          "touch_to_fill_right_censor_fraction": 0.004628350373031224,
+          "touch_to_fill_max_identifiable_quantile": 0.9953716496269688,
+          "orphan_touch_n": 33,
+          "orphan_fill_n": 62,
+          "n_bars": 263961,
+          "first_touch": {
+            "anchors_n": 43428,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 43428,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 43428,
+                  "p05": -3.1149999999997817,
+                  "p25": -0.7800000000002001,
+                  "p50": 0.01499999999987267,
+                  "p75": 0.8150000000000546,
+                  "p95": 3.164999999999054,
+                  "p99": 7.020000000000437,
+                  "max": 43.279999999999745
+                },
+                "raw_return_bps": {
+                  "n": 43428,
+                  "p05": -6.8121922732310995,
+                  "p25": -1.8395377302325082,
+                  "p50": 0.03576721267381952,
+                  "p75": 1.9262484646479676,
+                  "p95": 6.931813779231993,
+                  "p99": 15.09705497526176,
+                  "max": 94.2429617438353
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 43428,
+                  "p05": -6.824281125132571,
+                  "p25": -1.8125845430898768,
+                  "p50": 0.06541534382447502,
+                  "p75": 1.94561515732234,
+                  "p95": 6.939478736760631,
+                  "p99": 15.830391137946213,
+                  "max": 84.73477059948067
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 22759,
+                    "direction_adjusted_p50": 0.09807019646745217
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 20669,
+                    "direction_adjusted_p50": 0.031295084481763664
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 21714,
+                    "direction_adjusted_p50": 0.08433045309690648,
+                    "threshold": 0.49175878322523936
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 21714,
+                    "direction_adjusted_p50": 0.049901071125311725,
+                    "threshold": 0.49175878322523936
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 21714,
+                    "direction_adjusted_p50": 0.06860338598896844,
+                    "threshold": 0.7737802596215513
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 21714,
+                    "direction_adjusted_p50": 0.062193696048326245,
+                    "threshold": 0.7737802596215513
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 43428,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 43428,
+                  "p05": -5.3100000000004,
+                  "p25": -1.2950000000000728,
+                  "p50": 0.03500000000030923,
+                  "p75": 1.425000000000182,
+                  "p95": 5.25,
+                  "p99": 12.5049999999992,
+                  "max": 99.36999999999989
+                },
+                "raw_return_bps": {
+                  "n": 43428,
+                  "p05": -11.66861143523935,
+                  "p25": -3.0593925437026,
+                  "p50": 0.08992401420723091,
+                  "p75": 3.3508829354627014,
+                  "p95": 11.5487661437883,
+                  "p99": 26.152696810604873,
+                  "max": 232.18537444769203
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 43428,
+                  "p05": -11.538485144199932,
+                  "p25": -3.0831129116850353,
+                  "p50": 0.07593049019371599,
+                  "p75": 3.314355301398454,
+                  "p95": 11.70020342280436,
+                  "p99": 26.460841233739295,
+                  "max": 232.18537444769203
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 22759,
+                    "direction_adjusted_p50": 0.1699413419120403
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 20669,
+                    "direction_adjusted_p50": -0.011981945604624886
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 21714,
+                    "direction_adjusted_p50": 0.13132573327846475,
+                    "threshold": 0.49175878322523936
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 21714,
+                    "direction_adjusted_p50": 0.024343901427205716,
+                    "threshold": 0.49175878322523936
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 21714,
+                    "direction_adjusted_p50": 0.08955731817685209,
+                    "threshold": 0.7737802596215513
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 21714,
+                    "direction_adjusted_p50": 0.0635482049445124,
+                    "threshold": 0.7737802596215513
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 43427,
+                "end_of_window_missing": 1,
+                "raw_price_delta": {
+                  "n": 43427,
+                  "p05": -6.774999999999636,
+                  "p25": -1.6849999999994907,
+                  "p50": 0.05500000000029104,
+                  "p75": 1.8500000000003638,
+                  "p95": 6.710000000000946,
+                  "p99": 15.74499999999989,
+                  "max": 118.8149999999996
+                },
+                "raw_return_bps": {
+                  "n": 43427,
+                  "p05": -14.808674015812578,
+                  "p25": -3.9842461543258736,
+                  "p50": 0.13502917112287163,
+                  "p75": 4.347245755642622,
+                  "p95": 14.708667925632975,
+                  "p99": 33.05125477389853,
+                  "max": 277.62005902186235
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 43427,
+                  "p05": -14.615037912932335,
+                  "p25": -4.038611056362983,
+                  "p50": 0.07406562510539154,
+                  "p75": 4.297347374102169,
+                  "p95": 14.9216184726188,
+                  "p99": 34.130274918259516,
+                  "max": 277.62005902186235
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 22759,
+                    "direction_adjusted_p50": 0.19366263243177867
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 20668,
+                    "direction_adjusted_p50": -0.06437257127598311
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 21714,
+                    "direction_adjusted_p50": 0.13502917112287163,
+                    "threshold": 0.49175878322523936
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 21713,
+                    "direction_adjusted_p50": 0.009839420653336832,
+                    "threshold": 0.49175878322523936
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 21714,
+                    "direction_adjusted_p50": 0.10651060603622917,
+                    "threshold": 0.7737802596215513
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 21713,
+                    "direction_adjusted_p50": 0.04572693247832328,
+                    "threshold": 0.7737802596215513
+                  }
+                ]
+              }
+            ]
+          },
+          "fill": {
+            "anchors_n": 43308,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 43308,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 43308,
+                  "p05": -3.3499999999994543,
+                  "p25": -0.8000000000001819,
+                  "p50": 0.02500000000009095,
+                  "p75": 0.8700000000008004,
+                  "p95": 3.4249999999992724,
+                  "p99": 8.340000000001055,
+                  "max": 44.61499999999978
+                },
+                "raw_return_bps": {
+                  "n": 43308,
+                  "p05": -7.358796064117416,
+                  "p25": -1.8863089948585146,
+                  "p50": 0.05975978955122955,
+                  "p75": 2.0626206601647925,
+                  "p95": 7.493700991503081,
+                  "p99": 17.30553705801724,
+                  "max": 94.2429617438353
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 43308,
+                  "p05": -7.271491033402329,
+                  "p25": -1.8260702419198827,
+                  "p50": 0.1040784890580498,
+                  "p75": 2.109350320100172,
+                  "p95": 7.58038809668109,
+                  "p99": 17.619176260110645,
+                  "max": 84.73477059948067
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 22673,
+                    "direction_adjusted_p50": 0.17764013956712113
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 20635,
+                    "direction_adjusted_p50": 0.03988775585408075
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 21654,
+                    "direction_adjusted_p50": 0.07988092416836061,
+                    "threshold": 0.4908717850395506
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 21654,
+                    "direction_adjusted_p50": 0.12960522249330403,
+                    "threshold": 0.4908717850395506
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 21654,
+                    "direction_adjusted_p50": 0.0826752774933198,
+                    "threshold": 0.773351911095933
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 21654,
+                    "direction_adjusted_p50": 0.1261557810411332,
+                    "threshold": 0.773351911095933
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 43308,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 43308,
+                  "p05": -5.595000000000255,
+                  "p25": -1.3299999999999272,
+                  "p50": 0.05999999999949068,
+                  "p75": 1.5,
+                  "p95": 5.664999999999964,
+                  "p99": 13.695000000000618,
+                  "max": 99.06999999999971
+                },
+                "raw_return_bps": {
+                  "n": 43308,
+                  "p05": -12.373988573496002,
+                  "p25": -3.1302076296003407,
+                  "p50": 0.14076299171955267,
+                  "p75": 3.520171817258729,
+                  "p95": 12.497811667219926,
+                  "p99": 29.92684173643439,
+                  "max": 193.16710602255475
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 43308,
+                  "p05": -12.160571903840488,
+                  "p25": -3.1028242806667996,
+                  "p50": 0.18963508790862016,
+                  "p75": 3.541473483480303,
+                  "p95": 12.69421846133658,
+                  "p99": 28.575572393409836,
+                  "max": 193.16710602255475
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 22673,
+                    "direction_adjusted_p50": 0.3177280003913166
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 20635,
+                    "direction_adjusted_p50": 0.0554578880539177
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 21654,
+                    "direction_adjusted_p50": 0.18173771185814278,
+                    "threshold": 0.4908717850395506
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 21654,
+                    "direction_adjusted_p50": 0.195907364549173,
+                    "threshold": 0.4908717850395506
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 21654,
+                    "direction_adjusted_p50": 0.17078817676133792,
+                    "threshold": 0.773351911095933
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 21654,
+                    "direction_adjusted_p50": 0.21258450233977103,
+                    "threshold": 0.773351911095933
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 43308,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 43308,
+                  "p05": -6.979999999999563,
+                  "p25": -1.7100000000000364,
+                  "p50": 0.07999999999992724,
+                  "p75": 1.949999999999818,
+                  "p95": 7.2199999999998,
+                  "p99": 17.719999999999345,
+                  "max": 127.04500000000007
+                },
+                "raw_return_bps": {
+                  "n": 43308,
+                  "p05": -15.274750391625004,
+                  "p25": -4.048303892679197,
+                  "p50": 0.18967646773129512,
+                  "p75": 4.581286059515011,
+                  "p95": 15.817520734044708,
+                  "p99": 37.257446052812334,
+                  "max": 296.1622114315422
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 43308,
+                  "p05": -15.269596315045275,
+                  "p25": -3.9896972764323464,
+                  "p50": 0.2661984953435886,
+                  "p75": 4.590342080857325,
+                  "p95": 15.724050083358883,
+                  "p99": 36.8905815632136,
+                  "max": 188.81459327054486
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 22673,
+                    "direction_adjusted_p50": 0.4327621867337097
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 20635,
+                    "direction_adjusted_p50": 0.06505828137848704
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 21654,
+                    "direction_adjusted_p50": 0.2226649130562336,
+                    "threshold": 0.4908717850395506
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 21654,
+                    "direction_adjusted_p50": 0.31277227943839037,
+                    "threshold": 0.4908717850395506
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 21654,
+                    "direction_adjusted_p50": 0.2516997133585518,
+                    "threshold": 0.773351911095933
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 21654,
+                    "direction_adjusted_p50": 0.28076055875694156,
+                    "threshold": 0.773351911095933
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "timeframe": "5m",
+          "lawful_formation_n": 7140,
+          "touch_anchors_n": 7039,
+          "fill_anchors_n": 6981,
+          "touched_fill_n": 6961,
+          "gap_through_fill_n": 20,
+          "same_bar_touch_fill_n": 2397,
+          "touch_incidence": {
+            "numerator": 7039,
+            "denominator": 7140,
+            "rate": 0.9858543417366947
+          },
+          "formation_to_touch_market_ms": {
+            "n": 7039,
+            "p05": 300000.0,
+            "p25": 300000.0,
+            "p50": 600000.0,
+            "p75": 2400000.0,
+            "p95": 47400000.0,
+            "p99": 651900000.0,
+            "max": 8981400000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 7039,
+            "p05": 299769.0,
+            "p25": 300029.0,
+            "p50": 600022.0,
+            "p75": 2400040.0,
+            "p95": 47700073.0,
+            "p99": 651899911.0,
+            "max": 8981400000.0
+          },
+          "touch_to_fill_market_ms": {
+            "n": 6961,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 300000.0,
+            "p75": 2400000.0,
+            "p95": 62700000.0,
+            "p99": 716400000.0,
+            "max": 10240500000.0
+          },
+          "touch_to_fill_known_ms": {
+            "n": 6961,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 300186.0,
+            "p75": 2400010.0,
+            "p95": 61500073.0,
+            "p99": 716400010.0,
+            "max": 10240499994.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 6981,
+            "p05": 300000.0,
+            "p25": 600000.0,
+            "p50": 2100000.0,
+            "p75": 9900000.0,
+            "p95": 210300000.0,
+            "p99": 1396200000.0,
+            "max": 10240800000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 6981,
+            "p05": 299946.0,
+            "p25": 600271.0,
+            "p50": 2100043.0,
+            "p75": 9600228.0,
+            "p95": 210300074.0,
+            "p99": 1396197412.0,
+            "max": 10240799742.0
+          },
+          "fill_right_censor_fraction": 0.02226890756302521,
+          "fill_max_identifiable_quantile": 0.9777310924369748,
+          "touch_to_fill_right_censor_fraction": 0.011081119477198465,
+          "touch_to_fill_max_identifiable_quantile": 0.9889188805228015,
+          "orphan_touch_n": 8,
+          "orphan_fill_n": 18,
+          "n_bars": 52838,
+          "first_touch": {
+            "anchors_n": 7039,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 7038,
+                "end_of_window_missing": 1,
+                "raw_price_delta": {
+                  "n": 7038,
+                  "p05": -6.855000000000473,
+                  "p25": -1.7100000000000364,
+                  "p50": 0.07999999999992724,
+                  "p75": 1.9349999999999454,
+                  "p95": 6.850000000000364,
+                  "p99": 15.099999999999454,
+                  "max": 81.78999999999996
+                },
+                "raw_return_bps": {
+                  "n": 7038,
+                  "p05": -15.503626785421735,
+                  "p25": -4.041035286199339,
+                  "p50": 0.19115981438451565,
+                  "p75": 4.572634954443411,
+                  "p95": 15.076149164047866,
+                  "p99": 33.86293425354181,
+                  "max": 174.10758950713856
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 7038,
+                  "p05": -15.557624919127118,
+                  "p25": -4.228125257000335,
+                  "p50": 0.14489621205174286,
+                  "p75": 4.415660877244473,
+                  "p95": 15.01571653649547,
+                  "p99": 33.10779381701123,
+                  "max": 174.10758950713856
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 3806,
+                    "direction_adjusted_p50": 0.300902492546039
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 3232,
+                    "direction_adjusted_p50": -0.03779437090493058
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 3520,
+                    "direction_adjusted_p50": 0.09600627606701918,
+                    "threshold": 0.4565189289778372
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 3518,
+                    "direction_adjusted_p50": 0.21219602918827873,
+                    "threshold": 0.4565189289778372
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 3520,
+                    "direction_adjusted_p50": 0.04292591630632591,
+                    "threshold": 0.7502745895673107
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 3518,
+                    "direction_adjusted_p50": 0.3045804549272218,
+                    "threshold": 0.7502745895673107
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 7038,
+                "end_of_window_missing": 1,
+                "raw_price_delta": {
+                  "n": 7038,
+                  "p05": -12.725000000000364,
+                  "p25": -3.040000000000873,
+                  "p50": 0.17499999999972715,
+                  "p75": 3.4500000000007276,
+                  "p95": 11.844999999999345,
+                  "p99": 24.079999999999927,
+                  "max": 163.29500000000007
+                },
+                "raw_return_bps": {
+                  "n": 7038,
+                  "p05": -27.506758584195886,
+                  "p25": -7.336700747179589,
+                  "p50": 0.42823262099679454,
+                  "p75": 7.961767978544888,
+                  "p95": 25.722182539327736,
+                  "p99": 52.48130036668333,
+                  "max": 347.60849527531747
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 7038,
+                  "p05": -26.557798236966697,
+                  "p25": -7.466279901671097,
+                  "p50": 0.23531160209997007,
+                  "p75": 7.85313448641639,
+                  "p95": 27.00997769899951,
+                  "p99": 57.13046136249218,
+                  "max": 347.60849527531747
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 3806,
+                    "direction_adjusted_p50": 0.679492788435401
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 3232,
+                    "direction_adjusted_p50": -0.20680359497646422
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 3520,
+                    "direction_adjusted_p50": 0.3475271129081896,
+                    "threshold": 0.4565189289778372
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 3518,
+                    "direction_adjusted_p50": 0.06725590310609135,
+                    "threshold": 0.4565189289778372
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 3520,
+                    "direction_adjusted_p50": 0.2193283070594304,
+                    "threshold": 0.7502745895673107
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 3518,
+                    "direction_adjusted_p50": 0.23531160209997007,
+                    "threshold": 0.7502745895673107
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 7038,
+                "end_of_window_missing": 1,
+                "raw_price_delta": {
+                  "n": 7038,
+                  "p05": -15.800000000000182,
+                  "p25": -3.5700000000006185,
+                  "p50": 0.3550000000000182,
+                  "p75": 4.529999999999745,
+                  "p95": 15.545000000000073,
+                  "p99": 34.80500000000029,
+                  "max": 201.14999999999964
+                },
+                "raw_return_bps": {
+                  "n": 7038,
+                  "p05": -34.69608069593326,
+                  "p25": -8.509840967466786,
+                  "p50": 0.862113351143754,
+                  "p75": 10.608853666094591,
+                  "p95": 33.948830391347094,
+                  "p99": 69.88271728449112,
+                  "max": 428.190996813313
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 7038,
+                  "p05": -34.24079152872931,
+                  "p25": -9.367986534145013,
+                  "p50": 0.16886003794456075,
+                  "p75": 9.636515636185013,
+                  "p95": 34.36053511205461,
+                  "p99": 69.84376475345768,
+                  "max": 428.190996813313
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 3806,
+                    "direction_adjusted_p50": 0.9831038981395179
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 3232,
+                    "direction_adjusted_p50": -0.7555704430910063
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 3520,
+                    "direction_adjusted_p50": 0.2334677069701738,
+                    "threshold": 0.4565189289778372
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 3518,
+                    "direction_adjusted_p50": 0.13341249141043837,
+                    "threshold": 0.4565189289778372
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 3520,
+                    "direction_adjusted_p50": 0.13756936935499747,
+                    "threshold": 0.7502745895673107
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 3518,
+                    "direction_adjusted_p50": 0.17290986554696597,
+                    "threshold": 0.7502745895673107
+                  }
+                ]
+              }
+            ]
+          },
+          "fill": {
+            "anchors_n": 6981,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 6980,
+                "end_of_window_missing": 1,
+                "raw_price_delta": {
+                  "n": 6980,
+                  "p05": -7.135000000000218,
+                  "p25": -1.7849999999998545,
+                  "p50": 0.09499999999979991,
+                  "p75": 2.235000000000582,
+                  "p95": 7.809999999999945,
+                  "p99": 20.00500000000011,
+                  "max": 81.78999999999996
+                },
+                "raw_return_bps": {
+                  "n": 6980,
+                  "p05": -15.896037858360133,
+                  "p25": -4.211587129088495,
+                  "p50": 0.2231684564784995,
+                  "p75": 5.211300397781134,
+                  "p95": 17.333559690677948,
+                  "p99": 42.54292850614322,
+                  "max": 174.10758950713856
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 6980,
+                  "p05": -16.50780583390107,
+                  "p25": -4.521740882835453,
+                  "p50": 0.17618558214636743,
+                  "p75": 4.88835095898817,
+                  "p95": 16.88736430021263,
+                  "p99": 42.36007606516845,
+                  "max": 174.10758950713856
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 3766,
+                    "direction_adjusted_p50": 0.36725656446694216
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 3214,
+                    "direction_adjusted_p50": -0.019246221724767063
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 3490,
+                    "direction_adjusted_p50": 0.10717639761362004,
+                    "threshold": 0.4556892758937126
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 3490,
+                    "direction_adjusted_p50": 0.3045804549272218,
+                    "threshold": 0.4556892758937126
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 3490,
+                    "direction_adjusted_p50": 0.04926501523874456,
+                    "threshold": 0.7498191637675019
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 3490,
+                    "direction_adjusted_p50": 0.36529601870331246,
+                    "threshold": 0.7498191637675019
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 6980,
+                "end_of_window_missing": 1,
+                "raw_price_delta": {
+                  "n": 6980,
+                  "p05": -13.234999999999673,
+                  "p25": -3.1349999999997635,
+                  "p50": 0.24499999999989086,
+                  "p75": 3.7849999999998545,
+                  "p95": 13.125,
+                  "p99": 29.26000000000022,
+                  "max": 163.29500000000007
+                },
+                "raw_return_bps": {
+                  "n": 6980,
+                  "p05": -29.57388687175822,
+                  "p25": -7.526901208888023,
+                  "p50": 0.6149616058968232,
+                  "p75": 8.787670529186647,
+                  "p95": 28.872148551582423,
+                  "p99": 61.48137149452017,
+                  "max": 347.60849527531747
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 6980,
+                  "p05": -28.84829327052148,
+                  "p25": -7.817994713969107,
+                  "p50": 0.40321922549274136,
+                  "p75": 8.497160355223789,
+                  "p95": 29.352061265833044,
+                  "p99": 64.46738256139541,
+                  "max": 347.60849527531747
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 3766,
+                    "direction_adjusted_p50": 0.9657905288153321
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 3214,
+                    "direction_adjusted_p50": -0.09760753096343572
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 3490,
+                    "direction_adjusted_p50": 0.30448992138365494,
+                    "threshold": 0.4556892758937126
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 3490,
+                    "direction_adjusted_p50": 0.5982721899149799,
+                    "threshold": 0.4556892758937126
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 3490,
+                    "direction_adjusted_p50": 0.19904815173911117,
+                    "threshold": 0.7498191637675019
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 3490,
+                    "direction_adjusted_p50": 0.6239685020703939,
+                    "threshold": 0.7498191637675019
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 6980,
+                "end_of_window_missing": 1,
+                "raw_price_delta": {
+                  "n": 6980,
+                  "p05": -15.93499999999949,
+                  "p25": -3.8299999999999272,
+                  "p50": 0.4400000000005093,
+                  "p75": 4.825000000000728,
+                  "p95": 15.979999999999563,
+                  "p99": 38.649999999999636,
+                  "max": 201.14999999999964
+                },
+                "raw_return_bps": {
+                  "n": 6980,
+                  "p05": -36.006923541920386,
+                  "p25": -9.026216424684803,
+                  "p50": 1.0826802631172154,
+                  "p75": 11.265975461452493,
+                  "p95": 35.82868611038291,
+                  "p99": 82.6866573303664,
+                  "max": 428.190996813313
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 6980,
+                  "p05": -36.06742046429808,
+                  "p25": -9.865656553351943,
+                  "p50": 0.19049656593321942,
+                  "p75": 10.438225501663409,
+                  "p95": 35.82868611038291,
+                  "p99": 84.71767366793644,
+                  "max": 428.190996813313
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 3766,
+                    "direction_adjusted_p50": 1.2093487134625895
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 3214,
+                    "direction_adjusted_p50": -0.9708499078987053
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 3490,
+                    "direction_adjusted_p50": 0.022030192379135817,
+                    "threshold": 0.4556892758937126
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 3490,
+                    "direction_adjusted_p50": 0.4914734180322554,
+                    "threshold": 0.4556892758937126
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 3490,
+                    "direction_adjusted_p50": 0.08435472850422959,
+                    "threshold": 0.7498191637675019
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 3490,
+                    "direction_adjusted_p50": 0.37014773336468654,
+                    "threshold": 0.7498191637675019
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "timeframe": "15m",
+          "lawful_formation_n": 2192,
+          "touch_anchors_n": 2136,
+          "fill_anchors_n": 2104,
+          "touched_fill_n": 2094,
+          "gap_through_fill_n": 10,
+          "same_bar_touch_fill_n": 716,
+          "touch_incidence": {
+            "numerator": 2136,
+            "denominator": 2192,
+            "rate": 0.9744525547445255
+          },
+          "formation_to_touch_market_ms": {
+            "n": 2136,
+            "p05": 900000.0,
+            "p25": 900000.0,
+            "p50": 1800000.0,
+            "p75": 7200000.0,
+            "p95": 167400000.0,
+            "p99": 1114200000.0,
+            "max": 6840900000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 2136,
+            "p05": 899773.0,
+            "p25": 900016.0,
+            "p50": 1800000.0,
+            "p75": 7199926.0,
+            "p95": 167400009.0,
+            "p99": 1114199224.0,
+            "max": 6840899832.0
+          },
+          "touch_to_fill_market_ms": {
+            "n": 2094,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 900000.0,
+            "p75": 8100000.0,
+            "p95": 203400000.0,
+            "p99": 1483200000.0,
+            "max": 10131300000.0
+          },
+          "touch_to_fill_known_ms": {
+            "n": 2094,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 900201.0,
+            "p75": 8100022.0,
+            "p95": 203399897.0,
+            "p99": 1483199944.0,
+            "max": 10131299989.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 2104,
+            "p05": 900000.0,
+            "p25": 1800000.0,
+            "p50": 7200000.0,
+            "p75": 30600000.0,
+            "p95": 505800000.0,
+            "p99": 2551500000.0,
+            "max": 10133100000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 2104,
+            "p05": 899948.0,
+            "p25": 1800332.0,
+            "p50": 7199798.0,
+            "p75": 29700133.0,
+            "p95": 505799994.0,
+            "p99": 2551499999.0,
+            "max": 10133099819.0
+          },
+          "fill_right_censor_fraction": 0.040145985401459854,
+          "fill_max_identifiable_quantile": 0.9598540145985401,
+          "touch_to_fill_right_censor_fraction": 0.019662921348314606,
+          "touch_to_fill_max_identifiable_quantile": 0.9803370786516854,
+          "orphan_touch_n": 7,
+          "orphan_fill_n": 12,
+          "n_bars": 17614,
+          "first_touch": {
+            "anchors_n": 2136,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 2136,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 2136,
+                  "p05": -12.210000000000036,
+                  "p25": -2.9500000000007276,
+                  "p50": 0.22499999999990905,
+                  "p75": 3.3600000000001273,
+                  "p95": 13.055000000000291,
+                  "p99": 32.31999999999971,
+                  "max": 100.77499999999964
+                },
+                "raw_return_bps": {
+                  "n": 2136,
+                  "p05": -26.512340207310427,
+                  "p25": -7.000712907576909,
+                  "p50": 0.5532586184994734,
+                  "p75": 8.023310313935287,
+                  "p95": 28.493190247868565,
+                  "p99": 69.69577204455534,
+                  "max": 210.85150321272545
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 2136,
+                  "p05": -25.015460557470274,
+                  "p25": -7.452298862882997,
+                  "p50": 0.11665987918533337,
+                  "p75": 7.83029448816275,
+                  "p95": 29.751117554670667,
+                  "p99": 90.29238286500298,
+                  "max": 210.85150321272545
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 1231,
+                    "direction_adjusted_p50": 0.6325389011412196
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 905,
+                    "direction_adjusted_p50": -0.3597715450685541
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 1068,
+                    "direction_adjusted_p50": -0.27267868634415265,
+                    "threshold": 0.458533122056568
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 1068,
+                    "direction_adjusted_p50": 0.6546303941924008,
+                    "threshold": 0.458533122056568
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 1068,
+                    "direction_adjusted_p50": 0.2670272002332972,
+                    "threshold": 0.7497998084280525
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 1068,
+                    "direction_adjusted_p50": 0.022347167720450964,
+                    "threshold": 0.7497998084280525
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 2133,
+                "end_of_window_missing": 3,
+                "raw_price_delta": {
+                  "n": 2133,
+                  "p05": -20.140000000000327,
+                  "p25": -4.619999999999891,
+                  "p50": 0.625,
+                  "p75": 6.539999999999964,
+                  "p95": 23.6850000000004,
+                  "p99": 60.23500000000058,
+                  "max": 148.65999999999985
+                },
+                "raw_return_bps": {
+                  "n": 2133,
+                  "p05": -44.17991704113534,
+                  "p25": -11.167692795382681,
+                  "p50": 1.5572185111263488,
+                  "p75": 15.217594259725864,
+                  "p95": 49.82370157143448,
+                  "p99": 131.57454566742834,
+                  "max": 313.55129640995756
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 2133,
+                  "p05": -44.84053253301831,
+                  "p25": -12.179875840384508,
+                  "p50": 0.9927192800103287,
+                  "p75": 14.31956913789609,
+                  "p95": 50.98124665353391,
+                  "p99": 148.61714624466575,
+                  "max": 331.7680399748014
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 1229,
+                    "direction_adjusted_p50": 2.4099547534147603
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 904,
+                    "direction_adjusted_p50": -0.9342329650776439
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 1065,
+                    "direction_adjusted_p50": 0.7893035959476637,
+                    "threshold": 0.458533122056568
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 1068,
+                    "direction_adjusted_p50": 1.005348253630669,
+                    "threshold": 0.458533122056568
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 1066,
+                    "direction_adjusted_p50": 1.2337532244538327,
+                    "threshold": 0.7497998084280525
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 1067,
+                    "direction_adjusted_p50": 0.6747482225193446,
+                    "threshold": 0.7497998084280525
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 2133,
+                "end_of_window_missing": 3,
+                "raw_price_delta": {
+                  "n": 2133,
+                  "p05": -26.704999999999927,
+                  "p25": -5.710000000000036,
+                  "p50": 0.9650000000001455,
+                  "p75": 8.465000000000146,
+                  "p95": 27.215000000000146,
+                  "p99": 65.52999999999884,
+                  "max": 185.4399999999996
+                },
+                "raw_return_bps": {
+                  "n": 2133,
+                  "p05": -57.90498517914291,
+                  "p25": -13.951886770048619,
+                  "p50": 2.384551808440978,
+                  "p75": 20.60429720721868,
+                  "p95": 59.69141270745198,
+                  "p99": 147.04222809037,
+                  "max": 391.12708466475493
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 2133,
+                  "p05": -58.342622174672016,
+                  "p25": -16.250827588443013,
+                  "p50": 1.082112432725432,
+                  "p75": 19.036646336950117,
+                  "p95": 59.17944312685674,
+                  "p99": 149.85168531258245,
+                  "max": 391.12708466475493
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 1229,
+                    "direction_adjusted_p50": 2.930775384478772
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 904,
+                    "direction_adjusted_p50": -1.515621643554952
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 1065,
+                    "direction_adjusted_p50": 1.169550818464799,
+                    "threshold": 0.458533122056568
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 1068,
+                    "direction_adjusted_p50": 0.8922388536717136,
+                    "threshold": 0.458533122056568
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 1066,
+                    "direction_adjusted_p50": 1.1714223869016924,
+                    "threshold": 0.7497998084280525
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 1067,
+                    "direction_adjusted_p50": 0.9348982091047316,
+                    "threshold": 0.7497998084280525
+                  }
+                ]
+              }
+            ]
+          },
+          "fill": {
+            "anchors_n": 2104,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 2103,
+                "end_of_window_missing": 1,
+                "raw_price_delta": {
+                  "n": 2103,
+                  "p05": -13.464999999999236,
+                  "p25": -2.8850000000002183,
+                  "p50": 0.3999999999996362,
+                  "p75": 4.164999999999964,
+                  "p95": 13.929999999999382,
+                  "p99": 36.585000000000036,
+                  "max": 100.77499999999964
+                },
+                "raw_return_bps": {
+                  "n": 2103,
+                  "p05": -30.63145409634451,
+                  "p25": -7.144135397570021,
+                  "p50": 0.9930964118911562,
+                  "p75": 9.808563890957576,
+                  "p95": 31.117363962660026,
+                  "p99": 75.48419443292467,
+                  "max": 210.85150321272545
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 2103,
+                  "p05": -31.65914150601038,
+                  "p25": -8.051941564551043,
+                  "p50": 0.11778525178801447,
+                  "p75": 8.463992518542602,
+                  "p95": 30.16689783733761,
+                  "p99": 88.70562925779988,
+                  "max": 216.09466590393424
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 1212,
+                    "direction_adjusted_p50": 1.0943085014841447
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 891,
+                    "direction_adjusted_p50": -0.8049429459420644
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 1051,
+                    "direction_adjusted_p50": -0.23060018309738428,
+                    "threshold": 0.4571711993389577
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 1052,
+                    "direction_adjusted_p50": 0.5307596748880252,
+                    "threshold": 0.4571711993389577
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 1052,
+                    "direction_adjusted_p50": -0.12511716701263098,
+                    "threshold": 0.7491968551328597
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 1051,
+                    "direction_adjusted_p50": 0.40333506387958584,
+                    "threshold": 0.7491968551328597
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 2102,
+                "end_of_window_missing": 2,
+                "raw_price_delta": {
+                  "n": 2102,
+                  "p05": -23.0949999999998,
+                  "p25": -5.345000000000255,
+                  "p50": 0.5749999999998181,
+                  "p75": 6.979999999999563,
+                  "p95": 23.88000000000011,
+                  "p99": 64.16499999999996,
+                  "max": 148.65999999999985
+                },
+                "raw_return_bps": {
+                  "n": 2102,
+                  "p05": -50.33659952518249,
+                  "p25": -12.502275899736945,
+                  "p50": 1.4220017241757974,
+                  "p75": 16.21553292633862,
+                  "p95": 51.021623987688955,
+                  "p99": 135.6404588122163,
+                  "max": 313.55129640995756
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 2102,
+                  "p05": -48.93651224798978,
+                  "p25": -13.250894790218384,
+                  "p50": 1.1108353481824154,
+                  "p75": 15.836103636334844,
+                  "p95": 52.29977727564604,
+                  "p99": 162.88703493188774,
+                  "max": 313.55129640995756
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 1211,
+                    "direction_adjusted_p50": 2.109654842764756
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 891,
+                    "direction_adjusted_p50": -0.6228404490384126
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 1050,
+                    "direction_adjusted_p50": 1.255098839034254,
+                    "threshold": 0.4571711993389577
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 1052,
+                    "direction_adjusted_p50": 0.8440317630749669,
+                    "threshold": 0.4571711993389577
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 1051,
+                    "direction_adjusted_p50": 0.7593512702723265,
+                    "threshold": 0.7491968551328597
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 1051,
+                    "direction_adjusted_p50": 1.3475572193524832,
+                    "threshold": 0.7491968551328597
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 2102,
+                "end_of_window_missing": 2,
+                "raw_price_delta": {
+                  "n": 2102,
+                  "p05": -30.905000000000655,
+                  "p25": -6.114999999999782,
+                  "p50": 1.3949999999999818,
+                  "p75": 9.650000000000091,
+                  "p95": 30.485000000000582,
+                  "p99": 83.10999999999967,
+                  "max": 185.4399999999996
+                },
+                "raw_return_bps": {
+                  "n": 2102,
+                  "p05": -68.11681379739858,
+                  "p25": -14.432310352401819,
+                  "p50": 3.536928701410036,
+                  "p75": 22.68143571279825,
+                  "p95": 66.47358443265925,
+                  "p99": 174.655232894775,
+                  "max": 391.12708466475493
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 2102,
+                  "p05": -64.1585219492862,
+                  "p25": -16.657620393421176,
+                  "p50": 1.6074006528746316,
+                  "p75": 20.92338015768145,
+                  "p95": 72.27727349782073,
+                  "p99": 197.2482435597184,
+                  "max": 391.12708466475493
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 1211,
+                    "direction_adjusted_p50": 4.595335184148943
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 891,
+                    "direction_adjusted_p50": -1.7444499143301995
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 1050,
+                    "direction_adjusted_p50": 0.5740807410508066,
+                    "threshold": 0.4571711993389577
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 1052,
+                    "direction_adjusted_p50": 2.131979203512216,
+                    "threshold": 0.4571711993389577
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 1051,
+                    "direction_adjusted_p50": 0.8411330061594424,
+                    "threshold": 0.7491968551328597
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 1051,
+                    "direction_adjusted_p50": 2.099265575118787,
+                    "threshold": 0.7491968551328597
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "timeframe": "1h",
+          "lawful_formation_n": 523,
+          "touch_anchors_n": 497,
+          "fill_anchors_n": 482,
+          "touched_fill_n": 478,
+          "gap_through_fill_n": 4,
+          "same_bar_touch_fill_n": 175,
+          "touch_incidence": {
+            "numerator": 497,
+            "denominator": 523,
+            "rate": 0.9502868068833652
+          },
+          "formation_to_touch_market_ms": {
+            "n": 497,
+            "p05": 3600000.0,
+            "p25": 3600000.0,
+            "p50": 7200000.0,
+            "p75": 32400000.0,
+            "p95": 694800000.0,
+            "p99": 2671200000.0,
+            "max": 8780400000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 497,
+            "p05": 3599756.0,
+            "p25": 3600010.0,
+            "p50": 7200065.0,
+            "p75": 28800355.0,
+            "p95": 694799978.0,
+            "p99": 2671200103.0,
+            "max": 8780400036.0
+          },
+          "touch_to_fill_market_ms": {
+            "n": 478,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 3600000.0,
+            "p75": 28800000.0,
+            "p95": 547200000.0,
+            "p99": 2516400000.0,
+            "max": 10191600000.0
+          },
+          "touch_to_fill_known_ms": {
+            "n": 478,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 3600052.0,
+            "p75": 28799935.0,
+            "p95": 547200030.0,
+            "p99": 2516399717.0,
+            "max": 10191600023.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 482,
+            "p05": 3600000.0,
+            "p25": 10800000.0,
+            "p50": 28800000.0,
+            "p75": 118800000.0,
+            "p95": 1450800000.0,
+            "p99": 4496400000.0,
+            "max": 10238400000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 482,
+            "p05": 3599941.0,
+            "p25": 7204315.0,
+            "p50": 28800022.0,
+            "p75": 104400134.0,
+            "p95": 1450800035.0,
+            "p99": 4496399986.0,
+            "max": 10238400035.0
+          },
+          "fill_right_censor_fraction": 0.07839388145315487,
+          "fill_max_identifiable_quantile": 0.9216061185468452,
+          "touch_to_fill_right_censor_fraction": 0.03822937625754527,
+          "touch_to_fill_max_identifiable_quantile": 0.9617706237424547,
+          "orphan_touch_n": 5,
+          "orphan_fill_n": 7,
+          "n_bars": 4405,
+          "first_touch": {
+            "anchors_n": 497,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 497,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 497,
+                  "p05": -23.164999999999964,
+                  "p25": -6.369999999999891,
+                  "p50": 0.3350000000009459,
+                  "p75": 8.079999999999927,
+                  "p95": 28.8149999999996,
+                  "p99": 80.27000000000044,
+                  "max": 100.20500000000084
+                },
+                "raw_return_bps": {
+                  "n": 497,
+                  "p05": -52.325312014288116,
+                  "p25": -15.2797723474969,
+                  "p50": 0.791421463824824,
+                  "p75": 20.00444276339866,
+                  "p95": 66.98366249416424,
+                  "p99": 156.0216140569127,
+                  "max": 228.85717581041166
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 497,
+                  "p05": -53.78623163633298,
+                  "p25": -15.928700104295789,
+                  "p50": 1.4078621613074545,
+                  "p75": 19.473476631828042,
+                  "p95": 58.942562912738055,
+                  "p99": 156.0216140569127,
+                  "max": 173.42317687745253
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 288,
+                    "direction_adjusted_p50": 1.6121806858126306
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 209,
+                    "direction_adjusted_p50": 0.932486598933799
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 249,
+                    "direction_adjusted_p50": -1.603904691565356,
+                    "threshold": 0.44806995355234613
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 248,
+                    "direction_adjusted_p50": 6.091462745597471,
+                    "threshold": 0.44806995355234613
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 249,
+                    "direction_adjusted_p50": -0.9150274965777516,
+                    "threshold": 0.7427108486670856
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 248,
+                    "direction_adjusted_p50": 6.647542579618179,
+                    "threshold": 0.7427108486670856
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 497,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 497,
+                  "p05": -45.715000000000146,
+                  "p25": -9.58999999999969,
+                  "p50": 2.3799999999991996,
+                  "p75": 16.295000000000073,
+                  "p95": 43.39500000000044,
+                  "p99": 94.26500000000033,
+                  "max": 156.42499999999927
+                },
+                "raw_return_bps": {
+                  "n": 497,
+                  "p05": -94.33816604135018,
+                  "p25": -23.42223685654719,
+                  "p50": 6.087342307618772,
+                  "p75": 36.97756202876888,
+                  "p95": 100.11933492700595,
+                  "p99": 208.96882260095484,
+                  "max": 301.8258122090625
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 497,
+                  "p05": -107.36005510916455,
+                  "p25": -27.470883903396075,
+                  "p50": 2.710240988075995,
+                  "p75": 33.07643900960973,
+                  "p95": 96.94411054755903,
+                  "p99": 230.28537362506987,
+                  "max": 399.6309042845035
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 288,
+                    "direction_adjusted_p50": 8.382892126009418
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 209,
+                    "direction_adjusted_p50": -3.637170711390665
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 249,
+                    "direction_adjusted_p50": 0.9979930360045947,
+                    "threshold": 0.44806995355234613
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 248,
+                    "direction_adjusted_p50": 3.6609751394017778,
+                    "threshold": 0.44806995355234613
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 249,
+                    "direction_adjusted_p50": 2.710240988075995,
+                    "threshold": 0.7427108486670856
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 248,
+                    "direction_adjusted_p50": 1.3159780889636221,
+                    "threshold": 0.7427108486670856
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 497,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 497,
+                  "p05": -55.29500000000007,
+                  "p25": -14.274999999999636,
+                  "p50": 4.390000000000327,
+                  "p75": 18.200000000000728,
+                  "p95": 54.23999999999978,
+                  "p99": 158.875,
+                  "max": 212.39500000000044
+                },
+                "raw_return_bps": {
+                  "n": 497,
+                  "p05": -115.16303787609934,
+                  "p25": -33.11207122957564,
+                  "p50": 9.762329159240213,
+                  "p75": 43.08987692014242,
+                  "p95": 122.40618483057575,
+                  "p99": 376.4453606293243,
+                  "max": 477.2338361118448
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 497,
+                  "p05": -115.16303787609934,
+                  "p25": -37.889111556447006,
+                  "p50": 5.168299299958695,
+                  "p75": 38.29164771684083,
+                  "p95": 122.42778764275323,
+                  "p99": 382.4987243968214,
+                  "max": 499.96509156917904
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 288,
+                    "direction_adjusted_p50": 14.722559624207117
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 209,
+                    "direction_adjusted_p50": -4.368861345286432
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 249,
+                    "direction_adjusted_p50": 1.7826949685493962,
+                    "threshold": 0.44806995355234613
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 248,
+                    "direction_adjusted_p50": 7.239731647280274,
+                    "threshold": 0.44806995355234613
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 249,
+                    "direction_adjusted_p50": 4.72658522396797,
+                    "threshold": 0.7427108486670856
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 248,
+                    "direction_adjusted_p50": 6.272509558237716,
+                    "threshold": 0.7427108486670856
+                  }
+                ]
+              }
+            ]
+          },
+          "fill": {
+            "anchors_n": 482,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 482,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 482,
+                  "p05": -27.05999999999949,
+                  "p25": -7.920000000000073,
+                  "p50": 0.5450000000000728,
+                  "p75": 8.69000000000051,
+                  "p95": 35.525000000000546,
+                  "p99": 81.65999999999985,
+                  "max": 105.85999999999967
+                },
+                "raw_return_bps": {
+                  "n": 482,
+                  "p05": -59.55830112717328,
+                  "p25": -18.69133883771955,
+                  "p50": 1.357625061225599,
+                  "p75": 22.444863379741303,
+                  "p95": 78.27303678794505,
+                  "p99": 157.56494054653743,
+                  "max": 228.85717581041166
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 482,
+                  "p05": -59.55830112717328,
+                  "p25": -18.426895575094758,
+                  "p50": 2.0199798213532536,
+                  "p75": 23.57436560952796,
+                  "p95": 79.21369679183006,
+                  "p99": 157.56494054653743,
+                  "max": 220.0138047877498
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 279,
+                    "direction_adjusted_p50": 3.7744758215503293
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 203,
+                    "direction_adjusted_p50": 0.8196505976606708
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 241,
+                    "direction_adjusted_p50": 0.06367784106786643,
+                    "threshold": 0.44052746481309735
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 241,
+                    "direction_adjusted_p50": 4.665439930402115,
+                    "threshold": 0.44052746481309735
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 241,
+                    "direction_adjusted_p50": -0.07199933760548285,
+                    "threshold": 0.7379187247983902
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 241,
+                    "direction_adjusted_p50": 6.476442473104239,
+                    "threshold": 0.7379187247983902
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 482,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 482,
+                  "p05": -39.77000000000044,
+                  "p25": -10.670000000000073,
+                  "p50": 2.1150000000002365,
+                  "p75": 14.215000000000146,
+                  "p95": 50.9399999999996,
+                  "p99": 156.42499999999927,
+                  "max": 224.54500000000098
+                },
+                "raw_return_bps": {
+                  "n": 482,
+                  "p05": -93.61510107563808,
+                  "p25": -25.69133455276071,
+                  "p50": 5.43035020712145,
+                  "p75": 33.37629201310932,
+                  "p95": 114.27214676324934,
+                  "p99": 301.8258122090625,
+                  "max": 527.8251497653494
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 482,
+                  "p05": -100.44405299276998,
+                  "p25": -25.69133455276071,
+                  "p50": 1.7706221086414358,
+                  "p75": 32.30981371161834,
+                  "p95": 108.24181958129957,
+                  "p99": 301.8258122090625,
+                  "max": 476.13445415457824
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 279,
+                    "direction_adjusted_p50": 8.096531550355202
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 203,
+                    "direction_adjusted_p50": -3.057905510718438
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 241,
+                    "direction_adjusted_p50": 1.9514154392953407,
+                    "threshold": 0.44052746481309735
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 241,
+                    "direction_adjusted_p50": 1.0023272786511035,
+                    "threshold": 0.44052746481309735
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 241,
+                    "direction_adjusted_p50": -2.176162581549613,
+                    "threshold": 0.7379187247983902
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 241,
+                    "direction_adjusted_p50": 4.195585708227824,
+                    "threshold": 0.7379187247983902
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 481,
+                "end_of_window_missing": 1,
+                "raw_price_delta": {
+                  "n": 481,
+                  "p05": -75.96500000000015,
+                  "p25": -11.449999999998909,
+                  "p50": 3.9849999999996726,
+                  "p75": 18.294999999999618,
+                  "p95": 56.74000000000069,
+                  "p99": 212.39500000000044,
+                  "max": 275.34000000000015
+                },
+                "raw_return_bps": {
+                  "n": 481,
+                  "p05": -164.36838545078723,
+                  "p25": -28.391699181974978,
+                  "p50": 9.92286968039722,
+                  "p75": 42.66787485024309,
+                  "p95": 132.83153776194715,
+                  "p99": 409.82127782735665,
+                  "max": 655.0473906589017
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 481,
+                  "p05": -146.61208640202597,
+                  "p25": -35.01286675021363,
+                  "p50": 8.092497243493943,
+                  "p75": 38.47354370456939,
+                  "p95": 164.36838545078723,
+                  "p99": 409.82127782735665,
+                  "max": 655.0473906589017
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 279,
+                    "direction_adjusted_p50": 15.412392814242885
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 202,
+                    "direction_adjusted_p50": -4.889931473358848
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 241,
+                    "direction_adjusted_p50": 2.189995736636179,
+                    "threshold": 0.44052746481309735
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 240,
+                    "direction_adjusted_p50": 11.431702391333342,
+                    "threshold": 0.44052746481309735
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 241,
+                    "direction_adjusted_p50": 0.24224610589546347,
+                    "threshold": 0.7379187247983902
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 240,
+                    "direction_adjusted_p50": 10.916609303640367,
+                    "threshold": 0.7379187247983902
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "timeframe": "4h",
+          "lawful_formation_n": 167,
+          "touch_anchors_n": 157,
+          "fill_anchors_n": 141,
+          "touched_fill_n": 141,
+          "gap_through_fill_n": 0,
+          "same_bar_touch_fill_n": 57,
+          "touch_incidence": {
+            "numerator": 157,
+            "denominator": 167,
+            "rate": 0.9401197604790419
+          },
+          "formation_to_touch_market_ms": {
+            "n": 157,
+            "p05": 14400000.0,
+            "p25": 14400000.0,
+            "p50": 28800000.0,
+            "p75": 172800000.0,
+            "p95": 1281600000.0,
+            "p99": 4492800000.0,
+            "max": 8769600000.0
+          },
+          "formation_to_touch_known_ms": {
+            "n": 157,
+            "p05": 14399941.0,
+            "p25": 14400098.0,
+            "p50": 28800345.0,
+            "p75": 187199950.0,
+            "p95": 1281600259.0,
+            "p99": 4492800013.0,
+            "max": 8769600045.0
+          },
+          "touch_to_fill_market_ms": {
+            "n": 141,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 14400000.0,
+            "p75": 57600000.0,
+            "p95": 950400000.0,
+            "p99": 2520000000.0,
+            "max": 6609600000.0
+          },
+          "touch_to_fill_known_ms": {
+            "n": 141,
+            "p05": 0.0,
+            "p25": 0.0,
+            "p50": 14399994.0,
+            "p75": 43200005.0,
+            "p95": 950399946.0,
+            "p99": 2519999955.0,
+            "max": 6609599986.0
+          },
+          "formation_to_fill_market_ms": {
+            "n": 141,
+            "p05": 14400000.0,
+            "p25": 28800000.0,
+            "p50": 72000000.0,
+            "p75": 446400000.0,
+            "p95": 2448000000.0,
+            "p99": 6652800000.0,
+            "max": 8769600000.0
+          },
+          "formation_to_fill_known_ms": {
+            "n": 141,
+            "p05": 14400004.0,
+            "p25": 28800095.0,
+            "p50": 71999975.0,
+            "p75": 446400257.0,
+            "p95": 2447999989.0,
+            "p99": 6652800017.0,
+            "max": 8769600045.0
+          },
+          "fill_right_censor_fraction": 0.15568862275449102,
+          "fill_max_identifiable_quantile": 0.844311377245509,
+          "touch_to_fill_right_censor_fraction": 0.10191082802547771,
+          "touch_to_fill_max_identifiable_quantile": 0.8980891719745223,
+          "orphan_touch_n": 3,
+          "orphan_fill_n": 6,
+          "n_bars": 1168,
+          "first_touch": {
+            "anchors_n": 157,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 157,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 157,
+                  "p05": -67.04999999999927,
+                  "p25": -16.31999999999971,
+                  "p50": 2.2450000000003456,
+                  "p75": 13.21499999999969,
+                  "p95": 39.55000000000018,
+                  "p99": 175.91499999999905,
+                  "max": 178.73000000000047
+                },
+                "raw_return_bps": {
+                  "n": 157,
+                  "p05": -138.29204681510484,
+                  "p25": -35.7109632657233,
+                  "p50": 4.812567315522554,
+                  "p75": 33.05311759806431,
+                  "p95": 86.54976170729255,
+                  "p99": 389.5970842888169,
+                  "max": 418.51042975143463
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 157,
+                  "p05": -92.04961184973556,
+                  "p25": -25.26898954282292,
+                  "p50": 10.675876455019004,
+                  "p75": 45.13050099779435,
+                  "p95": 237.6016015050277,
+                  "p99": 389.5970842888169,
+                  "max": 445.44820174111965
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 94,
+                    "direction_adjusted_p50": 11.223705430484944
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 63,
+                    "direction_adjusted_p50": 4.501324017877369
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 79,
+                    "direction_adjusted_p50": 14.08498359007722,
+                    "threshold": 0.529282261924288
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 78,
+                    "direction_adjusted_p50": 6.706186868122151,
+                    "threshold": 0.529282261924288
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 79,
+                    "direction_adjusted_p50": 12.737541327919356,
+                    "threshold": 0.7596058047571933
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 78,
+                    "direction_adjusted_p50": 9.108529641572778,
+                    "threshold": 0.7596058047571933
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 157,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 157,
+                  "p05": -129.48500000000058,
+                  "p25": -20.354999999999563,
+                  "p50": 4.044999999999163,
+                  "p75": 28.735000000000582,
+                  "p95": 65.74000000000069,
+                  "p99": 98.15500000000065,
+                  "max": 194.48499999999876
+                },
+                "raw_return_bps": {
+                  "n": 157,
+                  "p05": -276.2285526744819,
+                  "p25": -45.19450715217692,
+                  "p50": 10.987908809339043,
+                  "p75": 70.80990964835816,
+                  "p95": 154.51543694197213,
+                  "p99": 213.95905448648227,
+                  "max": 462.6893723116715
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 157,
+                  "p05": -162.40374299299876,
+                  "p25": -42.07127562388997,
+                  "p50": 9.374714568045617,
+                  "p75": 69.93272724065062,
+                  "p95": 213.95905448648227,
+                  "p99": 376.1205755678264,
+                  "max": 556.058660042236
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 94,
+                    "direction_adjusted_p50": 17.280670353881955
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 63,
+                    "direction_adjusted_p50": 1.3518780966465846
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 79,
+                    "direction_adjusted_p50": 17.280670353881955,
+                    "threshold": 0.529282261924288
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 78,
+                    "direction_adjusted_p50": 8.131082114209674,
+                    "threshold": 0.529282261924288
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 79,
+                    "direction_adjusted_p50": 2.033835903587109,
+                    "threshold": 0.7596058047571933
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 78,
+                    "direction_adjusted_p50": 14.180505336704961,
+                    "threshold": 0.7596058047571933
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 157,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 157,
+                  "p05": -132.36000000000058,
+                  "p25": -28.56999999999971,
+                  "p50": 0.4499999999998181,
+                  "p75": 38.86999999999989,
+                  "p95": 139.20499999999902,
+                  "p99": 166.26000000000022,
+                  "max": 221.79500000000007
+                },
+                "raw_return_bps": {
+                  "n": 157,
+                  "p05": -283.6263742797863,
+                  "p25": -66.35492517945833,
+                  "p50": 1.1057516285259792,
+                  "p75": 85.89887279111743,
+                  "p95": 305.4586707539292,
+                  "p99": 342.49980967606894,
+                  "max": 483.4705159169583
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 157,
+                  "p05": -305.4586707539292,
+                  "p25": -63.98114389882631,
+                  "p50": 13.267084248861929,
+                  "p75": 96.93083688636665,
+                  "p95": 285.09889371285516,
+                  "p99": 483.4705159169583,
+                  "max": 929.4643423545853
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 94,
+                    "direction_adjusted_p50": 15.72335474462011
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 63,
+                    "direction_adjusted_p50": 7.731875234387272
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 79,
+                    "direction_adjusted_p50": 18.73277080027444,
+                    "threshold": 0.529282261924288
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 78,
+                    "direction_adjusted_p50": 7.731875234387272,
+                    "threshold": 0.529282261924288
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 79,
+                    "direction_adjusted_p50": 18.73277080027444,
+                    "threshold": 0.7596058047571933
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 78,
+                    "direction_adjusted_p50": 0.7361004214178064,
+                    "threshold": 0.7596058047571933
+                  }
+                ]
+              }
+            ]
+          },
+          "fill": {
+            "anchors_n": 141,
+            "horizons": [
+              {
+                "horizon_bars": 1,
+                "n": 141,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 141,
+                  "p05": -57.940000000000055,
+                  "p25": -17.850000000000364,
+                  "p50": -0.05999999999949068,
+                  "p75": 16.30500000000029,
+                  "p95": 65.10000000000036,
+                  "p99": 178.73000000000047,
+                  "max": 178.73000000000047
+                },
+                "raw_return_bps": {
+                  "n": 141,
+                  "p05": -137.43515893982692,
+                  "p25": -40.55430772136921,
+                  "p50": -0.14514297187368858,
+                  "p75": 34.92238869531187,
+                  "p95": 140.89033602669852,
+                  "p99": 389.5970842888169,
+                  "max": 418.51042975143463
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 141,
+                  "p05": -95.64997667547647,
+                  "p25": -36.12716763005708,
+                  "p50": 8.308876067410607,
+                  "p75": 41.030133554247314,
+                  "p95": 237.6016015050277,
+                  "p99": 389.5970842888169,
+                  "max": 418.51042975143463
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 84,
+                    "direction_adjusted_p50": 8.325031236067863
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 57,
+                    "direction_adjusted_p50": 5.809379884279082
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 71,
+                    "direction_adjusted_p50": 8.325031236067863,
+                    "threshold": 0.4912722456547654
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 70,
+                    "direction_adjusted_p50": 2.397234494698532,
+                    "threshold": 0.4912722456547654
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 71,
+                    "direction_adjusted_p50": 12.737541327919356,
+                    "threshold": 0.7452228296715656
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 70,
+                    "direction_adjusted_p50": -4.7588119076971145,
+                    "threshold": 0.7452228296715656
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 3,
+                "n": 141,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 141,
+                  "p05": -159.89499999999998,
+                  "p25": -21.75999999999931,
+                  "p50": 3.244999999999891,
+                  "p75": 29.664999999999964,
+                  "p95": 79.0649999999996,
+                  "p99": 188.73999999999978,
+                  "max": 194.48499999999876
+                },
+                "raw_return_bps": {
+                  "n": 141,
+                  "p05": -364.5418389921688,
+                  "p25": -46.51606296666266,
+                  "p50": 6.893877832836509,
+                  "p75": 67.79608185402725,
+                  "p95": 161.33613452427988,
+                  "p99": 408.4737637738695,
+                  "max": 462.6893723116715
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 141,
+                  "p05": -320.20676701266444,
+                  "p25": -43.09263476051135,
+                  "p50": 18.162727927393547,
+                  "p75": 69.93272724065062,
+                  "p95": 213.95905448648227,
+                  "p99": 462.6893723116715,
+                  "max": 506.51518595387745
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 84,
+                    "direction_adjusted_p50": 25.511493381483692
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 57,
+                    "direction_adjusted_p50": 6.1733788270338605
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 71,
+                    "direction_adjusted_p50": 22.94033124258892,
+                    "threshold": 0.4912722456547654
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 70,
+                    "direction_adjusted_p50": 8.131082114209674,
+                    "threshold": 0.4912722456547654
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 71,
+                    "direction_adjusted_p50": 25.57557607854525,
+                    "threshold": 0.7452228296715656
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 70,
+                    "direction_adjusted_p50": 6.1733788270338605,
+                    "threshold": 0.7452228296715656
+                  }
+                ]
+              },
+              {
+                "horizon_bars": 5,
+                "n": 141,
+                "end_of_window_missing": 0,
+                "raw_price_delta": {
+                  "n": 141,
+                  "p05": -210.72500000000036,
+                  "p25": -23.3100000000004,
+                  "p50": 5.875,
+                  "p75": 41.220000000000255,
+                  "p95": 103.67000000000007,
+                  "p99": 221.79500000000007,
+                  "max": 296.34500000000025
+                },
+                "raw_return_bps": {
+                  "n": 141,
+                  "p05": -433.3644899214101,
+                  "p25": -56.008257872833724,
+                  "p50": 15.72335474462011,
+                  "p75": 98.03944704288786,
+                  "p95": 221.3780232076432,
+                  "p99": 483.4705159169583,
+                  "max": 641.3540188914252
+                },
+                "direction_adjusted_return_bps": {
+                  "n": 141,
+                  "p05": -410.3684848361937,
+                  "p25": -78.22230473986569,
+                  "p50": 15.72335474462011,
+                  "p75": 98.03944704288786,
+                  "p95": 337.7191868820496,
+                  "p99": 483.4705159169583,
+                  "max": 486.96568513868925
+                },
+                "direction_split": [
+                  {
+                    "direction": "bullish",
+                    "n": 84,
+                    "direction_adjusted_p50": 39.184688465941335
+                  },
+                  {
+                    "direction": "bearish",
+                    "n": 57,
+                    "direction_adjusted_p50": -1.1680566071191323
+                  }
+                ],
+                "gap_atr_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 71,
+                    "direction_adjusted_p50": 13.841293937735912,
+                    "threshold": 0.4912722456547654
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 70,
+                    "direction_adjusted_p50": 21.073238483804328,
+                    "threshold": 0.4912722456547654
+                  }
+                ],
+                "fvg_quality_median_split": [
+                  {
+                    "split": "low_at_or_below_median",
+                    "n": 71,
+                    "direction_adjusted_p50": 17.828626998317763,
+                    "threshold": 0.7452228296715656
+                  },
+                  {
+                    "split": "high_above_median",
+                    "n": 70,
+                    "direction_adjusted_p50": 12.484028570705155,
+                    "threshold": 0.7452228296715656
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "anchors": {
+      "n": 758380,
+      "path": "E1B_ANCHORS.jsonl",
+      "absolute_path": "\\\\?\\F:\\TrinityR-research\\ap-002-e1-native-strata\\.runs\\ap-002-e1-native-strata\\e1b-run-1\\E1B_ANCHORS.jsonl",
+      "sha256": "911301ee6ac985f76a954af5ddac10d9d8957508f4c2d44e348c718d564285c2",
+      "logical_rows_sha256": "911301ee6ac985f76a954af5ddac10d9d8957508f4c2d44e348c718d564285c2",
+      "provenance": {
+        "scope_id": "XAUUSD_DATA_SCOPE_V1",
+        "development_view_manifest_sha256": "5727233e9f8920ab25a4715f59b1d07dcffd8c9ff82e474d8aa642855924a4f4",
+        "sidecar_manifest_sha256": "dd1a4d95a9df7c4b02954f9e0a476a7c318bd84362446412dcf4695a6de76e55",
+        "sidecar_sha256": "8882dfca1e34aab71df411ee0837a7203b01462e3ada565119e66e48c4e15929",
+        "source_parts": [
+          "15s/part-00000.parquet",
+          "15s/part-00001.parquet",
+          "15s/part-00002.parquet",
+          "15s/part-00003.parquet",
+          "15s/part-00004.parquet",
+          "30s/part-00000.parquet",
+          "30s/part-00001.parquet",
+          "30s/part-00002.parquet",
+          "30s/part-00003.parquet",
+          "30s/part-00004.parquet",
+          "1m/part-00000.parquet",
+          "1m/part-00001.parquet",
+          "1m/part-00002.parquet",
+          "1m/part-00003.parquet",
+          "1m/part-00004.parquet",
+          "5m/part-00000.parquet",
+          "5m/part-00001.parquet",
+          "5m/part-00002.parquet",
+          "5m/part-00003.parquet",
+          "5m/part-00004.parquet",
+          "15m/part-00000.parquet",
+          "15m/part-00001.parquet",
+          "15m/part-00002.parquet",
+          "15m/part-00003.parquet",
+          "15m/part-00004.parquet",
+          "1h/part-00000.parquet",
+          "1h/part-00001.parquet",
+          "1h/part-00002.parquet",
+          "1h/part-00003.parquet",
+          "1h/part-00004.parquet",
+          "4h/part-00000.parquet",
+          "4h/part-00001.parquet",
+          "4h/part-00002.parquet",
+          "4h/part-00003.parquet",
+          "4h/part-00004.parquet"
+        ],
+        "scanner_commit": "1b6dbd887857621bd40e198f8f2ef88a979f7aa2"
+      }
+    }
+  }
+}

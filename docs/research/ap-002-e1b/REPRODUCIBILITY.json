@@ -1,0 +1,33 @@
+{
+ "artifact_type": "AP-002_E1B_REPRODUCIBILITY",
+ "comparison": "e1b-run-1 vs e1b-run-2 (independent fresh executions on the corrected development view)",
+ "logical_result_hash": {
+  "run_1": "2a7a142cadb36449d14d4128361d11ce99a3a4d7d8a004dd539bc4dc32fb823c",
+  "run_2": "2a7a142cadb36449d14d4128361d11ce99a3a4d7d8a004dd539bc4dc32fb823c",
+  "identical": true
+ },
+ "deterministic_preflight_hash": {
+  "run_1": "3b466d9f320cd60ed1937f456c115b8d3a8deebc62dc6b0d8c9f7f05deb296bd",
+  "run_2": "3b466d9f320cd60ed1937f456c115b8d3a8deebc62dc6b0d8c9f7f05deb296bd",
+  "identical": true
+ },
+ "preflight": {
+  "rows_scanned": 51969691,
+  "regressions": [
+   0,
+   0
+  ]
+ },
+ "anchors": {
+  "rows": 758380,
+  "logical_rows_sha256_run_1": "911301ee6ac985f76a954af5ddac10d9d8957508f4c2d44e348c718d564285c2",
+  "logical_rows_sha256_run_2": "911301ee6ac985f76a954af5ddac10d9d8957508f4c2d44e348c718d564285c2",
+  "identical": true
+ },
+ "integrity_gate": {
+  "run_1": "PASS",
+  "run_2": "PASS"
+ },
+ "contract": "docs/research/ap-002-e1b/AP-002_E1B_EXPERIMENT_CONTRACT.json",
+ "note": "E1B_RESULTS.json differs between runs only in the run-specific absolute local anchor path; the logical result hash excludes it and is stable. Interpretation of outputs is a separate later stage."
+}

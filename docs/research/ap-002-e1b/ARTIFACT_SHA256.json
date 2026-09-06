@@ -1,0 +1,56 @@
+{
+  "artifact_type": "ARTIFACT_HASH_REGISTRY",
+  "entries": [
+    {
+      "bytes": 4878,
+      "logical_name": "AP-002_E1B_EXPERIMENT_CONTRACT.json",
+      "path": "docs/research/ap-002-e1b/AP-002_E1B_EXPERIMENT_CONTRACT.json",
+      "sha256": "763d8f1cce7be27ceecb52dcf8e5cd00dac4b59c7f523624aa2aa24fef49f9c4"
+    },
+    {
+      "bytes": 4103,
+      "logical_name": "AP-002_E1B_EXPERIMENT_CONTRACT.md",
+      "path": "docs/research/ap-002-e1b/AP-002_E1B_EXPERIMENT_CONTRACT.md",
+      "sha256": "88d3634b834832b034c6dd3b9f1c14bb1e46fe8e65bcf4faa74428377d202a8d"
+    },
+    {
+      "bytes": 659,
+      "logical_name": "E1B_EXPERIMENT.json",
+      "path": "docs/research/ap-002-e1b/E1B_EXPERIMENT.json",
+      "sha256": "ffc61c648361877ef6cfcaf2a70cd7e6a1f1c7f2e7d895f578eff7a2eed727bd"
+    },
+    {
+      "bytes": 143456,
+      "logical_name": "E1B_RESULTS.json",
+      "path": "docs/research/ap-002-e1b/E1B_RESULTS.json",
+      "sha256": "6d6071c7bb6e32a92a970166dc3985bf821908f87ecefcc37681db224d927771"
+    },
+    {
+      "bytes": 1100,
+      "logical_name": "E1B_SCANNER_INTEGRITY_GATE.json",
+      "path": "docs/research/ap-002-e1b/E1B_SCANNER_INTEGRITY_GATE.json",
+      "sha256": "2baffc50b97bc5f6f2f3251152f7109750d35e40e40c8404c94855246aa62b1f"
+    },
+    {
+      "bytes": 378,
+      "logical_name": "PREFLIGHT.json",
+      "path": "docs/research/ap-002-e1b/PREFLIGHT.json",
+      "sha256": "08e26c3abda3a54fd4906d5802b26dedfdae0d47daa753a1179e9bedb9ee167a"
+    },
+    {
+      "bytes": 1295,
+      "logical_name": "REPRODUCIBILITY.json",
+      "path": "docs/research/ap-002-e1b/REPRODUCIBILITY.json",
+      "sha256": "c11d49f71dd4b8ecb1ce38b26c816eb1fb2d3ef5f71fc6503147c8a95f28d08e"
+    },
+    {
+      "bytes": 641,
+      "logical_name": "RUN_MANIFEST.json",
+      "path": "docs/research/ap-002-e1b/RUN_MANIFEST.json",
+      "sha256": "95dce663ef9a6760ad994789b24f421007eb077c8ce207e475581191224f53a6"
+    }
+  ],
+  "generator": "artifact_hash_registry",
+  "generator_code_identity": "1b6dbd887857621bd40e198f8f2ef88a979f7aa2",
+  "root": "."
+}

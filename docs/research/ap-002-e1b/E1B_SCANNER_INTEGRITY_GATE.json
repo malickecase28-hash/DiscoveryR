@@ -1,0 +1,38 @@
+{
+  "anchors_n": 758380,
+  "checks": [
+    {
+      "evidence": "758380 unique (stage, timeframe, zone_id) anchors",
+      "id": "native_stage_identity",
+      "status": "PASS"
+    },
+    {
+      "evidence": "anchor price equals the boundary-crossing tick mid; outcomes strictly post-anchor",
+      "id": "anchor_price_causality",
+      "status": "PASS"
+    },
+    {
+      "evidence": "FIRST_TOUCH 379248, FILL 379132, gap-through fills 1010",
+      "id": "stage_stratification",
+      "status": "PASS"
+    },
+    {
+      "evidence": "per-stratum anchor counts match the results tables",
+      "id": "aggregate_reconciliation",
+      "status": "PASS"
+    },
+    {
+      "evidence": "0 regressions",
+      "id": "receipt_regression_preflight",
+      "status": "PASS"
+    }
+  ],
+  "confirmation_status": "LOCKED",
+  "fill_anchors_n": 379132,
+  "first_touch_anchors_n": 379248,
+  "gap_through_fill_n": 1010,
+  "gate_type": "E1B_SCANNER_INTEGRITY_GATE",
+  "logical_rows_sha256": "911301ee6ac985f76a954af5ddac10d9d8957508f4c2d44e348c718d564285c2",
+  "scientific_interpretation": false,
+  "status": "PASS"
+}

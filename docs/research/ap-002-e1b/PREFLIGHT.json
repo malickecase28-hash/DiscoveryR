@@ -1,0 +1,9 @@
+{
+  "rows_scanned": 51969691,
+  "regressions_count": 0,
+  "first_regression": null,
+  "last_regression": null,
+  "source_view_manifest_sha256": "5727233e9f8920ab25a4715f59b1d07dcffd8c9ff82e474d8aa642855924a4f4",
+  "scanner_commit": "1b6dbd887857621bd40e198f8f2ef88a979f7aa2",
+  "deterministic_preflight_hash": "3b466d9f320cd60ed1937f456c115b8d3a8deebc62dc6b0d8c9f7f05deb296bd"
+}
