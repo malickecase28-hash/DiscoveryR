@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RiskRule",
+  "type": "object",
+  "required": [
+    "parameters",
+    "risk_rule_id"
+  ],
+  "properties": {
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "risk_rule_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

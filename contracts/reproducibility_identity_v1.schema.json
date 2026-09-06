@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ReproducibilityIdentity",
+  "type": "object",
+  "required": [
+    "binary_identity",
+    "configuration_identity",
+    "output_identity",
+    "parameter_identity",
+    "seed_identity",
+    "source_identity",
+    "user_identities"
+  ],
+  "properties": {
+    "binary_identity": {
+      "type": "string"
+    },
+    "configuration_identity": {
+      "type": "string"
+    },
+    "output_identity": {
+      "type": "string"
+    },
+    "parameter_identity": {
+      "type": "string"
+    },
+    "seed_identity": {
+      "type": "string"
+    },
+    "source_identity": {
+      "type": "string"
+    },
+    "user_identities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

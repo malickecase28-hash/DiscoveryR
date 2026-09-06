@@ -1,13 +1,11 @@
-#[path = "../src/development_view.rs"]
-mod development_view;
-
 use arrow_array::{Array, Float64Array, Int64Array, RecordBatch, StringArray};
 use arrow_schema::{DataType, Field, Schema};
-use development_view::{
-    classify_batch, filter_batch, hash_file, hash_view_identity, Classification, Gate, GateStats,
-    Manifest, ManifestFile, RowStats,
-};
 use parquet::arrow::ArrowWriter;
+use research_tape::development_view;
+use research_tape::development_view::{
+    classify_batch, filter_batch, hash_file, hash_view_identity, Classification,
+    ExpectedDevelopmentScope, Gate, GateStats, Manifest, ManifestFile, RowStats,
+};
 use std::{io::Write, sync::Arc};
 
 const B: i64 = 1_777_984_740_000;
@@ -71,7 +69,7 @@ fn identity_is_deterministic_and_runtime_independent() {
         "payload",
         B,
         &["x"],
-        &[stats.clone()],
+        std::slice::from_ref(&stats),
         &["h"],
         &["FILTERED_MIXED_PART"],
         "commit",
@@ -159,10 +157,12 @@ fn valid_view(root: &std::path::Path) -> Manifest {
     .unwrap()
     .trim()
     .to_owned();
+    let source_id = "a".repeat(64);
+    let payload_id = "b".repeat(64);
     let identity = hash_view_identity(
         "scope",
-        "source",
-        "payload",
+        &source_id,
+        &payload_id,
         B,
         &["bars.parquet"],
         &[stats],
@@ -175,9 +175,10 @@ fn valid_view(root: &std::path::Path) -> Manifest {
         schema_version: 1,
         scope_id: "scope".into(),
         instrument: "XAUUSD".into(),
-        source_manifest_identity: "source".into(),
-        payload_manifest_identity: "payload".into(),
+        source_manifest_identity: source_id,
+        payload_manifest_identity: payload_id,
         boundary_rule: "x".into(),
+        boundary_ms: Some(B),
         development_end_exclusive: "x".into(),
         builder_code_identity: code,
         source_groups: std::collections::BTreeMap::from([(
@@ -267,7 +268,7 @@ fn revoked_view_fails_verification() {
 #[test]
 fn malformed_received_time_fails_exposed_view_verification() {
     use parquet::arrow::ArrowWriter;
-    use std::{fs::File, path::PathBuf};
+    use std::fs::File;
     let root = std::env::temp_dir().join(format!("dev_view_verify_{}", std::process::id()));
     std::fs::create_dir_all(root.join("tick")).unwrap();
     let path = root.join("tick/part.parquet");
@@ -295,6 +296,7 @@ fn malformed_received_time_fails_exposed_view_verification() {
         source_manifest_identity: "x".into(),
         payload_manifest_identity: "x".into(),
         boundary_rule: "x".into(),
+        boundary_ms: Some(B),
         development_end_exclusive: "x".into(),
         builder_code_identity: "x".into(),
         source_groups: std::collections::BTreeMap::from([(
@@ -316,7 +318,88 @@ fn malformed_received_time_fails_exposed_view_verification() {
         logical_view_identity: "x".into(),
     };
     assert!(development_view::verify_view(&root, &manifest, 64).is_err());
-    let _ = std::fs::remove_dir_all(PathBuf::from(root));
+    let _ = std::fs::remove_dir_all(root);
+}
+
+fn expected_scope(manifest: &Manifest) -> ExpectedDevelopmentScope {
+    ExpectedDevelopmentScope {
+        instrument: manifest.instrument.clone(),
+        scope_id: manifest.scope_id.clone(),
+        source_manifest_identity: manifest.source_manifest_identity.clone(),
+        payload_manifest_identity: manifest.payload_manifest_identity.clone(),
+        boundary_ms: B,
+        development_end_exclusive: manifest.development_end_exclusive.clone(),
+    }
+}
+
+#[test]
+fn verification_rejects_mismatched_expected_scope() {
+    let root = std::env::temp_dir().join(format!("dev_view_scope_{}", std::process::id()));
+    let manifest = valid_view(&root);
+    let mut expected = expected_scope(&manifest);
+    expected.instrument = "OTHER".into();
+    assert!(development_view::verify_view_with_expected(&root, &manifest, 64, &expected).is_err());
+    expected.instrument = manifest.instrument.clone();
+    expected.scope_id = "OTHER_SCOPE".into();
+    assert!(development_view::verify_view_with_expected(&root, &manifest, 64, &expected).is_err());
+    expected.scope_id = manifest.scope_id.clone();
+    expected.source_manifest_identity = "c".repeat(64);
+    assert!(development_view::verify_view_with_expected(&root, &manifest, 64, &expected).is_err());
+    expected.source_manifest_identity = manifest.source_manifest_identity.clone();
+    expected.payload_manifest_identity = "d".repeat(64);
+    assert!(development_view::verify_view_with_expected(&root, &manifest, 64, &expected).is_err());
+    expected.payload_manifest_identity = manifest.payload_manifest_identity.clone();
+    expected.boundary_ms += 1;
+    assert!(development_view::verify_view_with_expected(&root, &manifest, 64, &expected).is_err());
+    let _ = std::fs::remove_dir_all(root);
+}
+
+#[cfg(unix)]
+#[test]
+fn verification_rejects_reparse_root_and_ancestor() {
+    use std::os::unix::fs::symlink;
+    let outer = std::env::temp_dir().join(format!("dev_view_reparse_{}", std::process::id()));
+    let real = outer.join("real");
+    let alias = outer.join("alias");
+    let nested = outer.join("nested");
+    std::fs::create_dir_all(&nested).unwrap();
+    let manifest = valid_view(&real);
+    symlink(&real, &alias).unwrap();
+    let expected = expected_scope(&manifest);
+    assert!(development_view::verify_view_with_expected(&alias, &manifest, 64, &expected).is_err());
+    symlink(&outer, nested.join("redirect")).unwrap();
+    let redirected = nested.join("redirect/real");
+    assert!(
+        development_view::verify_view_with_expected(&redirected, &manifest, 64, &expected).is_err()
+    );
+    let _ = std::fs::remove_dir_all(outer);
+}
+
+#[cfg(windows)]
+#[test]
+fn verification_rejects_reparse_root_and_ancestor() {
+    use std::os::windows::fs::symlink_dir;
+    let outer = std::env::temp_dir().join(format!("dev_view_reparse_{}", std::process::id()));
+    let real = outer.join("real");
+    let alias = outer.join("alias");
+    let nested = outer.join("nested");
+    std::fs::create_dir_all(&nested).unwrap();
+    let manifest = valid_view(&real);
+    if symlink_dir(&real, &alias).is_err() {
+        let _ = std::fs::remove_dir_all(outer);
+        return;
+    }
+    let expected = expected_scope(&manifest);
+    assert!(development_view::verify_view_with_expected(&alias, &manifest, 64, &expected).is_err());
+    if symlink_dir(&outer, nested.join("redirect")).is_err() {
+        let _ = std::fs::remove_dir_all(outer);
+        return;
+    }
+    let redirected = nested.join("redirect/real");
+    assert!(
+        development_view::verify_view_with_expected(&redirected, &manifest, 64, &expected).is_err()
+    );
+    let _ = std::fs::remove_dir_all(outer);
 }
 
 #[test]

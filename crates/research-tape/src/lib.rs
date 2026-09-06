@@ -6,6 +6,7 @@ use parquet::arrow::{
     ProjectionMask,
 };
 use research_contracts::BarScale;
+pub use research_contracts::NativeScale;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
@@ -16,35 +17,33 @@ use std::{
     time::Instant,
 };
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub enum NativeScale {
-    Tick,
-    Bar(BarScale),
-}
+pub mod development_view;
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SourceRef {
     pub part: String,
     pub row_index: u64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AnchorInstance {
     pub anchor_id: String,
     pub detector_id: String,
     pub lifecycle_state: String,
     pub native_scale: NativeScale,
     pub anchor_time: i64,
+    pub value: Option<f64>,
     pub occur_time: Option<i64>,
     pub object_id: Option<String>,
     pub source: SourceRef,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct ContextObservation {
     pub detector_id: String,
     pub native_scale: NativeScale,
     pub available_time: i64,
+    pub value: Option<f64>,
     pub occur_time: Option<i64>,
     pub object_id: Option<String>,
     pub source: SourceRef,
@@ -63,6 +62,7 @@ impl ContextObservation {
             detector_id,
             native_scale,
             available_time: available_time.ok_or(ContractError::MissingAvailabilityTime)?,
+            value: None,
             occur_time,
             object_id,
             source,
@@ -909,8 +909,8 @@ mod tests {
         for (path, part) in [(&first, "part-00000"), (&second, "part-00001")] {
             let reader =
                 ProjectedParquetReader::new(path.clone(), vec!["bar_close_ts".into()], 1).unwrap();
-            let mut scan = reader.scan().unwrap();
-            while let Some(batch) = scan.next() {
+            let scan = reader.scan().unwrap();
+            for batch in scan {
                 let batch = batch.unwrap();
                 let times = batch_i64(&batch, "bar_close_ts").unwrap();
                 for row in 0..batch.num_rows() {
@@ -953,6 +953,7 @@ mod tests {
             lifecycle_state: "completed_bar".into(),
             native_scale: NativeScale::Bar(BarScale::M1),
             anchor_time: 1,
+            value: None,
             occur_time: None,
             object_id: None,
             source: SourceRef {
@@ -970,6 +971,7 @@ mod tests {
             lifecycle_state: "s".into(),
             native_scale: NativeScale::Bar(BarScale::M1),
             anchor_time: 1,
+            value: None,
             occur_time: None,
             object_id: None,
             source: SourceRef {
@@ -980,25 +982,25 @@ mod tests {
         let mut changed = base.clone();
         changed.detector_id = "other".into();
         assert_ne!(
-            logical_output_hash(&[base.clone()]),
+            logical_output_hash(std::slice::from_ref(&base)),
             logical_output_hash(&[changed])
         );
         let mut changed = base.clone();
         changed.lifecycle_state = "other".into();
         assert_ne!(
-            logical_output_hash(&[base.clone()]),
+            logical_output_hash(std::slice::from_ref(&base)),
             logical_output_hash(&[changed])
         );
         let mut changed = base.clone();
         changed.native_scale = NativeScale::Tick;
         assert_ne!(
-            logical_output_hash(&[base.clone()]),
+            logical_output_hash(std::slice::from_ref(&base)),
             logical_output_hash(&[changed])
         );
         let mut changed = base.clone();
         changed.object_id = Some("o".into());
         assert_ne!(
-            logical_output_hash(&[base.clone()]),
+            logical_output_hash(std::slice::from_ref(&base)),
             logical_output_hash(&[changed])
         );
         let mut changed = base;

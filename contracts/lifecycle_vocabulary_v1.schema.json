@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LifecycleVocabulary",
+  "type": "object",
+  "required": [
+    "states",
+    "transitions",
+    "vocabulary_id"
+  ],
+  "properties": {
+    "states": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "transitions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/LifecycleTransition"
+      }
+    },
+    "vocabulary_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "LifecycleTransition": {
+      "type": "object",
+      "required": [
+        "from_state",
+        "to_state"
+      ],
+      "properties": {
+        "from_state": {
+          "type": "string"
+        },
+        "to_state": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

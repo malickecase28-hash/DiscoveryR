@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PortfolioComponent",
+  "type": "object",
+  "required": [
+    "component_id",
+    "confirmed_strategy_ids",
+    "parameters"
+  ],
+  "properties": {
+    "component_id": {
+      "type": "string"
+    },
+    "confirmed_strategy_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

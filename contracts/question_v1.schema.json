@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Question",
+  "type": "object",
+  "required": [
+    "anchor_ids",
+    "context_ids",
+    "detector_ids",
+    "evidence_state",
+    "experiment_id",
+    "instrument_ids",
+    "lifecycle_states",
+    "native_scales",
+    "question_id",
+    "roles"
+  ],
+  "properties": {
+    "anchor_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "context_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "detector_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_state": {
+      "$ref": "#/definitions/EvidenceState"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "instrument_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lifecycle_states": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "native_scales": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/NativeScale"
+      },
+      "uniqueItems": true
+    },
+    "question_id": {
+      "type": "string"
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/DetectorRole"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "BarScale": {
+      "type": "string",
+      "enum": [
+        "15s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "4h"
+      ]
+    },
+    "DetectorRole": {
+      "type": "string",
+      "enum": [
+        "LIFECYCLE_OBJECT",
+        "STRUCTURAL_OBJECT",
+        "EVENT",
+        "STATE_REGIME",
+        "DIRECTIONAL_CONTEXT",
+        "QUALITY_INSTRUMENTATION",
+        "NORMALIZATION_MEASURE",
+        "TEMPORAL_CONTEXT",
+        "DERIVED_OBJECT",
+        "COMPOSITE_CONTEXT"
+      ]
+    },
+    "EvidenceState": {
+      "type": "string",
+      "enum": [
+        "KNOWN",
+        "UNKNOWN",
+        "NULL",
+        "REJECTED",
+        "INCONCLUSIVE",
+        "PARTIAL",
+        "CONTRADICTORY",
+        "FAILED"
+      ]
+    },
+    "NativeScale": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "Tick"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "Bar"
+          ],
+          "properties": {
+            "Bar": {
+              "$ref": "#/definitions/BarScale"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StrategyHypothesis",
+  "type": "object",
+  "required": [
+    "confirmed_finding_ids",
+    "hypothesis_id",
+    "parameters",
+    "strategy_id"
+  ],
+  "properties": {
+    "confirmed_finding_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "hypothesis_id": {
+      "type": "string"
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "strategy_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

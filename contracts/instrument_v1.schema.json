@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Instrument",
+  "type": "object",
+  "required": [
+    "dataset_identity",
+    "instrument_id",
+    "venue"
+  ],
+  "properties": {
+    "dataset_identity": {
+      "type": "string"
+    },
+    "instrument_id": {
+      "type": "string"
+    },
+    "venue": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

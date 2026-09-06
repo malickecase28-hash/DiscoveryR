@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CostModel",
+  "type": "object",
+  "required": [
+    "cost_model_id",
+    "parameters"
+  ],
+  "properties": {
+    "cost_model_id": {
+      "type": "string"
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

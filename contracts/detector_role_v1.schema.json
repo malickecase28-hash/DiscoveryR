@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DetectorRole",
+  "type": "string",
+  "enum": [
+    "LIFECYCLE_OBJECT",
+    "STRUCTURAL_OBJECT",
+    "EVENT",
+    "STATE_REGIME",
+    "DIRECTIONAL_CONTEXT",
+    "QUALITY_INSTRUMENTATION",
+    "NORMALIZATION_MEASURE",
+    "TEMPORAL_CONTEXT",
+    "DERIVED_OBJECT",
+    "COMPOSITE_CONTEXT"
+  ]
+}

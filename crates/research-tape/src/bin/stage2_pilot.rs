@@ -159,7 +159,7 @@ fn scan_part(
     let reader = ProjectedParquetReader::new(path, vec![column.into()], batch_size)?;
     let mut scan = reader.scan()?;
     let mut row = 0;
-    while let Some(batch) = scan.next() {
+    for batch in scan.by_ref() {
         let batch = batch?;
         let times = batch_i64(&batch, column)?;
         for index in 0..batch.num_rows() {
@@ -259,6 +259,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                     lifecycle_state: "completed_bar".into(),
                     native_scale: NativeScale::Bar(BarScale::M15),
                     anchor_time: time,
+                    value: None,
                     occur_time: None,
                     object_id: None,
                     source: SourceRef {

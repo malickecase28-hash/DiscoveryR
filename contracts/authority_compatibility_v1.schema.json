@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AuthorityCompatibility",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "AUTHORITY_COMPATIBLE"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "changed_surfaces",
+        "status"
+      ],
+      "properties": {
+        "changed_surfaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AuthorityDelta"
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "AUTHORITY_DELTA_REQUIRED"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  ],
+  "definitions": {
+    "AuthorityDelta": {
+      "type": "object",
+      "required": [
+        "actual",
+        "expected",
+        "surface"
+      ],
+      "properties": {
+        "actual": {
+          "type": "string"
+        },
+        "expected": {
+          "type": "string"
+        },
+        "surface": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
