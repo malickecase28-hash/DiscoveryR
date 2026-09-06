@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 #[path = "../src/development_view.rs"]
 mod development_view;
 
@@ -23,7 +24,9 @@ fn bars(values: Vec<Option<i64>>) -> RecordBatch {
         ])),
         vec![
             Arc::new(Int64Array::from(
-                (0..n).map(|i| Some(i as i64)).collect::<Vec<_>>(),
+                (0..n)
+                    .map(|i| Some(development_view::DEVELOPMENT_START_MS + i as i64))
+                    .collect::<Vec<_>>(),
             )),
             Arc::new(Int64Array::from(values)),
             Arc::new(StringArray::from(vec![Some("bytes"); n])),
@@ -71,7 +74,7 @@ fn identity_is_deterministic_and_runtime_independent() {
         "payload",
         B,
         &["x"],
-        &[stats.clone()],
+        std::slice::from_ref(&stats),
         &["h"],
         &["FILTERED_MIXED_PART"],
         "commit",
@@ -268,7 +271,7 @@ fn revoked_view_fails_verification() {
 #[test]
 fn malformed_received_time_fails_exposed_view_verification() {
     use parquet::arrow::ArrowWriter;
-    use std::{fs::File, path::PathBuf};
+    use std::fs::File;
     let root = std::env::temp_dir().join(format!("dev_view_verify_{}", std::process::id()));
     std::fs::create_dir_all(root.join("tick")).unwrap();
     let path = root.join("tick/part.parquet");
@@ -318,29 +321,33 @@ fn malformed_received_time_fails_exposed_view_verification() {
         logical_view_identity: "x".into(),
     };
     assert!(development_view::verify_view(&root, &manifest, 64).is_err());
-    let _ = std::fs::remove_dir_all(PathBuf::from(root));
+    let _ = std::fs::remove_dir_all(root);
 }
 
 #[test]
-fn tick_requires_both_physical_times_before_boundary() {
+fn tick_requires_both_physical_times_within_window() {
     let schema = Arc::new(Schema::new(vec![
         Field::new("event_ts_ns", DataType::Int64, true),
         Field::new("received_ts_ns", DataType::Int64, true),
         Field::new("payload", DataType::Utf8, true),
     ]));
+    let start = development_view::DEVELOPMENT_START_NS;
+    let end = development_view::BOUNDARY_MS * 1_000_000;
     let batch = RecordBatch::try_new(
         schema,
         vec![
             Arc::new(Int64Array::from(vec![
-                Some(B - 1),
-                Some(B - 1),
-                Some(B),
-                Some(B - 1),
+                Some(start + 1_000),
+                Some(start + 1_000),
+                Some(end),
+                Some(start - 1_000),
+                Some(start + 1_000),
             ])),
             Arc::new(Int64Array::from(vec![
-                Some(B - 1),
-                Some(B),
-                Some(B - 1),
+                Some(start + 1_000),
+                Some(end),
+                Some(start + 1_000),
+                Some(start + 1_000),
                 None,
             ])),
             Arc::new(StringArray::from(vec![
@@ -348,14 +355,15 @@ fn tick_requires_both_physical_times_before_boundary() {
                 Some("b"),
                 Some("c"),
                 Some("d"),
+                Some("e"),
             ])),
         ],
     )
     .unwrap();
-    let gate = Gate::Tick { boundary_ns: B };
+    let gate = Gate::Tick { boundary_ns: end };
     assert_eq!(
         classify_batch(&batch, gate).unwrap_err(),
-        "null gating time at row 3"
+        "null gating time at row 4"
     );
     let batch = batch.slice(0, 3);
     let filtered = filter_batch(&batch, gate).unwrap().unwrap();

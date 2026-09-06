@@ -1,0 +1,336 @@
+{
+  "artifact_type": "AP-002_QG_V1_1_MANIFEST",
+  "confirmation_status": "LOCKED",
+  "e2_e3_executed": false,
+  "e2_universe": {
+    "e2_primary_cells": {
+      "blind_graduated_core": 9,
+      "direction_asymmetry_null_family": {
+        "cells": 84,
+        "expansion": "2 directions x 2 stage anchors x 3 horizons x 7 strata",
+        "instruments": [
+          "PD-D"
+        ]
+      },
+      "stage_matched_panel": {
+        "cells": 42,
+        "expansion": "2 matched stage contrasts (formation->first-touch, pre-fill->fill) x 7 strata x 3 horizons",
+        "instruments": [
+          "DIR-01",
+          "PD-A",
+          "PD-B",
+          "PD-C"
+        ]
+      },
+      "total": 135
+    },
+    "e2_robustness_cells": {
+      "CORE-13": 1,
+      "OPT-02": 21,
+      "OPT-04": 28,
+      "total": 50
+    },
+    "e2_systematic_cells": {
+      "SF-1": 98,
+      "SF-2": 126,
+      "SF-5": 63,
+      "total": 287
+    },
+    "e2_total_cells": 472,
+    "e3_deferred_cells": {
+      "OPT-01": 84,
+      "status": "CONDITIONALLY_LAWFUL_DEFERRED_E3"
+    },
+    "e3_held": {
+      "CORE-06/07/08/11": "held, cells not counted",
+      "SF-4": "v1 168 declared invalid; naive 1232 not adopted; recomputed after typed context resolution"
+    },
+    "e3_pre_eligibility_audit_cells": {
+      "CORE-14": 1,
+      "OPT-03": 28,
+      "total": 29
+    },
+    "e3_ready_after_e2_cells": {
+      "SF-3": 126
+    },
+    "v1_accounting_note": "V1's 346/412/758 accounting remains historical QG-V1 bookkeeping, not execution accounting."
+  },
+  "e3_context_families": {
+    "executable_now": 0,
+    "held_unresolved": 22
+  },
+  "generator": "ap002_qg_freeze (Rust)",
+  "inputs": {
+    "authority": "knowledge/wave1_authority_closure/AP-002_AUTHORITY_V1.json",
+    "detector_registry": "registry/detectors_v1.json",
+    "e1a_results": "docs/research/ap-002-e1a-scope-repair/E1_RESULTS.json",
+    "e1b_results": "docs/research/ap-002-e1b/E1B_RESULTS.json",
+    "scope": "instruments/XAUUSD/data_scope_v1.json",
+    "sealed_v1_universe_sha256": "835d6e89007919d842b3d40434f664adaef5549ef1d3e98ee0995f0d401b54ee"
+  },
+  "opt01_status": "CONDITIONALLY_LAWFUL_DEFERRED_E3",
+  "v1_status": "SEALED_BLIND_SOURCE_SUPERSEDED_FOR_EXECUTION",
+  "v1_status_reason": "Authority/methodology review found execution-contract defects; the blindness result and sealed V1 source remain valid.",
+  "validation_checks": [
+    {
+      "check": "sealed_blind_source_hash",
+      "evidence": "835d6e89007919d842b3d40434f664adaef5549ef1d3e98ee0995f0d401b54ee",
+      "pass": true
+    },
+    {
+      "check": "e1a_active_identity",
+      "evidence": "1b701c016bd1effa300742ee74ce73d6e0e96313d62847d231391061dc94dca6",
+      "pass": true
+    },
+    {
+      "check": "e1b_active_identity",
+      "evidence": "2a7a142cadb36449d14d4128361d11ce99a3a4d7d8a004dd539bc4dc32fb823c",
+      "pass": true
+    },
+    {
+      "check": "e1b_sidecar_identity",
+      "evidence": "8882dfca1e34aab71df411ee0837a7203b01462e3ada565119e66e48c4e15929",
+      "pass": true
+    },
+    {
+      "check": "confirmation_locked",
+      "evidence": "LOCKED",
+      "pass": true
+    },
+    {
+      "check": "scope_start_corrected",
+      "evidence": "2025-07-31T16:15:00Z",
+      "pass": true
+    },
+    {
+      "check": "core_question_count",
+      "evidence": "14",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-01 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-01: E2_SAME_DOMAIN (sub-rule E2B: own formation attributes as conditioners of later-stage outcomes)",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-01: []",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-02 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-02: E3_CROSS_DOMAIN (instrument-level calendar context)",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-02: []",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-03 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-03: E2_SAME_DOMAIN (own lifecycle stage history)",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-03: []",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-04 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-04: E2_SAME_DOMAIN (sub-rule E2C: same-detector population properties)",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-04: []",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-05 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-05: E2_SAME_DOMAIN (sub-rule E2C: own past instances / population history)",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-05: []",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-06 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-06: E3_CROSS_DOMAIN",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-06: []",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-07 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-07: E3_CROSS_DOMAIN",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-07: []",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-08 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-08: E3_CROSS_DOMAIN",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-08: []",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-09 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-09: E2_SAME_DOMAIN (sub-rule E2C: own past instances)",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-09: []",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-10 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-10: E2_SAME_DOMAIN",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-10: []",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-11 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-11: E3_CROSS_DOMAIN",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-11: []",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-12 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-12: E2_SAME_DOMAIN (all inputs same-domain; meta-tier of the E2 core set)",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-12: []",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-13 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-13: E2_SAME_DOMAIN (sub-rule E2C: population composition rules, including censoring rules, are same-detector population properties)",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-13: []",
+      "pass": true
+    },
+    {
+      "check": "question_schema",
+      "evidence": "QG1-CORE-14 missing []",
+      "pass": true
+    },
+    {
+      "check": "exposure_classification",
+      "evidence": "QG1-CORE-14: E3_CROSS_DOMAIN (instrument-level context: frozen availability sidecar metadata)",
+      "pass": true
+    },
+    {
+      "check": "forbidden_fields_absent",
+      "evidence": "QG1-CORE-14: []",
+      "pass": true
+    },
+    {
+      "check": "systematic_expansion_arithmetic",
+      "evidence": "records 581 vs accounting 581",
+      "pass": true
+    },
+    {
+      "check": "optional_expansion_arithmetic",
+      "evidence": "records 161",
+      "pass": true
+    },
+    {
+      "check": "core_expansion_arithmetic",
+      "evidence": "16",
+      "pass": true
+    }
+  ]
+}

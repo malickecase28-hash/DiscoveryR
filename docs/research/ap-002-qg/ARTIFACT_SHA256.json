@@ -20,13 +20,55 @@
       "sha256": "835d6e89007919d842b3d40434f664adaef5549ef1d3e98ee0995f0d401b54ee"
     },
     {
+      "bytes": 90910,
+      "logical_name": "AP-002_BLIND_QG_UNIVERSE_V1_1.json",
+      "path": "docs/research/ap-002-qg/AP-002_BLIND_QG_UNIVERSE_V1_1.json",
+      "sha256": "f1f662beef78688deea4bbaca49bcb3619cdd13c19f380034d57c272e90fec76"
+    },
+    {
+      "bytes": 9246,
+      "logical_name": "AP-002_E2_CONTRACT_V1.json",
+      "path": "docs/research/ap-002-qg/AP-002_E2_CONTRACT_V1.json",
+      "sha256": "c8bbcae42981dd5e5183da7219393f2c3b42302c9302cc7c9ad661d877716d80"
+    },
+    {
+      "bytes": 3310,
+      "logical_name": "AP-002_E2_CONTRACT_V1.md",
+      "path": "docs/research/ap-002-qg/AP-002_E2_CONTRACT_V1.md",
+      "sha256": "6d06221321a6ad2c5431c690d0741f6ba28f0344d932d713af6fb6de92ecb2e1"
+    },
+    {
+      "bytes": 13383,
+      "logical_name": "AP-002_E3_CONTEXT_RESOLUTION_REQUIREMENTS.json",
+      "path": "docs/research/ap-002-qg/AP-002_E3_CONTEXT_RESOLUTION_REQUIREMENTS.json",
+      "sha256": "3654ea9530f8cad372ee75561ca24e01a63f6c3e66c117338262fad9002ff2ff"
+    },
+    {
+      "bytes": 3134,
+      "logical_name": "AP-002_QG_REPAIR_LEDGER.json",
+      "path": "docs/research/ap-002-qg/AP-002_QG_REPAIR_LEDGER.json",
+      "sha256": "63a19cb12024e66d1ad6bf6c788aaff7612efc98d4f5eaceb4437a9a47d44286"
+    },
+    {
+      "bytes": 9018,
+      "logical_name": "AP-002_QG_V1_1_MANIFEST.json",
+      "path": "docs/research/ap-002-qg/AP-002_QG_V1_1_MANIFEST.json",
+      "sha256": "e4b3fca863773b0905c29cb5e122e399f59ac4dea2bfa96f15095e64d4f1975d"
+    },
+    {
       "bytes": 18799,
       "logical_name": "AP-002_QUESTION_REGISTRY_V1.json",
       "path": "docs/research/ap-002-qg/AP-002_QUESTION_REGISTRY_V1.json",
       "sha256": "ccf162a72fe68109732be00c443f1cc88d16b339422dc8ad1da67ab627b809e4"
+    },
+    {
+      "bytes": 22585,
+      "logical_name": "AP-002_QUESTION_REGISTRY_V1_1.json",
+      "path": "docs/research/ap-002-qg/AP-002_QUESTION_REGISTRY_V1_1.json",
+      "sha256": "ddfbc6ebb2d2bb9252eef966f4da988f673b4b6c865db18bc2fe5591167f837d"
     }
   ],
   "generator": "artifact_hash_registry",
-  "generator_code_identity": "8a966ee9697930570d8c49a4962e4eda7136bbbe",
+  "generator_code_identity": "f9f7cf9f4df6d6a81984a20c0ddae95581ab47ea",
   "root": "."
 }

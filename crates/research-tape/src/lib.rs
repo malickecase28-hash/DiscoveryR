@@ -929,8 +929,8 @@ mod tests {
         for (path, part) in [(&first, "part-00000"), (&second, "part-00001")] {
             let reader =
                 ProjectedParquetReader::new(path.clone(), vec!["bar_close_ts".into()], 1).unwrap();
-            let mut scan = reader.scan().unwrap();
-            while let Some(batch) = scan.next() {
+            let scan = reader.scan().unwrap();
+            for batch in scan {
                 let batch = batch.unwrap();
                 let times = batch_i64(&batch, "bar_close_ts").unwrap();
                 for row in 0..batch.num_rows() {
@@ -1000,25 +1000,25 @@ mod tests {
         let mut changed = base.clone();
         changed.detector_id = "other".into();
         assert_ne!(
-            logical_output_hash(&[base.clone()]),
+            logical_output_hash(std::slice::from_ref(&base)),
             logical_output_hash(&[changed])
         );
         let mut changed = base.clone();
         changed.lifecycle_state = "other".into();
         assert_ne!(
-            logical_output_hash(&[base.clone()]),
+            logical_output_hash(std::slice::from_ref(&base)),
             logical_output_hash(&[changed])
         );
         let mut changed = base.clone();
         changed.native_scale = NativeScale::Tick;
         assert_ne!(
-            logical_output_hash(&[base.clone()]),
+            logical_output_hash(std::slice::from_ref(&base)),
             logical_output_hash(&[changed])
         );
         let mut changed = base.clone();
         changed.object_id = Some("o".into());
         assert_ne!(
-            logical_output_hash(&[base.clone()]),
+            logical_output_hash(std::slice::from_ref(&base)),
             logical_output_hash(&[changed])
         );
         let mut changed = base;

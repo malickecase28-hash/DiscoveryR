@@ -314,9 +314,9 @@ fn run_preflight(
             .collect(),
             65_536,
         )?;
-        let mut scan = reader.scan()?;
+        let scan = reader.scan()?;
         let mut row = 0_u64;
-        while let Some(batch) = scan.next() {
+        for batch in scan {
             let batch = batch?;
             let event = batch_i64(&batch, "event_ts_ns")?;
             let received = batch_i64(&batch, "received_ts_ns")?;
@@ -420,9 +420,9 @@ fn scan_stratum(
                 .collect(),
             65_536,
         )?;
-        let mut scan = reader.scan()?;
+        let scan = reader.scan()?;
         let mut row = 0_u64;
-        while let Some(batch) = scan.next() {
+        for batch in scan {
             let batch = batch?;
             let bar_close = batch_i64(&batch, "bar_close_ts")?;
             let close = batch_f64(&batch, "close")?;

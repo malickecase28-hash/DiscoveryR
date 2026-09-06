@@ -29,7 +29,10 @@ struct Disagreement {
 }
 
 fn tf_index(timeframe: &str) -> Option<u8> {
-    TIMEFRAMES.iter().position(|tf| *tf == timeframe).map(|i| i as u8)
+    TIMEFRAMES
+        .iter()
+        .position(|tf| *tf == timeframe)
+        .map(|i| i as u8)
 }
 
 fn run() -> Result<(), Box<dyn std::error::Error>> {
@@ -65,13 +68,17 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                 continue;
             }
             let value: serde_json::Value = serde_json::from_str(&line)?;
-            let timeframe = value["timeframe"].as_str().ok_or("sidecar line missing timeframe")?;
+            let timeframe = value["timeframe"]
+                .as_str()
+                .ok_or("sidecar line missing timeframe")?;
             let Some(index) = tf_index(timeframe) else {
                 return Err(format!("sidecar references unknown timeframe {timeframe}").into());
             };
             set.insert((
                 index,
-                value["bar_close_ts_ns"].as_i64().ok_or("sidecar missing bar_close_ts_ns")?,
+                value["bar_close_ts_ns"]
+                    .as_i64()
+                    .ok_or("sidecar missing bar_close_ts_ns")?,
             ));
         }
         set
@@ -91,7 +98,9 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             .as_array()
             .ok_or_else(|| format!("missing source group: {timeframe}"))?
         {
-            let logical = part["logical_path"].as_str().ok_or("part missing logical_path")?;
+            let logical = part["logical_path"]
+                .as_str()
+                .ok_or("part missing logical_path")?;
             let relative = Path::new(logical);
             if relative.is_absolute()
                 || relative
@@ -102,17 +111,25 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             }
             let reader = ProjectedParquetReader::new(
                 view_root.join(relative),
-                ["bar_close_ts", "payload_fvg"].into_iter().map(String::from).collect(),
+                ["bar_close_ts", "payload_fvg"]
+                    .into_iter()
+                    .map(String::from)
+                    .collect(),
                 8192,
             )?;
-            let mut scan = reader.scan()?;
-            while let Some(batch) = scan.next() {
+            let scan = reader.scan()?;
+            for batch in scan {
                 let batch = batch?;
                 let bar_close = batch_i64(&batch, "bar_close_ts")?;
                 let payload = batch_large_string(&batch, "payload_fvg")?;
                 for row in 0..batch.num_rows() {
                     let bar_close_ts = required_i64(bar_close, row, "bar_close_ts")?;
-                    if !sidecar_set.contains(&(index, bar_close_ts.checked_mul(1_000_000).ok_or("bar close ns overflow")?)) {
+                    if !sidecar_set.contains(&(
+                        index,
+                        bar_close_ts
+                            .checked_mul(1_000_000)
+                            .ok_or("bar close ns overflow")?,
+                    )) {
                         continue;
                     }
                     let raw = if payload.is_null(row) {
@@ -140,7 +157,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                             continue; // orphan/pre-development fill: not in the lawful cohort
                         }
                         let key = (index, event.zone_id);
-                        if lawful_fills.insert(key, (event.fill_ts, event.first_touch_observed)).is_some() {
+                        if lawful_fills
+                            .insert(key, (event.fill_ts, event.first_touch_observed))
+                            .is_some()
+                        {
                             duplicate_fill_payloads += 1;
                         }
                     }
@@ -163,15 +183,30 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             continue;
         }
         fill_anchors_total += 1;
-        let timeframe = value["identity"].as_str().ok_or("anchor missing identity")?;
-        let timeframe = timeframe.split(':').next().ok_or("anchor identity malformed")?;
+        let timeframe = value["identity"]
+            .as_str()
+            .ok_or("anchor missing identity")?;
+        let timeframe = timeframe
+            .split(':')
+            .next()
+            .ok_or("anchor identity malformed")?;
         let Some(index) = tf_index(timeframe) else {
             return Err(format!("anchor references unknown timeframe {timeframe}").into());
         };
         let zone_id = value["zone_id"].as_u64().ok_or("anchor missing zone_id")?;
-        let anchor_bar_close_ts = value["anchor_bar_close_ts"].as_i64().ok_or("anchor missing bar close")?;
-        let first_touch_observed = value["first_touch_observed"].as_bool().ok_or("anchor missing first_touch_observed")?;
-        if anchor_flags.insert((index, zone_id), (anchor_bar_close_ts, first_touch_observed)).is_some() {
+        let anchor_bar_close_ts = value["anchor_bar_close_ts"]
+            .as_i64()
+            .ok_or("anchor missing bar close")?;
+        let first_touch_observed = value["first_touch_observed"]
+            .as_bool()
+            .ok_or("anchor missing first_touch_observed")?;
+        if anchor_flags
+            .insert(
+                (index, zone_id),
+                (anchor_bar_close_ts, first_touch_observed),
+            )
+            .is_some()
+        {
             return Err(format!("duplicate FILL anchor for {timeframe} zone {zone_id}").into());
         }
     }
@@ -218,7 +253,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
     let unmatched_anchors = (anchor_flags.len() as u64).saturating_sub(
-        lawful_fills.keys().filter(|key| anchor_flags.contains_key(key)).count() as u64,
+        lawful_fills
+            .keys()
+            .filter(|key| anchor_flags.contains_key(key))
+            .count() as u64,
     );
     let disagreement = (lawful_fills.len() as u64).saturating_sub(agreement);
 

@@ -468,6 +468,7 @@ impl Preflight {
         }
         self.previous = Some((part.into(), row_index, received_ts_ns));
     }
+    #[allow(clippy::too_many_arguments)]
     pub fn observe_tick(
         &mut self,
         part: &str,

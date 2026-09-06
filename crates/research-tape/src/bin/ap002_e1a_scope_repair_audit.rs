@@ -149,8 +149,8 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                     .collect(),
                 8192,
             )?;
-            let mut scan = reader.scan()?;
-            while let Some(batch) = scan.next() {
+            let scan = reader.scan()?;
+            for batch in scan {
                 let batch = batch?;
                 let bar_close = batch_i64(&batch, "bar_close_ts")?;
                 let payload = batch_large_string(&batch, "payload_fvg")?;
@@ -231,7 +231,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     // Reconcile with the scanner's own counters: fail closed on any mismatch.
     let results_value: serde_json::Value = serde_json::from_reader(File::open(&results_new)?)?;
-    for row in results_value["tables"]["strata"]["rows"].as_array().expect("strata rows") {
+    for row in results_value["tables"]["strata"]["rows"]
+        .as_array()
+        .expect("strata rows")
+    {
         let timeframe = row["timeframe"].as_str().expect("timeframe");
         let stratum = audit.get(timeframe).ok_or("stratum vanished")?;
         let scanner_touch = row["orphan_touch_n"].as_u64().expect("orphan_touch_n");
@@ -288,8 +291,14 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             orphan_fill_new: new_row["orphan_fill_n"].as_u64().expect("orphans"),
             fill_rate_old: old_row["fill_rate"]["rate"].as_f64(),
             fill_rate_new: new_row["fill_rate"]["rate"].as_f64(),
-            bullish_share_old: old_row["bullish_n"].as_f64().zip(old_row["lawful_formation_n"].as_f64()).map(|(b, n)| b / n),
-            bullish_share_new: new_row["bullish_n"].as_f64().zip(new_row["lawful_formation_n"].as_f64()).map(|(b, n)| b / n),
+            bullish_share_old: old_row["bullish_n"]
+                .as_f64()
+                .zip(old_row["lawful_formation_n"].as_f64())
+                .map(|(b, n)| b / n),
+            bullish_share_new: new_row["bullish_n"]
+                .as_f64()
+                .zip(new_row["lawful_formation_n"].as_f64())
+                .map(|(b, n)| b / n),
         });
     }
     let sign_counts = |value: &serde_json::Value| {
@@ -300,7 +309,9 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         let mut cells = 0u64;
         for row in value["tables"]["strata"]["rows"].as_array().expect("rows") {
             for horizon in row["horizons"].as_array().expect("horizons") {
-                let adjusted = horizon["direction_adjusted_return_bps"]["p50"].as_f64().unwrap_or(0.0);
+                let adjusted = horizon["direction_adjusted_return_bps"]["p50"]
+                    .as_f64()
+                    .unwrap_or(0.0);
                 cells += 1;
                 if adjusted < 0.0 {
                     negative += 1;

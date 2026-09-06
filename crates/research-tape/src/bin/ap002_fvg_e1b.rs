@@ -6,13 +6,14 @@
 
 use arrow_array::Array;
 use research_tape::fvg_e1::{
-    AnchorIndex, AnchorTick, Availability, Direction, Preflight, PreflightResult, SidecarCursor,
-    ZoneBook, ZoneLifecycle,
+    AnchorTick, Direction, Preflight, SidecarCursor, ZoneBook, ZoneLifecycle,
 };
 use research_tape::fvg_e1b::{
     max_identifiable_quantile, quantiles, stage_anchor, stage_outcomes, LawfulBar, Quantiles, Stage,
 };
-use research_tape::{batch_f64, batch_i64, batch_large_string, required_i64, ProjectedParquetReader};
+use research_tape::{
+    batch_f64, batch_i64, batch_large_string, required_i64, ProjectedParquetReader,
+};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use sha2::{Digest, Sha256};
@@ -231,9 +232,12 @@ impl AnchorWriter {
 fn safe_relative_path(value: &str) -> Result<PathBuf, Box<dyn std::error::Error>> {
     let path = Path::new(value);
     if path.is_absolute()
-        || path
-            .components()
-            .any(|c| matches!(c, std::path::Component::ParentDir | std::path::Component::RootDir))
+        || path.components().any(|c| {
+            matches!(
+                c,
+                std::path::Component::ParentDir | std::path::Component::RootDir
+            )
+        })
     {
         return Err(format!("unsafe view path: {value}").into());
     }
@@ -348,9 +352,9 @@ fn run_preflight(
             .collect(),
             65_536,
         )?;
-        let mut scan = reader.scan()?;
+        let scan = reader.scan()?;
         let mut row = 0_u64;
-        while let Some(batch) = scan.next() {
+        for batch in scan {
             let batch = batch?;
             let event = batch_i64(&batch, "event_ts_ns")?;
             let received = batch_i64(&batch, "received_ts_ns")?;
@@ -393,7 +397,7 @@ fn run_preflight(
     Ok((result, preflight.anchors().clone()))
 }
 
-fn median(values: &mut Vec<f64>) -> Option<f64> {
+fn median(values: &mut [f64]) -> Option<f64> {
     if values.is_empty() {
         return None;
     }
@@ -417,7 +421,7 @@ fn stage_block(
             let applied: Vec<&StageAnchorRow> = rows
                 .iter()
                 .filter(|row| row.outcomes[horizon_index].is_some())
-                .map(|row| *row)
+                .copied()
                 .collect();
             let raw_delta = applied
                 .iter()
@@ -458,7 +462,7 @@ fn stage_block(
                         &applied
                             .iter()
                             .filter(|row| row.direction == Direction::Bullish)
-                            .map(|row| *row)
+                            .copied()
                             .collect::<Vec<_>>(),
                     ),
                 },
@@ -472,7 +476,7 @@ fn stage_block(
                         &applied
                             .iter()
                             .filter(|row| row.direction == Direction::Bearish)
-                            .map(|row| *row)
+                            .copied()
                             .collect::<Vec<_>>(),
                     ),
                 },
@@ -480,24 +484,30 @@ fn stage_block(
             let gap_split = vec![
                 MedianSplit {
                     split: "low_at_or_below_median",
-                    n: applied.iter().filter(|row| attribute(row) <= gap_threshold).count() as u64,
+                    n: applied
+                        .iter()
+                        .filter(|row| attribute(row) <= gap_threshold)
+                        .count() as u64,
                     direction_adjusted_p50: adjusted_p50(
                         &applied
                             .iter()
                             .filter(|row| attribute(row) <= gap_threshold)
-                            .map(|row| *row)
+                            .copied()
                             .collect::<Vec<_>>(),
                     ),
                     threshold: gap_threshold,
                 },
                 MedianSplit {
                     split: "high_above_median",
-                    n: applied.iter().filter(|row| attribute(row) > gap_threshold).count() as u64,
+                    n: applied
+                        .iter()
+                        .filter(|row| attribute(row) > gap_threshold)
+                        .count() as u64,
                     direction_adjusted_p50: adjusted_p50(
                         &applied
                             .iter()
                             .filter(|row| attribute(row) > gap_threshold)
-                            .map(|row| *row)
+                            .copied()
                             .collect::<Vec<_>>(),
                     ),
                     threshold: gap_threshold,
@@ -506,24 +516,30 @@ fn stage_block(
             let quality_split = vec![
                 MedianSplit {
                     split: "low_at_or_below_median",
-                    n: applied.iter().filter(|row| row.fvg_quality <= quality_threshold).count() as u64,
+                    n: applied
+                        .iter()
+                        .filter(|row| row.fvg_quality <= quality_threshold)
+                        .count() as u64,
                     direction_adjusted_p50: adjusted_p50(
                         &applied
                             .iter()
                             .filter(|row| row.fvg_quality <= quality_threshold)
-                            .map(|row| *row)
+                            .copied()
                             .collect::<Vec<_>>(),
                     ),
                     threshold: quality_threshold,
                 },
                 MedianSplit {
                     split: "high_above_median",
-                    n: applied.iter().filter(|row| row.fvg_quality > quality_threshold).count() as u64,
+                    n: applied
+                        .iter()
+                        .filter(|row| row.fvg_quality > quality_threshold)
+                        .count() as u64,
                     direction_adjusted_p50: adjusted_p50(
                         &applied
                             .iter()
                             .filter(|row| row.fvg_quality > quality_threshold)
-                            .map(|row| *row)
+                            .copied()
                             .collect::<Vec<_>>(),
                     ),
                     threshold: quality_threshold,
@@ -573,9 +589,9 @@ fn scan_stratum(
                 .collect(),
             65_536,
         )?;
-        let mut scan = reader.scan()?;
+        let scan = reader.scan()?;
         let mut row = 0_u64;
-        while let Some(batch) = scan.next() {
+        for batch in scan {
             let batch = batch?;
             let bar_close = batch_i64(&batch, "bar_close_ts")?;
             let close = batch_f64(&batch, "close")?;
@@ -593,7 +609,11 @@ fn scan_stratum(
                     payload.value(index)
                 };
                 let availability = sidecar_cursor
-                    .lookup(bar_close_ts.checked_mul(1_000_000).ok_or("bar close ns overflow")?)?
+                    .lookup(
+                        bar_close_ts
+                            .checked_mul(1_000_000)
+                            .ok_or("bar close ns overflow")?,
+                    )?
                     .map(|value| anchors.lookup(&value))
                     .transpose()?;
                 if let Some(availability) = &availability {
@@ -609,7 +629,12 @@ fn scan_stratum(
                     });
                     tick_by_sequence.insert(availability.source_sequence, anchor_tick);
                 }
-                book.ingest_bar_with_close_optional(bar_close_ts, availability, payload, Some(close))?;
+                book.ingest_bar_with_close_optional(
+                    bar_close_ts,
+                    availability,
+                    payload,
+                    Some(close),
+                )?;
                 last_bar_close_ts = Some(bar_close_ts);
                 n_bars += 1;
                 row += 1;
@@ -631,7 +656,10 @@ fn scan_stratum(
     let mut touch_rows: Vec<StageAnchorRow> = Vec::new();
     let mut fill_rows: Vec<StageAnchorRow> = Vec::new();
     for zone in &zones {
-        for (stage, rows) in [(Stage::FirstTouch, &mut touch_rows), (Stage::Fill, &mut fill_rows)] {
+        for (stage, rows) in [
+            (Stage::FirstTouch, &mut touch_rows),
+            (Stage::Fill, &mut fill_rows),
+        ] {
             let sequence = match stage {
                 Stage::FirstTouch => zone.first_touch_source_sequence,
                 Stage::Fill => zone.fill_source_sequence,
@@ -681,10 +709,11 @@ fn scan_stratum(
 
     // Aggregate the stratum.
     let formations = zones.len() as u64;
-    let touched: Vec<&ZoneLifecycle> =
-        zones.iter().filter(|zone| zone.first_touch_ts.is_some()).collect();
-    let filled: Vec<&ZoneLifecycle> =
-        zones.iter().filter(|zone| zone.fill_ts.is_some()).collect();
+    let touched: Vec<&ZoneLifecycle> = zones
+        .iter()
+        .filter(|zone| zone.first_touch_ts.is_some())
+        .collect();
+    let filled: Vec<&ZoneLifecycle> = zones.iter().filter(|zone| zone.fill_ts.is_some()).collect();
     let touched_fill: Vec<&ZoneLifecycle> = filled
         .iter()
         .copied()
@@ -694,11 +723,18 @@ fn scan_stratum(
     let same_bar_touch_fill_n = filled
         .iter()
         .filter(|zone| {
-            zone.first_touch_ts.is_some_and(|touch| Some(touch) == zone.fill_ts)
+            zone.first_touch_ts
+                .is_some_and(|touch| Some(touch) == zone.fill_ts)
         })
         .count() as u64;
     let collect = |values: Vec<Option<i64>>| {
-        quantiles(&values.into_iter().flatten().map(|v| v as f64).collect::<Vec<_>>())
+        quantiles(
+            &values
+                .into_iter()
+                .flatten()
+                .map(|v| v as f64)
+                .collect::<Vec<_>>(),
+        )
     };
     let formation_to_touch_market = collect(
         touched
@@ -733,17 +769,19 @@ fn scan_stratum(
             .collect(),
     );
     let formation_to_fill_market = collect(
-        filled.iter()
+        filled
+            .iter()
             .map(|zone| zone.formation_to_fill_market_ms)
             .collect(),
     );
     let formation_to_fill_known = collect(
-        filled.iter()
+        filled
+            .iter()
             .map(|zone| zone.formation_to_fill_known_ms)
             .collect(),
     );
-    let fill_censor_fraction = (formations != 0)
-        .then(|| (formations - filled.len() as u64) as f64 / formations as f64);
+    let fill_censor_fraction =
+        (formations != 0).then(|| (formations - filled.len() as u64) as f64 / formations as f64);
     let touch_censor_fraction = (!touched.is_empty())
         .then(|| (touched.len() - touched_fill.len()) as f64 / touched.len() as f64);
 
@@ -767,11 +805,12 @@ fn scan_stratum(
         fill_right_censor_fraction: fill_censor_fraction,
         fill_max_identifiable_quantile: fill_censor_fraction.map(max_identifiable_quantile),
         touch_to_fill_right_censor_fraction: touch_censor_fraction,
-        touch_to_fill_max_identifiable_quantile: touch_censor_fraction.map(max_identifiable_quantile),
+        touch_to_fill_max_identifiable_quantile: touch_censor_fraction
+            .map(max_identifiable_quantile),
         first_touch: stage_block(&touch_refs, |row| row.gap_atr),
         fill: stage_block(&fill_refs, |row| row.gap_atr),
-        orphan_touch_n: orphan_touch_n,
-        orphan_fill_n: orphan_fill_n,
+        orphan_touch_n,
+        orphan_fill_n,
         n_bars,
     })
 }

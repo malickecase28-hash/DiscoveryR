@@ -1,0 +1,261 @@
+{
+  "artifact_type": "AP-002_E2_CONTRACT_V1",
+  "competing_risk_rule": "For formation->first-touch: FIRST_TOUCH = event of interest; FILL_WITHOUT_RECORDED_TOUCH = competing terminal event; END_OF_DEVELOPMENT = right censor. Gap-through fills are never censored as non-informative. Touched->fill: end-of-development active touched zones are right censored. Competing-risk/multi-state estimator or equivalent deterministic transition accounting required.",
+  "confirmation_status": "LOCKED",
+  "contract_version": 1,
+  "cross_scale_identity": "PROHIBITED",
+  "data_identity": {
+    "binding_rule": "Execution binds to the corrected 16:15 DEVELOPMENT scope and the scope-repair availability sidecar used by active E1A/E1B. Authority V1 supplies semantics only.",
+    "development_end_utc_exclusive": "2026-05-05T12:39:00Z",
+    "development_start_utc_inclusive": "2025-07-31T16:15:00Z",
+    "development_view_manifest_sha256": "",
+    "e1a_logical_result_hash": "1b701c016bd1effa300742ee74ce73d6e0e96313d62847d231391061dc94dca6",
+    "e1b_logical_result_hash": "2a7a142cadb36449d14d4128361d11ce99a3a4d7d8a004dd539bc4dc32fb823c",
+    "sidecar_sha256": "8882dfca1e34aab71df411ee0837a7203b01462e3ada565119e66e48c4e15929"
+  },
+  "execution_rules": [
+    "One Rust research pass materializes the reusable same-domain features once and evaluates the entire frozen E2 universe from them.",
+    "No outcome-based pruning; the graduated universe is executed as frozen.",
+    "Behavioral and robustness lanes never share multiplicity accounting.",
+    "Report all excluded HISTORY_INCOMPLETE anchor counts under the warm-state rule.",
+    "No E3 execution is authorized by this contract."
+  ],
+  "exposure_class": "E2_SAME_DOMAIN",
+  "graduated_instruments": [
+    {
+      "cells": 42,
+      "content": "Within-zone matched formation-vs-first-touch and pre-fill-vs-fill contrasts at identical calendar offsets; censor-aware selection model of touched vs never-touched and filled vs touched-unfilled; time-matched no-FVG drift-aware null; pre-registered decision rule SURVIVES_STAGE_CONDITIONING.",
+      "dedup": "One merged stage-matched lifecycle panel instrument",
+      "instrument_id": "E2-PANEL",
+      "multiplicity_family": "MF_STAGE_MATCHED_PANEL = 2 matched stage contrasts (formation->first-touch, pre-fill->fill) x 7 strata x 3 horizons",
+      "registry_ids": [
+        "DIR-01",
+        "PD-A",
+        "PD-B",
+        "PD-C"
+      ]
+    },
+    {
+      "cells": 84,
+      "content": "Direction asymmetry under direction-matched, time-matched and drift-aware temporal-block nulls.",
+      "instrument_id": "E2-DIRNULL",
+      "multiplicity_family": "MF_DIRECTION_ASYMMETRY_NULL = 2 directions x 2 stage anchors x 3 horizons x 7 strata",
+      "registry_ids": [
+        "PD-D"
+      ]
+    },
+    {
+      "cells": 1,
+      "content": "Formation-time magnitude attributes condition later-stage lifecycle outcomes; attribute x horizon sweep carried by SF-2.",
+      "instrument_id": "E2-CORE-01",
+      "registry_ids": [
+        "QG1-CORE-01",
+        "PD-F",
+        "SF-2-attribute-aspect"
+      ]
+    },
+    {
+      "cells": 1,
+      "content": "Within-zone stage-history conditioning (untouched vs already-touched-not-filled; stage age).",
+      "instrument_id": "E2-CORE-03",
+      "registry_ids": [
+        "QG1-CORE-03"
+      ]
+    },
+    {
+      "cells": 1,
+      "content": "Same-stratum crowding / spatial configuration at formation.",
+      "instrument_id": "E2-CORE-04",
+      "registry_ids": [
+        "QG1-CORE-04"
+      ],
+      "warm_state_rule": true
+    },
+    {
+      "cells": 1,
+      "content": "Same-domain population memory (rolling prior-K completion outcomes).",
+      "instrument_id": "E2-CORE-05",
+      "registry_ids": [
+        "QG1-CORE-05"
+      ],
+      "warm_state_rule": true
+    },
+    {
+      "cells": 1,
+      "content": "Formation clustering beyond the repaired session-preserving time-varying null.",
+      "instrument_id": "E2-CORE-09",
+      "null_repair": true,
+      "registry_ids": [
+        "QG1-CORE-09"
+      ]
+    },
+    {
+      "cells": 1,
+      "content": "Completion-mode structure: gap-through vs touched-fill and same-completed-bar resolution as competing modes, with competing-risk accounting.",
+      "dedup": "PD-E and PD-G merged here",
+      "instrument_id": "E2-CORE-10",
+      "registry_ids": [
+        "QG1-CORE-10",
+        "PD-E",
+        "PD-G"
+      ]
+    },
+    {
+      "cells": 3,
+      "content": "Cross-stratum sign/gradient replication WITHOUT object identity (magnitude, stage-age, crowding meta-tests).",
+      "instrument_id": "E2-CORE-12",
+      "registry_ids": [
+        "QG1-CORE-12"
+      ]
+    },
+    {
+      "cells": 98,
+      "content": "Stage-conditioned transition family (stage x horizon x stratum).",
+      "instrument_id": "E2-SF-1",
+      "registry_ids": [
+        "SF-1"
+      ]
+    },
+    {
+      "cells": 126,
+      "content": "Formation-attribute x horizon family.",
+      "instrument_id": "E2-SF-2",
+      "registry_ids": [
+        "SF-2"
+      ]
+    },
+    {
+      "cells": 63,
+      "content": "Same-stratum spatial/nesting family.",
+      "instrument_id": "E2-SF-5",
+      "registry_ids": [
+        "SF-5"
+      ],
+      "warm_state_rule": true
+    }
+  ],
+  "lanes": {
+    "behavioral_primary": "Graduated primary instruments below; multiplicity families frozen before execution.",
+    "methods_robustness": "CORE-13, OPT-02, OPT-04: censoring-estimator and normalization robustness. Method robustness is reported separately from behavioral inference and never mixed into behavioral multiplicity."
+  },
+  "lifecycle_state_model": {
+    "lawful_terminal_paths": [
+      "FORMED_UNTOUCHED -> TOUCHED_UNFILLED -> FILLED",
+      "FORMED_UNTOUCHED -> FILLED (producer first_touch_observed=false; gap-through)",
+      "TOUCHED_UNFILLED -> FILLED"
+    ],
+    "market_states": [
+      "FORMED_UNTOUCHED",
+      "TOUCHED_UNFILLED",
+      "FILLED"
+    ],
+    "observation_status": [
+      "OBSERVED_TERMINAL",
+      "RIGHT_CENSORED_UNTOUCHED",
+      "RIGHT_CENSORED_TOUCHED"
+    ],
+    "observation_status_note": "Research observation status is separate from market state; censoring is not a detector lifecycle state.",
+    "removed_states": [
+      "invalidation_event",
+      "INVALIDATED_UNTOUCHED",
+      "INVALIDATED_WITHOUT_TOUCH",
+      "CENSORED_ACTIVE_AT_END_OF_STREAM"
+    ],
+    "same_bar_term": "TOUCH_AND_FILL_SAME_COMPLETED_BAR (one completed bar, one bar-level availability coordinate; no intrabar market-time inference)"
+  },
+  "multiplicity": {
+    "e2_primary_cells": {
+      "blind_graduated_core": 9,
+      "direction_asymmetry_null_family": {
+        "cells": 84,
+        "expansion": "2 directions x 2 stage anchors x 3 horizons x 7 strata",
+        "instruments": [
+          "PD-D"
+        ]
+      },
+      "stage_matched_panel": {
+        "cells": 42,
+        "expansion": "2 matched stage contrasts (formation->first-touch, pre-fill->fill) x 7 strata x 3 horizons",
+        "instruments": [
+          "DIR-01",
+          "PD-A",
+          "PD-B",
+          "PD-C"
+        ]
+      },
+      "total": 135
+    },
+    "e2_robustness_cells": {
+      "CORE-13": 1,
+      "OPT-02": 21,
+      "OPT-04": 28,
+      "total": 50
+    },
+    "e2_systematic_cells": {
+      "SF-1": 98,
+      "SF-2": 126,
+      "SF-5": 63,
+      "total": 287
+    },
+    "e2_total_cells": 472,
+    "e3_deferred_cells": {
+      "OPT-01": 84,
+      "status": "CONDITIONALLY_LAWFUL_DEFERRED_E3"
+    },
+    "e3_held": {
+      "CORE-06/07/08/11": "held, cells not counted",
+      "SF-4": "v1 168 declared invalid; naive 1232 not adopted; recomputed after typed context resolution"
+    },
+    "e3_pre_eligibility_audit_cells": {
+      "CORE-14": 1,
+      "OPT-03": 28,
+      "total": 29
+    },
+    "e3_ready_after_e2_cells": {
+      "SF-3": 126
+    },
+    "v1_accounting_note": "V1's 346/412/758 accounting remains historical QG-V1 bookkeeping, not execution accounting."
+  },
+  "native_strata": [
+    "15s",
+    "30s",
+    "1m",
+    "5m",
+    "15m",
+    "1h",
+    "4h"
+  ],
+  "program": "AP-002 FVG",
+  "robustness_instruments": [
+    {
+      "cells": 1,
+      "content": "Duration/transition conclusions robust to censoring treatment (censor-aware survival estimators vs deterministic transition accounting).",
+      "instrument_id": "E2-CORE-13",
+      "registry_ids": [
+        "QG1-CORE-13"
+      ]
+    },
+    {
+      "cells": 21,
+      "content": "Normalization robustness.",
+      "instrument_id": "E2-OPT-02",
+      "registry_ids": [
+        "OPT-02"
+      ]
+    },
+    {
+      "cells": 28,
+      "content": "Censoring estimator robustness family.",
+      "instrument_id": "E2-OPT-04",
+      "registry_ids": [
+        "OPT-04"
+      ]
+    }
+  ],
+  "terminology_rules": [
+    "STAGE-CONDITIONED INFORMATIONAL RELATIONSHIP (or STAGE-ASSOCIATED CONDITIONAL CONTRAST); never 'causal stage effect'.",
+    "Decision rule wording: SURVIVES_STAGE_CONDITIONING iff within-zone stage contrast survives AND matched temporal/drift-aware null survives AND selection diagnostics survive.",
+    "TOUCH_AND_FILL_SAME_COMPLETED_BAR; no instant/zero-tick implication.",
+    "PD-D temporal blocks used for null/control construction do not themselves become a temporal-context finding."
+  ]
+}

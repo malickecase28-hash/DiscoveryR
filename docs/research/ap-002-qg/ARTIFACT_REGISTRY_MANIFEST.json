@@ -15,6 +15,34 @@
   {
    "logical_name": "AP-002_QUESTION_REGISTRY_V1.json",
    "path": "docs/research/ap-002-qg/AP-002_QUESTION_REGISTRY_V1.json"
+  },
+  {
+   "logical_name": "AP-002_BLIND_QG_UNIVERSE_V1_1.json",
+   "path": "docs/research/ap-002-qg/AP-002_BLIND_QG_UNIVERSE_V1_1.json"
+  },
+  {
+   "logical_name": "AP-002_QUESTION_REGISTRY_V1_1.json",
+   "path": "docs/research/ap-002-qg/AP-002_QUESTION_REGISTRY_V1_1.json"
+  },
+  {
+   "logical_name": "AP-002_QG_REPAIR_LEDGER.json",
+   "path": "docs/research/ap-002-qg/AP-002_QG_REPAIR_LEDGER.json"
+  },
+  {
+   "logical_name": "AP-002_E2_CONTRACT_V1.json",
+   "path": "docs/research/ap-002-qg/AP-002_E2_CONTRACT_V1.json"
+  },
+  {
+   "logical_name": "AP-002_E2_CONTRACT_V1.md",
+   "path": "docs/research/ap-002-qg/AP-002_E2_CONTRACT_V1.md"
+  },
+  {
+   "logical_name": "AP-002_E3_CONTEXT_RESOLUTION_REQUIREMENTS.json",
+   "path": "docs/research/ap-002-qg/AP-002_E3_CONTEXT_RESOLUTION_REQUIREMENTS.json"
+  },
+  {
+   "logical_name": "AP-002_QG_V1_1_MANIFEST.json",
+   "path": "docs/research/ap-002-qg/AP-002_QG_V1_1_MANIFEST.json"
   }
  ]
 }

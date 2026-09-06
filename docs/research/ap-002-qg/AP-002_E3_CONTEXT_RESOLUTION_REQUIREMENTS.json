@@ -1,0 +1,339 @@
+{
+  "artifact_type": "AP-002_E3_CONTEXT_RESOLUTION_REQUIREMENTS",
+  "executable_now": 0,
+  "families": [
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "swings",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "PROPOSED_BAR_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "raw3",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "PROPOSED_BAR_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "range",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "STATE_REGIME",
+      "readout_note": "regime/state readouts",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "bos_choch",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "PROPOSED_BAR_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "order_blocks",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "PERSISTENT_STRUCTURAL_OBJECT",
+      "readout_note": "active-object state/relationship readouts preferred over mere emission presence",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "local_structure",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "PROPOSED_BAR_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "volume_by_time",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "PROPOSED_BAR_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "structural_liquidity",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "PERSISTENT_STRUCTURAL_OBJECT",
+      "readout_note": "active-object state/relationship readouts",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "dealing_range",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "PROPOSED_BAR_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "micro_liquidity",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "PROPOSED_BAR_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "micro_liquidity_context",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "PROPOSED_BAR_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "volume_trend",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "PROPOSED_BAR_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "auction_context",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "PROPOSED_BAR_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "time_context",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "TEMPORAL_STATE",
+      "readout_note": "temporal state readouts; generic event-presence readouts are meaningless",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "vwma_atr",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "bar",
+      "proposed_role": "NORMALIZATION_REFERENCE",
+      "readout_note": "normalization/reference readouts",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "drift_burst",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "tick",
+      "proposed_role": "EVENT_LIFECYCLE",
+      "readout_note": "event presence/state/lifecycle readouts",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "spread_state",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "tick",
+      "proposed_role": "STATE_REGIME",
+      "readout_note": "regime/state readouts",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "quote_dynamics",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "tick",
+      "proposed_role": "PROPOSED_TICK_MICROSTRUCTURE_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "quote_arrival",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "tick",
+      "proposed_role": "PROPOSED_TICK_MICROSTRUCTURE_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "micro_volatility",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "tick",
+      "proposed_role": "PROPOSED_TICK_MICROSTRUCTURE_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "feed_health",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "directional explanatory evidence",
+        "any behavioral conditioning role"
+      ],
+      "native_scale_domain": "tick",
+      "proposed_role": "DATA_QUALITY",
+      "readout_note": "validity/availability readouts only; never directional explanatory evidence",
+      "semantic_status": "UNRESOLVED"
+    },
+    {
+      "allowed_readout_forms": [],
+      "availability_rule": "UNRESOLVED; authoritative manifest surface only.",
+      "dependency_caveat": [],
+      "detector_family": "quote_pressure",
+      "execution_eligibility": "NOT_EXECUTABLE",
+      "forbidden_readout_forms": [
+        "generic event-presence readouts where the role map rejects them",
+        "readouts implying cross-scale object identity"
+      ],
+      "native_scale_domain": "tick",
+      "proposed_role": "PROPOSED_TICK_MICROSTRUCTURE_CONTEXT",
+      "readout_note": "",
+      "semantic_status": "UNRESOLVED"
+    }
+  ],
+  "held_unresolved": 22,
+  "note": "Proposed roles are the director's role map plus domain defaults, pending authority confirmation. feed_health is DATA_QUALITY/validity-only.",
+  "rule": "detector family -> frozen semantic role -> allowed typed readout form -> exact expansion. Unresolved family-role pairs remain NOT_EXECUTABLE."
+}

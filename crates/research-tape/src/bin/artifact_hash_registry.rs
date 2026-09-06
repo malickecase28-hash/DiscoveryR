@@ -19,7 +19,7 @@ use sha2::{Digest, Sha256};
 use std::{
     collections::BTreeMap,
     fs::{self, File},
-    io::{BufRead, BufReader, Read},
+    io::{BufReader, Read},
     path::{Component, Path, PathBuf},
     process,
 };
@@ -59,7 +59,9 @@ fn safe_relative(path: &str) -> Result<PathBuf, String> {
             .components()
             .any(|c| matches!(c, Component::ParentDir | Component::RootDir))
     {
-        return Err(format!("registry path must be relative and contained: {path}"));
+        return Err(format!(
+            "registry path must be relative and contained: {path}"
+        ));
     }
     Ok(relative.to_owned())
 }
@@ -106,10 +108,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             return Err(format!("missing artifact: {}", entry.path).into());
         }
         let (sha, bytes) = stream_sha256(&path)?;
-        entries.insert(
-            entry.logical_name.clone(),
-            (entry.path.clone(), sha, bytes),
-        );
+        entries.insert(entry.logical_name.clone(), (entry.path.clone(), sha, bytes));
     }
     if !expect_path.as_os_str().is_empty() {
         let expected: BTreeMap<String, String> =
@@ -126,7 +125,9 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         }
         for name in expected.keys() {
             if !entries.contains_key(name) {
-                mismatches.push(format!("computed registry is missing expected entry {name}"));
+                mismatches.push(format!(
+                    "computed registry is missing expected entry {name}"
+                ));
             }
         }
         if !mismatches.is_empty() {
@@ -159,7 +160,11 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         fs::create_dir_all(parent)?;
     }
     fs::write(&output, serde_json::to_vec_pretty(&registry)?)?;
-    println!("wrote {} registry entries to {}", entries.len(), output.display());
+    println!(
+        "wrote {} registry entries to {}",
+        entries.len(),
+        output.display()
+    );
     Ok(())
 }
 

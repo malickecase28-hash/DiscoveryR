@@ -19,7 +19,6 @@ use std::{
 struct AnchorRow {
     stage: Stage,
     identity: String,
-    zone_id: u64,
     direction: Direction,
     anchor_bar_close_ts: i64,
     available_time_ns: i64,
@@ -32,8 +31,6 @@ struct AnchorRow {
     formation_available_time_ns: i64,
     formation_to_anchor_market_ms: i64,
     formation_to_anchor_known_ms: i64,
-    gap_atr: f64,
-    fvg_quality: f64,
     outcomes: [Option<StageOutcome>; 3],
 }
 
@@ -75,8 +72,10 @@ fn validate_anchor(row: &AnchorRow) -> Result<(), String> {
     }
     for outcome in row.outcomes.iter().flatten() {
         if outcome.outcome_bar_close_ts <= row.anchor_bar_close_ts
-            || (outcome.outcome_available_time_ns, outcome.outcome_source_sequence)
-                <= (row.available_time_ns, row.source_sequence)
+            || (
+                outcome.outcome_available_time_ns,
+                outcome.outcome_source_sequence,
+            ) <= (row.available_time_ns, row.source_sequence)
         {
             return Err("stage outcome is not causally after the anchor".into());
         }
@@ -154,7 +153,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         let value: serde_json::Value = serde_json::from_str(&line)?;
         let row: AnchorRow = serde_json::from_value(value.clone())?;
         validate_anchor(&row).map_err(|error| format!("anchor {count}: {error}"))?;
-        let key = (row.stage.clone(), row.identity.clone());
+        let key = (row.stage, row.identity.clone());
         if unique.insert(key, count).is_some() {
             return Err(format!("duplicate stage anchor: {}", row.identity).into());
         }
@@ -186,7 +185,9 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         let prefix = format!("{timeframe}:");
         let stratum_touch = unique
             .keys()
-            .filter(|(stage, identity)| *stage == Stage::FirstTouch && identity.starts_with(&prefix))
+            .filter(|(stage, identity)| {
+                *stage == Stage::FirstTouch && identity.starts_with(&prefix)
+            })
             .count() as u64;
         let stratum_fill = unique
             .keys()
@@ -207,8 +208,9 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         Check {
             id: "anchor_price_causality",
             status: "PASS",
-            evidence: "anchor price equals the boundary-crossing tick mid; outcomes strictly post-anchor"
-                .into(),
+            evidence:
+                "anchor price equals the boundary-crossing tick mid; outcomes strictly post-anchor"
+                    .into(),
         },
         Check {
             id: "stage_stratification",

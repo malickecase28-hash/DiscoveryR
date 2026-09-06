@@ -1,0 +1,1336 @@
+{
+  "anchor_object": {
+    "cross_scale_identity": "UNRESOLVED_AND_PROHIBITED (AP-002_AUTHORITY_V1); no question may link or condition on cross-timeframe object identity",
+    "detector_id": "fvg",
+    "identity": "(timeframe, zone_id)",
+    "identity_scope": "per-native-stratum only",
+    "lifecycle_semantics_from_authority": {
+      "fill": "Bullish fills when a later bar low reaches the lower edge; bearish fills when a later bar high reaches the upper edge.",
+      "first_touch": "First later bar whose range overlaps the zone emits fvg_first_touch.",
+      "formation": "Latest three completed bars; bullish: middle close > middle open AND last low > first high; bearish: middle close < middle open AND last high < first low; gap >= 0.2 formation-ATR; middle body >= 0.2 ATR. First bar = origin edge, middle = impulse bar, third completed bar = confirmation and detection event.",
+      "lawful_availability": "available_time = received_ts_ns of the first source tick whose event_time_ns enters a later bucket; source_sequence is the equal-receipt causal tie-break; bar_close_ts remains the temporal boundary only. No synthetic tail bar; the forming end-of-stream bar is excluded.",
+      "leakage_boundary": "Formation payload is emitted before later touch/fill processing; touch and fill are later-bar outcomes and cannot define formation-time cohorts.",
+      "persistence": "Zones remain active until far-edge invalidation; serialized/restored with the detector state envelope.",
+      "zone_bounds": "Bullish: lower = first high, upper = last low. Bearish: lower = last high, upper = first low."
+    },
+    "native_strata": [
+      "15s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "1h",
+      "4h"
+    ],
+    "parameter_identity": "CODE_FROZEN_AT_PRODUCER_COMMIT; external_parameter_count=0; min_gap_atr=0.2; producer defaults",
+    "semantic_derivation_note": "The touch predicate (bar RANGE overlaps zone) and the fill predicate (bar EXTREME reaches far edge) are logically distinct: a bar entirely beyond the near edge can satisfy the fill predicate without its range ever overlapping the zone. Anomalous completion modes in CORE-10 are derived from this written predicate structure, not from any observed data."
+  },
+  "artifact_type": "AP-002_BLIND_QG_UNIVERSE",
+  "artifact_version": "QG_V1",
+  "blindness_declaration": {
+    "allowed_inputs_consumed": [
+      "knowledge/wave1_authority_closure/AP-002_AUTHORITY_V1.json",
+      "knowledge/wave1_authority_closure/XAUUSD_AUTHORITY_WAVE1_V2.json",
+      "knowledge/wave1_authority_closure/PRODUCER_LINKAGE_V2.json",
+      "registry/detectors_v1.json",
+      "contracts/detector_registry_entry_v1.schema.json"
+    ],
+    "blindness_incidents": [],
+    "forbidden_materials_opened": []
+  },
+  "detector_version": "trinity.analytics.bar.fvg.v4.2",
+  "domain_coverage": {
+    "anomalous lifecycle cases": [
+      "QG1-CORE-10"
+    ],
+    "censoring-sensitive questions": [
+      "QG1-CORE-13",
+      "QG1-OPT-04",
+      "censoring controls in all duration outcomes"
+    ],
+    "cross-domain conditioning": [
+      "QG1-CORE-06",
+      "QG1-CORE-07",
+      "QG1-CORE-11",
+      "QG1-SF-4"
+    ],
+    "direction": [
+      "QG1-CORE-02 (direction as predeclared moderator/interaction)",
+      "direction dimension in QG1-SF-2, QG1-SF-3, QG1-OPT-01",
+      "REJECTED as unconditional E1 cut (see rejected_semantic_combinations R1)"
+    ],
+    "duration / persistence": [
+      "QG1-CORE-01",
+      "QG1-SF-2",
+      "QG1-SF-3",
+      "QG1-CORE-13",
+      "QG1-OPT-04"
+    ],
+    "incremental information": [
+      "QG1-CORE-11",
+      "QG1-SF-4 (with CORE-11)"
+    ],
+    "interaction effects": [
+      "QG1-CORE-02 (direction x session)",
+      "QG1-SF-1 interaction-pair conditioners",
+      "QG1-CORE-11 (baseline vs context increment)"
+    ],
+    "lead / lag": [
+      "QG1-CORE-08",
+      "QG1-CORE-09",
+      "QG1-SF-2"
+    ],
+    "lifecycle transition": [
+      "QG1-CORE-03",
+      "QG1-SF-1"
+    ],
+    "magnitude": [
+      "QG1-CORE-01",
+      "QG1-SF-2",
+      "QG1-OPT-02"
+    ],
+    "missingness / availability-sensitive questions": [
+      "QG1-CORE-14",
+      "QG1-OPT-03"
+    ],
+    "normalization robustness": [
+      "QG1-OPT-02"
+    ],
+    "regime dependence": [
+      "QG1-SF-3 (calendar regimes)",
+      "QG1-CORE-06 / QG1-CORE-07 / QG1-SF-4 (context-state regimes, gate-mediated)"
+    ],
+    "same-domain conditioning": [
+      "QG1-CORE-01",
+      "QG1-CORE-04",
+      "QG1-CORE-05",
+      "QG1-CORE-10",
+      "QG1-SF-1",
+      "QG1-SF-2",
+      "QG1-SF-5"
+    ],
+    "scale relationships": [
+      "QG1-CORE-12 (stratified agreement)",
+      "native_stratum dimension in every family",
+      "QG1-OPT-01 (gated, no-identity form)",
+      "REJECTED: cross-scale identity conditioning (see R2)"
+    ],
+    "spatial relationships": [
+      "QG1-CORE-04",
+      "QG1-SF-5",
+      "QG1-OPT-01 (gated)"
+    ],
+    "stage-conditioned behavior": [
+      "QG1-CORE-03",
+      "QG1-SF-1"
+    ],
+    "structural nesting": [
+      "QG1-CORE-04",
+      "QG1-SF-5"
+    ],
+    "temporal context": [
+      "QG1-CORE-02",
+      "QG1-SF-3",
+      "QG1-OPT-03"
+    ]
+  },
+  "e1_freeze_commit": "a7a9637410a74aba4e23827fc1b1e7dc6ec34a6f",
+  "generated_utc": "2026-09-06T15:20:19Z",
+  "generator": {
+    "behavioral_outcomes_consumed": false,
+    "blindness_attested": true,
+    "e1_results_consumed": false,
+    "id": "AP-002_BLIND_QUESTION_GENERATOR_QG_V1",
+    "note": "All questions below are generated from AP-002 authority semantics, detector registry metadata, producer linkage availability semantics, the registry ontology, and declared Program R methodology only. No effect direction, sign, or observed frequency is presupposed anywhere; every hypothesis is two-sided or of a predeclared structural form."
+  },
+  "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+  "program_id": "AP-002",
+  "rejected_semantic_combinations": [
+    {
+      "id": "R1",
+      "reason": "Semantically valid but exposure-invalid: these are E1 (native phenotype) questions and E1 is FROZEN COMPLETE and CLOSED. Re-proposing them would reopen E1 merely because another descriptive cut is possible. All admitted own-lifecycle content is re-expressed in conditional (E2) form.",
+      "rejection": "Unconditional own-lifecycle phenotype cuts: marginal transition frequencies, direction asymmetry of pure lifecycle kinetics, plain duration distributions, event-frequency censuses."
+    },
+    {
+      "id": "R2",
+      "reason": "Prohibited by AP-002 authority: cross_scale_identity is UNRESOLVED_AND_PROHIBITED. Scale-relationship content is admitted only as stratified replication (CORE-12) and, behind an explicit clearance gate, as time-point spatial co-activation without identity (OPT-01).",
+      "rejection": "Cross-scale object identity conditioning: multi-timeframe zone alignment, 'same zone across timeframes' nesting, cross-timeframe identity-linked outcome transfer."
+    },
+    {
+      "id": "R3",
+      "reason": "No external data surface is authorized by the frozen authority; only instrument-intrinsic timestamps and the frozen availability sidecar are lawful instrument-level context.",
+      "rejection": "External-calendar / macro / news-release regime conditioning (e.g., scheduled-event windows)."
+    },
+    {
+      "id": "R4",
+      "reason": "Violates the authority leakage_boundary: formation payload precedes touch/fill processing; touch/fill cannot define formation-time cohorts.",
+      "rejection": "Post-formation information as formation-time conditioner (e.g., conditioning formation cohorts on full-lifetime occupancy or on the anchor's own later events)."
+    },
+    {
+      "id": "R5",
+      "reason": "The frozen registry records every family with semantic_status=UNRESOLVED and empty roles/derives_from; no specific inter-detector semantic relationship may be assumed. Only family-level form-declared readouts (SF-4) behind the context-resolution gate are licensable; BG-001 additionally forbids independent-confluence claims.",
+      "rejection": "Detector-specific semantic co-occurrence questions (e.g., 'FVG fills that coincide with a specific named detector's named event')."
+    },
+    {
+      "id": "R6",
+      "reason": "AP-002 scope fixes the FVG zone as the anchor object; other families are contexts only in this program.",
+      "rejection": "Reverse-anchor questions (tick events or other families' outcomes as anchors conditioned on FVG state)."
+    },
+    {
+      "id": "R7",
+      "reason": "Parameter identity is CODE_FROZEN_AT_PRODUCER_COMMIT with external_parameter_count=0; no reparameterization is authorized. Within-cohort magnitude conditioning (SF-2) is the lawful residual of this question.",
+      "rejection": "Counterfactual parameter sweeps over min_gap_atr or other producer parameters (e.g., 'would zones below threshold behave differently')."
+    }
+  ],
+  "search_space_accounting": {
+    "core_primary_test_cells": 16,
+    "core_primary_test_cells_note": "CORE-12 expands to 3 gradient meta-tests (magnitude, stage-age, crowding); the other 13 cores are 1 primary test each",
+    "core_questions": 14,
+    "expansion_discipline": "No Cartesian prose duplication: each family collapses a stage/attribute x horizon x stratum product into one parameterized record with an explicit expansion formula; every expanded cell is exactly countable from the declared dimension cardinalities.",
+    "exposure_class_cell_counts": {
+      "E1": 0,
+      "E2_SAME_DOMAIN": 346,
+      "E3_CROSS_DOMAIN": 412
+    },
+    "exposure_class_cell_note": "E2 cells = 10 core (incl. CORE-12's 3) + 287 systematic (SF-1 98 + SF-2 126 + SF-5 63) + 49 optional (OPT-02 21 + OPT-04 28). E3 cells = 6 core + 294 systematic (SF-3 126 + SF-4 168) + 112 optional (OPT-01 84 + OPT-03 28). SF-4 and OPT-01 are declared upper bounds subject to their gates.",
+    "exposure_class_question_counts": {
+      "E1_reopens": 0,
+      "E2_SAME_DOMAIN_questions": 13,
+      "E3_CROSS_DOMAIN_questions": 10,
+      "total_questions_incl_families": 23
+    },
+    "optional_expanded_test_cells": {
+      "QG1-OPT-01_gated": 84,
+      "QG1-OPT-02": 21,
+      "QG1-OPT-03": 28,
+      "QG1-OPT-04": 28,
+      "total": 161
+    },
+    "optional_families": 4,
+    "systematic_expanded_test_cells": {
+      "QG1-SF-1": 98,
+      "QG1-SF-2": 126,
+      "QG1-SF-3": 126,
+      "QG1-SF-4": 168,
+      "QG1-SF-5": 63,
+      "total": 581
+    },
+    "systematic_families": 5,
+    "total_expanded_test_cells": 758
+  },
+  "shared_definitions": {
+    "completion_modes": [
+      "TOUCH_THEN_FILL",
+      "FILL_WITHOUT_RECORDED_TOUCH",
+      "FILL_ON_FIRST_TOUCH_BAR_INSTANT",
+      "INVALIDATED_WITHOUT_TOUCH",
+      "CENSORED_ACTIVE_AT_END_OF_STREAM"
+    ],
+    "conditioner_bucket_rules": {
+      "buckets": "within-(stratum, direction) terciles unless declared otherwise; collapse to median split, then to above/below grand median, then declare UNSUPPORTED",
+      "day_of_week": "UTC weekday of available_ts_ns",
+      "session_block_utc": "UTC 8h blocks [00:00-08:00), [08:00-16:00), [16:00-24:00) assigned by the event's lawful available_ts_ns (declared design choice; not authority-provided)",
+      "utc_4h_block": "UTC 4h block of available_ts_ns",
+      "zone_age_buckets_bars": [
+        "<=4",
+        "5-16",
+        ">16"
+      ]
+    },
+    "context_class_membership": {
+      "bar_state": [
+        "volume_by_time",
+        "volume_trend",
+        "auction_context",
+        "time_context",
+        "vwma_atr"
+      ],
+      "bar_structural": [
+        "swings",
+        "raw3",
+        "range",
+        "bos_choch",
+        "order_blocks",
+        "local_structure",
+        "structural_liquidity",
+        "dealing_range",
+        "micro_liquidity",
+        "micro_liquidity_context"
+      ],
+      "note": "Membership is by frozen registry domain field only; all semantics UNRESOLVED (CAVEAT_REGISTRY_UNRESOLVED). Classes are resolution placeholders, not semantic claims.",
+      "tick_microstructure": [
+        "drift_burst",
+        "spread_state",
+        "quote_dynamics",
+        "quote_arrival",
+        "micro_volatility",
+        "feed_health",
+        "quote_pressure"
+      ]
+    },
+    "control_requirements": {
+      "CONTROL_GLOBAL": [
+        "direction: stratify or include as moderator; never pool across direction without a declared pooled-secondary with direction as control",
+        "session block: matched or included",
+        "formation magnitude tercile: matched or included wherever it is not itself the conditioner",
+        "end-of-stream right-censoring: censored-aware estimator required for all duration outcomes",
+        "native stratum: primary tests are per-stratum; any pooling carries stratum fixed effects",
+        "state-restore boundary: exclude zones whose computation window crosses a detector state-envelope restore boundary from age/history-sensitive statistics"
+      ]
+    },
+    "dependency_caveats": {
+      "CAVEAT_BG001_CONFLUENCE": "Program methodology records that dependency-edge independence is NOT established across supported dependency edges (DO_NOT_CLAIM_INDEPENDENT_CONFLUENCE). Multi-context results are conditional-information findings, never independent-confluence claims.",
+      "CAVEAT_CROSS_SCALE_IDENTITY": "cross_scale_identity is UNRESOLVED_AND_PROHIBITED. No question links zones across timeframes; scale-relationship questions are lawful only as stratified replication/agreement (and, in gated O1, as time-point spatial co-activation without identity).",
+      "CAVEAT_END_OF_STREAM": "No synthetic tail bar; the forming end-of-stream bar is excluded. All duration outcomes are right-censored at end of stream; complete-case deletion is a selection rule, not noise (see CORE-13/O4).",
+      "CAVEAT_LEAKAGE_BOUNDARY": "Formation payload precedes touch/fill processing; touch/fill cannot define formation-time cohorts; all formation-time conditioning uses formation-available information only.",
+      "CAVEAT_REGISTRY_UNRESOLVED": "In the frozen registry all 23 families have semantic_status=UNRESOLVED, empty roles, empty derives_from, availability_semantics UNRESOLVED. No detector-specific semantic relationship may be assumed; E3 context readouts are form-declared (presence-in-window / state-bucket) and must pass the context-resolution gate.",
+      "CAVEAT_STATE_RESTORE": "Zones are serialized/restored with the detector state envelope; age and history computations must exclude windows crossing restore boundaries."
+    },
+    "eligibility_rules": {
+      "ELIGIBILITY_GLOBAL": "Anchor decision time a(z) = lawful available_ts_ns of the anchor event (formation event for formation-time conditioning; the stage event for stage-conditioned analyses). Every conditioning quantity must be fully determined by information whose available_ts_ns <= a(z), with source_sequence as the equal-receipt tie-break. Outcome events are credited only if their available_ts_ns > a(z). Context detector readouts obey the same rule; tick-surface outputs are available at received_ts_ns of the emitting tick (same-step emission per PRODUCER_LINKAGE_V2)."
+    },
+    "exposure_classification_rules": {
+      "CLASS_RULE_E1_CLOSED": "E1 = native phenotype of the zone object using only its own lifecycle, unconditional (marginal distributions, transition frequencies, direction symmetry, plain duration distributions). E1 is FROZEN COMPLETE and CLOSED. The generator proposes zero E1 reopens: blind to the frozen E1 contract contents, no genuine semantic omission can be established, and every own-lifecycle cut below is admitted only in conditional (E2) form.",
+      "CLASS_RULE_E2": "E2_SAME_DOMAIN = conditioning information comes from the FVG domain itself: (a) the zone's own lifecycle stage history (stage at decision time, age since formation); (b) sub-rule E2B: the zone's own formation-time semantic attributes (magnitude, direction, bounds geometry) used as conditioners of later-stage outcomes, i.e. conditional rather than marginal structure; (c) sub-rule E2C: same-detector population properties in the same stratum (other zones' states, completed outcomes causally available before the anchor, spatial configuration, population composition rules including censoring rules).",
+      "CLASS_RULE_E3": "E3_CROSS_DOMAIN = conditioning on other registered detector families' outputs or instrument-level context: calendar features of lawful availability timestamps, frozen availability-sidecar metadata, or readouts of the 22 non-anchor registered families (subject to the context-resolution gate)."
+    },
+    "field_sets": {
+      "AVAILABILITY_SIDECAR_FIELDS": [
+        "event_ts_ns",
+        "received_ts_ns",
+        "source_sequence (frozen sidecar fvg_availability_v1; authority metadata, not behavioral outcome)"
+      ],
+      "FORBIDDEN_GLOBAL": [
+        "post-formation bar/tick information in any formation-time conditioning set (authority leakage_boundary)",
+        "anchor zone's own touch/fill/invalidation outcomes used to define formation-time cohorts",
+        "cross-scale object identity linkage of any kind",
+        "any file under docs/research/ (E1A/E1B results, reviews, challenges, reconciliations, synthesis), .runs/, or scanner source",
+        "observed effect sizes, return signs, observed lifecycle frequencies, or outcomes from any prior experiment",
+        "external (non-instrument) data surfaces (news calendars, macro releases); only instrument-intrinsic timestamps and the frozen availability sidecar are lawful instrument-level context"
+      ],
+      "FVG_CORE_FIELDS": [
+        "timeframe",
+        "zone_id",
+        "direction (bullish|bearish)",
+        "zone_lower",
+        "zone_upper",
+        "formation_bar_end_ts (= CompletedBar.end_ts of confirmation bar; temporal boundary only)",
+        "formation_available_ts_ns (received_ts_ns of boundary-crossing source tick)",
+        "formation_source_sequence (equal-receipt tie-break)",
+        "formation_atr",
+        "gap_height_price",
+        "middle_body_price",
+        "first_touch_event {bar_end_ts, available_ts_ns}",
+        "fill_event {bar_end_ts, available_ts_ns}",
+        "invalidation_event {bar_end_ts, available_ts_ns}",
+        "end_of_stream_censored_flag",
+        "stratum_bar_seconds"
+      ]
+    },
+    "lawful_horizons_bars_of_anchor_stratum": [
+      1,
+      4,
+      16,
+      64
+    ],
+    "lifecycle_stages": [
+      "FORMED_UNTOUCHED",
+      "TOUCHED_UNFILLED",
+      "FILLED",
+      "INVALIDATED_UNTOUCHED",
+      "CENSORED_ACTIVE_AT_END_OF_STREAM"
+    ],
+    "minimum_support_rules": {
+      "MIN_SUPPORT_A": ">= 200 eligible anchor units per test cell after exclusions; apply bucket-collapse ladder; if still unsupported the cell is reported UNSUPPORTED (no inference, no claim either way).",
+      "MIN_SUPPORT_RARE": "For rare-mode analyses (anomalous completion modes): >= 50 events per mode per stratum; below that, pool strata with stratum fixed effects; if still unsupported, UNSUPPORTED.",
+      "context_resolution_gate": "SF-4 / CORE-06 / CORE-07 / CORE-11 / CORE-08 context cells execute only for (context family, readout form) pairs that at resolution time have semantic_status in {AUTHORITATIVE, PROVISIONAL} and a declared scalar state or event stream compatible with the readout; unresolved pairs are DROPPED_AT_GATE and counted as dropped, not as failures."
+    },
+    "multiplicity_families": {
+      "MF_CORE_PRIMARY": "14 core questions -> 16 predeclared primary test cells; Holm step-down within the family; two-sided tests.",
+      "MF_OPT": "OPTIONAL_LOW_PRIORITY tier is exploratory; no confirmatory claims; reported with nominal p-values and explicit exploratory labels only.",
+      "MF_SF1": "BH-FDR (q=0.05) across the 98 SF-1 cells.",
+      "MF_SF2": "BH-FDR (q=0.05) across the 126 SF-2 cells.",
+      "MF_SF3": "BH-FDR (q=0.05) across the 126 SF-3 cells.",
+      "MF_SF4": "BH-FDR (q=0.05) across the resolvable subset of the 168 SF-4 cells (declared upper bound).",
+      "MF_SF5": "BH-FDR (q=0.05) across the 63 SF-5 cells."
+    },
+    "null_library": {
+      "NULL_CIRCULAR_SHIFT": "Circularly shift the context or event series by a random offset within session-bounded blocks (block length >= 1 session), preserving autocorrelation of both series. Mandatory for population-level series (formation counts, rolling histories, context readouts); naive independent row shuffles are INVALID for these series and are prohibited.",
+      "NULL_DAY_SESSION_MATCHED": "Permute session-block (or calendar-context) labels among zones within the same UTC day (and same direction where declared), preserving day-level heterogeneity.",
+      "NULL_MATCHED_CONTROL": "Within (stratum x direction x formation session block [+ magnitude tercile where declared]), permute the conditioner labels among matched zones. Preserves within-block temporal dependence and session structure. Valid for formation-time and stage-entry conditioning.",
+      "NULL_SESSION_BLOCK_BOOTSTRAP": "Resample UTC-day/session blocks with replacement for estimator-agreement deltas (methods-robustness questions only; not a behavioral null).",
+      "NULL_WITHIN_DIRECTION_MATCHED": "Matched-control null computed separately within each direction; direction is never permuted across. Default for magnitude/attribute questions.",
+      "NULL_WITHIN_REGIME_MATCHED": "Match zones on the declared regime variable (calendar block or context-state bucket) and permute conditioner labels within regime cells. Secondary null for cross-domain conditioning."
+    },
+    "readout_forms": {
+      "presence_in_window": "Binary indicator that the context family emitted >= 1 event with available_ts_ns in (a(z) - W, a(z)], W in {16, 64} anchor-stratum bars.",
+      "recency_since_last_event": "Bucketed time since the family's last event with available_ts_ns <= a(z).",
+      "state_bucket": "The family's scalar state value at the last availability time <= a(z), bucketed to within-(stratum) terciles; only for families with a declared scalar state at the context-resolution gate."
+    }
+  },
+  "tiers": {
+    "CORE_QUESTIONS": [
+      {
+        "anchor": "FVG formation (detection) event of zone z (third completed bar; detection event per authority).",
+        "anchor_native_scale_domain": "each of the 7 native strata, tested per stratum",
+        "appropriate_null_family": "NULL_WITHIN_DIRECTION_MATCHED (matched-control: within stratum x direction x session block, permute magnitude-tercile labels)",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; conditioner fixed at formation available time a(z)",
+        "context_detector_if_applicable": "none (zone's own formation attributes)",
+        "context_native_scale_domain": "same stratum as anchor (own attributes)",
+        "exposure_class": "E2_SAME_DOMAIN (sub-rule E2B: own formation attributes as conditioners of later-stage outcomes)",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL"
+        ],
+        "formal_hypothesis": "For each stratum s and direction d, the censored survival distribution of time-to-first-touch differs across predeclared formation-magnitude terciles (two-sided conditional association; secondary: time-to-fill among touched zones). No effect direction is presupposed.",
+        "known_dependency_caveat": "CAVEAT_END_OF_STREAM; CAVEAT_STATE_RESTORE; CAVEAT_LEAKAGE_BOUNDARY",
+        "minimum_support_concept": "MIN_SUPPORT_A (>= 200 per stratum x direction x magnitude tercile; collapse ladder then UNSUPPORTED)",
+        "multiplicity_family": "MF_CORE_PRIMARY",
+        "outcome": "primary: time-to-first-touch in anchor-stratum bars, censored-aware at end-of-stream and far-edge invalidation; secondary: time-to-fill among touched zones",
+        "plain_language_question": "Within each native stratum, do formation-time magnitude attributes of an FVG zone (gap height in formation-ATR units; middle impulse body size) shift the timing of its subsequent lifecycle - the survival time to first touch, and to fill among touched zones?",
+        "prospective_horizon_domain": "[0, 64] anchor-stratum bars after the formation bar boundary; terminal events credited at their lawful available_ts_ns",
+        "question_id": "QG1-CORE-01",
+        "reason_it_might_be_scientifically_useful": "Establishes whether the FVG object carries formation-time information about its own lifecycle kinetics - the base layer that every incremental-information (E3) question needs as its same-domain baseline.",
+        "reason_question_is_semantically_meaningful": "Magnitude is fixed at formation by the authoritative predicate (gap >= 0.2 ATR, middle body >= 0.2 ATR) and mechanically trades off against travel time to the zone edges, so the conditional structure is intrinsic to the object's declared semantics.",
+        "required_controls": [
+          "direction (stratified)",
+          "session block (matched)",
+          "censored-aware estimator",
+          "state-restore boundary exclusion"
+        ],
+        "required_fields": [
+          "FVG_CORE_FIELDS"
+        ],
+        "v1_1_status": "GRADUATED_E2_PRIMARY"
+      },
+      {
+        "anchor": "FVG formation event of zone z.",
+        "anchor_native_scale_domain": "primary: pooled across the 7 strata with stratum fixed effects; secondary: per stratum",
+        "appropriate_null_family": "NULL_DAY_SESSION_MATCHED (permute session labels within UTC day x direction x stratum)",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; session block is a deterministic function of a(z), hence available at a(z) by construction",
+        "context_detector_if_applicable": "none (instrument-intrinsic calendar context derived from available_ts_ns)",
+        "context_native_scale_domain": "instrument time (applies to all strata)",
+        "exposure_class": "E3_CROSS_DOMAIN (instrument-level calendar context)",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL",
+          "external calendar/news data"
+        ],
+        "formal_hypothesis": "The session-block effect on P(first touch <= 16 bars) interacts with direction (two-sided interaction test; secondary: P(fill <= 16 bars | touched)).",
+        "known_dependency_caveat": "CAVEAT_REGISTRY_UNRESOLVED (session segmentation is a declared design choice, not authority-provided); 4h bars may straddle session boundaries - assignment by available_ts_ns is declared",
+        "minimum_support_concept": "MIN_SUPPORT_A (>= 200 per session block x direction after pooling); per-stratum secondaries follow MIN_SUPPORT_A else UNSUPPORTED",
+        "multiplicity_family": "MF_CORE_PRIMARY",
+        "outcome": "primary: P(first touch <= 16 anchor-stratum bars); secondary: P(fill <= 16 bars | touched)",
+        "plain_language_question": "Does the calendar session block (declared UTC 8h segmentation of the lawful availability timestamp) condition bullish and bearish FVG lifecycle outcomes differently - a direction x session interaction?",
+        "prospective_horizon_domain": "[0, 16] anchor-stratum bars after formation",
+        "question_id": "QG1-CORE-02",
+        "reason_it_might_be_scientifically_useful": "Tests regime dependence of the object's kinetics on the cheapest lawful regime axis, and predeclares the direction-asymmetry question in its lawful conditional form rather than as a closed-E1 descriptive cut.",
+        "reason_question_is_semantically_meaningful": "Formation cohorts are indexed by tick-receipt availability by construction of the authority's availability mapping, so calendar structure is lawfully attached to every anchor event without any unresolved detector semantics.",
+        "required_controls": [
+          "stratum fixed effects (pooled primary)",
+          "magnitude tercile",
+          "censored-aware estimator"
+        ],
+        "required_fields": [
+          "FVG_CORE_FIELDS",
+          "session_block_utc (from conditioner_bucket_rules)"
+        ],
+        "v1_1_status": "READY_AFTER_E2 (SF-3 calendar family)"
+      },
+      {
+        "anchor": "Stage-entry event (formation event; first_touch event).",
+        "anchor_native_scale_domain": "each of the 7 native strata, tested per stratum",
+        "appropriate_null_family": "NULL_MATCHED_CONTROL (within stratum x direction x formation session block, matched on magnitude tercile, contrast age buckets)",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; stage history fully determined by events with available_ts_ns <= stage-entry available time",
+        "context_detector_if_applicable": "none (own stage history)",
+        "context_native_scale_domain": "same stratum as anchor",
+        "exposure_class": "E2_SAME_DOMAIN (own lifecycle stage history)",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL"
+        ],
+        "formal_hypothesis": "Conditional on survival to stage entry, transition hazards out of FORMED_UNTOUCHED and out of TOUCHED_UNFILLED vary with stage-entry age buckets (two-sided; primary: P(fill <= 16 bars | first touch, age bucket)).",
+        "known_dependency_caveat": "CAVEAT_STATE_RESTORE; CAVEAT_END_OF_STREAM",
+        "minimum_support_concept": "MIN_SUPPORT_A per (stratum x direction x age bucket x anchor stage); collapse ladder then UNSUPPORTED",
+        "multiplicity_family": "MF_CORE_PRIMARY",
+        "outcome": "next-transition identity (touch, fill, invalidation) and its time; primary: fill-within-16-bars given first touch and age bucket",
+        "plain_language_question": "Within a zone's own lifecycle, does its stage history - untouched vs already-touched-not-filled, and age since formation at stage entry - condition its subsequent transition (formed->touch vs invalidation; touched->fill vs invalidation)?",
+        "prospective_horizon_domain": "[0, 16] anchor-stratum bars from stage entry",
+        "question_id": "QG1-CORE-03",
+        "reason_it_might_be_scientifically_useful": "Separates fresh-zone from stale-zone behavior, which determines whether zone state is usable prospective information and how later questions must gate on stage.",
+        "reason_question_is_semantically_meaningful": "The authority's lifecycle is explicitly staged (formation -> first touch -> fill / far-edge invalidation) with zones persisting until invalidation; stage-conditioned hazards are the natural conditional layer of that vocabulary.",
+        "required_controls": [
+          "direction",
+          "magnitude tercile",
+          "session block",
+          "instant-fill handling declared (fill on the first touching bar counted at touch stage entry)",
+          "state-restore boundary exclusion for age"
+        ],
+        "required_fields": [
+          "FVG_CORE_FIELDS"
+        ],
+        "v1_1_status": "GRADUATED_E2_PRIMARY"
+      },
+      {
+        "anchor": "FVG formation event of zone z.",
+        "anchor_native_scale_domain": "each of the 7 native strata, tested per stratum",
+        "appropriate_null_family": "NULL_MATCHED_CONTROL (within stratum x direction x session x magnitude tercile, permute crowding-bucket labels)",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; the active-zone set is read at a(z) using zone bounds and price information with available_ts_ns <= a(z) only",
+        "context_detector_if_applicable": "none (same-detector active-zone population, same stratum)",
+        "context_native_scale_domain": "same stratum as anchor",
+        "exposure_class": "E2_SAME_DOMAIN (sub-rule E2C: same-detector population properties)",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL",
+          "cross-stratum zone states (prohibited; same-stratum population only)"
+        ],
+        "formal_hypothesis": "P(first touch <= 16 bars) varies across predeclared crowding buckets conditional on magnitude, direction, and session (two-sided; secondary: fill<=16 and survival past 64 bars).",
+        "known_dependency_caveat": "CAVEAT_CROSS_SCALE_IDENTITY (strictly same-stratum spatial reads); CAVEAT_LEAKAGE_BOUNDARY",
+        "minimum_support_concept": "MIN_SUPPORT_A per (stratum x direction x crowding bucket); collapse ladder then UNSUPPORTED",
+        "multiplicity_family": "MF_CORE_PRIMARY",
+        "outcome": "primary: P(first touch <= 16 bars); secondary: P(fill <= 16 bars | touched), P(survival past 64 bars)",
+        "plain_language_question": "Does the same-stratum spatial configuration of simultaneously active FVG zones at formation - count of active zones overlapping the anchor's price interval, containment within another active zone, and normalized distance to the nearest active zone edge - condition the anchor zone's touch/fill/invalidation outcomes?",
+        "prospective_horizon_domain": "[0, 64] anchor-stratum bars after formation",
+        "question_id": "QG1-CORE-04",
+        "reason_it_might_be_scientifically_useful": "Tests whether FVG zones interact through shared price territory (crowding/absorption semantics) - the core structural-nesting science for this object class.",
+        "reason_question_is_semantically_meaningful": "The detector state holds multiple concurrent zones (persistence until far-edge invalidation), so spatial co-activation among same-stratum zones is an intrinsic population property, not an imported context.",
+        "required_controls": [
+          "direction",
+          "magnitude tercile (crowding correlates with regime activity)",
+          "session block",
+          "censored-aware estimator"
+        ],
+        "required_fields": [
+          "FVG_CORE_FIELDS",
+          "active-zone set at a(z): {zone_id, direction, lower, upper} per zone"
+        ],
+        "v1_1_status": "GRADUATED_E2_PRIMARY",
+        "warm_state_rule": "WARM_STATE_RULE: do not treat the start of DEVELOPMENT as empty historical state. Spatial/population context includes pre-boundary warm-state zones only where their required current state is lawfully represented; otherwise anchors are marked HISTORY_INCOMPLETE and excluded under a deterministic washout rule until pre-boundary state has cleared. Rolling prior-K history requires the declared K prior lawful completed zones before anchor eligibility. Excluded anchor counts are reported. No synthetic history."
+      },
+      {
+        "anchor": "FVG formation event of zone z.",
+        "anchor_native_scale_domain": "each of the 7 native strata, tested per stratum",
+        "appropriate_null_family": "NULL_CIRCULAR_SHIFT of the rolling-history series within (stratum x direction) with session-length blocks; secondary NULL_DAY_SESSION_MATCHED",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; only zones whose terminal events have available_ts_ns <= a(z) enter the rolling history (availability times govern, zone_id monotonicity assists only)",
+        "context_detector_if_applicable": "none (same-detector completed-zone history)",
+        "context_native_scale_domain": "same stratum as anchor",
+        "exposure_class": "E2_SAME_DOMAIN (sub-rule E2C: own past instances / population history)",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL",
+          "terminal outcomes of zones not yet complete at a(z)"
+        ],
+        "formal_hypothesis": "P(first touch <= 16 bars) varies with predeclared rolling-history buckets conditional on magnitude, direction, and session (two-sided).",
+        "known_dependency_caveat": "CAVEAT_STATE_RESTORE; the history conditioner is autocorrelated - the circular-shift block null is mandatory, row shuffles prohibited",
+        "minimum_support_concept": "MIN_SUPPORT_A per (stratum x direction x history bucket); collapse ladder then UNSUPPORTED",
+        "multiplicity_family": "MF_CORE_PRIMARY",
+        "outcome": "primary: P(first touch <= 16 bars); secondary: P(fill <= 16 bars | touched)",
+        "plain_language_question": "Do the terminal outcomes of recently completed same-stratum, same-direction zones - a rolling fill fraction over the prior K completed zones - condition the next formed zone's outcomes beyond its own formation attributes?",
+        "prospective_horizon_domain": "[0, 16] anchor-stratum bars after formation",
+        "question_id": "QG1-CORE-05",
+        "reason_it_might_be_scientifically_useful": "Detects population-level memory without importing any cross-domain semantics, and its result conditions how future studies must model population dependence.",
+        "reason_question_is_semantically_meaningful": "Monotone zone_id plus serialized persistence make the completed-zone population a lawfully ordered same-domain history; path dependence is the canonical own-past-instances conditioner.",
+        "required_controls": [
+          "direction",
+          "magnitude tercile",
+          "session block",
+          "state-restore boundary exclusion"
+        ],
+        "required_fields": [
+          "FVG_CORE_FIELDS",
+          "terminal events of prior same-stratum same-direction zones with their available_ts_ns"
+        ],
+        "v1_1_status": "GRADUATED_E2_PRIMARY",
+        "warm_state_rule": "WARM_STATE_RULE: do not treat the start of DEVELOPMENT as empty historical state. Spatial/population context includes pre-boundary warm-state zones only where their required current state is lawfully represented; otherwise anchors are marked HISTORY_INCOMPLETE and excluded under a deterministic washout rule until pre-boundary state has cleared. Rolling prior-K history requires the declared K prior lawful completed zones before anchor eligibility. Excluded anchor counts are reported. No synthetic history."
+      },
+      {
+        "anchor": "FVG formation event of zone z.",
+        "anchor_native_scale_domain": "each of the 7 native strata, tested per stratum",
+        "appropriate_null_family": "NULL_CIRCULAR_SHIFT of the context readout series within session blocks; secondary NULL_WITHIN_REGIME_MATCHED",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; tick-surface outputs are available at received_ts_ns of the emitting tick (same-step emission per PRODUCER_LINKAGE_V2 lawful_availability_contract)",
+        "context_detector_if_applicable": "tick_microstructure class (7 families, membership per shared_definitions)",
+        "context_native_scale_domain": "tick (mapped to the anchor decision time only via availability-time gating; no object identity mapping)",
+        "exposure_class": "E3_CROSS_DOMAIN",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL",
+          "any specific inter-detector semantic dependency claim (registry roles/derives_from are empty)"
+        ],
+        "formal_hypothesis": "Each context readout adds conditional association with P(first touch <= 16 bars) beyond the declared same-domain controls (two-sided, per context family x readout).",
+        "known_dependency_caveat": "CAVEAT_REGISTRY_UNRESOLVED; CAVEAT_BG001_CONFLUENCE (conditional-information claims only, never independent confluence); CAVEAT_CROSS_SCALE_IDENTITY (availability-time gating, not identity)",
+        "minimum_support_concept": "MIN_SUPPORT_A; plus context_resolution_gate (unresolvable (family, readout) pairs DROPPED_AT_GATE)",
+        "multiplicity_family": "MF_SF4 (cells shared with the SF-4 sweep); core cell = the class-level test",
+        "outcome": "primary: P(first touch <= 16 bars); secondary: P(fill <= 16 bars | touched)",
+        "plain_language_question": "Do tick-surface microstructure context families (declared candidate set: drift_burst, spread_state, quote_dynamics, quote_arrival, micro_volatility, feed_health, quote_pressure), read as presence-in-window or state-bucket readouts at formation availability time, condition FVG touch/fill outcomes beyond magnitude, direction, and session controls?",
+        "prospective_horizon_domain": "[0, 16] anchor-stratum bars after formation",
+        "question_id": "QG1-CORE-06",
+        "reason_it_might_be_scientifically_useful": "Tests whether bar-structure events are preceded by measurable microstructure states - the canonical cross-scale (never cross-identity) information question for this program.",
+        "reason_question_is_semantically_meaningful": "FVG formation is a bar-surface event; tick-surface states are the finest lawful causal context available at the anchor's availability time under the frozen producer linkage.",
+        "required_controls": [
+          "direction",
+          "magnitude tercile",
+          "session block",
+          "censored-aware estimator",
+          "context-resolution gate"
+        ],
+        "required_fields": [
+          "FVG_CORE_FIELDS",
+          "context family event stream or scalar state with per-row available_ts_ns"
+        ],
+        "v1_1_status": "HELD_PENDING_TYPED_CONTEXT_RESOLUTION"
+      },
+      {
+        "anchor": "FVG formation event of zone z.",
+        "anchor_native_scale_domain": "each of the 7 native strata, tested per stratum",
+        "appropriate_null_family": "NULL_CIRCULAR_SHIFT within session blocks; secondary NULL_WITHIN_REGIME_MATCHED",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; context events/states must have available_ts_ns <= a(z); no post-formation context enters formation-time conditioning",
+        "context_detector_if_applicable": "bar_structural class (10 families, membership per shared_definitions)",
+        "context_native_scale_domain": "bar; context read at the anchor's own stratum only (no cross-stratum reads)",
+        "exposure_class": "E3_CROSS_DOMAIN",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL",
+          "any specific inter-detector semantic dependency claim"
+        ],
+        "formal_hypothesis": "Each context readout adds conditional association with P(first touch <= 16 bars) beyond the declared same-domain controls (two-sided, per context family x readout x window).",
+        "known_dependency_caveat": "CAVEAT_REGISTRY_UNRESOLVED; CAVEAT_BG001_CONFLUENCE; same-stratum-only context reads (CAVEAT_CROSS_SCALE_IDENTITY)",
+        "minimum_support_concept": "MIN_SUPPORT_A; plus context_resolution_gate",
+        "multiplicity_family": "MF_SF4 (cells shared with the SF-4 sweep); core cell = the class-level test",
+        "outcome": "primary: P(first touch <= 16 bars); secondary: P(fill <= 16 bars | touched)",
+        "plain_language_question": "Do bar-surface structural context families (declared candidate set: swings, raw3, range, bos_choch, order_blocks, local_structure, structural_liquidity, dealing_range, micro_liquidity, micro_liquidity_context) with presence-in-window or recency readouts over prior windows condition FVG touch/fill outcomes?",
+        "prospective_horizon_domain": "[0, 16] anchor-stratum bars after formation; context windows W in {16, 64} anchor-stratum bars",
+        "question_id": "QG1-CORE-07",
+        "reason_it_might_be_scientifically_useful": "Quantifies whether structural context carries conditional information about zone outcomes without assuming any specific inter-detector dependency - the disciplined first E3 structural sweep.",
+        "reason_question_is_semantically_meaningful": "Co-located structural events are the traditional confluence context for gap/zone semantics, and the registry guarantees these families exist on the same bar surface with the same native scales - existence is registry fact, not behavioral finding.",
+        "required_controls": [
+          "direction",
+          "magnitude tercile",
+          "session block",
+          "censored-aware estimator",
+          "context-resolution gate"
+        ],
+        "required_fields": [
+          "FVG_CORE_FIELDS",
+          "context family event stream with per-event available_ts_ns"
+        ],
+        "v1_1_status": "HELD_PENDING_TYPED_CONTEXT_RESOLUTION"
+      },
+      {
+        "anchor": "FVG formation-event count series per (stratum, bar), session-blocked.",
+        "anchor_native_scale_domain": "each of the 7 native strata (series in anchor-stratum bars)",
+        "appropriate_null_family": "NULL_CIRCULAR_SHIFT (rotate context series within session blocks); max-statistic corrected across the lag window within the family",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; series indexed by availability times; lead/lag labels are relative to availability ordering, never occurrence-time reordering",
+        "context_detector_if_applicable": "bar_structural and tick_microstructure classes (17 families total)",
+        "context_native_scale_domain": "bar or tick; mapped to the anchor stratum series via availability-time bucketing only",
+        "exposure_class": "E3_CROSS_DOMAIN",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL",
+          "event_time-based re-indexing that violates the availability rule (event_time_is_availability=false for tick surfaces)"
+        ],
+        "formal_hypothesis": "The cross-correlation function between context event counts and FVG formation counts is nonzero at some lag in the predeclared window [-16, +16] anchor-stratum bars (two-sided max-|ccf| statistic; lead vs lag interpretation only at predeclared lags).",
+        "known_dependency_caveat": "CAVEAT_REGISTRY_UNRESOLVED; CAVEAT_BG001_CONFLUENCE; availability-time bucketing must not be confused with occurrence-time bucketing for tick surfaces",
+        "minimum_support_concept": "MIN_SUPPORT_A applied to event counts per cell; sparse families DROPPED_AT_GATE or UNSUPPORTED",
+        "multiplicity_family": "MF_SF4 (shared cells); core cell = class-level lead/lag summary",
+        "outcome": "cross-correlation function of formation counts vs context event counts; primary: max |ccf| over the lag window",
+        "plain_language_question": "Is there lead/lag structure between context-family event counts (bar-structural and tick classes) and FVG formation intensity within each stratum, at lags measured on lawful availability times?",
+        "prospective_horizon_domain": "lags [-16, +16] anchor-stratum bars around context events",
+        "question_id": "QG1-CORE-08",
+        "reason_it_might_be_scientifically_useful": "Cheap screening of which context families carry temporal information about FVG activity, prioritizing the expensive CORE-06/07 conditioning sweeps.",
+        "reason_question_is_semantically_meaningful": "Formation intensity is a lawful population-level outcome of the detector's own semantics; temporal alignment with context events is the lead/lag complement of the conditioning questions.",
+        "required_controls": [
+          "session block (diurnal intensity confound)",
+          "stratum (no cross-stratum pooling of series)",
+          "context-resolution gate"
+        ],
+        "required_fields": [
+          "per-bar formation counts with available_ts_ns bucketing",
+          "context family event counts with available_ts_ns"
+        ],
+        "v1_1_status": "HELD_PENDING_TYPED_CONTEXT_RESOLUTION"
+      },
+      {
+        "anchor": "FVG formation event in the (stratum, bar) formation-count series.",
+        "anchor_native_scale_domain": "each of the 7 native strata",
+        "appropriate_null_family": "NULL_SESSION_CONDITIONAL_TIME_VARYING: predeclared time-varying baseline preserving UTC day, session block and native-stratum activity structure while disrupting short-horizon local dependence (e.g. conditional within-day/session event-time randomization, or a predeclared inhomogeneous-rate null). Homogeneous-rate baselines removed: they misread ordinary intraday seasonality as clustering. Naive row shuffle prohibited; a circular shift of the series against itself is not sufficient as the operative null.",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; series indexed by formation available_ts_ns",
+        "context_detector_if_applicable": "none (own past instances)",
+        "context_native_scale_domain": "same stratum as anchor",
+        "exposure_class": "E2_SAME_DOMAIN (sub-rule E2C: own past instances)",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL"
+        ],
+        "formal_hypothesis": "Formation-count series exhibit short-horizon autocorrelation at lags 1..16 anchor-stratum bars beyond the session-preserving time-varying null (two-sided: clustering or dispersion).",
+        "known_dependency_caveat": "CAVEAT_STATE_RESTORE (state envelope restore can truncate series - segment at restore boundaries)",
+        "minimum_support_concept": "MIN_SUPPORT_A on formation counts per stratum; UNSUPPORTED strata excluded from the family summary",
+        "multiplicity_family": "MF_CORE_PRIMARY (single integrated statistic; lag-resolved detail reported as secondary)",
+        "outcome": "formation-to-formation hazard at lags 1..16; primary: integrated excess/deficit over lags 1..16 vs the circular-shift null",
+        "plain_language_question": "Do FVG formations cluster in time within a stratum beyond a session-preserving time-varying baseline - i.e., does a formation elevate short-horizon formation hazard for subsequent same-stratum zones (or disperse them)?",
+        "prospective_horizon_domain": "[1, 16] anchor-stratum bars after each formation",
+        "question_id": "QG1-CORE-09",
+        "reason_it_might_be_scientifically_useful": "Determines whether the zone population is independently arriving or clustered - a methodology-level result that fixes the valid null design for every other population-level question.",
+        "reason_question_is_semantically_meaningful": "The monotone zone_id population with serialized persistence makes formation intensity a lawfully defined same-domain series.",
+        "required_controls": [
+          "session block",
+          "day-of-week",
+          "stratum (per-stratum series only)"
+        ],
+        "required_fields": [
+          "FVG_CORE_FIELDS (formation events only)"
+        ],
+        "v1_1_null_repair": "CORE-09 null repaired per director ruling section E; question retained unchanged in substance.",
+        "v1_1_status": "GRADUATED_E2_PRIMARY"
+      },
+      {
+        "anchor": "Terminal event of zone z (fill or invalidation) or end-of-stream censoring point.",
+        "anchor_native_scale_domain": "per stratum, with declared cross-stratum pooling under MIN_SUPPORT_RARE",
+        "appropriate_null_family": "NULL_MATCHED_CONTROL (within stratum x direction x session x magnitude tercile; exact/conditional test given rare modes)",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; mode is determined by the recorded event stream after a(z); conditioners fixed at a(z)",
+        "competing_risk_rule": "COMPETING_RISK_RULE: for formation->first-touch analysis, FIRST_TOUCH is the event of interest; FILL_WITHOUT_RECORDED_TOUCH (gap-through) is a COMPETING TERMINAL EVENT, not non-informative right censoring; END_OF_DEVELOPMENT is right censoring. Use a competing-risk/multi-state estimator or an equivalent deterministic transition accounting. For touched->fill, end-of-development active touched zones are right censored.",
+        "context_detector_if_applicable": "none (same-domain conditioners: crowding, magnitude, session)",
+        "context_native_scale_domain": "same stratum as anchor",
+        "exposure_class": "E2_SAME_DOMAIN",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL"
+        ],
+        "formal_hypothesis": "The completion-mode distribution over the 5 declared modes is independent of the declared same-domain conditioners (two-sided conditional association per conditioner); existence of rare modes is part of the hypothesis space, with no observed frequency assumed.",
+        "known_dependency_caveat": "CAVEAT_END_OF_STREAM; whether 'fill without recorded touch' is realizable depends on producer emission order - the question asks whether the recorded streams realize it (two-sided; no observed rate presupposed)",
+        "minimum_support_concept": "MIN_SUPPORT_RARE (>= 50 events per mode per stratum, else pool strata with stratum fixed effects, else UNSUPPORTED)",
+        "multiplicity_family": "MF_CORE_PRIMARY (per conditioner: crowding, magnitude, session)",
+        "outcome": "completion-mode classification over completion_modes vocabulary; primary: mode x conditioner association (per conditioner)",
+        "plain_language_question": "Do anomalous completion modes - fill with no recorded prior first_touch (gap-through candidate implied by the written fill predicate), fill on the first touching bar (instant fill), and invalidation without any touch - follow the same conditional structure as ordinary completions (i.e., are their rates conditioned on crowding, magnitude, and session like normal modes)?",
+        "prospective_horizon_domain": "zone lifetime up to terminal event or end-of-stream censoring",
+        "question_id": "QG1-CORE-10",
+        "reason_it_might_be_scientifically_useful": "Validates the event-vocabulary semantics and flags edge cases that would silently distort every duration and transition estimate in the program if unhandled.",
+        "reason_question_is_semantically_meaningful": "The authority's touch predicate (range overlap) and fill predicate (edge reach) are logically distinct, so anomalous modes are derivable from the written semantics alone, not dredged from data.",
+        "required_controls": [
+          "direction",
+          "magnitude tercile",
+          "session block",
+          "censoring accounting for CENSORED_ACTIVE mode"
+        ],
+        "required_fields": [
+          "FVG_CORE_FIELDS",
+          "complete ordered event stream per zone (touch/fill/invalidation with available_ts_ns)"
+        ],
+        "state_model_note": "Same-bar touch+fill is TOUCH_AND_FILL_SAME_COMPLETED_BAR: one completed bar and one bar-level availability coordinate; no intrabar market-time inference.",
+        "v1_1_status": "GRADUATED_E2_PRIMARY"
+      },
+      {
+        "anchor": "FVG formation event of zone z.",
+        "anchor_native_scale_domain": "per stratum, with declared pooled secondary (stratum fixed effects)",
+        "appropriate_null_family": "NULL_DAY_SESSION_MATCHED permutation of context readouts within session blocks (lift null distribution); same-domain baseline fixed before evaluation",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; models trained/evaluated strictly with information available at a(z); evaluation strictly prospective (formation-ordered)",
+        "context_detector_if_applicable": "as resolved from SF-4 class sets (bar_structural, bar_state, tick_microstructure)",
+        "context_native_scale_domain": "bar (same stratum) or tick (availability-time gated)",
+        "exposure_class": "E3_CROSS_DOMAIN",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL",
+          "independence/confluence phrasing of any lift result (CAVEAT_BG001_CONFLUENCE)"
+        ],
+        "formal_hypothesis": "Nested-model comparison: the context-augmented model achieves better prospective log-loss/AUC for P(first touch <= 16 bars) than the same-domain-only model (two-sided lift vs the matched permutation null).",
+        "known_dependency_caveat": "CAVEAT_REGISTRY_UNRESOLVED; CAVEAT_BG001_CONFLUENCE; same-domain baseline must be frozen before context evaluation to prevent baseline re-tuning",
+        "minimum_support_concept": "MIN_SUPPORT_A per (stratum x context class); UNSUPPORTED cells reported without lift claims",
+        "multiplicity_family": "MF_CORE_PRIMARY (class-level lift tests); sub-family detail under MF_SF4",
+        "outcome": "incremental prospective predictive lift (log-loss delta; AUC delta) of context beyond the same-domain baseline",
+        "plain_language_question": "Beyond the same-domain conditioning set (formation magnitude, stage history, crowding, session), do cross-domain context readouts (SF-4 forms) improve prospective prediction of FVG touch/fill outcomes?",
+        "prospective_horizon_domain": "[0, 16] anchor-stratum bars after formation",
+        "question_id": "QG1-CORE-11",
+        "reason_it_might_be_scientifically_useful": "Directly quantifies the marginal scientific value of the other 22 registered detector families for this object - the core justification question for E3 as a tier.",
+        "reason_question_is_semantically_meaningful": "Incremental information is only well-posed once the same-domain baseline is fixed; the exposure-class structure (E2 baseline vs E3 increment) matches the program's own methodology definitions.",
+        "required_controls": [
+          "same-domain baseline model (CORE-01/03/04/02 covariates)",
+          "direction",
+          "stratum fixed effects",
+          "context-resolution gate"
+        ],
+        "required_fields": [
+          "FVG_CORE_FIELDS",
+          "resolved context readouts with available_ts_ns"
+        ],
+        "v1_1_status": "HELD_PENDING_TYPED_CONTEXT_RESOLUTION"
+      },
+      {
+        "anchor": "Per-stratum gradient estimates from the three source cores (7 strata per gradient).",
+        "anchor_native_scale_domain": "all 7 native strata as replication units",
+        "appropriate_null_family": "per-stratum NULL_WITHIN_DIRECTION_MATCHED / NULL_MATCHED_CONTROL nulls combined via a declared sign-flip meta-test",
+        "causal_eligibility_rule": "inherits ELIGIBILITY_GLOBAL of the source cores",
+        "context_detector_if_applicable": "none",
+        "context_native_scale_domain": "not applicable (meta-level over strata)",
+        "exposure_class": "E2_SAME_DOMAIN (all inputs same-domain; meta-tier of the E2 core set)",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL",
+          "any cross-stratum object linkage (stratified replication only)"
+        ],
+        "formal_hypothesis": "For each gradient g in {magnitude, stage-age, crowding}, per-stratum standardized effect signs agree across supported strata more than expected under independent per-stratum block nulls (predeclared structural form: consistency; no economic direction is presupposed).",
+        "known_dependency_caveat": "CAVEAT_CROSS_SCALE_IDENTITY (this stratified-agreement form is the only lawful scale-relationship structure); coarse strata (1h, 4h) may be UNSUPPORTED",
+        "minimum_support_concept": "agreement computed over supported strata only; the support map is itself a declared output",
+        "multiplicity_family": "MF_CORE_PRIMARY (3 meta-tests: one per gradient)",
+        "outcome": "sign agreement / combined sign statistic per gradient; heterogeneity (Cochran-Q style) reported",
+        "plain_language_question": "Are the signs of the same-domain conditional structures - the magnitude gradient (CORE-01), the stage-age effect (CORE-03), and the crowding effect (CORE-04) - directionally consistent across the seven native strata, as stratified replication with no cross-scale identity claims?",
+        "prospective_horizon_domain": "inherits the source cores' horizons ([0, 64] and [0, 16] bars)",
+        "question_id": "QG1-CORE-12",
+        "reason_it_might_be_scientifically_useful": "Scale-consistency is the strongest robustness signal available to a single-instrument, single-object program, and it is predeclared rather than post hoc.",
+        "reason_question_is_semantically_meaningful": "Under the cross-scale identity prohibition, scale relationships are lawful only as parallel structure across strata; this is the canonical form of that domain.",
+        "required_controls": [
+          "support map (which strata are UNSUPPORTED under MIN_SUPPORT_A)",
+          "heterogeneity reporting"
+        ],
+        "required_fields": [
+          "per-stratum effect estimates and block-null sign distributions from CORE-01, CORE-03, CORE-04"
+        ],
+        "v1_1_status": "GRADUATED_E2_PRIMARY"
+      },
+      {
+        "anchor": "The (stratum x conditioner) estimate set from the duration-domain cores/families.",
+        "anchor_native_scale_domain": "primary: pooled with stratum fixed effects; per-stratum sweep in O4",
+        "appropriate_null_family": "NULL_SESSION_BLOCK_BOOTSTRAP (resample UTC-day blocks) for agreement deltas",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; both estimator variants use identical eligible cohorts and differ only in censoring treatment",
+        "context_detector_if_applicable": "none",
+        "context_native_scale_domain": "not applicable",
+        "exposure_class": "E2_SAME_DOMAIN (sub-rule E2C: population composition rules, including censoring rules, are same-detector population properties)",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL"
+        ],
+        "formal_hypothesis": "Estimator-pair agreement: the rank agreement of conditioner-effect estimates between censored-aware and complete-case estimators does not differ from the session-block-bootstrap null beyond the declared disagreement threshold (two-sided).",
+        "known_dependency_caveat": "CAVEAT_END_OF_STREAM (censoring is structural and deterministic, so complete-case deletion is a selection rule, not noise)",
+        "minimum_support_concept": "MIN_SUPPORT_A on the source cells reused; cells UNSUPPORTED in the source are excluded here too",
+        "multiplicity_family": "MF_CORE_PRIMARY (single pooled agreement test)",
+        "outcome": "estimator-agreement statistics (rank correlation of effect estimates; delta of headline effects) - a measurement-robustness outcome, not a behavioral effect",
+        "plain_language_question": "Are duration and transition conclusions robust to the treatment of end-of-stream right-censoring (censored-aware survival estimators vs naive complete-case deletion), given the authority's no-synthetic-tail-bar rule?",
+        "prospective_horizon_domain": "inherits the source analyses' horizons",
+        "question_id": "QG1-CORE-13",
+        "reason_it_might_be_scientifically_useful": "Protects every duration-domain inference from a silent selection artifact and predeclares the censoring protocol for all later phases.",
+        "reason_question_is_semantically_meaningful": "The authority explicitly excludes the forming tail bar, making right-censoring a structural property of every duration measurement in the program.",
+        "required_controls": [
+          "identical cohort definitions across estimator variants",
+          "declared disagreement threshold fixed before evaluation"
+        ],
+        "required_fields": [
+          "FVG_CORE_FIELDS",
+          "end_of_stream_censored_flag"
+        ],
+        "v1_1_status": "GRADUATED_E2_ROBUSTNESS_LANE"
+      },
+      {
+        "anchor": "FVG formation event of zone z, under both anchor-time conventions.",
+        "anchor_native_scale_domain": "each of the 7 native strata",
+        "appropriate_null_family": "placebo reassignment of lag buckets within stratum (deterministic audit with placebo calibration; no behavioral null)",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL is itself the object of audit; the sidecar is authority-frozen metadata, not behavioral data",
+        "context_detector_if_applicable": "none (instrument-level availability metadata from the frozen authority sidecar)",
+        "context_native_scale_domain": "instrument time (availability sidecar columns event_ts_ns, received_ts_ns, source_sequence)",
+        "exposure_class": "E3_CROSS_DOMAIN (instrument-level context: frozen availability sidecar metadata)",
+        "forbidden_fields": [
+          "FORBIDDEN_GLOBAL",
+          "any use of the sidecar beyond availability metadata (no outcome conditioning)"
+        ],
+        "formal_hypothesis": "Eligibility-set deltas and horizon deltas between the two anchor-time conventions exceed the declared materiality thresholds for a nontrivial fraction of anchors (two-sided vs the placebo calibration).",
+        "known_dependency_caveat": "CAVEAT_END_OF_STREAM (no sidecar row exists for the forming tail bar by authority rule); the authority's central availability correction (boundary-crossing tick receipt, not bar_close_ts) motivates this audit",
+        "minimum_support_concept": "all anchors with sidecar rows are eligible; no support collapse (audit census)",
+        "multiplicity_family": "MF_CORE_PRIMARY (single audit test)",
+        "outcome": "eligibility-set delta indicator (which context values pass the availability gate under each convention); horizon delta in bars and wall-clock time - a causal-validity audit outcome, not a behavioral effect",
+        "plain_language_question": "Does the formation availability lag (lawful available_time minus bar_close_ts, per the frozen boundary-crossing tick receipt rule) materially change (a) which context values are causally eligible at the anchor and (b) measured horizon lengths, relative to using bar_close_ts as the anchor time?",
+        "prospective_horizon_domain": "measurement window [0, 64] anchor-stratum bars per convention",
+        "question_id": "QG1-CORE-14",
+        "reason_it_might_be_scientifically_useful": "Quantifies whether the lawful availability convention materially changes causal eligibility sets - if it does, every conditioning question's validity depends on it; if it does not, the program's anchors are demonstrably robust.",
+        "reason_question_is_semantically_meaningful": "The frozen authority's central correction is that FVG availability is boundary-crossing tick receipt time rather than bar_close_ts; measuring the operational consequence of that correction is intrinsically in-scope and derivable from authority text alone.",
+        "required_controls": [
+          "per-stratum lag distribution reported as audit output only",
+          "declared materiality thresholds fixed before evaluation"
+        ],
+        "required_fields": [
+          "FVG_CORE_FIELDS",
+          "AVAILABILITY_SIDECAR_FIELDS"
+        ],
+        "v1_1_status": "PRE_E3_CAUSAL_ELIGIBILITY_AUDIT"
+      }
+    ],
+    "OPTIONAL_LOW_PRIORITY": [
+      {
+        "anchor": "FVG formation event of zone z in stratum s.",
+        "appropriate_null_family": "NULL_MATCHED_CONTROL (session, direction, magnitude tercile)",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; coarser-stratum active sets read at a(z) by availability time",
+        "context_native_scale_domain": "coarser native strata only (ordered fine to coarse: 15s, 30s, 1m, 5m, 15m, 1h, 4h)",
+        "dimensions_and_expansion_rule": "anchor_stratum x coarser_stratum pairs = 6+5+4+3+2+1+0 = 21 (4h has no coarser stratum); x direction 2 x outcome 2 = 84 cells",
+        "domains_covered": [
+          "scale relationships",
+          "spatial relationships"
+        ],
+        "expanded_cell_count": 84,
+        "exposure_class": "E3_CROSS_DOMAIN (cross-stratum spatial state read, no identity)",
+        "known_dependency_caveat": "CAVEAT_CROSS_SCALE_IDENTITY - this question uses time-point spatial overlap only and asserts no cross-scale object identity; EXECUTION GATE: the research worker must explicitly clear this against the cross-scale identity restriction before running; if unclearable, drop the family entirely",
+        "minimum_support_concept": "MIN_SUPPORT_A with collapse ladder",
+        "multiplicity_family": "MF_OPT",
+        "name": "CROSS_STRATUM_COACTIVATION_GATED",
+        "outcome": "P(touch <= 16 bars); P(fill <= 16 bars | touched)",
+        "plain_language_question": "Does the mere presence of an active zone in a coarser stratum overlapping the anchor zone's price interval at formation time (time-point spatial co-activation, never object identity) condition the anchor zone's outcomes?",
+        "prospective_horizon_domain": "[0, 16] anchor-stratum bars",
+        "question_id": "QG1-OPT-01",
+        "reason_low_priority": "Identity-adjacent: admissible only under a strict no-identity reading, so it is quarantined in the optional tier behind an explicit clearance gate."
+      },
+      {
+        "anchor": "FVG formation event (reuse of SF-2 cohorts).",
+        "appropriate_null_family": "NULL_SESSION_BLOCK_BOOTSTRAP for agreement deltas",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL",
+        "context_native_scale_domain": "same stratum as anchor",
+        "dimensions_and_expansion_rule": "alternative_normalization 3 x native_stratum 7 = 21 robustness checks",
+        "domains_covered": [
+          "normalization robustness",
+          "magnitude"
+        ],
+        "expanded_cell_count": 21,
+        "exposure_class": "E2_SAME_DOMAIN (sub-rule E2B, methods-robustness)",
+        "known_dependency_caveat": "CAVEAT_END_OF_STREAM; the daily-range proxy must be instrument-intrinsic (rolling range of the same instrument's completed bars), never external data",
+        "minimum_support_concept": "inherits SF-2 support map",
+        "multiplicity_family": "MF_OPT",
+        "name": "NORMALIZATION_ROBUSTNESS",
+        "outcome": "Spearman rank agreement of attribute-effect estimates across normalization choices",
+        "plain_language_question": "Do alternative instrument-intrinsic normalizations of zone magnitude (absolute price units; fraction of confirmation-bar range; fraction of a declared rolling daily-range proxy) preserve the rank structure of the SF-2 magnitude gradient?",
+        "prospective_horizon_domain": "inherits SF-2 ([0, 16] bars)",
+        "question_id": "QG1-OPT-02",
+        "reason_low_priority": "Robustness audit of SF-2 rather than a new hypothesis; valuable but confirmatory value is derivative."
+      },
+      {
+        "anchor": "FVG formation event under both anchor-time conventions.",
+        "appropriate_null_family": "placebo reassignment of lag buckets within stratum",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL is the audit object",
+        "context_native_scale_domain": "instrument time (frozen availability sidecar)",
+        "dimensions_and_expansion_rule": "lag_bucket 4 (declared within-stratum quantiles) x native_stratum 7 = 28 audit cells",
+        "domains_covered": [
+          "missingness / availability-sensitive"
+        ],
+        "expanded_cell_count": 28,
+        "exposure_class": "E3_CROSS_DOMAIN (instrument-level availability metadata)",
+        "known_dependency_caveat": "CAVEAT_END_OF_STREAM; sidecar is authority metadata only",
+        "minimum_support_concept": "audit census (all anchors with sidecar rows)",
+        "multiplicity_family": "MF_OPT",
+        "name": "AVAILABILITY_LAG_ELIGIBILITY_SWEEP",
+        "outcome": "eligibility-set delta; horizon delta (audit outputs)",
+        "plain_language_question": "Per stratum and availability-lag bucket, how large are the causal-eligibility set changes and horizon measurement changes induced by the lawful availability convention (per-stratum sweep of CORE-14)?",
+        "prospective_horizon_domain": "[0, 64] bars per convention",
+        "question_id": "QG1-OPT-03",
+        "reason_low_priority": "Per-stratum detail of CORE-14; the pooled core answers the program-level question."
+      },
+      {
+        "anchor": "Duration outcome measurement per zone.",
+        "appropriate_null_family": "NULL_SESSION_BLOCK_BOOTSTRAP",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL",
+        "context_native_scale_domain": "same stratum as anchor",
+        "dimensions_and_expansion_rule": "estimator_pair 2 (survival vs complete-case) x outcome 2 (median time-to-touch, P(touch<=16)) x native_stratum 7 = 28 cells",
+        "domains_covered": [
+          "censoring-sensitive"
+        ],
+        "expanded_cell_count": 28,
+        "exposure_class": "E2_SAME_DOMAIN (sub-rule E2C, methods-robustness)",
+        "known_dependency_caveat": "CAVEAT_END_OF_STREAM",
+        "minimum_support_concept": "MIN_SUPPORT_A; unsupported strata reported UNSUPPORTED",
+        "multiplicity_family": "MF_OPT",
+        "name": "CENSORING_ESTIMATOR_SENSITIVITY_PER_STRATUM",
+        "outcome": "estimator-agreement deltas for two headline duration statistics",
+        "plain_language_question": "Per stratum, do censored-aware and complete-case duration estimates agree (per-stratum sweep of CORE-13)?",
+        "prospective_horizon_domain": "inherits source analyses",
+        "question_id": "QG1-OPT-04",
+        "reason_low_priority": "Per-stratum detail of CORE-13."
+      }
+    ],
+    "SYSTEMATIC_DISCOVERY_FAMILY": [
+      {
+        "anchor": "Stage-entry event (formation; first touch) of zone z in stratum s.",
+        "appropriate_null_family": "NULL_MATCHED_CONTROL; series-type conditioners (rolling history) additionally require the NULL_CIRCULAR_SHIFT block structure",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL",
+        "context_detector_if_applicable": "none (same-domain conditioners)",
+        "context_native_scale_domain": "same stratum as anchor",
+        "dimensions": [
+          {
+            "cardinality": 2,
+            "dimension": "anchor_stage",
+            "values": [
+              "FORMED_UNTOUCHED (transition: touch vs invalidation)",
+              "TOUCHED_UNFILLED (transition: fill vs invalidation)"
+            ]
+          },
+          {
+            "cardinality": 7,
+            "dimension": "conditioner",
+            "values": [
+              "zone_age_bucket",
+              "zone_height_ATR_bucket",
+              "active_overlap_count_bucket",
+              "rolling_fill_fraction_bucket",
+              "direction_as_moderator",
+              "PAIR age x height (interaction)",
+              "PAIR crowding x history (interaction)"
+            ]
+          },
+          {
+            "cardinality": 7,
+            "dimension": "native_stratum",
+            "values": [
+              "15s",
+              "30s",
+              "1m",
+              "5m",
+              "15m",
+              "1h",
+              "4h"
+            ]
+          }
+        ],
+        "domains_covered": [
+          "lifecycle transition",
+          "stage-conditioned behavior",
+          "same-domain conditioning",
+          "interaction effects"
+        ],
+        "expanded_cell_count": 98,
+        "expansion_rule": "cells = 2 x 7 x 7 = 98; each cell is one conditional-association test with NULL_MATCHED_CONTROL; pair-dimension cells test interaction effects",
+        "exposure_class": "E2_SAME_DOMAIN",
+        "family_id": "QG1-SF-1",
+        "family_question": "Does the transition hazard out of lifecycle stage S in stratum s vary with same-domain conditioner c (bucketed)? Parameterized sweep over {stage} x {conditioner incl. interaction pairs} x {native stratum}.",
+        "known_dependency_caveat": "CAVEAT_STATE_RESTORE; CAVEAT_LEAKAGE_BOUNDARY",
+        "minimum_support_concept": "MIN_SUPPORT_A with collapse ladder",
+        "multiplicity_family": "MF_SF1",
+        "name": "STAGE_CONDITIONED_TRANSITIONS",
+        "outcome": "next-transition identity and time within the declared horizon of stage entry",
+        "prospective_horizon_domain": "[0, 16] anchor-stratum bars from stage entry",
+        "reason_family_is_meaningful": "The staged lifecycle vocabulary with persistence makes every (stage, conditioner) pair a well-posed conditional question on the object's own semantics.",
+        "reason_family_is_useful": "A systematic same-domain sweep gives the E3 tier its fixed baseline and maps where the object's own history carries information.",
+        "required_controls": [
+          "direction (except when it is the moderator)",
+          "magnitude tercile where not the conditioner",
+          "session block",
+          "censored-aware estimator",
+          "state-restore exclusion"
+        ]
+      },
+      {
+        "anchor": "FVG formation event of zone z.",
+        "appropriate_null_family": "NULL_WITHIN_DIRECTION_MATCHED (session-matched attribute-label permutation)",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL (attributes fixed at formation)",
+        "context_detector_if_applicable": "none",
+        "context_native_scale_domain": "same stratum as anchor",
+        "dimensions": [
+          {
+            "cardinality": 3,
+            "dimension": "formation_attribute",
+            "values": [
+              "gap_height / formation_ATR",
+              "middle_body / formation_ATR",
+              "confirmation_bar_range / formation_ATR"
+            ]
+          },
+          {
+            "cardinality": 3,
+            "dimension": "outcome_horizon",
+            "values": [
+              "touch <= 4 bars",
+              "touch <= 16 bars",
+              "fill <= 16 bars (given touched)"
+            ]
+          },
+          {
+            "cardinality": 2,
+            "dimension": "direction",
+            "values": [
+              "bullish",
+              "bearish"
+            ]
+          },
+          {
+            "cardinality": 7,
+            "dimension": "native_stratum",
+            "values": [
+              "15s",
+              "30s",
+              "1m",
+              "5m",
+              "15m",
+              "1h",
+              "4h"
+            ]
+          }
+        ],
+        "domains_covered": [
+          "magnitude",
+          "duration / persistence",
+          "lead / lag (formation attribute leads kinetics)",
+          "direction"
+        ],
+        "expanded_cell_count": 126,
+        "expansion_rule": "cells = 3 x 3 x 2 x 7 = 126; each cell one stratified association test",
+        "exposure_class": "E2_SAME_DOMAIN (sub-rule E2B)",
+        "family_id": "QG1-SF-2",
+        "family_question": "Does formation attribute a (ATR-normalized) stratify the outcome O at horizon H within (stratum s, direction d)? Parameterized sweep over {attribute} x {outcome x horizon} x {direction} x {stratum}.",
+        "known_dependency_caveat": "CAVEAT_END_OF_STREAM; within-cohort magnitude variation only - no counterfactual threshold sweeps (parameter identity is code-frozen)",
+        "minimum_support_concept": "MIN_SUPPORT_A with collapse ladder",
+        "multiplicity_family": "MF_SF2",
+        "name": "FORMATION_ATTRIBUTE_HORIZONS",
+        "outcome": "per-cell outcome-horizon classification (touch / fill / neither by horizon)",
+        "prospective_horizon_domain": "per dimension: [0, 4] and [0, 16] bars for touch; [0, 16] bars for fill",
+        "reason_family_is_meaningful": "All three attributes are fixed at formation by the authoritative predicate, so every cell is leakage-free by construction.",
+        "reason_family_is_useful": "Maps which formation-time observables lead which lifecycle outcomes at which horizons - the lead/lag structure internal to the object.",
+        "required_controls": [
+          "session block",
+          "censored-aware estimator",
+          "state-restore exclusion"
+        ]
+      },
+      {
+        "anchor": "FVG formation event of zone z.",
+        "appropriate_null_family": "NULL_DAY_SESSION_MATCHED; survival cells use within-day session-label permutation with censored-aware statistics",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; calendar context is a deterministic function of a(z)",
+        "context_detector_if_applicable": "none (timestamp-derived calendar context)",
+        "context_native_scale_domain": "instrument time",
+        "dimensions": [
+          {
+            "cardinality": 3,
+            "dimension": "calendar_context",
+            "values": [
+              "session_block_utc (8h)",
+              "day_of_week",
+              "utc_4h_block"
+            ]
+          },
+          {
+            "cardinality": 2,
+            "dimension": "direction",
+            "values": [
+              "bullish",
+              "bearish"
+            ]
+          },
+          {
+            "cardinality": 3,
+            "dimension": "outcome",
+            "values": [
+              "touch <= 16 bars",
+              "fill <= 16 bars (given touched)",
+              "time-to-touch survival curve"
+            ]
+          },
+          {
+            "cardinality": 7,
+            "dimension": "native_stratum",
+            "values": [
+              "15s",
+              "30s",
+              "1m",
+              "5m",
+              "15m",
+              "1h",
+              "4h"
+            ]
+          }
+        ],
+        "domains_covered": [
+          "temporal context",
+          "regime dependence",
+          "direction",
+          "duration / persistence"
+        ],
+        "expanded_cell_count": 126,
+        "expansion_rule": "cells = 3 x 2 x 3 x 7 = 126",
+        "exposure_class": "E3_CROSS_DOMAIN (instrument-level calendar context)",
+        "family_id": "QG1-SF-3",
+        "family_question": "Does calendar context c (from lawful availability timestamps) condition outcome O for direction d in stratum s? Parameterized sweep over {calendar context} x {direction} x {outcome} x {stratum}.",
+        "known_dependency_caveat": "CAVEAT_REGISTRY_UNRESOLVED (session segmentation is a declared design choice); session assignment by available_ts_ns",
+        "minimum_support_concept": "MIN_SUPPORT_A with collapse ladder; 4h-stratum cells expected to be support-limited (declared, not excluded a priori)",
+        "multiplicity_family": "MF_SF3",
+        "name": "CALENDAR_CONTEXT",
+        "outcome": "per-cell outcome (classification or censored survival)",
+        "prospective_horizon_domain": "[0, 16] bars for classification outcomes; [0, 64] bars for survival outcome",
+        "reason_family_is_meaningful": "Timestamps are lawfully attached to every anchor by the availability rule, so calendar context needs no unresolved detector semantics.",
+        "reason_family_is_useful": "Establishes the calendar-regime baseline that detector-based regime questions (SF-4) must beat to demonstrate incremental value.",
+        "required_controls": [
+          "magnitude tercile",
+          "stratum (per-stratum cells)",
+          "censored-aware estimator"
+        ],
+        "v1_1_status": "READY_AFTER_E2"
+      },
+      {
+        "anchor": "FVG formation event of zone z.",
+        "appropriate_null_family": "NULL_CIRCULAR_SHIFT within session blocks; secondary NULL_WITHIN_REGIME_MATCHED",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; tick surfaces available at received_ts_ns of the emitting tick (same-step emission); bar surfaces at their lawful availability times",
+        "cell_count_status": "DECLARED_UPPER_BOUND (gate-mediated reduction declared)",
+        "context_detector_if_applicable": "all 22 non-anchor registered families via their declared class (bar_structural 10, bar_state 5, tick_microstructure 7)",
+        "context_native_scale_domain": "bar (same stratum) or tick (availability-time gated); no cross-stratum context reads",
+        "dimensions": [
+          {
+            "cardinality": 3,
+            "dimension": "context_class",
+            "values": [
+              "bar_structural (10 families)",
+              "bar_state (5 families)",
+              "tick_microstructure (7 families)"
+            ]
+          },
+          {
+            "cardinality": 2,
+            "dimension": "readout_form",
+            "values": [
+              "presence_in_window",
+              "state_bucket (only for families with a declared scalar state at the gate)"
+            ]
+          },
+          {
+            "cardinality": 2,
+            "dimension": "context_window_W",
+            "values": [
+              16,
+              64
+            ]
+          },
+          {
+            "cardinality": 2,
+            "dimension": "outcome",
+            "values": [
+              "touch <= 16 bars",
+              "fill <= 16 bars (given touched)"
+            ]
+          },
+          {
+            "cardinality": 7,
+            "dimension": "native_stratum",
+            "values": [
+              "15s",
+              "30s",
+              "1m",
+              "5m",
+              "15m",
+              "1h",
+              "4h"
+            ]
+          }
+        ],
+        "domains_covered": [
+          "cross-domain conditioning",
+          "regime dependence",
+          "incremental information (with CORE-11)",
+          "lead / lag (with CORE-08)"
+        ],
+        "expanded_cell_count": 168,
+        "expansion_rule": "upper bound cells = 3 x 2 x 2 x 2 x 7 = 168; execution restricted to (member family, readout) pairs passing the context_resolution_gate; unresolved pairs are DROPPED_AT_GATE and counted as dropped; direction pooled with direction as control",
+        "exposure_class": "E3_CROSS_DOMAIN",
+        "family_id": "QG1-SF-4",
+        "family_question": "Does context readout r of context class C (member family f) at window W condition outcome O in stratum s, beyond the same-domain controls? Parameterized sweep over {class} x {readout} x {window} x {outcome} x {stratum}, executed per resolvable member family.",
+        "known_dependency_caveat": "CAVEAT_REGISTRY_UNRESOLVED (all context semantics UNRESOLVED; readouts are form-declared); CAVEAT_BG001_CONFLUENCE (no independent-confluence claims); CAVEAT_CROSS_SCALE_IDENTITY (availability-time gating only)",
+        "minimum_support_concept": "MIN_SUPPORT_A plus context_resolution_gate",
+        "multiplicity_family": "MF_SF4",
+        "name": "CROSS_DOMAIN_CONTEXT",
+        "outcome": "P(touch <= 16 bars) / P(fill <= 16 bars | touched) contrast across readout buckets",
+        "prospective_horizon_domain": "[0, 16] anchor-stratum bars after formation; context windows W in {16, 64} bars",
+        "reason_family_is_meaningful": "The registry guarantees 22 non-anchor families on lawful surfaces; family-level readouts are the only claims currently licensable given UNRESOLVED semantics.",
+        "reason_family_is_useful": "The declared discovery sweep that locates which context families deserve full semantic resolution and dedicated questions.",
+        "required_controls": [
+          "direction",
+          "magnitude tercile",
+          "session block",
+          "same-domain baseline covariates",
+          "context_resolution_gate"
+        ],
+        "v1_1_accounting_defect": "DECLARED_UPPER_BOUND_INVALID: the declared 168 = 3 classes x 2 readouts x 2 windows x 2 outcomes x 7 strata omits the member-family dimension that the stated per-member-family execution requires (naive family-specific ceiling 22 x 2 x 2 x 2 x 7 = 1232). Neither 168 nor 1232 is execution accounting; cells are recomputed after typed context resolution and role-appropriate readout mapping.",
+        "v1_1_status": "HELD_PENDING_TYPED_CONTEXT_RESOLUTION"
+      },
+      {
+        "anchor": "FVG formation event of zone z.",
+        "appropriate_null_family": "NULL_MATCHED_CONTROL (session, direction, magnitude tercile)",
+        "causal_eligibility_rule": "ELIGIBILITY_GLOBAL; active set read at a(z) with same-stratum zone bounds and price information available at a(z)",
+        "context_detector_if_applicable": "none (same-detector active population, same stratum)",
+        "context_native_scale_domain": "same stratum as anchor",
+        "dimensions": [
+          {
+            "cardinality": 3,
+            "dimension": "nesting_measure",
+            "values": [
+              "active_overlap_count_bucket (same-stratum zones overlapping the anchor interval at a(z))",
+              "containment_binary (anchor interval contained within another active zone)",
+              "nearest_edge_distance_ATR_bucket (normalized by formation ATR)"
+            ]
+          },
+          {
+            "cardinality": 3,
+            "dimension": "outcome",
+            "values": [
+              "touch <= 16 bars",
+              "fill <= 16 bars (given touched)",
+              "survival past 64 bars"
+            ]
+          },
+          {
+            "cardinality": 7,
+            "dimension": "native_stratum",
+            "values": [
+              "15s",
+              "30s",
+              "1m",
+              "5m",
+              "15m",
+              "1h",
+              "4h"
+            ]
+          }
+        ],
+        "domains_covered": [
+          "structural nesting",
+          "spatial relationships",
+          "same-domain conditioning"
+        ],
+        "expanded_cell_count": 63,
+        "expansion_rule": "cells = 3 x 3 x 7 = 63",
+        "exposure_class": "E2_SAME_DOMAIN (sub-rule E2C)",
+        "family_id": "QG1-SF-5",
+        "family_question": "Does same-stratum nesting measure m of the anchor zone relative to the active same-stratum population condition outcome O in stratum s? Parameterized sweep over {nesting measure} x {outcome} x {stratum}.",
+        "known_dependency_caveat": "CAVEAT_CROSS_SCALE_IDENTITY (same-stratum only); CAVEAT_LEAKAGE_BOUNDARY",
+        "minimum_support_concept": "MIN_SUPPORT_A with collapse ladder",
+        "multiplicity_family": "MF_SF5",
+        "name": "SPATIAL_NESTING",
+        "outcome": "per-cell outcome classification or survival",
+        "prospective_horizon_domain": "[0, 16] bars for touch/fill outcomes; [0, 64] bars for survival",
+        "reason_family_is_meaningful": "Concurrent persistent zones in one detector state make spatial nesting a well-defined population geometry.",
+        "reason_family_is_useful": "Separates geometric-nesting effects from mere-activity effects, refining the crowding question to its structural content.",
+        "required_controls": [
+          "direction",
+          "magnitude tercile",
+          "session block",
+          "censored-aware estimator"
+        ],
+        "warm_state_rule": "WARM_STATE_RULE: spatial nesting context includes pre-boundary warm-state zones only where their required current state is lawfully represented; otherwise anchors are marked HISTORY_INCOMPLETE under a deterministic washout rule until pre-boundary state has cleared. Excluded anchor counts reported. No synthetic history."
+      }
+    ]
+  },
+  "v1_1_competing_risk_rule": "For formation->first-touch: FIRST_TOUCH = event of interest; FILL_WITHOUT_RECORDED_TOUCH = competing terminal event; END_OF_DEVELOPMENT = right censor. Gap-through fills are never censored as non-informative. Touched->fill: end-of-development active touched zones are right censored. Competing-risk/multi-state estimator or equivalent deterministic transition accounting required.",
+  "v1_1_lifecycle_state_model": {
+    "lawful_terminal_paths": [
+      "FORMED_UNTOUCHED -> TOUCHED_UNFILLED -> FILLED",
+      "FORMED_UNTOUCHED -> FILLED (producer first_touch_observed=false; gap-through)",
+      "TOUCHED_UNFILLED -> FILLED"
+    ],
+    "market_states": [
+      "FORMED_UNTOUCHED",
+      "TOUCHED_UNFILLED",
+      "FILLED"
+    ],
+    "observation_status": [
+      "OBSERVED_TERMINAL",
+      "RIGHT_CENSORED_UNTOUCHED",
+      "RIGHT_CENSORED_TOUCHED"
+    ],
+    "observation_status_note": "Research observation status is separate from market state; censoring is not a detector lifecycle state.",
+    "removed_states": [
+      "invalidation_event",
+      "INVALIDATED_UNTOUCHED",
+      "INVALIDATED_WITHOUT_TOUCH",
+      "CENSORED_ACTIVE_AT_END_OF_STREAM"
+    ],
+    "same_bar_term": "TOUCH_AND_FILL_SAME_COMPLETED_BAR (one completed bar, one bar-level availability coordinate; no intrabar market-time inference)"
+  },
+  "v1_1_repair_summary": {
+    "cross_scale_language_hits_in_v1": [],
+    "lifecycle_hits_in_v1": [
+      [
+        "QG1-CORE-09",
+        "homogeneous-rate baseline",
+        "homogeneous-rate baseline"
+      ]
+    ],
+    "vocabulary_replacements": [
+      [
+        "QG1-CORE-09",
+        1
+      ]
+    ]
+  }
+}

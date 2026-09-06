@@ -206,9 +206,7 @@ pub fn quantiles(values: &[f64]) -> Quantiles {
     }
     let mut values = values.to_vec();
     values.sort_by(f64::total_cmp);
-    let pick = |p: f64| {
-        Some(values[((values.len() - 1) as f64 * p).round() as usize])
-    };
+    let pick = |p: f64| Some(values[((values.len() - 1) as f64 * p).round() as usize]);
     Quantiles {
         n: values.len() as u64,
         p05: pick(0.05),
@@ -260,53 +258,145 @@ mod tests {
     #[test]
     fn actual_emitted_touch_creates_exactly_one_stage_anchor() {
         let mut book = ZoneBook::new("15s");
-        book.ingest_bar_with_close_optional(1000, Some(availability(1100, 1, 10.0, 12.0)), FORMATION, Some(20.0)).unwrap();
-        book.ingest_bar_with_close_optional(3000, Some(availability(3100, 2, 10.5, 12.5)), TOUCH, Some(20.5)).unwrap();
+        book.ingest_bar_with_close_optional(
+            1000,
+            Some(availability(1100, 1, 10.0, 12.0)),
+            FORMATION,
+            Some(20.0),
+        )
+        .unwrap();
+        book.ingest_bar_with_close_optional(
+            3000,
+            Some(availability(3100, 2, 10.5, 12.5)),
+            TOUCH,
+            Some(20.5),
+        )
+        .unwrap();
         let zones = book.finish(3000);
         assert_eq!(zones.len(), 1);
-        let anchor = stage_anchor(&zones[0], Stage::FirstTouch, &availability(3100, 2, 10.5, 12.5).anchor.unwrap()).unwrap();
+        let anchor = stage_anchor(
+            &zones[0],
+            Stage::FirstTouch,
+            &availability(3100, 2, 10.5, 12.5).anchor.unwrap(),
+        )
+        .unwrap();
         assert_eq!(anchor.anchor_bar_close_ts, 3000);
         assert_eq!(anchor.source_sequence, 2);
         assert!((anchor.anchor_mid - 11.5).abs() < 1e-9);
-        assert!(stage_anchor(&zones[0], Stage::Fill, &availability(3100, 2, 10.5, 12.5).anchor.unwrap()).is_err());
+        assert!(stage_anchor(
+            &zones[0],
+            Stage::Fill,
+            &availability(3100, 2, 10.5, 12.5).anchor.unwrap()
+        )
+        .is_err());
     }
 
     #[test]
     fn duplicate_touch_is_rejected_by_the_zone_book() {
         let mut book = ZoneBook::new("15s");
-        book.ingest_bar_with_close_optional(1000, Some(availability(1100, 1, 10.0, 12.0)), FORMATION, Some(20.0)).unwrap();
-        book.ingest_bar_with_close_optional(3000, Some(availability(3100, 2, 10.5, 12.5)), TOUCH, Some(20.5)).unwrap();
+        book.ingest_bar_with_close_optional(
+            1000,
+            Some(availability(1100, 1, 10.0, 12.0)),
+            FORMATION,
+            Some(20.0),
+        )
+        .unwrap();
+        book.ingest_bar_with_close_optional(
+            3000,
+            Some(availability(3100, 2, 10.5, 12.5)),
+            TOUCH,
+            Some(20.5),
+        )
+        .unwrap();
         let duplicate = TOUCH.replace("\"zone_id\":7}}", "\"zone_id\":7},\"fvg_first_touch\":{\"detection_ts\":1000,\"direction\":\"bullish\",\"fvg_quality\":0.8,\"impulse_ts\":900,\"lower\":10.0,\"origin_ts\":800,\"touch_basis\":\"bar_range_overlap\",\"touch_ts\":3000,\"upper\":11.0,\"zone_id\":7}}");
-        assert!(book.ingest_bar_with_close_optional(4000, Some(availability(4100, 3, 10.6, 12.6)), &duplicate, Some(20.6)).is_err());
+        assert!(book
+            .ingest_bar_with_close_optional(
+                4000,
+                Some(availability(4100, 3, 10.6, 12.6)),
+                &duplicate,
+                Some(20.6)
+            )
+            .is_err());
     }
 
     #[test]
     fn gap_through_fill_creates_fill_anchor_without_touch_anchor() {
         let mut book = ZoneBook::new("15s");
-        book.ingest_bar_with_close_optional(1000, Some(availability(1100, 1, 10.0, 12.0)), FORMATION, Some(20.0)).unwrap();
-        book.ingest_bar_with_close_optional(5000, Some(availability(5100, 2, 10.4, 12.4)), GAP_THROUGH_FILL, Some(20.4)).unwrap();
+        book.ingest_bar_with_close_optional(
+            1000,
+            Some(availability(1100, 1, 10.0, 12.0)),
+            FORMATION,
+            Some(20.0),
+        )
+        .unwrap();
+        book.ingest_bar_with_close_optional(
+            5000,
+            Some(availability(5100, 2, 10.4, 12.4)),
+            GAP_THROUGH_FILL,
+            Some(20.4),
+        )
+        .unwrap();
         let zones = book.finish(5000);
         assert!(zones[0].first_touch_ts.is_none() && zones[0].fill_ts.is_some());
-        let anchor = stage_anchor(&zones[0], Stage::Fill, &availability(5100, 2, 10.4, 12.4).anchor.unwrap()).unwrap();
+        let anchor = stage_anchor(
+            &zones[0],
+            Stage::Fill,
+            &availability(5100, 2, 10.4, 12.4).anchor.unwrap(),
+        )
+        .unwrap();
         assert_eq!(anchor.first_touch_observed, Some(false));
-        assert!(stage_anchor(&zones[0], Stage::FirstTouch, &availability(5100, 2, 10.4, 12.4).anchor.unwrap()).is_err());
+        assert!(stage_anchor(
+            &zones[0],
+            Stage::FirstTouch,
+            &availability(5100, 2, 10.4, 12.4).anchor.unwrap()
+        )
+        .is_err());
     }
 
     #[test]
     fn touched_fill_stratifies_as_first_touch_observed_true() {
         let mut book = ZoneBook::new("15s");
-        book.ingest_bar_with_close_optional(1000, Some(availability(1100, 1, 10.0, 12.0)), FORMATION, Some(20.0)).unwrap();
-        book.ingest_bar_with_close_optional(3000, Some(availability(3100, 2, 10.5, 12.5)), TOUCH, Some(20.5)).unwrap();
-        book.ingest_bar_with_close_optional(5000, Some(availability(5100, 3, 10.4, 12.4)), FILLED, Some(20.4)).unwrap();
+        book.ingest_bar_with_close_optional(
+            1000,
+            Some(availability(1100, 1, 10.0, 12.0)),
+            FORMATION,
+            Some(20.0),
+        )
+        .unwrap();
+        book.ingest_bar_with_close_optional(
+            3000,
+            Some(availability(3100, 2, 10.5, 12.5)),
+            TOUCH,
+            Some(20.5),
+        )
+        .unwrap();
+        book.ingest_bar_with_close_optional(
+            5000,
+            Some(availability(5100, 3, 10.4, 12.4)),
+            FILLED,
+            Some(20.4),
+        )
+        .unwrap();
         let zones = book.finish(5000);
-        let anchor = stage_anchor(&zones[0], Stage::Fill, &availability(5100, 3, 10.4, 12.4).anchor.unwrap()).unwrap();
+        let anchor = stage_anchor(
+            &zones[0],
+            Stage::Fill,
+            &availability(5100, 3, 10.4, 12.4).anchor.unwrap(),
+        )
+        .unwrap();
         assert_eq!(anchor.first_touch_observed, Some(true));
     }
 
     #[test]
     fn orphan_touch_never_creates_an_anchor() {
         let mut book = ZoneBook::new("15s");
-        book.ingest_bar_with_close_optional(1000, Some(availability(1100, 1, 10.0, 12.0)), TOUCH, Some(20.0)).unwrap();
+        book.ingest_bar_with_close_optional(
+            1000,
+            Some(availability(1100, 1, 10.0, 12.0)),
+            TOUCH,
+            Some(20.0),
+        )
+        .unwrap();
         let orphan_touch_count = book.orphan_touch_count;
         let zones = book.finish(1000);
         assert!(zones.is_empty());
@@ -316,8 +406,20 @@ mod tests {
     #[test]
     fn stage_anchor_price_is_tied_to_the_boundary_tick() {
         let mut book = ZoneBook::new("15s");
-        book.ingest_bar_with_close_optional(1000, Some(availability(1100, 1, 10.0, 12.0)), FORMATION, Some(20.0)).unwrap();
-        book.ingest_bar_with_close_optional(3000, Some(availability(3100, 2, 10.5, 12.5)), TOUCH, Some(20.5)).unwrap();
+        book.ingest_bar_with_close_optional(
+            1000,
+            Some(availability(1100, 1, 10.0, 12.0)),
+            FORMATION,
+            Some(20.0),
+        )
+        .unwrap();
+        book.ingest_bar_with_close_optional(
+            3000,
+            Some(availability(3100, 2, 10.5, 12.5)),
+            TOUCH,
+            Some(20.5),
+        )
+        .unwrap();
         let zones = book.finish(3000);
         let mismatched = availability(9999, 999, 10.5, 12.5);
         assert!(stage_anchor(&zones[0], Stage::FirstTouch, &mismatched.anchor.unwrap()).is_err());
@@ -347,7 +449,15 @@ mod tests {
     #[test]
     fn end_of_window_outcomes_are_explicitly_missing() {
         let lawful = lawful_bars();
-        let outcomes = stage_outcomes(&lawful, lawful[lawful.len() - 1].close_ts, 9900, 99, 20.0, Direction::Bullish).unwrap();
+        let outcomes = stage_outcomes(
+            &lawful,
+            lawful[lawful.len() - 1].close_ts,
+            9900,
+            99,
+            20.0,
+            Direction::Bullish,
+        )
+        .unwrap();
         assert!(outcomes.iter().all(|o| o.is_none()));
     }
 

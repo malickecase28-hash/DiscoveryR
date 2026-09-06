@@ -29,7 +29,6 @@ struct AnchorRow {
     stage: Stage,
     identity: String,
     direction: Direction,
-    anchor_bar_close_ts: i64,
     first_touch_observed: Option<bool>,
     #[allow(dead_code)]
     gap_atr: f64,
@@ -235,7 +234,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             .push(row);
     }
     let mut stratification_cells = Vec::new();
-    for index in 0..TIMEFRAMES.len() {
+    for (index, timeframe) in TIMEFRAMES.iter().enumerate() {
         for (touched, fill_type) in [(true, "TOUCHED_FILL"), (false, "GAP_THROUGH_FILL")] {
             let rows = cells.get(&(index, touched)).cloned().unwrap_or_default();
             let anchor_n = rows.len() as u64;
@@ -246,7 +245,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                     let applied: Vec<&AnchorRow> = rows
                         .iter()
                         .filter(|row| row.outcomes[horizon_index].is_some())
-                        .map(|row| *row)
+                        .copied()
                         .collect();
                     let raw = applied
                         .iter()
@@ -277,13 +276,19 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                 })
                 .collect();
             stratification_cells.push(FillTypeCell {
-                timeframe: TIMEFRAMES[index].to_string(),
+                timeframe: (*timeframe).to_string(),
                 fill_type,
                 anchor_n,
                 eligibility: eligibility(anchor_n),
                 horizons,
-                bullish_n: rows.iter().filter(|row| row.direction == Direction::Bullish).count() as u64,
-                bearish_n: rows.iter().filter(|row| row.direction == Direction::Bearish).count() as u64,
+                bullish_n: rows
+                    .iter()
+                    .filter(|row| row.direction == Direction::Bullish)
+                    .count() as u64,
+                bearish_n: rows
+                    .iter()
+                    .filter(|row| row.direction == Direction::Bearish)
+                    .count() as u64,
             });
         }
     }
@@ -330,24 +335,41 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         BTreeMap::from([("negative", 0), ("zero", 0), ("positive", 0)]);
     let mut bullish_signs_by_stage: BTreeMap<&'static str, BTreeMap<&'static str, u64>> =
         BTreeMap::from([
-            ("first_touch", BTreeMap::from([("negative", 0), ("zero", 0), ("positive", 0)])),
-            ("fill", BTreeMap::from([("negative", 0), ("zero", 0), ("positive", 0)])),
+            (
+                "first_touch",
+                BTreeMap::from([("negative", 0), ("zero", 0), ("positive", 0)]),
+            ),
+            (
+                "fill",
+                BTreeMap::from([("negative", 0), ("zero", 0), ("positive", 0)]),
+            ),
         ]);
     let mut bearish_signs_by_stage: BTreeMap<&'static str, BTreeMap<&'static str, u64>> =
         BTreeMap::from([
-            ("first_touch", BTreeMap::from([("negative", 0), ("zero", 0), ("positive", 0)])),
-            ("fill", BTreeMap::from([("negative", 0), ("zero", 0), ("positive", 0)])),
+            (
+                "first_touch",
+                BTreeMap::from([("negative", 0), ("zero", 0), ("positive", 0)]),
+            ),
+            (
+                "fill",
+                BTreeMap::from([("negative", 0), ("zero", 0), ("positive", 0)]),
+            ),
         ]);
     let mut cells_compared = 0_u64;
     let mut same_bar_rates: BTreeMap<String, serde_json::Value> = BTreeMap::new();
     for stratum in strata {
         let timeframe = stratum["timeframe"].as_str().ok_or("timeframe missing")?;
         for stage_key in ["first_touch", "fill"] {
-            for horizon in stratum[stage_key]["horizons"].as_array().ok_or("horizons missing")? {
+            for horizon in stratum[stage_key]["horizons"]
+                .as_array()
+                .ok_or("horizons missing")?
+            {
                 let adjusted = horizon["direction_adjusted_return_bps"]["p50"]
                     .as_f64()
                     .ok_or("adjusted p50 missing")?;
-                let raw = horizon["raw_return_bps"]["p50"].as_f64().ok_or("raw p50 missing")?;
+                let raw = horizon["raw_return_bps"]["p50"]
+                    .as_f64()
+                    .ok_or("raw p50 missing")?;
                 let sign = sign_of(adjusted);
                 if stage_key == "first_touch" {
                     *ft_adj_signs.get_mut(sign).unwrap() += 1;
@@ -384,16 +406,20 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                 ["direction_adjusted_return_bps"]["p50"]
                 .as_f64()
                 .ok_or("ft adjusted p50 missing")?;
-            let fill = stratum["fill"]["horizons"][horizon_index]
-                ["direction_adjusted_return_bps"]["p50"]
+            let fill = stratum["fill"]["horizons"][horizon_index]["direction_adjusted_return_bps"]
+                ["p50"]
                 .as_f64()
                 .ok_or("fill adjusted p50 missing")?;
             if fill > ft {
                 fill_gt_ft_count += 1;
             }
         }
-        let touched_fill_n = stratum["touched_fill_n"].as_u64().ok_or("touched_fill_n missing")?;
-        let same_bar_n = stratum["same_bar_touch_fill_n"].as_u64().ok_or("same_bar missing")?;
+        let touched_fill_n = stratum["touched_fill_n"]
+            .as_u64()
+            .ok_or("touched_fill_n missing")?;
+        let same_bar_n = stratum["same_bar_touch_fill_n"]
+            .as_u64()
+            .ok_or("same_bar missing")?;
         same_bar_rates.insert(
             timeframe.to_string(),
             json!({
@@ -429,7 +455,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
         "elapsed_millis": started.elapsed().as_millis() as u64,
     });
 
-    for (path, value) in [(&stratification_output, &stratification), (&factcheck_output, &factcheck)] {
+    for (path, value) in [
+        (&stratification_output, &stratification),
+        (&factcheck_output, &factcheck),
+    ] {
         if let Some(parent) = path.parent() {
             std::fs::create_dir_all(parent)?;
         }

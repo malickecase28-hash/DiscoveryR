@@ -39,8 +39,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let code = code.ok_or(
         "DISCOVERYR_CODE_IDENTITY must be set to the worker commit SHA, or supply --code-identity",
     )?;
-    let source = source
-        .ok_or("TRINITYR_ANALYTICAL_LAKE must be set, or supply --source-root")?;
+    let source = source.ok_or("TRINITYR_ANALYTICAL_LAKE must be set, or supply --source-root")?;
     let identity = materialize(&source, &inventory, &view, &audit, &code, batch, copy)?;
     println!("{identity}");
     Ok(())

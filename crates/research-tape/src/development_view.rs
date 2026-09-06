@@ -23,7 +23,7 @@ use std::{
 pub const BOUNDARY_MS: i64 = 1_777_984_740_000;
 /// Frozen XAUUSD_DATA_SCOPE_V1 development.start_utc_inclusive: 2025-07-31T16:15:00Z.
 pub const DEVELOPMENT_START_MS: i64 = 1_753_978_500_000;
-const DEVELOPMENT_START_NS: i64 = 1_753_978_500_000_000_000;
+pub const DEVELOPMENT_START_NS: i64 = 1_753_978_500_000_000_000;
 pub const DEVELOPMENT_START_INCLUSIVE: &str = "2025-07-31T16:15:00Z";
 pub const DEFAULT_BATCH_SIZE: usize = 65_536;
 
@@ -72,6 +72,7 @@ impl GateStats {
             },
         }
     }
+    #[allow(dead_code)]
     fn rows(&self) -> u64 {
         match self {
             Self::Bar { rows, .. } | Self::Tick { rows, .. } => *rows,
@@ -175,12 +176,10 @@ impl<'a> GateColumns<'a> {
                     return Err(format!("null gating time at row {row}"));
                 }
                 let received = received.value(row);
-                Ok(
-                    primary >= DEVELOPMENT_START_NS
-                        && primary < self.boundary
-                        && received >= DEVELOPMENT_START_NS
-                        && received < self.boundary,
-                )
+                Ok(primary >= DEVELOPMENT_START_NS
+                    && primary < self.boundary
+                    && received >= DEVELOPMENT_START_NS
+                    && received < self.boundary)
             }
             (None, None) => Err("gate/stat mismatch".into()),
         }
@@ -236,6 +235,7 @@ impl<'a> GateColumns<'a> {
     }
 }
 
+#[allow(dead_code)]
 pub fn classify_batch(
     batch: &RecordBatch,
     gate: Gate,
@@ -259,6 +259,7 @@ pub fn classify_batch(
     Ok((kind, stats))
 }
 
+#[allow(dead_code)]
 pub fn filter_batch(batch: &RecordBatch, gate: Gate) -> Result<Option<RecordBatch>, String> {
     let columns = GateColumns::build(batch, gate)?;
     let mask = BooleanArray::from(
@@ -319,14 +320,17 @@ fn classify_part_from_footer(
             let Some(statistics) = column.statistics() else {
                 return Ok(None);
             };
-            if statistics.null_count() > 0 || !statistics.has_min_max_set() {
+            if statistics.null_count_opt() != Some(0) {
                 return Ok(None);
             }
             let Statistics::Int64(typed) = statistics else {
                 return Ok(None);
             };
-            mins[offset] = mins[offset].min(*typed.min());
-            maxs[offset] = maxs[offset].max(*typed.max());
+            let (Some(min), Some(max)) = (typed.min_opt(), typed.max_opt()) else {
+                return Ok(None);
+            };
+            mins[offset] = mins[offset].min(*min);
+            maxs[offset] = maxs[offset].max(*max);
         }
     }
     let stats = match gate {
@@ -471,7 +475,9 @@ pub fn filter_part(
         for row in 0..batch.num_rows() {
             let keep = columns.eligible(row).map_err(io::Error::other)?;
             if keep {
-                columns.push_stats(&mut stats, row).map_err(io::Error::other)?;
+                columns
+                    .push_stats(&mut stats, row)
+                    .map_err(io::Error::other)?;
                 included += 1;
             }
             mask_builder.push(keep);
@@ -531,6 +537,7 @@ impl io::Write for HashWriter<'_> {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 pub fn hash_view_identity(
     scope: &str,
     source: &str,
@@ -947,6 +954,7 @@ pub fn materialize(
         fs::remove_dir_all(&temp)?;
     }
     fs::create_dir_all(&temp)?;
+    type Materialized = (String, Option<String>, RowStats, u64, u64);
     struct Job<'a> {
         group_index: usize,
         gate: Gate,
@@ -972,40 +980,42 @@ pub fn materialize(
         .clamp(1, 8);
     // Phase A: classify every part. Footer statistics decide provably-in/out
     // parts with zero row reads; only straddling parts fall back to a row scan.
-    let classify_one =
-        |job: &Job| -> Result<PartResult, String> {
-            let source = source_root.join(Path::new(&job.part.path));
-            match classify_part_from_footer(&source, job.gate).map_err(|e| e.to_string())? {
-                Some(result) => Ok(result),
-                None => scan_part(&source, job.gate, batch_size).map_err(|e| e.to_string()),
-            }
-        };
-    let classifications: Vec<PartResult> =
-        std::thread::scope(|scope| -> Result<_, String> {
-            let chunk_size = jobs.len().div_ceil(workers).max(1);
-            let handles: Vec<_> = jobs
-                .chunks(chunk_size)
-                .map(|chunk| {
-                    scope.spawn(move || {
-                        chunk.iter().map(classify_one).collect::<Result<Vec<_>, String>>()
-                    })
+    let classify_one = |job: &Job| -> Result<PartResult, String> {
+        let source = source_root.join(Path::new(&job.part.path));
+        match classify_part_from_footer(&source, job.gate).map_err(|e| e.to_string())? {
+            Some(result) => Ok(result),
+            None => scan_part(&source, job.gate, batch_size).map_err(|e| e.to_string()),
+        }
+    };
+    let classifications: Vec<PartResult> = std::thread::scope(|scope| -> Result<_, String> {
+        let chunk_size = jobs.len().div_ceil(workers).max(1);
+        let handles: Vec<_> = jobs
+            .chunks(chunk_size)
+            .map(|chunk| {
+                scope.spawn(move || {
+                    chunk
+                        .iter()
+                        .map(classify_one)
+                        .collect::<Result<Vec<_>, String>>()
                 })
-                .collect();
-            let mut classifications = Vec::new();
-            for handle in handles {
-                classifications.extend(handle.join().expect("classify worker panicked")?);
-            }
-            Ok(classifications)
-        })
-        .map_err(io::Error::other)?;
+            })
+            .collect();
+        let mut classifications = Vec::new();
+        for handle in handles {
+            classifications.extend(handle.join().expect("classify worker panicked")?);
+        }
+        Ok(classifications)
+    })
+    .map_err(io::Error::other)?;
     // Phase B: audit entries and declared-row checks (cheap, in order).
     let mut audit_parts = Vec::new();
     for (job, result) in jobs.iter().zip(&classifications) {
         if result.scanned != job.part.rows {
-            return Err(
-                io::Error::other(format!("declared row count mismatch: {}", job.part.path))
-                    .into(),
-            );
+            return Err(io::Error::other(format!(
+                "declared row count mismatch: {}",
+                job.part.path
+            ))
+            .into());
         }
         let classification = match result.classification {
             Classification::FullDevelopment => "FULL_DEVELOPMENT",
@@ -1023,40 +1033,44 @@ pub fn materialize(
         let target = temp.join(Path::new(&jobs[index].part.path));
         fs::create_dir_all(target.parent().unwrap())?;
     }
-    let materialize_one =
-        |index: usize| -> Result<(String, Option<String>, RowStats, u64, u64), String> {
-            let job = &jobs[index];
-            let result = &classifications[index];
-            let logical_path = Path::new(&job.part.path);
-            let target = temp.join(logical_path);
-            match result.classification {
-                Classification::FullDevelopment => {
-                    let source = source_root.join(logical_path);
-                    hard_link_or_copy(&source, &target, copy_full).map_err(|e| e.to_string())?;
-                    let bytes = fs::metadata(&source).map_err(|e| e.to_string())?.len();
-                    let kind = if copy_full {
-                        "COPIED_FULL_DEVELOPMENT"
-                    } else {
-                        "HARDLINK_FULL_DEVELOPMENT"
-                    };
-                    let sha = hash_file(&target).map_err(|e| e.to_string())?;
-                    Ok((kind.to_string(), Some(sha), result.stats.clone(), bytes, 0))
-                }
-                Classification::Mixed => {
-                    let source = source_root.join(logical_path);
-                    let stats = filter_part(&source, &target, job.gate, batch_size)
-                        .map_err(|e| e.to_string())?;
-                    let bytes = fs::metadata(&target).map_err(|e| e.to_string())?.len();
-                    let sha = hash_file(&target).map_err(|e| e.to_string())?;
-                    Ok(("FILTERED_MIXED_PART".to_string(), Some(sha), stats, 0, bytes))
-                }
-                Classification::FullConfirmation => Err("unreachable".into()),
+    let materialize_one = |index: usize| -> Result<Materialized, String> {
+        let job = &jobs[index];
+        let result = &classifications[index];
+        let logical_path = Path::new(&job.part.path);
+        let target = temp.join(logical_path);
+        match result.classification {
+            Classification::FullDevelopment => {
+                let source = source_root.join(logical_path);
+                hard_link_or_copy(&source, &target, copy_full).map_err(|e| e.to_string())?;
+                let bytes = fs::metadata(&source).map_err(|e| e.to_string())?.len();
+                let kind = if copy_full {
+                    "COPIED_FULL_DEVELOPMENT"
+                } else {
+                    "HARDLINK_FULL_DEVELOPMENT"
+                };
+                let sha = hash_file(&target).map_err(|e| e.to_string())?;
+                Ok((kind.to_string(), Some(sha), result.stats, bytes, 0))
             }
-        };
-    let materialized: Vec<Option<(String, Option<String>, RowStats, u64, u64)>> =
+            Classification::Mixed => {
+                let source = source_root.join(logical_path);
+                let stats = filter_part(&source, &target, job.gate, batch_size)
+                    .map_err(|e| e.to_string())?;
+                let bytes = fs::metadata(&target).map_err(|e| e.to_string())?.len();
+                let sha = hash_file(&target).map_err(|e| e.to_string())?;
+                Ok((
+                    "FILTERED_MIXED_PART".to_string(),
+                    Some(sha),
+                    stats,
+                    0,
+                    bytes,
+                ))
+            }
+            Classification::FullConfirmation => Err("unreachable".into()),
+        }
+    };
+    let materialized: Vec<Option<Materialized>> =
         std::thread::scope(|scope| -> Result<_, String> {
-            let mut results: Vec<Option<(String, Option<String>, RowStats, u64, u64)>> =
-                (0..jobs.len()).map(|_| None).collect();
+            let mut results: Vec<Option<Materialized>> = (0..jobs.len()).map(|_| None).collect();
             let chunk_size = to_build.len().div_ceil(workers).max(1);
             let handles: Vec<_> = to_build
                 .chunks(chunk_size)
@@ -1100,7 +1114,7 @@ pub fn materialize(
         bytes_rewritten += rewritten;
         let logical = job.part.path.as_str();
         paths.push(logical);
-        stats.push(development_stats.clone());
+        stats.push(*development_stats);
         hashes.push(sha.clone().unwrap_or_default());
         kinds.push(kind.clone());
         groups
@@ -1154,7 +1168,7 @@ pub fn materialize(
         code,
         started.elapsed().as_millis(),
     );
-    let manifest = Manifest { schema_version: 1, scope_id: scope.into(), instrument: "XAUUSD".into(), source_manifest_identity: source_id.into(), payload_manifest_identity: payload_id.into(), boundary_rule: "PHYSICAL DEVELOPMENT SCOPE FILTERS: development window [2025-07-31T16:15:00Z inclusive, 2026-05-05T12:39:00Z exclusive); bars bar_open_ts >= start and bar_close_ts < end; ticks event_ts_ns >= start and received_ts_ns >= start and event_ts_ns < end and received_ts_ns < end; null gating time is fatal".into(), development_start_inclusive: DEVELOPMENT_START_INCLUSIVE.into(), development_end_exclusive: "2026-05-05T12:39:00Z".into(), builder_code_identity: code.into(), source_groups: groups, logical_view_identity: identity.clone() };
+    let manifest = Manifest { schema_version: 1, scope_id: scope.into(), instrument: "XAUUSD".into(), source_manifest_identity: source_id, payload_manifest_identity: payload_id, boundary_rule: "PHYSICAL DEVELOPMENT SCOPE FILTERS: development window [2025-07-31T16:15:00Z inclusive, 2026-05-05T12:39:00Z exclusive); bars bar_open_ts >= start and bar_close_ts < end; ticks event_ts_ns >= start and received_ts_ns >= start and event_ts_ns < end and received_ts_ns < end; null gating time is fatal".into(), development_start_inclusive: DEVELOPMENT_START_INCLUSIVE.into(), development_end_exclusive: "2026-05-05T12:39:00Z".into(), builder_code_identity: code.into(), source_groups: groups, logical_view_identity: identity.clone() };
     let manifest_path = temp.join("view_manifest.json");
     serde_json::to_writer_pretty(File::create(manifest_path)?, &manifest)?;
     verify_view(&temp, &manifest, batch_size)?;

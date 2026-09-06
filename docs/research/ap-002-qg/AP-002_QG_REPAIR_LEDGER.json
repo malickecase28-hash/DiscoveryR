@@ -1,0 +1,52 @@
+{
+  "R10_active_data_identity": {
+    "development_start": "2025-07-31T16:15:00Z",
+    "e1a_logical_result_hash": "1b701c016bd1effa300742ee74ce73d6e0e96313d62847d231391061dc94dca6",
+    "e1b_development_view_manifest_sha256": "",
+    "e1b_logical_result_hash": "2a7a142cadb36449d14d4128361d11ce99a3a4d7d8a004dd539bc4dc32fb823c",
+    "e1b_sidecar_sha256": "8882dfca1e34aab71df411ee0837a7203b01462e3ada565119e66e48c4e15929",
+    "rule": "Authority V1 supplies semantics only; execution binds to the corrected 16:15 scope and the scope-repair sidecar used by active E1A/E1B."
+  },
+  "R1_rust_only_freeze": "This Rust tool (ap002_qg_freeze) is the canonical producer of the V1.1 artifacts; the V1 blind artifacts are sealed inputs. V1 status: SEALED_BLIND_SOURCE_SUPERSEDED_FOR_EXECUTION.",
+  "R2_lifecycle_vocabulary": {
+    "canonical_market_states": [
+      "FORMED_UNTOUCHED",
+      "TOUCHED_UNFILLED",
+      "FILLED"
+    ],
+    "canonical_paths": [
+      "FORMED_UNTOUCHED->TOUCHED_UNFILLED->FILLED",
+      "FORMED_UNTOUCHED->FILLED (first_touch_observed=false)",
+      "TOUCHED_UNFILLED->FILLED"
+    ],
+    "removed_states": [
+      "invalidation_event",
+      "INVALIDATED_UNTOUCHED",
+      "INVALIDATED_WITHOUT_TOUCH"
+    ],
+    "v1_hits": [
+      "QG1-CORE-09: homogeneous-rate baseline"
+    ]
+  },
+  "R3_observation_status": {
+    "separated_from_market_state": true,
+    "statuses": [
+      "OBSERVED_TERMINAL",
+      "RIGHT_CENSORED_UNTOUCHED",
+      "RIGHT_CENSORED_TOUCHED"
+    ]
+  },
+  "R4_competing_risk": "Gap-through fill is a competing terminal event for formation->first-touch, not non-informative censoring. Applied to CORE-10 and carried into the E2 contract as a global duration-model rule.",
+  "R5_same_bar_rename": "FILL_ON_FIRST_TOUCH_BAR_INSTANT -> TOUCH_AND_FILL_SAME_COMPLETED_BAR; no intrabar timing inference.",
+  "R6_core09_null": "Homogeneous-rate baseline removed; session-preserving time-varying null (UTC day + session block + stratum activity preserved; short-range dependence disrupted) is the operative null; naive shuffle prohibited; self-circular shift insufficient alone. Question retained.",
+  "R7_sf4_accounting": "SF-4 v1 168-cell upper bound invalid (omits member-family dimension; naive per-family ceiling 1232). Classification: DECLARED_UPPER_BOUND_INVALID. Both numbers are historical QG-V1 accounting; recomputation after typed context resolution.",
+  "R8_sf4_readout_model": "Generic class x readout model replaced by family -> frozen semantic role -> allowed typed readout form -> exact expansion. See AP-002_E3_CONTEXT_RESOLUTION_REQUIREMENTS.json; all 22 families currently NOT_EXECUTABLE (registry semantic_status UNRESOLVED).",
+  "R9_warm_state": "CORE-04/CORE-05/SF-5 carry the warm-state rule: pre-boundary warm-state zones included only where lawfully represented; otherwise HISTORY_INCOMPLETE anchors excluded under a deterministic washout rule; rolling history requires K prior lawful completions; excluded counts reported; no synthetic history.",
+  "artifact_type": "AP-002_QG_REPAIR_LEDGER",
+  "vocabulary_replacement_counts": [
+    [
+      "QG1-CORE-09",
+      1
+    ]
+  ]
+}
