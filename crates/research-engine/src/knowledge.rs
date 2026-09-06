@@ -121,11 +121,16 @@ impl DurableKnowledgeStore {
     }
 
     pub fn query_as_of(&self, query: &KnowledgeQuery, as_of_utc: &str) -> Vec<&KnowledgeEnvelope> {
+        let Some(as_of) = parse_utc(as_of_utc) else {
+            return Vec::new();
+        };
         self.memory
             .query(query)
             .into_iter()
             .filter(|envelope| {
-                record_created_utc(envelope).is_some_and(|created| created <= as_of_utc)
+                record_created_utc(envelope)
+                    .and_then(parse_utc)
+                    .is_some_and(|created| created <= as_of)
             })
             .collect()
     }
@@ -138,6 +143,80 @@ fn record_created_utc(envelope: &KnowledgeEnvelope) -> Option<&str> {
         KnowledgeRecord::Challenge(record) => Some(&record.created_utc),
         KnowledgeRecord::Knowledge(record) => Some(&record.created_utc),
     }
+}
+
+fn parse_utc(value: &str) -> Option<i128> {
+    if value.len() < 20
+        || value.as_bytes().get(4) != Some(&b'-')
+        || value.as_bytes().get(7) != Some(&b'-')
+        || value.as_bytes().get(10) != Some(&b'T')
+    {
+        return None;
+    }
+    let year: i128 = value[0..4].parse().ok()?;
+    let month: i128 = value[5..7].parse().ok()?;
+    let day: i128 = value[8..10].parse().ok()?;
+    let hour: i128 = value[11..13].parse().ok()?;
+    let minute: i128 = value[14..16].parse().ok()?;
+    let second: i128 = value[17..19].parse().ok()?;
+    if !(1..=12).contains(&month)
+        || !(1..=31).contains(&day)
+        || hour > 23
+        || minute > 59
+        || second > 60
+    {
+        return None;
+    }
+    let mut end = 19;
+    let fraction = if value.as_bytes().get(end) == Some(&b'.') {
+        end += 1;
+        let start = end;
+        while value
+            .as_bytes()
+            .get(end)
+            .is_some_and(|b| b.is_ascii_digit())
+        {
+            end += 1;
+        }
+        if start == end {
+            return None;
+        }
+        let digits = &value[start..end];
+        let mut nanos: i128 = digits.parse().ok()?;
+        for _ in digits.len()..9 {
+            nanos *= 10;
+        }
+        nanos
+    } else {
+        0
+    };
+    let offset = match value.as_bytes().get(end) {
+        Some(b'Z') if end + 1 == value.len() => 0,
+        Some(b'+') | Some(b'-') => {
+            let sign = if value.as_bytes()[end] == b'+' { 1 } else { -1 };
+            if value.len() != end + 6 || value.as_bytes()[end + 3] != b':' {
+                return None;
+            }
+            let hours: i128 = value[end + 1..end + 3].parse().ok()?;
+            let minutes: i128 = value[end + 4..end + 6].parse().ok()?;
+            if hours > 23 || minutes > 59 {
+                return None;
+            }
+            sign * (hours * 3600 + minutes * 60)
+        }
+        _ => return None,
+    };
+    let (y, m) = if month <= 2 {
+        (year - 1, month + 12)
+    } else {
+        (year, month)
+    };
+    let era = y.div_euclid(400);
+    let yoe = y - era * 400;
+    let doy = (153 * (m - 3) + 2) / 5 + day - 1;
+    let doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+    let days = era * 146097 + doe - 719468;
+    Some((days * 86_400 + hour * 3600 + minute * 60 + second - offset) * 1_000_000_000 + fraction)
 }
 
 #[cfg(test)]

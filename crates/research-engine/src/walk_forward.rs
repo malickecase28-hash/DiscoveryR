@@ -48,9 +48,12 @@ impl WalkForwardPlan {
                 ));
             }
         }
+        let policy_identity = policy
+            .identity_hash()
+            .map_err(|error| StrategyError::Holdout(error.to_string()))?;
         Ok(Self {
             policy: policy.clone(),
-            policy_identity: policy.policy_id.clone(),
+            policy_identity,
             development_leaf_id: development_leaf_id.into(),
             strategy_holdout_leaf_id: strategy_holdout_leaf_id.into(),
             future_leaf_id: future_leaf_id.map(str::to_owned),
@@ -64,7 +67,11 @@ impl WalkForwardPlan {
         self.policy
             .validate()
             .map_err(|error| StrategyError::Holdout(error.to_string()))?;
-        if self.policy.policy_id != self.policy_identity {
+        let expected_policy_identity = self
+            .policy
+            .identity_hash()
+            .map_err(|error| StrategyError::Holdout(error.to_string()))?;
+        if expected_policy_identity != self.policy_identity {
             return Err(StrategyError::Holdout("policy identity mismatch".into()));
         }
         let development = leaf(
@@ -129,6 +136,14 @@ pub struct WalkForwardReport {
     pub strategy_holdout: SimulationReport,
     pub future: Option<SimulationReport>,
     pub validation: research_contracts::StrategyValidation,
+    pub development_fit: Option<DevelopmentFit>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct DevelopmentFit {
+    pub mean_signal: f64,
+    pub scale_signal: f64,
+    pub identity: String,
 }
 
 pub fn run_walk_forward(
@@ -179,8 +194,8 @@ pub fn run_walk_forward(
         validation_id: format!("validation-{}", spec.hypothesis.strategy_id),
         strategy_id: spec.hypothesis.strategy_id.clone(),
         confirmed_input_ids,
-        code_identity: "strategy-engine-simulation-v1".into(),
-        data_policy_identity: format!("data-policy-{}", plan.policy_identity),
+        code_identity: strategy_holdout.runtime_spec_identity.clone(),
+        data_policy_identity: plan.policy_identity.clone(),
         state: research_contracts::EvidenceState::Partial,
         parameters: std::collections::BTreeMap::from([
             (
@@ -217,6 +232,7 @@ pub fn run_walk_forward(
         strategy_holdout,
         future: future_report,
         validation,
+        development_fit: None,
     })
 }
 
@@ -249,15 +265,61 @@ pub fn run_walk_forward_fitted(
     let development = observations
         .iter()
         .filter(|observation| contains(&plan.development_scope, observation.timestamp_ns));
-    let mut hash = Sha256::new();
-    hash.update(serde_json::to_vec(spec).map_err(|_| StrategyError::Invalid("strategy identity"))?);
-    let mut count = 0u64;
-    for observation in development {
-        hash.update(observation.timestamp_ns.to_le_bytes());
-        hash.update(observation.signal.unwrap_or_default().to_le_bytes());
-        count += 1;
+    let development = development.collect::<Vec<_>>();
+    let signals = development
+        .iter()
+        .filter_map(|o| o.signal)
+        .collect::<Vec<_>>();
+    if signals.is_empty() {
+        return Err(StrategyError::EmptySample);
     }
+    let mean = signals.iter().sum::<f64>() / signals.len() as f64;
+    let variance = signals
+        .iter()
+        .map(|value| (value - mean).powi(2))
+        .sum::<f64>()
+        / signals.len() as f64;
+    let scale = variance.sqrt().max(f64::EPSILON);
+    let mut hash = Sha256::new();
+    hash.update(
+        serde_json::to_vec(&(spec, plan, config, &development))
+            .map_err(|_| StrategyError::Invalid("strategy fit identity"))?,
+    );
     let fit_identity = format!("{:x}", hash.finalize());
+    let fit = DevelopmentFit {
+        mean_signal: mean,
+        scale_signal: scale,
+        identity: fit_identity.clone(),
+    };
+    let normalized = observations
+        .iter()
+        .map(|observation| {
+            let mut normalized = observation.clone();
+            normalized.signal = observation.signal.map(|signal| (signal - mean) / scale);
+            normalized
+        })
+        .collect::<Vec<_>>();
+    let strategy = normalized
+        .iter()
+        .filter(|o| contains(&plan.strategy_holdout_scope, o.timestamp_ns))
+        .cloned()
+        .collect::<Vec<_>>();
+    let future = normalized
+        .iter()
+        .filter(|o| {
+            plan.future_scope
+                .as_ref()
+                .is_some_and(|scope| contains(scope, o.timestamp_ns))
+        })
+        .cloned()
+        .collect::<Vec<_>>();
+    report.strategy_holdout = simulate_strategy(spec, manifest, &strategy, config)?;
+    report.future = plan
+        .future_scope
+        .as_ref()
+        .map(|_| simulate_strategy(spec, manifest, &future, config))
+        .transpose()?;
+    report.development_fit = Some(fit);
     report.validation.state = research_contracts::EvidenceState::Known;
     report.validation.parameters.insert(
         "development_fit_identity".into(),
@@ -265,7 +327,7 @@ pub fn run_walk_forward_fitted(
     );
     report.validation.parameters.insert(
         "development_fit_observations".into(),
-        serde_json::json!(count),
+        serde_json::json!(development.len()),
     );
     Ok(report)
 }

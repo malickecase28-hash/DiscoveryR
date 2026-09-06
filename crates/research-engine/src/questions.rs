@@ -8,9 +8,10 @@ use crate::role::{DetectorAtlas, RelationshipOperator};
 use research_contracts::{
     ensure_causal, ContextPermission, ContractError, EvidenceState, NativeScale, Question,
 };
+use serde::Serialize;
 use std::collections::{BTreeMap, BTreeSet, HashSet};
 
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Serialize)]
 pub enum Direction {
     Positive,
     Negative,
@@ -29,7 +30,7 @@ impl Direction {
 
 /// Frozen metadata from which questions may be generated. It intentionally
 /// has no field for findings or outcomes.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct QuestionGenerationRequest {
     pub experiment_id: String,
     pub instrument_ids: Vec<String>,
@@ -105,7 +106,7 @@ impl QuestionGenerationRequest {
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub enum RejectionReason {
     PermissionDenied,
     MissingAvailability,
@@ -117,13 +118,13 @@ pub enum RejectionReason {
     DerivedLineage,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct RejectedCandidate {
     pub detector_id: String,
     pub reason: RejectionReason,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct GeneratedQuestion {
     pub question: Question,
     pub operator: RelationshipOperator,
@@ -133,7 +134,7 @@ pub struct GeneratedQuestion {
     pub prior_winner_ids: Vec<String>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct QuestionGenerationReport {
     pub questions: Vec<GeneratedQuestion>,
     pub rejected: Vec<RejectedCandidate>,
@@ -202,7 +203,9 @@ impl DetectorAtlas {
                 });
                 continue;
             }
-            if self.is_derived_from(context_id, &request.anchor_detector_id)
+            if accepted_contexts.iter().any(|prior: &String| {
+                self.is_derived_from(context_id, prior) || self.is_derived_from(prior, context_id)
+            }) || self.is_derived_from(context_id, &request.anchor_detector_id)
                 || self.is_derived_from(&request.anchor_detector_id, context_id)
                 || accepted_contexts
                     .iter()
@@ -217,6 +220,21 @@ impl DetectorAtlas {
 
             accepted_contexts.push(context_id.clone());
 
+            let mut scales = request.native_scales.clone();
+            scales.retain(|scale| {
+                anchor.native_scales.contains(scale)
+                    && context.native_scales.contains(scale)
+                    && permission.allowed_scales.contains(scale)
+            });
+            if scales.is_empty() {
+                rejected.push(RejectedCandidate {
+                    detector_id: context_id.clone(),
+                    reason: RejectionReason::PermissionDenied,
+                });
+                accepted_contexts.pop();
+                continue;
+            }
+
             for operator in RelationshipOperator::ALL {
                 let anchor_compatible = anchor
                     .roles
@@ -230,6 +248,9 @@ impl DetectorAtlas {
                     continue;
                 }
                 for direction in &request.directions {
+                    if !operator.allows_direction(direction.name()) {
+                        continue;
+                    }
                     if questions.len() == request.max_questions {
                         break;
                     }
@@ -256,7 +277,7 @@ impl DetectorAtlas {
                         anchor_ids: request.anchor_ids.clone(),
                         lifecycle_states: request.lifecycle_states.clone(),
                         context_ids: request.context_ids.clone(),
-                        native_scales: request.native_scales.clone(),
+                        native_scales: scales.clone(),
                         evidence_state: EvidenceState::Unknown,
                     };
                     question.validate()?;

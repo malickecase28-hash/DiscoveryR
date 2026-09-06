@@ -1,13 +1,11 @@
-#[path = "../src/development_view.rs"]
-mod development_view;
-
 use arrow_array::{Array, Float64Array, Int64Array, RecordBatch, StringArray};
 use arrow_schema::{DataType, Field, Schema};
-use development_view::{
+use parquet::arrow::ArrowWriter;
+use research_tape::development_view;
+use research_tape::development_view::{
     classify_batch, filter_batch, hash_file, hash_view_identity, Classification,
     ExpectedDevelopmentScope, Gate, GateStats, Manifest, ManifestFile, RowStats,
 };
-use parquet::arrow::ArrowWriter;
 use std::{io::Write, sync::Arc};
 
 const B: i64 = 1_777_984_740_000;

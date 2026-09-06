@@ -6,6 +6,7 @@
     clippy::useless_conversion,
     dead_code
 )]
+use crate::{validate_source_inventory, NativeScale, SourceInventory};
 use arrow_array::{Array, BooleanArray, Int64Array, RecordBatch};
 use arrow_select::filter::filter_record_batch;
 use parquet::{
@@ -17,7 +18,6 @@ use parquet::{
     file::properties::WriterProperties,
 };
 use research_contracts::submission::{publish_atomic_no_replace, reject_unsafe_ancestors};
-use research_tape::{validate_source_inventory, NativeScale, SourceInventory};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
@@ -832,6 +832,7 @@ fn walk_files(root: &Path) -> Result<Vec<std::path::PathBuf>, Box<dyn std::error
 }
 
 pub fn materialize(
+    workspace_root: &Path,
     source_root: &Path,
     inventory_path: &Path,
     view_root: &Path,
@@ -844,6 +845,10 @@ pub fn materialize(
     let started = Instant::now();
     expected.validate()?;
     validate_code_identity(code)?;
+    validate_workspace_path(workspace_root, source_root)?;
+    validate_workspace_path(workspace_root, inventory_path)?;
+    validate_workspace_path(workspace_root, view_root)?;
+    validate_workspace_path(workspace_root, audit_root)?;
     let inventory = validate_input_binding(source_root, inventory_path, expected)?;
     let source_id = expected.source_manifest_identity.clone();
     let payload_id = expected.payload_manifest_identity.clone();
@@ -865,7 +870,12 @@ pub fn materialize(
             && existing.development_end_exclusive == expected.development_end_exclusive
         {
             verify_view_with_expected(view_root, &existing, batch_size, expected)?;
-            ensure_audit(audit_root, &existing.logical_view_identity, expected)?;
+            ensure_audit(
+                audit_root,
+                &existing.logical_view_identity,
+                expected,
+                view_root,
+            )?;
             return Ok("ALREADY_MATERIALIZED".into());
         }
         return Err(io::Error::other("existing development view conflicts").into());
@@ -1004,19 +1014,68 @@ pub fn materialize(
     )?;
     fs::create_dir_all(audit_root)?;
     reject_unsafe_ancestors(audit_root)?;
-    publish_atomic_no_replace(audit_root, "build_audit.json", &audit)?;
     fs::rename(&temp, view_root)?;
+    let commit = serde_json::to_vec_pretty(&serde_json::json!({
+        "status": "committed",
+        "scope_id": expected.scope_id,
+        "logical_view_identity": identity,
+        "view_root": view_root.to_string_lossy(),
+        "audit_root": audit_root.to_string_lossy()
+    }))?;
+    publish_atomic_no_replace(audit_root, "materialization_commit.json", &commit)?;
+    publish_atomic_no_replace(audit_root, "build_audit.json", &audit)?;
     Ok(identity)
+}
+
+fn validate_workspace_path(
+    workspace_root: &Path,
+    path: &Path,
+) -> Result<(), Box<dyn std::error::Error>> {
+    reject_reparse(workspace_root)?;
+    let root = workspace_root.canonicalize()?;
+    let existing = if path.exists() {
+        path.canonicalize()?
+    } else {
+        path.parent().ok_or("path has no parent")?.canonicalize()?
+    };
+    if !existing.starts_with(&root) {
+        return Err(io::Error::other("materialization path escapes workspace").into());
+    }
+    reject_unsafe_ancestors(path)?;
+    Ok(())
 }
 
 fn ensure_audit(
     audit_root: &Path,
     identity: &str,
     expected: &ExpectedDevelopmentScope,
+    view_root: &Path,
 ) -> Result<(), Box<dyn std::error::Error>> {
     fs::create_dir_all(audit_root)?;
     reject_unsafe_ancestors(audit_root)?;
     let audit_path = audit_root.join("build_audit.json");
+    let commit_path = audit_root.join("materialization_commit.json");
+    if commit_path.exists() {
+        reject_unsafe_ancestors(&commit_path)?;
+        let commit: serde_json::Value = serde_json::from_reader(File::open(&commit_path)?)?;
+        if commit.get("status").and_then(serde_json::Value::as_str) != Some("committed")
+            || commit.get("scope_id").and_then(serde_json::Value::as_str)
+                != Some(expected.scope_id.as_str())
+            || commit
+                .get("logical_view_identity")
+                .and_then(serde_json::Value::as_str)
+                != Some(identity)
+        {
+            return Err(io::Error::other("materialization commit identity mismatch").into());
+        }
+        let committed_view_root = commit
+            .get("view_root")
+            .and_then(serde_json::Value::as_str)
+            .ok_or("commit marker missing view root")?;
+        if !expected_scope_view_exists(identity, Path::new(committed_view_root))? {
+            return Err(io::Error::other("materialization commit has no matching view").into());
+        }
+    }
     if audit_path.exists() {
         reject_unsafe_ancestors(&audit_path)?;
         let value: serde_json::Value = serde_json::from_reader(File::open(&audit_path)?)?;
@@ -1030,7 +1089,20 @@ fn ensure_audit(
         {
             return Err(io::Error::other("audit identity mismatch").into());
         }
+        if !commit_path.exists() {
+            return Err(io::Error::other("complete audit lacks commit marker").into());
+        }
         return Ok(());
+    }
+    if !commit_path.exists() {
+        let commit = serde_json::to_vec_pretty(&serde_json::json!({
+            "status": "committed",
+            "scope_id": expected.scope_id,
+            "logical_view_identity": identity,
+            "view_root": view_root.to_string_lossy(),
+            "audit_root": audit_root.to_string_lossy()
+        }))?;
+        publish_atomic_no_replace(audit_root, "materialization_commit.json", &commit)?;
     }
     let bytes = serde_json::to_vec_pretty(&serde_json::json!({
         "status": "complete",
@@ -1040,4 +1112,19 @@ fn ensure_audit(
     }))?;
     publish_atomic_no_replace(audit_root, "build_audit.json", &bytes)?;
     Ok(())
+}
+
+fn expected_scope_view_exists(
+    identity: &str,
+    view: &Path,
+) -> Result<bool, Box<dyn std::error::Error>> {
+    if !view.is_dir() {
+        return Ok(false);
+    }
+    let manifest_path = view.join("view_manifest.json");
+    if !manifest_path.is_file() {
+        return Ok(false);
+    }
+    let manifest: Manifest = serde_json::from_reader(File::open(manifest_path)?)?;
+    Ok(manifest.logical_view_identity == identity)
 }

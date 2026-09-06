@@ -133,7 +133,9 @@ pub struct NullDesign {
     pub parameters: Value,
 }
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[derive(
+    Debug, Clone, Copy, Serialize, Deserialize, JsonSchema, PartialEq, Eq, Hash, Ord, PartialOrd,
+)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum AttackKind {
     Lookahead,
@@ -321,6 +323,27 @@ impl KnowledgeEnvelope {
         validate_identity(&self.knowledge_id, "knowledge_id")?;
         self.facets.validate()?;
         validate_knowledge_record(&self.record)?;
+        let (record_id, supersedes, superseded_by) = match &self.record {
+            KnowledgeRecord::Question(r) => (&r.record_id, &r.supersedes, &r.superseded_by),
+            KnowledgeRecord::Finding(r) => (&r.record_id, &r.supersedes, &r.superseded_by),
+            KnowledgeRecord::Challenge(r) => (&r.record_id, &r.supersedes, &r.superseded_by),
+            KnowledgeRecord::Knowledge(r) => (&r.record_id, &r.supersedes, &r.superseded_by),
+        };
+        if &self.knowledge_id != record_id {
+            return Err(ContractError::Invalid(
+                "knowledge_id must equal record_id".into(),
+            ));
+        }
+        for (field, value) in [("supersedes", supersedes), ("superseded_by", superseded_by)] {
+            if let Some(value) = value {
+                validate_identity(value, field)?;
+                if value == record_id {
+                    return Err(ContractError::Invalid(format!(
+                        "{field} cannot self-reference"
+                    )));
+                }
+            }
+        }
         Ok(())
     }
 }

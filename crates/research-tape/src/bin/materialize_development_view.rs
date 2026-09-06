@@ -1,11 +1,10 @@
-#[path = "../development_view.rs"]
-mod development_view;
-
 use development_view::materialize;
+use research_tape::development_view;
 use std::path::PathBuf;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut source: Option<PathBuf> = None;
+    let mut workspace: Option<PathBuf> = None;
     let mut inventory: Option<PathBuf> = None;
     let mut scope: Option<PathBuf> = None;
     let mut view: Option<PathBuf> = None;
@@ -16,6 +15,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
         match arg.as_str() {
+            "--workspace-root" => {
+                workspace = Some(args.next().ok_or("missing --workspace-root")?.into())
+            }
             "--source-root" => source = Some(args.next().ok_or("missing --source-root")?.into()),
             "--inventory" => inventory = Some(args.next().ok_or("missing --inventory")?.into()),
             "--scope" => scope = Some(args.next().ok_or("missing --scope")?.into()),
@@ -40,6 +42,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let code = std::env::var("DISCOVERYR_CODE_IDENTITY")
         .map_err(|_| "DISCOVERYR_CODE_IDENTITY must be set to the worker commit SHA")?;
     let identity = materialize(
+        workspace.as_deref().ok_or("missing --workspace-root")?,
         source.as_deref().ok_or("missing --source-root")?,
         inventory.as_deref().ok_or("missing --inventory")?,
         view.as_deref().ok_or("missing --view-root")?,

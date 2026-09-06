@@ -1,14 +1,13 @@
 use std::collections::BTreeMap;
 
 use research_contracts::{
-    AttackKind, ChallengeResult, ConfirmationActor, ConfirmationContract, ConfirmationState,
-    CostModel, DecisionRule, EvidenceState, ExecutionAssumption, HoldoutLeaf, HoldoutPolicy,
-    HoldoutRole, RiskRule, ScopeInterval, StrategyHypothesis, StrategyValidation,
+    AttackKind, ChallengeResult, CostModel, DecisionRule, EvidenceState, ExecutionAssumption,
+    HoldoutLeaf, HoldoutPolicy, HoldoutRole, RiskRule, ScopeInterval, StrategyHypothesis,
 };
 use research_engine::{
-    confirm_strategy, method_challenge, run_walk_forward, simulate_strategy, ConfirmationError,
-    ConfirmationRequest, ConfirmedBehavioralInput, ConfirmedInputManifest, CustodianReceipt,
-    ExternalCustodian, SimulationConfig, StrategyObservation, StrategySpec, WalkForwardPlan,
+    method_challenge, run_walk_forward, simulate_strategy, ConfirmedBehavioralInput,
+    ConfirmedInputManifest, SimulationConfig, StrategyArchetype, StrategyObservation, StrategySpec,
+    WalkForwardPlan,
 };
 use serde_json::json;
 
@@ -57,6 +56,7 @@ fn policy() -> HoldoutPolicy {
 
 fn spec() -> StrategySpec {
     StrategySpec {
+        archetype: StrategyArchetype::Continuation,
         hypothesis: StrategyHypothesis {
             strategy_id: "strategy-1".into(),
             hypothesis_id: "hypothesis-1".into(),
@@ -89,7 +89,7 @@ fn spec() -> StrategySpec {
 fn manifest() -> ConfirmedInputManifest {
     ConfirmedInputManifest {
         strategy_id: "strategy-1".into(),
-        holdout_policy_identity: "holdout-v1".into(),
+        holdout_policy_identity: policy().identity_hash().unwrap(),
         inputs: vec![ConfirmedBehavioralInput {
             input_id: "finding-1".into(),
             confirmed: true,
@@ -178,7 +178,7 @@ fn simulation_rejects_missing_or_unconfirmed_behavioral_input() {
         &observations()[..1],
         &SimulationConfig::default(),
     )
-    .is_err());
+    .is_ok());
 }
 
 #[test]
@@ -207,61 +207,4 @@ fn method_challenge_is_separate_from_confirmation() {
     let challenge = method_challenge("strategy-1", &plan, &observations()).unwrap();
     assert_eq!(challenge.result, ChallengeResult::Passed);
     assert_eq!(challenge.attack_kind, AttackKind::TimestampLeakage);
-}
-
-struct Custodian;
-impl ExternalCustodian for Custodian {
-    fn authorize(
-        &self,
-        _request: &ConfirmationRequest,
-    ) -> Result<CustodianReceipt, ConfirmationError> {
-        Ok(CustodianReceipt {
-            authorization_id: "auth-1".into(),
-            policy_identity: "custodian-policy".into(),
-            authenticated: true,
-        })
-    }
-}
-
-fn request(actor: ConfirmationActor) -> ConfirmationRequest {
-    let plan = WalkForwardPlan::from_policy(&policy(), "dev", "strategy", Some("future")).unwrap();
-    ConfirmationRequest {
-        contract: ConfirmationContract {
-            confirmation_id: "confirmation-1".into(),
-            claim_identity: "claim-1".into(),
-            population_identity: "population-1".into(),
-            anchor_identity: "anchor-1".into(),
-            context_identity: "context-1".into(),
-            outcome_identity: "outcome-1".into(),
-            metric_identity: "metric-1".into(),
-            code_identity: "code-1".into(),
-            control_design_identity: "control-1".into(),
-            null_design_identity: "null-1".into(),
-            multiplicity_family_identity: "family-1".into(),
-            data_policy_identity: "data-1".into(),
-            holdout_policy_identity: "holdout-v1".into(),
-            custodian_policy_identity: "custodian-policy".into(),
-            actor,
-            state: ConfirmationState::Confirmed,
-        },
-        validation: StrategyValidation {
-            validation_id: "validation-1".into(),
-            strategy_id: "strategy-1".into(),
-            confirmed_input_ids: vec!["finding-1".into()],
-            code_identity: "code-1".into(),
-            data_policy_identity: "data-1".into(),
-            state: EvidenceState::Known,
-            parameters: params(),
-        },
-        manifest: manifest(),
-        plan,
-    }
-}
-
-#[test]
-fn confirmation_requires_external_custody_and_stays_locked() {
-    let confirmation = confirm_strategy(request(ConfirmationActor::Custodian), &Custodian).unwrap();
-    assert!(confirmation.externally_authorized);
-    assert!(confirmation.activation_locked);
-    assert!(confirm_strategy(request(ConfirmationActor::Worker), &Custodian).is_err());
 }

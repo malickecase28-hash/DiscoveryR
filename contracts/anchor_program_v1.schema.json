@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AnchorProgram",
+  "type": "object",
+  "required": [
+    "anchor_ids",
+    "context_permission_id",
+    "native_scales",
+    "program_id"
+  ],
+  "properties": {
+    "anchor_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "context_permission_id": {
+      "type": "string"
+    },
+    "native_scales": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/NativeScale"
+      },
+      "uniqueItems": true
+    },
+    "program_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "BarScale": {
+      "type": "string",
+      "enum": [
+        "15s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "4h"
+      ]
+    },
+    "NativeScale": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "Tick"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "Bar"
+          ],
+          "properties": {
+            "Bar": {
+              "$ref": "#/definitions/BarScale"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

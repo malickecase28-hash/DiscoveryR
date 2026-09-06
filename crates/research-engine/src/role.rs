@@ -7,10 +7,11 @@
 use research_contracts::{
     validate_detector_lineage, ContractError, DetectorLineage, DetectorRole, NativeScale,
 };
+use serde::Serialize;
 use std::collections::{BTreeMap, BTreeSet, HashSet};
 
 /// The eleven relationship families declared by the R ontology.
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum RelationshipOperator {
     Temporal,
     Directional,
@@ -56,6 +57,15 @@ impl RelationshipOperator {
             Self::Context => "context",
             Self::Interaction => "interaction",
             Self::IncrementalInformation => "incremental_information",
+        }
+    }
+
+    pub fn allows_direction(self, direction: &str) -> bool {
+        match self {
+            Self::Lifecycle | Self::Nesting | Self::StateTransition | Self::Regime => {
+                direction == "bidirectional"
+            }
+            _ => true,
         }
     }
 

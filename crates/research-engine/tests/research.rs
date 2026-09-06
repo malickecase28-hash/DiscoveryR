@@ -18,7 +18,7 @@ fn atlas_dispatches_only_role_compatible_operators() {
         detector(
             "anchor",
             DetectorRole::LifecycleObject,
-            NativeScale::Bar(research_contracts::BarScale::M1),
+            NativeScale::Bar(research_contracts::BarScale::M5),
         ),
         detector(
             "event",
@@ -43,7 +43,7 @@ fn question_generation_is_bounded_blind_and_causal() {
         detector(
             "anchor",
             DetectorRole::LifecycleObject,
-            NativeScale::Bar(research_contracts::BarScale::M1),
+            NativeScale::Bar(research_contracts::BarScale::M5),
         ),
         detector(
             "event",
@@ -78,7 +78,7 @@ fn question_generation_is_bounded_blind_and_causal() {
         context_detector_ids: vec!["event".into(), "state".into()],
         lifecycle_states: vec!["formed".into()],
         context_ids: vec!["session".into()],
-        native_scales: BTreeSet::from([NativeScale::Bar(research_contracts::BarScale::M1)]),
+        native_scales: BTreeSet::from([NativeScale::Bar(research_contracts::BarScale::M5)]),
         anchor_time_ns: 100,
         context_available_time_ns: availability,
         directions: vec![Direction::Positive, Direction::Negative],

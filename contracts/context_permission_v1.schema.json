@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ContextPermission",
+  "type": "object",
+  "required": [
+    "allowed_detector_ids",
+    "allowed_scales",
+    "consumer",
+    "evidence_access",
+    "permission_id"
+  ],
+  "properties": {
+    "allowed_detector_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_scales": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/NativeScale"
+      },
+      "uniqueItems": true
+    },
+    "consumer": {
+      "$ref": "#/definitions/ProgramConsumer"
+    },
+    "evidence_access": {
+      "$ref": "#/definitions/EvidenceAccess"
+    },
+    "permission_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "BarScale": {
+      "type": "string",
+      "enum": [
+        "15s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "1h",
+        "4h"
+      ]
+    },
+    "EvidenceAccess": {
+      "type": "string",
+      "enum": [
+        "UNCONFIRMED_ALLOWED",
+        "CONFIRMED_ONLY"
+      ]
+    },
+    "NativeScale": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "Tick"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "Bar"
+          ],
+          "properties": {
+            "Bar": {
+              "$ref": "#/definitions/BarScale"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ProgramConsumer": {
+      "type": "string",
+      "enum": [
+        "MARKET_RESEARCH",
+        "STRATEGY_RESEARCH",
+        "PORTFOLIO_RESEARCH"
+      ]
+    }
+  }
+}

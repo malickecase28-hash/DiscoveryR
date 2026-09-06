@@ -38,6 +38,17 @@
     "AttackKind": {
       "type": "string",
       "enum": [
+        "LOOKAHEAD",
+        "POPULATION_CONDITIONING",
+        "DENOMINATOR_ERRORS",
+        "LINEAGE_DUPLICATION",
+        "FALSE_CONFLUENCE",
+        "BAD_CONTROLS",
+        "TEMPORAL_DEPENDENCE",
+        "NORMALIZATION_LEAKAGE",
+        "FRAGILITY",
+        "SAMPLE_CONCENTRATION",
+        "ALTERNATIVE_EXPLANATIONS",
         "TIMESTAMP_LEAKAGE",
         "SELECTION_BIAS",
         "MULTIPLE_TESTING",

@@ -210,7 +210,7 @@ fn envelope_retains_partial_null_and_path_independent_identity() {
     assert!(bad.validate().is_err());
     let envelope = KnowledgeEnvelope {
         envelope_version: 1,
-        knowledge_id: "knowledge".into(),
+        knowledge_id: "finding".into(),
         record: KnowledgeRecord::Finding(FindingRecord {
             record_id: "finding".into(),
             content: json!({"state":"partial"}),

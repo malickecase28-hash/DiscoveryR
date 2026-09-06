@@ -216,6 +216,27 @@ impl PortfolioConstraint {
     pub fn validate(&self) -> Result<(), ContractError> {
         validate_identity(&self.constraint_id, "constraint_id")?;
         validate_refs(&self.confirmed_strategy_ids, "confirmed_strategy_ids")?;
-        validate_parameters(&self.parameters)
+        validate_parameters(&self.parameters)?;
+        let max = self.parameters.contains_key("max");
+        let min = self.parameters.contains_key("min");
+        let limit = self.parameters.contains_key("limit");
+        if max && min || (limit && (max || min)) || !max && !min && !limit {
+            return Err(ContractError::Invalid(
+                "constraint requires exactly one limit direction".into(),
+            ));
+        }
+        for key in ["max", "min", "limit"] {
+            if let Some(raw) = self.parameters.get(key) {
+                let value = raw.as_f64().ok_or_else(|| {
+                    ContractError::Invalid("constraint limit must be numeric".into())
+                })?;
+                if !value.is_finite() {
+                    return Err(ContractError::Invalid(
+                        "constraint limit must be finite".into(),
+                    ));
+                }
+            }
+        }
+        Ok(())
     }
 }

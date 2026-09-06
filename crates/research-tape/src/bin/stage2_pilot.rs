@@ -259,6 +259,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
                     lifecycle_state: "completed_bar".into(),
                     native_scale: NativeScale::Bar(BarScale::M15),
                     anchor_time: time,
+                    value: None,
                     occur_time: None,
                     object_id: None,
                     source: SourceRef {

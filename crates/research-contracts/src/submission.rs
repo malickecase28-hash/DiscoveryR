@@ -3,6 +3,7 @@ use std::{
     fs::{self, File, OpenOptions},
     io::Write,
     path::{Path, PathBuf},
+    sync::atomic::{AtomicU64, Ordering},
     time::{SystemTime, UNIX_EPOCH},
 };
 
@@ -186,8 +187,13 @@ pub fn publish_atomic_no_replace(
     if reparse_or_symlink(&directory_meta) || !directory_meta.is_dir() {
         return Err(err("publication directory must be a regular directory"));
     }
+    static TEMP_COUNTER: AtomicU64 = AtomicU64::new(0);
     let nonce = SystemTime::now().duration_since(UNIX_EPOCH)?.as_nanos();
-    let temporary = directory.join(format!(".{final_name}.tmp-{}-{nonce}", std::process::id()));
+    let counter = TEMP_COUNTER.fetch_add(1, Ordering::Relaxed);
+    let temporary = directory.join(format!(
+        ".{final_name}.tmp-{}-{nonce}-{counter}",
+        std::process::id()
+    ));
     let final_path = directory.join(final_name);
     let result = (|| {
         let mut output = OpenOptions::new()
@@ -204,9 +210,10 @@ pub fn publish_atomic_no_replace(
     let cleanup = fs::remove_file(&temporary);
     match (result, cleanup) {
         (Ok(()), Ok(())) => Ok(()),
-        (Ok(()), Err(error)) => Err(err(format!(
-            "temporary publication cleanup failed: {error}"
-        ))),
+        // The hard-link claim is the durable commit. A failed temporary-name
+        // cleanup must not report failure after publishing the canonical file;
+        // a later recovery pass may remove the orphaned temporary name.
+        (Ok(()), Err(_error)) => Ok(()),
         (Err(error), _) => Err(error),
     }
 }

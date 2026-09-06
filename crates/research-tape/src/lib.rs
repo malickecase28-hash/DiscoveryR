@@ -17,29 +17,33 @@ use std::{
     time::Instant,
 };
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub mod development_view;
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct SourceRef {
     pub part: String,
     pub row_index: u64,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct AnchorInstance {
     pub anchor_id: String,
     pub detector_id: String,
     pub lifecycle_state: String,
     pub native_scale: NativeScale,
     pub anchor_time: i64,
+    pub value: Option<f64>,
     pub occur_time: Option<i64>,
     pub object_id: Option<String>,
     pub source: SourceRef,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct ContextObservation {
     pub detector_id: String,
     pub native_scale: NativeScale,
     pub available_time: i64,
+    pub value: Option<f64>,
     pub occur_time: Option<i64>,
     pub object_id: Option<String>,
     pub source: SourceRef,
@@ -58,6 +62,7 @@ impl ContextObservation {
             detector_id,
             native_scale,
             available_time: available_time.ok_or(ContractError::MissingAvailabilityTime)?,
+            value: None,
             occur_time,
             object_id,
             source,
@@ -948,6 +953,7 @@ mod tests {
             lifecycle_state: "completed_bar".into(),
             native_scale: NativeScale::Bar(BarScale::M1),
             anchor_time: 1,
+            value: None,
             occur_time: None,
             object_id: None,
             source: SourceRef {
@@ -965,6 +971,7 @@ mod tests {
             lifecycle_state: "s".into(),
             native_scale: NativeScale::Bar(BarScale::M1),
             anchor_time: 1,
+            value: None,
             occur_time: None,
             object_id: None,
             source: SourceRef {

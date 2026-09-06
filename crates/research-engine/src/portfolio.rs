@@ -13,6 +13,7 @@ use research_contracts::{
 };
 
 use crate::stats::{StatsError, StreamingMoments};
+use sha2::{Digest, Sha256};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum PortfolioStatus {
@@ -121,8 +122,9 @@ pub fn validate_aligned_streams(streams: &[AlignedStrategyStream]) -> Result<(),
         ));
     }
     for stream in streams {
-        if !stream.confirmation.activation_locked
-            || stream.confirmation.confirmation_id.is_empty()
+        if !stream.confirmation.activation_locked()
+            || stream.confirmation.confirmation_id().is_empty()
+            || stream.confirmation.confirmation_id() != stream.stream.strategy_id
             || stream.stream.evidence_state != EvidenceState::Known
             || stream.timestamps_ns.is_empty()
             || stream.timestamps_ns.len() != stream.availability_ns.len()
@@ -130,10 +132,12 @@ pub fn validate_aligned_streams(streams: &[AlignedStrategyStream]) -> Result<(),
             || stream.instrument_scope_identity.is_empty()
             || stream.source_identity.is_empty()
             || stream.time_grid_identity != first.time_grid_identity
+            || stream.time_grid_identity
+                != canonical_time_grid_identity(&stream.timestamps_ns, &stream.availability_ns)
             || stream.instrument_scope_identity != first.instrument_scope_identity
             || stream.source_identity != first.source_identity
             || stream.context_permission != first.context_permission
-            || stream.confirmation.holdout_policy_identity.is_empty()
+            || stream.confirmation.holdout_policy_identity().is_empty()
         {
             return Err(PortfolioError::InvalidParameter("aligned strategy stream"));
         }
@@ -153,6 +157,12 @@ pub fn validate_aligned_streams(streams: &[AlignedStrategyStream]) -> Result<(),
     Ok(())
 }
 
+pub fn canonical_time_grid_identity(timestamps_ns: &[i64], availability_ns: &[i64]) -> String {
+    let mut hash = Sha256::new();
+    hash.update(serde_json::to_vec(&(timestamps_ns, availability_ns)).unwrap_or_default());
+    format!("{:x}", hash.finalize())
+}
+
 pub fn portfolio_report_aligned(
     component: PortfolioComponent,
     streams: &[AlignedStrategyStream],
@@ -160,6 +170,17 @@ pub fn portfolio_report_aligned(
     scenarios: &[StressScenario],
 ) -> Result<PortfolioReport, PortfolioError> {
     validate_aligned_streams(streams)?;
+    component.validate()?;
+    let stream_ids: BTreeSet<_> = streams
+        .iter()
+        .map(|s| s.stream.strategy_id.clone())
+        .collect();
+    let component_ids: BTreeSet<_> = component.confirmed_strategy_ids.iter().cloned().collect();
+    if stream_ids != component_ids {
+        return Err(PortfolioError::InvalidParameter(
+            "component confirmation identity",
+        ));
+    }
     let strategies = streams
         .iter()
         .map(|aligned| {
@@ -169,14 +190,18 @@ pub fn portfolio_report_aligned(
             stream
         })
         .collect();
-    portfolio_report(
+    let mut report = portfolio_report(
         &PortfolioInput {
-            component,
+            component: component.clone(),
             strategies,
-            constraints,
+            constraints: constraints.clone(),
         },
         scenarios,
-    )
+    )?;
+    let mut hash = Sha256::new();
+    hash.update(format!("{component:?}|{streams:?}|{constraints:?}|{scenarios:?}").as_bytes());
+    report.identity = format!("{:x}", hash.finalize());
+    Ok(report)
 }
 
 impl PortfolioInput {
@@ -386,7 +411,46 @@ pub struct StressReport {
 }
 
 #[derive(Clone, Debug, PartialEq)]
+pub struct SyntheticOptimizationResult {
+    pub strategy_ids: Vec<String>,
+    pub weights: BTreeMap<String, f64>,
+    pub objective: f64,
+    pub status: PortfolioStatus,
+}
+
+/// Equal-weight synthetic optimizer used only to exercise the portfolio
+/// plumbing. It accepts no research result authority and is never a live
+/// allocation operation.
+pub fn optimize_synthetic(
+    input: &PortfolioInput,
+) -> Result<SyntheticOptimizationResult, PortfolioError> {
+    input.validate()?;
+    let n = input.strategies.len() as f64;
+    let weight = 1.0 / n;
+    let mut weights = BTreeMap::new();
+    for strategy in &input.strategies {
+        weights.insert(strategy.strategy_id.clone(), weight);
+    }
+    let objective = input
+        .strategies
+        .iter()
+        .map(|strategy| strategy.returns.iter().flatten().copied().sum::<f64>() * weight)
+        .sum();
+    Ok(SyntheticOptimizationResult {
+        strategy_ids: input
+            .strategies
+            .iter()
+            .map(|s| s.strategy_id.clone())
+            .collect(),
+        weights,
+        objective,
+        status: PortfolioStatus::Partial,
+    })
+}
+
+#[derive(Clone, Debug, PartialEq)]
 pub struct PortfolioReport {
+    pub identity: String,
     pub correlations: Vec<CorrelationReport>,
     pub conditional_correlations: Vec<ConditionalCorrelationReport>,
     pub overlaps: Vec<OverlapReport>,
@@ -881,6 +945,13 @@ pub fn risk_budget_report(input: &PortfolioInput) -> Result<RiskBudgetReport, Po
 }
 
 pub fn constraints_report(input: &PortfolioInput) -> Result<ConstraintReport, PortfolioError> {
+    constraints_report_with_scenarios(input, &[])
+}
+
+fn constraints_report_with_scenarios(
+    input: &PortfolioInput,
+    scenarios: &[StressScenario],
+) -> Result<ConstraintReport, PortfolioError> {
     input.validate()?;
     let mut outcomes = Vec::new();
     for constraint in &input.constraints {
@@ -891,6 +962,24 @@ pub fn constraints_report(input: &PortfolioInput) -> Result<ConstraintReport, Po
             .or_else(|| constraint.parameters.get("limit").and_then(|v| v.as_f64()));
         let minimum = constraint.parameters.get("min").and_then(|v| v.as_f64());
         let value = match constraint.kind {
+            PortfolioConstraintKind::Correlation => {
+                let ids = &constraint.confirmed_strategy_ids;
+                if ids.len() != 2 {
+                    return Err(PortfolioError::InvalidParameter(
+                        "correlation constraint strategies",
+                    ));
+                }
+                correlation_report(input, &ids[0], &ids[1])?.value
+            }
+            PortfolioConstraintKind::Overlap => {
+                let ids = &constraint.confirmed_strategy_ids;
+                if ids.len() != 2 {
+                    return Err(PortfolioError::InvalidParameter(
+                        "overlap constraint strategies",
+                    ));
+                }
+                Some(overlap_report(input, &ids[0], &ids[1])?.jaccard)
+            }
             PortfolioConstraintKind::CapitalAllocation => {
                 Some(capital_allocation_report(input)?.total_capital)
             }
@@ -900,7 +989,11 @@ pub fn constraints_report(input: &PortfolioInput) -> Result<ConstraintReport, Po
             PortfolioConstraintKind::RiskBudget => Some(risk_budget_report(input)?.total_budget),
             PortfolioConstraintKind::Concentration => Some(concentration_report(input)?.herfindahl),
             PortfolioConstraintKind::Turnover => turnover_report(input)?.total,
-            _ => None,
+            PortfolioConstraintKind::Stress => stress_report(input, scenarios)?
+                .scenarios
+                .iter()
+                .map(|scenario| scenario.portfolio_return)
+                .reduce(f64::min),
         };
         let status = match (value, limit, minimum) {
             (Some(value), Some(limit), _) if value <= limit => PortfolioStatus::Known,
@@ -972,6 +1065,7 @@ pub fn portfolio_report(
     scenarios: &[StressScenario],
 ) -> Result<PortfolioReport, PortfolioError> {
     input.validate()?;
+    let identity = canonical_portfolio_identity(input, scenarios);
     let mut correlations = Vec::new();
     let mut overlaps = Vec::new();
     for (i, left) in input.strategies.iter().enumerate() {
@@ -999,6 +1093,7 @@ pub fn portfolio_report(
         }
     }
     Ok(PortfolioReport {
+        identity,
         correlations,
         conditional_correlations,
         overlaps,
@@ -1009,7 +1104,13 @@ pub fn portfolio_report(
         liquidity: liquidity_report(input)?,
         concentration: concentration_report(input)?,
         risk_budget: risk_budget_report(input)?,
-        constraints: constraints_report(input)?,
+        constraints: constraints_report_with_scenarios(input, scenarios)?,
         stress: stress_report(input, scenarios)?,
     })
+}
+
+fn canonical_portfolio_identity(input: &PortfolioInput, scenarios: &[StressScenario]) -> String {
+    let mut hash = Sha256::new();
+    hash.update(format!("{input:?}|{scenarios:?}").as_bytes());
+    format!("{:x}", hash.finalize())
 }

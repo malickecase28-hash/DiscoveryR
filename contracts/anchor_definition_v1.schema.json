@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AnchorDefinition",
+  "type": "object",
+  "required": [
+    "anchor_id",
+    "availability_rule",
+    "detector_id",
+    "lifecycle_state"
+  ],
+  "properties": {
+    "anchor_id": {
+      "type": "string"
+    },
+    "availability_rule": {
+      "$ref": "#/definitions/AvailabilityRule"
+    },
+    "detector_id": {
+      "type": "string"
+    },
+    "lifecycle_state": {
+      "type": "string"
+    },
+    "occurrence_rule": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/OccurrenceRule"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "AvailabilityRule": {
+      "type": "object",
+      "required": [
+        "available_timestamp_field",
+        "rule_identity",
+        "sequence_field",
+        "source_blob_identity"
+      ],
+      "properties": {
+        "available_timestamp_field": {
+          "type": "string"
+        },
+        "rule_identity": {
+          "type": "string"
+        },
+        "sequence_field": {
+          "type": "string"
+        },
+        "source_blob_identity": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "OccurrenceRule": {
+      "type": "object",
+      "required": [
+        "occurrence_timestamp_field",
+        "rule_identity",
+        "semantics"
+      ],
+      "properties": {
+        "occurrence_timestamp_field": {
+          "type": "string"
+        },
+        "rule_identity": {
+          "type": "string"
+        },
+        "semantics": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

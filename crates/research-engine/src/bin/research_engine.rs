@@ -1,8 +1,10 @@
 use research_contracts::submission::reject_unsafe_ancestors;
 use research_contracts::{
-    ConfirmationContract, InstrumentScope, MethodChallenge, Question, ReproducibilityIdentity,
+    CompleteReproducibilityIdentity, ConfirmationContract, InstrumentScope, MethodChallenge,
+    Question, ReproducibilityIdentity,
 };
 use research_engine::verify_identity;
+use serde::Deserialize;
 use serde_json::{json, Value};
 use std::{
     env, fs,
@@ -49,7 +51,8 @@ fn write_json(value: Value, output: Option<&str>) -> Result<(), String> {
             .map_err(|error| format!("sync output: {error}"))?;
         fs::hard_link(&temp, &path)
             .map_err(|error| format!("publish {}: {error}", path.display()))?;
-        fs::remove_file(&temp).map_err(|error| format!("remove temporary output: {error}"))?;
+        // The hard-link claim is the durable commit; cleanup is recoverable.
+        let _ = fs::remove_file(&temp);
     } else {
         println!("{}", String::from_utf8_lossy(&bytes));
     }
@@ -90,6 +93,22 @@ fn value_as<T: serde::de::DeserializeOwned>(value: Value) -> Result<T, String> {
     serde_json::from_value(value).map_err(|error| error.to_string())
 }
 
+#[derive(Deserialize)]
+struct MaterializeScopeInput {
+    scope: InstrumentScope,
+    workspace_root: PathBuf,
+    source_root: PathBuf,
+    inventory_path: PathBuf,
+    view_root: PathBuf,
+    audit_root: PathBuf,
+    source_manifest_identity: String,
+    payload_manifest_identity: String,
+    boundary_ms: i64,
+    development_end_exclusive: String,
+    code_identity: String,
+    batch_size: Option<usize>,
+}
+
 fn main() {
     if let Err(error) = run() {
         eprintln!("research-engine: {error}");
@@ -112,9 +131,31 @@ fn run() -> Result<(), String> {
             json!({"status":"valid", "instrument_id": scope.instrument.instrument_id, "scope_id": scope.interval.scope_id})
         }
         "materialize-scope" => {
-            let scope: InstrumentScope = value_as(value)?;
-            scope.validate().map_err(|error| error.to_string())?;
-            json!({"status":"not_run", "materialization":"delegated_to_research_tape", "instrument_id": scope.instrument.instrument_id, "scope_id": scope.interval.scope_id})
+            let input: MaterializeScopeInput = value_as(value)?;
+            input.scope.validate().map_err(|error| error.to_string())?;
+            let expected = research_tape::development_view::ExpectedDevelopmentScope {
+                instrument: input.scope.instrument.instrument_id.clone(),
+                scope_id: input.scope.interval.scope_id.clone(),
+                source_manifest_identity: input.source_manifest_identity,
+                payload_manifest_identity: input.payload_manifest_identity,
+                boundary_ms: input.boundary_ms,
+                development_end_exclusive: input.development_end_exclusive,
+            };
+            let identity = research_tape::development_view::materialize(
+                &input.workspace_root,
+                &input.source_root,
+                &input.inventory_path,
+                &input.view_root,
+                &input.audit_root,
+                &expected,
+                &input.code_identity,
+                input
+                    .batch_size
+                    .unwrap_or(research_tape::development_view::DEFAULT_BATCH_SIZE),
+                true,
+            )
+            .map_err(|error| error.to_string())?;
+            json!({"status":"complete", "identity": identity, "instrument_id": input.scope.instrument.instrument_id, "scope_id": input.scope.interval.scope_id})
         }
         "run-experiment" => {
             let question: Question = value_as(value)?;
@@ -122,8 +163,16 @@ fn run() -> Result<(), String> {
             json!({"status":"not_run", "execution":"unavailable", "question_id": question.question_id})
         }
         "verify-result" => {
-            let identity: ReproducibilityIdentity = value_as(value)?;
-            let hash = verify_identity(&identity, None).map_err(|error| error.to_string())?;
+            let hash = if let Ok(identity) =
+                serde_json::from_value::<CompleteReproducibilityIdentity>(value.clone())
+            {
+                identity
+                    .identity_hash()
+                    .map_err(|error| error.to_string())?
+            } else {
+                let identity: ReproducibilityIdentity = value_as(value)?;
+                verify_identity(&identity, None).map_err(|error| error.to_string())?
+            };
             json!({"status":"not_run", "verification":"artifact_bytes_required", "identity_hash":hash})
         }
         "challenge-result" => {

@@ -494,7 +494,7 @@ pub fn bootstrap_by_block(
             }
         }
         let replicate = total / n as f64;
-        if (replicate - observed).abs() >= observed.abs() {
+        if replicate.abs() >= observed.abs() {
             exceedances += 1;
         }
     }

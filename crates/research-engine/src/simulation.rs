@@ -1,7 +1,9 @@
 use crate::stats::MethodMetadata;
 use crate::{finite, ConfirmedInputManifest, StrategyError, StrategySpec};
+use serde::Serialize;
+use sha2::{Digest, Sha256};
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct StrategyObservation {
     pub timestamp_ns: i64,
     pub available_time_ns: i64,
@@ -50,7 +52,7 @@ fn spec_input_validation(
     Ok(())
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct SimulationConfig {
     pub entry_threshold: f64,
     pub per_observation_cost: f64,
@@ -123,6 +125,28 @@ fn effective_config(
     Ok(effective)
 }
 
+fn runtime_identity(
+    spec: &StrategySpec,
+    config: &SimulationConfig,
+) -> Result<String, StrategyError> {
+    let clauses = [
+        &spec.decision_rule.entry,
+        &spec.decision_rule.exit,
+        &spec.decision_rule.sizing,
+        &spec.decision_rule.management,
+    ];
+    if clauses.iter().any(|clause| clause.is_empty())
+        || spec.execution_assumption.assumptions.is_empty()
+    {
+        return Err(StrategyError::Invalid("strategy runtime semantics"));
+    }
+    let bytes = serde_json::to_vec(&(spec, config))
+        .map_err(|_| StrategyError::Invalid("strategy runtime identity"))?;
+    let mut hash = Sha256::new();
+    hash.update(bytes);
+    Ok(format!("{:x}", hash.finalize()))
+}
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct SimulationReport {
     pub observations: usize,
@@ -132,6 +156,7 @@ pub struct SimulationReport {
     pub gross_score: f64,
     pub costs: f64,
     pub net_score: f64,
+    pub runtime_spec_identity: String,
     pub metadata: MethodMetadata,
 }
 
@@ -145,12 +170,10 @@ pub fn simulate_strategy(
 ) -> Result<SimulationReport, StrategyError> {
     spec.validate(manifest)?;
     let config = effective_config(spec, config)?;
-    let latest_input_available = manifest
-        .inputs
-        .iter()
-        .map(|input| input.available_time_ns)
-        .max()
-        .ok_or(StrategyError::ConfirmedInputRequired)?;
+    let runtime_spec_identity = runtime_identity(spec, &config)?;
+    if manifest.inputs.is_empty() {
+        return Err(StrategyError::ConfirmedInputRequired);
+    }
     let mut report = SimulationReport {
         observations: observations.len(),
         acted: 0,
@@ -159,6 +182,7 @@ pub fn simulate_strategy(
         gross_score: 0.0,
         costs: 0.0,
         net_score: 0.0,
+        runtime_spec_identity,
         metadata: MethodMetadata {
             method: "unit-score-strategy-simulation".into(),
             assumptions: vec![
@@ -176,12 +200,10 @@ pub fn simulate_strategy(
         if observation.timestamp_ns < 0 || observation.available_time_ns < 0 {
             return Err(StrategyError::Invalid("observation timestamp"));
         }
-        if observation.available_time_ns > observation.timestamp_ns
-            || latest_input_available > observation.timestamp_ns
-        {
+        if observation.available_time_ns > observation.timestamp_ns {
             return Err(StrategyError::FutureInput {
                 timestamp_ns: observation.timestamp_ns,
-                available_time_ns: observation.available_time_ns.max(latest_input_available),
+                available_time_ns: observation.available_time_ns,
             });
         }
         let (Some(signal), Some(outcome)) = (observation.signal, observation.outcome) else {

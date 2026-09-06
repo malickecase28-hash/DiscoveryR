@@ -3,6 +3,19 @@ use research_contracts::{
     ContractError, CostModel, DecisionRule, ExecutionAssumption, RiskRule, StrategyHypothesis,
 };
 use serde::Serialize;
+use sha2::{Digest, Sha256};
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+pub enum StrategyArchetype {
+    Continuation,
+    ExhaustionReversal,
+    StructuralReaction,
+    Breakout,
+    MeanReversion,
+    MultiScaleStructural,
+    RegimeFiltered,
+    ExecutionAbstention,
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct ConfirmedBehavioralInput {
@@ -45,8 +58,9 @@ impl CustodiedInputManifest {
                 serde_json::json!(true),
             )]),
         })?;
-        if !confirmation.activation_locked
-            || confirmation.holdout_policy_identity != manifest.holdout_policy_identity
+        if !confirmation.activation_locked()
+            || confirmation.holdout_policy_identity() != manifest.holdout_policy_identity
+            || confirmation.manifest_identity() != Some(manifest_identity(&manifest).as_str())
         {
             return Err(StrategyError::Custody(
                 "confirmation is not locked to input policy".into(),
@@ -65,6 +79,12 @@ impl CustodiedInputManifest {
     pub fn confirmation(&self) -> &LockedConfirmation {
         &self.confirmation
     }
+}
+
+fn manifest_identity(manifest: &ConfirmedInputManifest) -> String {
+    let mut hash = Sha256::new();
+    hash.update(serde_json::to_vec(manifest).unwrap_or_default());
+    format!("{:x}", hash.finalize())
 }
 
 impl ConfirmedInputManifest {
@@ -107,6 +127,7 @@ impl ConfirmedInputManifest {
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct StrategySpec {
+    pub archetype: StrategyArchetype,
     pub hypothesis: StrategyHypothesis,
     pub decision_rule: DecisionRule,
     pub execution_assumption: ExecutionAssumption,

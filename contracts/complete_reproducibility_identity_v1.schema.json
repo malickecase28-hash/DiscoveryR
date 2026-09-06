@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CompleteReproducibilityIdentity",
+  "description": "Complete identity manifest used by new R/S/P runners. The compact v1 identity above remains wire-compatible for existing callers.",
+  "type": "object",
+  "required": [
+    "authority_version_identity",
+    "availability_contract_identity",
+    "code_identity",
+    "control_design_identity",
+    "data_scope_identity",
+    "detector_version_identity",
+    "experiment_contract_identity",
+    "instrument_identity",
+    "native_scale_identity",
+    "null_design_identity",
+    "output_identity",
+    "parameter_identity",
+    "payload_manifest_identity",
+    "producer_blob_identity",
+    "producer_commit_identity",
+    "producer_source_identity",
+    "scanner_version_identity",
+    "seed_identity",
+    "source_manifest_identity"
+  ],
+  "properties": {
+    "authority_version_identity": {
+      "type": "string"
+    },
+    "availability_contract_identity": {
+      "type": "string"
+    },
+    "code_identity": {
+      "type": "string"
+    },
+    "control_design_identity": {
+      "type": "string"
+    },
+    "data_scope_identity": {
+      "type": "string"
+    },
+    "detector_version_identity": {
+      "type": "string"
+    },
+    "experiment_contract_identity": {
+      "type": "string"
+    },
+    "instrument_identity": {
+      "type": "string"
+    },
+    "native_scale_identity": {
+      "type": "string"
+    },
+    "null_design_identity": {
+      "type": "string"
+    },
+    "output_identity": {
+      "type": "string"
+    },
+    "parameter_identity": {
+      "type": "string"
+    },
+    "payload_manifest_identity": {
+      "type": "string"
+    },
+    "producer_blob_identity": {
+      "type": "string"
+    },
+    "producer_commit_identity": {
+      "type": "string"
+    },
+    "producer_source_identity": {
+      "type": "string"
+    },
+    "scanner_version_identity": {
+      "type": "string"
+    },
+    "seed_identity": {
+      "type": "string"
+    },
+    "source_manifest_identity": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
