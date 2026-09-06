@@ -1,0 +1,57 @@
+{
+  "contract_id": "AP-001-WP3-CONTRACT",
+  "status": "FROZEN (design); input binding to WP2 anchor artifact recorded at WP3 start",
+  "frozen_utc": "2026-09-06",
+  "plan": "AP-001_PLAN_FROZEN.md (WP3 row, plan §6)",
+  "inherits": {
+    "wp1_contract": "AP-001/R1_CONTRACT/AP-001_WP1_CONTRACT.json (causal clock, partition, D-006 anchor rule)",
+    "wp2_contract": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_CONTRACT.json (anchor table, support/noise reference, block rules)",
+    "anchors_input": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_ANCHORS.* sha256 recorded in WP3 preflight",
+    "reference_input": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_SUPPORT_REFERENCE.json sha256 recorded in WP3 preflight"
+  },
+  "objective": "Determine how causally-available tick context changes the anchor (conditioning) and how the tick-detector system evolves after the anchor (co-evolution), per plan §6, on the development leaf only.",
+  "context_families": {
+    "micro_volatility": {"role": "volatility state", "at_anchor": "level, regime, pre-anchor change", "post_anchor": "regime transition, expansion/contraction timing"},
+    "quote_arrival": {"role": "market activity", "at_anchor": "rate, acceleration, persistence", "post_anchor": "acceleration/deceleration, persistence, transition timing"},
+    "quote_dynamics": {"role": "repricing behavior", "at_anchor": "direction, efficiency, change", "post_anchor": "repricing transition, persistence, reversal timing"},
+    "quote_pressure": {"role": "directional microstructure", "at_anchor": "level, alignment, opposition, persistence", "post_anchor": "alignment change, opposition change, persistence, reversal timing"},
+    "spread_state": {"role": "trading condition", "at_anchor": "level, widening, tightening, regime", "post_anchor": "widening/tightening transitions, persistence"},
+    "feed_health": {"role": "data-quality control", "at_anchor": "validity and contamination only", "post_anchor": "degradation/recovery status only"}
+  },
+  "step_0_payload_inventory": {
+    "purpose": "before any behavioral scan, inventory every field of the six context payloads from a deterministic sample of the development leaf",
+    "output": "AP-001/R3_TICK_CONTEXT/AP-001_WP3_PAYLOAD_DICTIONARY.json — per detector: field, type, state-vs-measurement classification, availability semantics (live vs episode-scoped), nullability",
+    "rule": "fields whose availability semantics cannot be established causally are excluded from anchor-time conditioning and marked accordingly"
+  },
+  "question_class_A_conditioning": {
+    "snapshot": "at each WP2 anchor tick, parse all six context payloads present at that availability (received_ts_ns, source_sequence); missing payload = explicit missingness, anchor stays in denominator",
+    "outcomes_conditioned": ["next first-entry transition", "recovery from DECAY_RISK/DYING", "time-to-peak", "time-to-termination", "horizon endpoint returns (direction-adjusted)", "MFE", "MAE", "realized variance (all six horizons)"],
+    "continuous_handling": "raw values retained; readable quintile bands per WP2 band rule (edges frozen in reference artifact); band tables are summaries only",
+    "output": "AP-001/R3_TICK_CONTEXT/AP-001_WP3_CONDITIONING_TABLES.json — per family x anchor state x outcome: support, block table, effect vs WP2 reference, INSUFFICIENT_SUPPORT marking per reference rules"
+  },
+  "question_class_B_coevolution": {
+    "window": "post-anchor until episode end or +300s, whichever first; detector changes after t are outcomes, never anchor-time information",
+    "measurements": [
+      "per family: first transition after anchor, transition latency, full transition sequence counts",
+      "event order vs price: whether family transition precedes/follows the anchor window's MFE/MAE timing",
+      "aligned vs conflicting emergence: families agreeing/opposing the anchor direction over time; system convergence/divergence/mixed classification",
+      "cross-block recurrence: sequence stability by month block and session block"
+    ],
+    "reanchor_candidates": "post-anchor detector events that repeatedly precede a price outcome are LISTED only (family, event, outcome, support, blocks); they become prospective re-anchor questions in their own lawful study, not usable information here",
+    "output": "AP-001/R3_TICK_CONTEXT/AP-001_WP3_COOVOLUTION_TABLES.json"
+  },
+  "quality_control": {
+    "feed_health": "degraded/contaminated anchors flagged; analyses report quality-excluded variants where the family role requires it",
+    "missingness": "per-family anchor coverage reported; no silent drops"
+  },
+  "exit_condition": "Every tick family ends with an anchor-context result and a post-anchor sequence result, or an explicit null / insufficient-support / quality-excluded status; payload dictionary complete; determinism hashes match.",
+  "deliverables": [
+    "AP-001/R3_TICK_CONTEXT/AP-001_WP3_PAYLOAD_DICTIONARY.json",
+    "AP-001/R3_TICK_CONTEXT/AP-001_WP3_CONDITIONING_TABLES.json",
+    "AP-001/R3_TICK_CONTEXT/AP-001_WP3_COOVOLUTION_TABLES.json",
+    "AP-001/R3_TICK_CONTEXT/AP-001_WP3_PREFLIGHT.json",
+    "AP-001/R3_TICK_CONTEXT/AP-001_WP3_REPORT.md"
+  ],
+  "interpretation_boundary": "Tables are frozen, then interpreted by the analyst. No scanner change after seeing results (defect protocol excepted). No candidate promotion in WP3.",
+  "change_rule": "Deviations require decision-log entries and director approval before affected evidence is used."
+}

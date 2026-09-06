@@ -20,3 +20,7 @@ path = "src/bin/stage2_pilot.rs"
 [[bin]]
 name = "fvg_availability_sidecar"
 path = "src/bin/fvg_availability_sidecar.rs"
+
+[[bin]]
+name = "ap001_wp1_contract"
+path = "src/bin/ap001_wp1_contract.rs"

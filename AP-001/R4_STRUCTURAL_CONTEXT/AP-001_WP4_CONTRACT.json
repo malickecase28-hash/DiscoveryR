@@ -1,0 +1,61 @@
+{
+  "contract_id": "AP-001-WP4-CONTRACT",
+  "status": "FROZEN (design); input bindings to WP2/WP3 artifacts recorded at WP4 start",
+  "frozen_utc": "2026-09-06",
+  "plan": "AP-001_PLAN_FROZEN.md (WP4 row, plan §7)",
+  "inherits": {
+    "wp1_contract": "AP-001/R1_CONTRACT/AP-001_WP1_CONTRACT.json (causal clock, partition, D-006 anchor rule)",
+    "wp2_contract": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_CONTRACT.json (anchor table, support/noise reference, band rules)",
+    "wp3_contract": "AP-001/R3_TICK_CONTEXT/AP-001_WP3_CONTRACT.json (co-evolution pattern, reanchor-candidate discipline)",
+    "anchors_input": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_ANCHORS.* sha256 recorded in WP4 preflight"
+  },
+  "objective": "Determine how known bar structure changes the anchor (context at the anchor) and how structural detectors evolve after the anchor, including joint price/detector sequencing, per plan §7, on the development leaf only.",
+  "bar_scales": ["15s", "30s", "1m", "5m", "15m", "1h", "4h"],
+  "bar_availability_clock": {
+    "rule": "a bar's payload becomes lawful at the received_ts_ns/source_sequence of the first tick whose event time enters a later bucket (established sidecar convention); bar_close_ts is the temporal boundary only",
+    "implementation": "the scanner streams ticks and bars together; for each anchor, the lawful snapshot per scale is the latest bar whose availability (received_ts, source_sequence) is strictly before the anchor's availability; else missing",
+    "native_scale": "every object keeps its scale label; scales are never merged into one population"
+  },
+  "context_roles": {
+    "location_and_zones": {"families": ["fvg", "range", "order_blocks", "dealing_range"], "at_anchor": "inside/outside, boundary relation, direction, age, normalized distance", "post_anchor": "first touch, fill, break, boundary interaction, object termination where lawful"},
+    "structural_transition": {"families": ["swings", "bos_choch", "local_structure"], "at_anchor": "latest direction, transition age, distance to known pivot", "post_anchor": "new swing, BOS/CHOCH, local-structure transition, transition latency"},
+    "liquidity": {"families": ["structural_liquidity", "micro_liquidity", "micro_liquidity_context"], "at_anchor": "side, distance, nearest lawful source, active relation", "post_anchor": "interaction, removal, migration, newly lawful state transition"},
+    "volume_and_session": {"families": ["volume_by_time", "volume_trend", "auction_context", "time_context"], "at_anchor": "state, session position, volume regime", "post_anchor": "state change and timing"},
+    "normalization": {"families": ["vwma_atr"], "at_anchor": "volatility and distance normalization levels", "post_anchor": "normalization-regime change only; not an independent event signal"},
+    "lineage": {"families": ["raw3"], "at_anchor": "dependency control, not an independent vote", "post_anchor": "lineage-preserving transition record only"}
+  },
+  "step_0_payload_inventory": {
+    "purpose": "inventory every field of the 16 bar-detector payloads per scale from a deterministic development-leaf sample before behavioral scans",
+    "output": "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_PAYLOAD_DICTIONARY.json — per detector per scale: fields, types, state-vs-event classification, availability semantics",
+    "rule": "fields without lawful availability semantics are excluded from anchor-time conditioning and marked"
+  },
+  "question_A_context_at_anchor": {
+    "snapshot": "at each WP2 anchor, the lawful latest bar payload per scale per family, per the availability clock",
+    "contrasts": ["inside vs outside active FVG/range", "near vs far from lawful structural boundary (normalized distance bands)", "aligned vs opposed to structural direction", "near vs away from liquidity", "in-transition vs stable structure", "session/auction/volume context"],
+    "outcomes_conditioned": "same outcome set as WP3 question class A (lifecycle + market)",
+    "output": "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_CONDITIONING_TABLES.json with support, blocks, effect vs WP2 reference, INSUFFICIENT_SUPPORT per reference rules"
+  },
+  "question_B_structural_evolution_after_anchor": {
+    "window": "post-anchor until episode end or +300s, whichever first",
+    "measurements": ["FVG touch/fill timing", "range boundary breaks", "BOS/CHOCH occurrence and latency", "liquidity interaction timing", "first structural transition per family per scale"],
+    "output": "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_EVOLUTION_TABLES.json"
+  },
+  "question_C_joint_sequencing": {
+    "definition": "ordered path per anchor: Drift-Burst anchor -> price movement -> other-detector transitions -> Drift-Burst transitions -> later price movement; records event order and latency, assumes no causality",
+    "measurements": ["event order table (price excursion vs structural transition vs tick-family transition vs Drift-Burst transition)", "latency distributions", "recurring sequence mining within predeclared length cap (<= 4 events, family-level resolution)", "cross-block recurrence of mined sequences (month blocks)", "dependency/lineage guard: dependent detectors (raw3 derivatives) collapsed into one information family for confluence counts"],
+    "reanchor_candidates": "recurring post-anchor events are LISTED for prospective re-anchor in their own lawful study; not treated as anchor-time information",
+    "output": "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_SEQUENCING_TABLES.json"
+  },
+  "exit_condition": "Report states which contexts matter, which detector-system sequences recur, which do not, and which lack support; payload dictionary complete; lineage notes recorded; determinism hashes match.",
+  "deliverables": [
+    "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_PAYLOAD_DICTIONARY.json",
+    "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_CONDITIONING_TABLES.json",
+    "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_EVOLUTION_TABLES.json",
+    "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_SEQUENCING_TABLES.json",
+    "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_PREFLIGHT.json",
+    "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_REPORT.md",
+    "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_CANDIDATE_LIST.json (candidate shortlist input, pre-promotion)"
+  ],
+  "interpretation_boundary": "Tables frozen, then interpreted. No candidate promotion in WP4; the candidate shortlist goes to the director promotion gate, then WP5.",
+  "change_rule": "Deviations require decision-log entries and director approval before affected evidence is used."
+}

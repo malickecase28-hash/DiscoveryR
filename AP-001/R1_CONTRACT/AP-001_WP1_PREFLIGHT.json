@@ -1,0 +1,440 @@
+{
+  "content_sha256": "dbea294d38f67751f6e797d5c9a11501731589719f623df756fcfebde5d83248",
+  "content_sha256_scope": "sha256 of the compact serde_json serialization (BTreeMap key order) of this object excluding content_sha256 and run_wall_clock_utc",
+  "contract_amendment": {
+    "decision": "D-005",
+    "scope": "anchor_definitions WEAK/ONLINE; STRONG/DECAY_RISK/DYING unchanged; recorded in AP-001_DECISION_LOG.md"
+  },
+  "contract_id": "AP-001-WP1-CONTRACT",
+  "contract_path": "F:\\TrinityR-research\\Research Program\\AP-001\\R1_CONTRACT\\AP-001_WP1_CONTRACT.json",
+  "contract_sha256": "f51bb18daa3e654fa58e3f400f96a2619c9f6585a12ee4176e9b7707b100d90c",
+  "g1_input_identity": {
+    "manifest_json": {
+      "actual_bytes": 1893861,
+      "actual_sha256": "1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af",
+      "expected_bytes": 1893861,
+      "expected_sha256": "1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af",
+      "match": true,
+      "path": "manifest.json"
+    },
+    "pass": true,
+    "payload_manifest_json": {
+      "actual_bytes": 2342922,
+      "actual_sha256": "78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed",
+      "expected_bytes": 2342922,
+      "expected_sha256": "78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed",
+      "match": true,
+      "path": "payload_manifest.json"
+    }
+  },
+  "g2_causal_ordering": {
+    "event_ts_nulls": 0,
+    "malformed_emitted_entries": 0,
+    "null_payloads": {
+      "ask": 0,
+      "bid": 0,
+      "payload_drift_burst": 236714,
+      "payload_feed_health": "not_measured (outside WP2 projection; footer statistics absent for string columns)",
+      "payload_micro_volatility": "not_measured (outside WP2 projection; footer statistics absent for string columns)",
+      "payload_quote_arrival": "not_measured (outside WP2 projection; footer statistics absent for string columns)",
+      "payload_quote_dynamics": "not_measured (outside WP2 projection; footer statistics absent for string columns)",
+      "payload_quote_pressure": "not_measured (outside WP2 projection; footer statistics absent for string columns)",
+      "payload_spread_state": "not_measured (outside WP2 projection; footer statistics absent for string columns)"
+    },
+    "ordering_regressions": 0,
+    "pass": true,
+    "payload_parse_fallbacks": 0,
+    "receive_before_event": 0,
+    "received_ts_nulls": 0,
+    "rows_checked": 43007489,
+    "source_sequence_nulls": 0,
+    "sub_ms_event_ts_rows": 0
+  },
+  "g3_anchor_sanity": {
+    "amendment": {
+      "carryover_observed": {
+        "ONLINE": 75,
+        "WEAK": 395
+      },
+      "carryover_replaced_in_window": {
+        "ONLINE": 0,
+        "WEAK": 0
+      },
+      "decision": "D-005",
+      "forming_attempts_ended_without_arming": 471037,
+      "rule": "WEAK/ONLINE anchor = first milestone sighting made while the snapshot's event_id is bound to the armed episode; a pre-origin sighting (ts_ms < origin_ts) is treated as carryover and replaced by the first in-window crossing only when such a crossing appears, otherwise the standing pre-origin value is kept; forming-window provisional crossings that never arm are not anchors; STRONG/DECAY_RISK/DYING unchanged"
+    },
+    "anchors_detected_armed_episodes": {
+      "DECAY_RISK": 23427,
+      "DYING": 22600,
+      "ONLINE": 24196,
+      "STRONG": 24253,
+      "WEAK": 24220
+    },
+    "anchors_matched": {
+      "DECAY_RISK": 23427,
+      "DYING": 22600,
+      "ONLINE": 24196,
+      "STRONG": 24253,
+      "WEAK": 24220
+    },
+    "boundary_ambiguous": {
+      "DECAY_RISK": 0,
+      "DYING": 0,
+      "ONLINE": 0,
+      "STRONG": 0,
+      "WEAK": 0
+    },
+    "closed_tracks_without_emission": 0,
+    "duplicate_emission_sightings": 0,
+    "duplicate_track_ids": 0,
+    "emitted_entries_at_leaf_start": 0,
+    "emitted_entries_seen": 24253,
+    "emitted_entry_mutations": 0,
+    "end_ts_vs_appearance_tick": {
+      "checked": 24253,
+      "mismatch": 0
+    },
+    "entries_without_track": 0,
+    "episodes_completed_in_leaf": 24253,
+    "excluded_left_truncated": {
+      "DECAY_RISK": 0,
+      "DYING": 0,
+      "ONLINE": 0,
+      "STRONG": 0,
+      "WEAK": 0
+    },
+    "forming_episodes_ended_without_burst": 471037,
+    "ground_truth_present": {
+      "DECAY_RISK": 23427,
+      "DYING": 22600,
+      "ONLINE": 24196,
+      "STRONG": 24253,
+      "WEAK": 24220
+    },
+    "left_truncated_tracks": 1,
+    "malformed_entries": 0,
+    "mismatches": {
+      "DECAY_RISK": 0,
+      "DYING": 0,
+      "ONLINE": 0,
+      "STRONG": 0,
+      "WEAK": 0,
+      "missing_live": {
+        "DECAY_RISK": 0,
+        "DYING": 0,
+        "ONLINE": 0,
+        "STRONG": 0,
+        "WEAK": 0
+      },
+      "spurious_live": {
+        "DECAY_RISK": 0,
+        "DYING": 0,
+        "ONLINE": 0,
+        "STRONG": 0,
+        "WEAK": 0
+      },
+      "total": 0,
+      "value_mismatch": {
+        "DECAY_RISK": 0,
+        "DYING": 0,
+        "ONLINE": 0,
+        "STRONG": 0,
+        "WEAK": 0
+      }
+    },
+    "pass": true,
+    "pre_amendment_first_sighting_diagnostic": {
+      "missing_live": {
+        "ONLINE": 0,
+        "WEAK": 0
+      },
+      "note": "run-1 frozen rule (first sighting in any phase) reproduced as a diagnostic only, not the gate",
+      "spurious": {
+        "ONLINE": 26,
+        "WEAK": 23
+      },
+      "value_mismatch": {
+        "ONLINE": 4114,
+        "WEAK": 10100
+      }
+    },
+    "pre_leaf_history_entries": 0,
+    "right_censored_armed": 0,
+    "right_censored_forming": 0,
+    "state_transitions": [
+      {
+        "count": 25002613,
+        "from": "IDLE",
+        "to": "IDLE"
+      },
+      {
+        "count": 485249,
+        "from": "IDLE",
+        "to": "DEVELOPING"
+      },
+      {
+        "count": 571,
+        "from": "IDLE",
+        "to": "BURST"
+      },
+      {
+        "count": 471037,
+        "from": "DEVELOPING",
+        "to": "IDLE"
+      },
+      {
+        "count": 15056639,
+        "from": "DEVELOPING",
+        "to": "DEVELOPING"
+      },
+      {
+        "count": 23222,
+        "from": "DEVELOPING",
+        "to": "BURST"
+      },
+      {
+        "count": 735,
+        "from": "BURST",
+        "to": "IDLE"
+      },
+      {
+        "count": 279,
+        "from": "BURST",
+        "to": "DEVELOPING"
+      },
+      {
+        "count": 449279,
+        "from": "BURST",
+        "to": "BURST"
+      },
+      {
+        "count": 125586,
+        "from": "BURST",
+        "to": "DECAY_RISK"
+      },
+      {
+        "count": 2347,
+        "from": "BURST",
+        "to": "DYING"
+      },
+      {
+        "count": 1536,
+        "from": "DECAY_RISK",
+        "to": "IDLE"
+      },
+      {
+        "count": 303,
+        "from": "DECAY_RISK",
+        "to": "DEVELOPING"
+      },
+      {
+        "count": 99692,
+        "from": "DECAY_RISK",
+        "to": "BURST"
+      },
+      {
+        "count": 653841,
+        "from": "DECAY_RISK",
+        "to": "DECAY_RISK"
+      },
+      {
+        "count": 24055,
+        "from": "DECAY_RISK",
+        "to": "DYING"
+      },
+      {
+        "count": 12513,
+        "from": "DYING",
+        "to": "IDLE"
+      },
+      {
+        "count": 8427,
+        "from": "DYING",
+        "to": "DEVELOPING"
+      },
+      {
+        "count": 5462,
+        "from": "DYING",
+        "to": "BURST"
+      },
+      {
+        "count": 347388,
+        "from": "DYING",
+        "to": "DYING"
+      }
+    ],
+    "tick_lag_informational": {
+      "DECAY_RISK": 0,
+      "DYING": 0,
+      "ONLINE": 0,
+      "STRONG": 0,
+      "WEAK": 0
+    },
+    "tracks_completed": 24253,
+    "tracks_started": 495290,
+    "unknown_state_rows": 0
+  },
+  "g4_benchmark": {
+    "batch_size": 16384,
+    "development_leaf_rows": 43007489,
+    "eta_development_leaf_seconds": 362.4026811,
+    "full_tape_eta_seconds": 576.7574649907216,
+    "full_tape_rows": 68445659,
+    "peak_rss_bytes": 113659904,
+    "projection": [
+      "event_ts_ns",
+      "received_ts_ns",
+      "source_sequence",
+      "bid",
+      "ask",
+      "payload_drift_burst"
+    ],
+    "rows_per_second": 118673.20867897409,
+    "rss_method": "GetProcessMemoryInfo PeakWorkingSetSize (K32) at end of run",
+    "run_wall_seconds_total": 362.5098438,
+    "scan_wall_seconds": 362.4026811
+  },
+  "inventory": {
+    "manifest_row_crosscheck_all_match": true,
+    "parts": [
+      {
+        "event_ts_max_ns": 1760486399365000000,
+        "event_ts_min_ns": 1752019268175000000,
+        "footer_rows": 12616326,
+        "footer_stats_present": true,
+        "manifest_rows": 12616326,
+        "manifest_rows_match": true,
+        "name": "part-00000.parquet",
+        "received_ts_max_ns": 1760486399365000000,
+        "received_ts_min_ns": 1752019268175000000,
+        "row_groups": 97,
+        "scan_policy": "full_development_scan",
+        "scanned_rows": 12616326
+      },
+      {
+        "event_ts_max_ns": 1765576736334000000,
+        "event_ts_min_ns": 1760486400051000000,
+        "footer_rows": 11503322,
+        "footer_stats_present": true,
+        "manifest_rows": 11503322,
+        "manifest_rows_match": true,
+        "name": "part-00001.parquet",
+        "received_ts_max_ns": 1765576736334000000,
+        "received_ts_min_ns": 1760486400051000000,
+        "row_groups": 88,
+        "scan_policy": "full_development_scan",
+        "scanned_rows": 11503322
+      },
+      {
+        "event_ts_max_ns": 1770335999979000000,
+        "event_ts_min_ns": 1765756800408000000,
+        "footer_rows": 11228177,
+        "footer_stats_present": true,
+        "manifest_rows": 11228177,
+        "manifest_rows_match": true,
+        "name": "part-00002.parquet",
+        "received_ts_max_ns": 1770335999979000000,
+        "received_ts_min_ns": 1765756800408000000,
+        "row_groups": 86,
+        "scan_policy": "full_development_scan",
+        "scanned_rows": 11228177
+      },
+      {
+        "event_ts_max_ns": 1774483198583000000,
+        "event_ts_min_ns": 1770336000147000000,
+        "footer_rows": 10724905,
+        "footer_stats_present": true,
+        "manifest_rows": 10724905,
+        "manifest_rows_match": true,
+        "name": "part-00003.parquet",
+        "received_ts_max_ns": 1774483198583000000,
+        "received_ts_min_ns": 1770336000147000000,
+        "row_groups": 82,
+        "scan_policy": "stopped_at_cutoff",
+        "scanned_rows": 7659664
+      },
+      {
+        "event_ts_max_ns": 1779148798924000000,
+        "event_ts_min_ns": 1774483200104000000,
+        "footer_rows": 11222475,
+        "footer_stats_present": true,
+        "manifest_rows": 11222475,
+        "manifest_rows_match": true,
+        "name": "part-00004.parquet",
+        "received_ts_max_ns": 1779148798924000000,
+        "received_ts_min_ns": 1774483200104000000,
+        "row_groups": 86,
+        "scan_policy": "confirmation_leaf_footer_only",
+        "scanned_rows": 0
+      },
+      {
+        "event_ts_max_ns": 1783987199973000000,
+        "event_ts_min_ns": 1779148800197000000,
+        "footer_rows": 11150454,
+        "footer_stats_present": true,
+        "manifest_rows": 11150454,
+        "manifest_rows_match": true,
+        "name": "part-00005.parquet",
+        "received_ts_max_ns": 1783987199973000000,
+        "received_ts_min_ns": 1779148800197000000,
+        "row_groups": 86,
+        "scan_policy": "confirmation_leaf_footer_only",
+        "scanned_rows": 0
+      }
+    ],
+    "parts_match": true,
+    "rows_match": true,
+    "tick_parts_expected": 6,
+    "tick_parts_found": 6,
+    "tick_rows_expected": 68445659,
+    "total_footer_rows": 68445659
+  },
+  "lake_root": "F:/TrinityR-research/analytical_lake/fusion_markets/xauusd",
+  "partition": {
+    "boundary": {
+      "first_confirmation_row_event_ts_ns": 1773619200072000000,
+      "first_confirmation_row_received_ts_ns": 1773619200072000000,
+      "part_index": 3,
+      "part_name": "part-00003.parquet",
+      "row_group": 58,
+      "row_index_in_part": 7659664
+    },
+    "confirmation_leaf_policy": "no row data evaluated at or after cutoff; later parts recorded from parquet footer metadata only",
+    "cutoff_ns": 1773619200000000000,
+    "cutoff_utc": "2026-03-16T00:00:00Z",
+    "development_leaf_rule": "received_ts_ns strictly before cutoff_ns, stream order; scan stops at the first row at/after the cutoff"
+  },
+  "run_wall_clock_utc": "2026-09-06T22:58:51Z",
+  "scanner": {
+    "binary": "src/bin/ap001_wp1_contract.rs",
+    "commit_note": "WP1 directive forbids committing; code identity recorded as file hashes and git state",
+    "crate": "research-tape",
+    "files": [
+      {
+        "bytes": 98129,
+        "path": "src/ap001_drift_burst.rs",
+        "sha256": "54e03f022d57c92f5d0a230ee6856fa215f3a4adedfc617c390109efa332d377"
+      },
+      {
+        "bytes": 2085,
+        "path": "src/bin/ap001_wp1_contract.rs",
+        "sha256": "ae0085184fef109a89475fe8c7af2bd04ca7e11a17a64610ed81e34c3ca9e295"
+      },
+      {
+        "bytes": 34046,
+        "path": "src/lib.rs",
+        "sha256": "991a66e151b4e6c4a3553c99420a3d212180b700611902bbd87697bea62052a5"
+      },
+      {
+        "bytes": 558,
+        "path": "Cargo.toml",
+        "sha256": "816795fa556aa8b9831fe24cfa68b43907c79694cd088b22b93415daa064b251"
+      }
+    ],
+    "git_dirty_files": 13,
+    "git_head": "eab3f76d64fb62502c4a0cf55ea05d7ff3009c15",
+    "module": "src/ap001_drift_burst.rs",
+    "scanner_content_sha256": "c5c990dae6aca18362c1e0052c64b021b69bb1d578d33c2d80dacca85558a226"
+  }
+}

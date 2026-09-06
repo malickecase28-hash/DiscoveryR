@@ -1,0 +1,94 @@
+{
+  "contract_id": "AP-001-WP2-CONTRACT",
+  "status": "FROZEN",
+  "frozen_utc": "2026-09-06",
+  "plan": "AP-001_PLAN_FROZEN.md (WP2 row, plan §4, §5, §11)",
+  "inherits": {
+    "wp1_contract": "AP-001/R1_CONTRACT/AP-001_WP1_CONTRACT.json",
+    "anchor_rule": "D-005 armed-episode first entry (see WP1 contract anchor_definitions as amended)",
+    "partition": "development leaf only; confirmation leaf untouched; cutoff 1773619200000000000 ns",
+    "causal_clock": "availability = received_ts_ns, tie-break = source_sequence; emitted_events fields never knowable before episode end"
+  },
+  "objective": "Produce the first complete Drift-Burst behavioral result on the development leaf: lifecycle atlas, six-horizon market paths, internal-attribute splits, and the frozen support/noise reference for later candidate screening.",
+  "cohort": {
+    "anchors": "first lawful entry per (armed episode, state) for WEAK, ONLINE, STRONG, DECAY_RISK, DYING, per D-005 rule",
+    "anchor_record": [
+      "anchor_id, episode_id, anchor_state, direction/internal_sign",
+      "availability: received_ts_ns, source_sequence; provenance event_ts_ns",
+      "anchor mid = (bid+ask)/2 of the anchor tick; bid/ask recorded",
+      "internal state at anchor: operational z/score/efficiency/var_rate/cabs/update_count/duration_s/net_log/direction, authority score_30s/score_60s, multiscale 5s/15s/30s/60s (z, score, efficiency, direction, duration_s, var_rate), milestones crossed so far with ts",
+      "episode age at anchor (anchor_ts - origin_ts), state age (anchor_ts - state entry ts)",
+      "multiscale agreement: count of agreeing scale directions (5s/15s/30s/60s) and boolean all-agree",
+      "left_truncated flag (episode in progress at leaf start)"
+    ]
+  },
+  "lifecycle_atlas": {
+    "per_episode": [
+      "origin (ts, price, direction), arm path (which forming window armed), milestone ladders with latencies from origin",
+      "state sequence with entry/exit times, re-entry counts (DECAY_RISK re-entries, DYING re-entries), decay_recoveries",
+      "peak: level, points, ts, latency from origin and from each milestone",
+      "termination: end_reason, end ts/price, duration origin->end, censor status",
+      "burst_points, burst_duration_to_peak_s, completion fields recorded as episode-end facts only"
+    ],
+    "population_tables": [
+      "first-entry transition matrix (episode-level state succession)",
+      "occupancy/re-entry table (consecutive state-bearing rows, per WP1 report table for continuity)",
+      "dwell distributions per state (tick count and wall seconds; median/quartiles)",
+      "termination end_reason distribution by entry state and by direction",
+      "censoring: right-censored episodes at cutoff (none expected; dev leaf ends IDLE per WP1), left-truncated count",
+      "state persistence: P(next state | current state, first-entry) and conditional on re-entry"
+    ]
+  },
+  "market_paths": {
+    "price": "mid = (bid+ask)/2 of ticks; windows measured in availability time from the anchor tick's received_ts_ns",
+    "horizons_seconds": [5, 15, 30, 60, 120, 300],
+    "horizon_rule": "horizon window = ticks with availability in (anchor_avail, anchor_avail + h*1e9]; if the leaf ends or a data gap truncates a window, record missingness with last covered offset; no imputation",
+    "measurements_per_window": [
+      "endpoint return: log(mid_end / mid_anchor)",
+      "signed return (raw) and direction-adjusted return (multiplied by anchor direction/internal_sign)",
+      "MFE: max favorable excursion (direction-adjusted) and its timing offset ms; MAE: max adverse excursion and timing offset ms",
+      "favorable_before_adverse: boolean from first-occurrence timing; adverse_before_favorable: boolean; tie flagged",
+      "continuation distance = direction-adjusted MFE magnitude; reversal distance = direction-adjusted MAE magnitude (explicit mapping; both stored)",
+      "realized variance: sum of squared per-second bucket log-returns within the window (buckets by floor(avail/1s); empty buckets excluded)",
+      "path efficiency: net log return / sum of |per-tick mid log changes| within window; 0 moves -> null",
+      "missingness columns per horizon: covered_ns, complete boolean, censor reason"
+    ],
+    "normalization": "raw values stored; normalized values = return / baseline_IQR(h) of the frozen noise reference; basis recorded alongside"
+  },
+  "internal_attribute_splits": {
+    "continuous_attributes": ["operational.z", "operational.score", "operational.efficiency", "operational.var_rate", "operational.cabs", "operational.update_count", "operational.duration_s", "episode_age", "state_age"],
+    "bands": "per attribute, quintile edges computed over the development anchor population of the corresponding anchor state; edges frozen into the reference artifact; raw values always retained alongside band labels",
+    "categorical_attributes": ["anchor_state", "direction", "multiscale all-agree boolean", "agreeing-scale count", "milestones already crossed (WEAK/ONLINE present at anchor)", "calendar month block", "session block (per lake analytical_session_authority named windows)"],
+    "outcomes_conditioned": ["next first-entry transition", "recovery from DECAY_RISK/DYING", "time-to-peak", "time-to-termination", "each horizon's direction-adjusted endpoint return, MFE, MAE, realized variance"],
+    "rule": "continuous variables stay continuous in evidence; band tables are readable summaries only"
+  },
+  "support_noise_reference": {
+    "purpose": "frozen before WP3/WP4 outcomes are opened (plan §11); basis for candidate screening and materiality",
+    "baseline_paths": "pseudo-anchors at every 500th development tick (deterministic row index i % 500 == 0 among state-bearing rows), same six horizons, same measurements, no conditioning; stored as the movement baseline",
+    "materiality_rule": "a conditional effect is material when |median direction-adjusted return difference vs the same-horizon baseline median| >= 0.10 * baseline_IQR(h)",
+    "support_rules": {
+      "SUPPORT_MIN": 250,
+      "BLOCKS_MIN": 3,
+      "block_definition": "calendar month (UTC) of anchor availability",
+      "block_rule": "effect sign consistent in >= 3 month blocks, each with >= 50 supporting anchors",
+      "dominance_rule": "no single month contributes > 50% of a cell's support",
+      "direction_stability": "sign of median effect consistent across >= 3 blocks AND across both leaf halves (split at development-leaf midpoint availability time)"
+    }
+  },
+  "determinism": {
+    "rerun": "full scan executed twice; output content hashes must match; measured runtime from the second run",
+    "memory": "streaming with bounded pending-window buffer (<= ~301 s of ticks plus pending measurements); report peak RSS"
+  },
+  "deliverables": {
+    "anchors": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_ANCHORS.json (or parquet if larger; sha256 recorded either way)",
+    "atlas": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_LIFECYCLE_ATLAS.json",
+    "market_paths": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_MARKET_PATHS.json",
+    "attribute_splits": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_INTERNAL_SPLITS.json",
+    "reference": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_SUPPORT_REFERENCE.json",
+    "e1_report": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_E1_REPORT.md (frozen before interpretation)",
+    "preflight": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_PREFLIGHT.json (row counts, anchor counts per state vs WP1, determinism hashes, runtime)"
+  },
+  "exit_condition": "Every anchor has a lifecycle result and market-path result, or an explicit INSUFFICIENT_SUPPORT/missingness status; atlas and splits complete; determinism hashes match; support reference frozen.",
+  "interpretation_boundary": "The E1 report is frozen, then interpreted by the research analyst. No scanner change after seeing results (defect protocol excepted). No candidate promotion in WP2; candidates form after WP4 per plan §10 flow.",
+  "change_rule": "Deviations require decision-log entries and director approval before affected evidence is used."
+}

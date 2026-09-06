@@ -1,0 +1,77 @@
+{
+  "contract_id": "AP-001-WP1-CONTRACT",
+  "status": "FROZEN",
+  "frozen_utc": "2026-09-06",
+  "plan": "AP-001_PLAN_FROZEN.md sha256 012fc0d676fe0092f10110b03a25c37fbe896198e136667bbfef7637c1676193",
+  "input_identity": {
+    "lake_root": "F:/TrinityR-research/analytical_lake/fusion_markets/xauusd",
+    "manifest_json": {
+      "path": "manifest.json",
+      "bytes": 1893861,
+      "sha256": "1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af"
+    },
+    "payload_manifest_json": {
+      "path": "payload_manifest.json",
+      "bytes": 2342922,
+      "sha256": "78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed"
+    },
+    "rule": "WP1 must re-verify both SHA256 values and byte sizes before any scan. Mismatch aborts WP1.",
+    "tick_parts_expected": 6,
+    "tick_rows_expected": 68445659
+  },
+  "causal_clock": {
+    "availability": "received_ts_ns",
+    "tie_break": "source_sequence",
+    "provenance": "event_ts_ns",
+    "ordering_gate": "stream order must be non-decreasing in (received_ts_ns, source_sequence); count regressions; gate applies to the development leaf (availability strictly before cutoff_ns) — the confirmation leaf stays unread until WP6",
+    "receive_not_before_event": "received_ts_ns < event_ts_ns violations must be counted and must be zero for the gate to pass (development leaf)",
+    "confirmation_leaf_integrity": "parquet footer metadata only (row counts per part) may be recorded; no row data from the confirmation leaf is read or used before WP6",
+    "at_anchor_knowable": [
+      "drift_burst_state.state",
+      "drift_burst_state.event_id",
+      "drift_burst_state.milestones.weak / .online (only when ts_ms <= anchor time)",
+      "drift_burst_state.operational.*",
+      "drift_burst_state.multiscale.5s/15s/30s/60s",
+      "drift_burst_state.authority.score_30s/score_60s",
+      "bid/ask of the anchor tick"
+    ],
+    "never_at_anchor": [
+      "drift_burst_state.emitted_events.* (appended at event end; contains peak, available_after_*, end_reason, completion)",
+      "any milestone or state value with ts_ms/availability later than the anchor",
+      "anything from ticks with (received_ts_ns, source_sequence) after the anchor"
+    ]
+  },
+  "anchor_definitions": {
+    "amendment": "WEAK/ONLINE amended by D-005, then mechanics finalized by D-006 (milestone candidate capture); STRONG/DECAY_RISK/DYING unchanged",
+    "episode": "one entry of drift_burst_state.emitted_events, spanning origin_ts..end_ts; completed events only provide ground truth; live reconstruction must detect entries causally",
+    "WEAK": "milestone candidate capture (D-006): when milestones.weak becomes non-null, record a candidate (crossing tick received_ts/source_sequence + at-crossing snapshot); replace the candidate when the producer replaces the milestone value (forming-window restart); at the episode's arm (first BURST tick) the surviving candidate is the episode's WEAK anchor, anchored at the candidate's crossing-tick availability; null milestone at arm means no WEAK anchor for that episode. Ground truth emitted_events.weak_ts. Provisional crossings replaced before arm are not anchors (backlog idea FORMING_PHASE_CROSSINGS).",
+    "ONLINE": "same candidate-capture mechanics with milestones.online; ground truth emitted_events.online_ts",
+    "STRONG": "first tick of the episode at which state == BURST; ground truth emitted_events.strong_ts (WP1 must verify BURST-entry == strong_ts for every completed episode; report mismatch count)",
+    "DECAY_RISK": "first tick of the episode at which state == DECAY_RISK; ground truth emitted_events.decay_risk_ts (first entry)",
+    "DYING": "first tick of the episode at which state == DYING; ground truth emitted_events.first_dying_ts",
+    "cohort_rule": "first lawful entry only; re-entries are occupancy material for WP2, not new anchors",
+    "left_boundary": "episodes already in progress at scan start are left-truncated: flag, exclude from analyses needing prior history, include in lawful current-state analyses",
+    "right_boundary": "episodes not ended by the partition cutoff are right-censored at the cutoff (end_reason=CENSORED_AT_PARTITION); they stay in the study"
+  },
+  "partition_policy": {
+    "declaration": "chronological detector-confirmation leaf, frozen before any discovery scan",
+    "cutoff_utc": "2026-03-16T00:00:00Z",
+    "cutoff_ns": 1773619200000000000,
+    "development_leaf": "ticks with availability (received_ts_ns, source_sequence) strictly before cutoff_ns; all WP2-WP5 scans read only this leaf",
+    "confirmation_leaf": "ticks with availability at or after cutoff_ns; read only in WP6, once, after candidate contract freeze",
+    "warm_state_rule": "confirmation run may reconstruct warm state from pre-cutoff history (past information); anchors remain >= cutoff only",
+    "censor_rule_development": "development scans never read ticks at or after cutoff_ns; outcome windows and episode terminations crossing the cutoff are censored with explicit missingness"
+  },
+  "wp1_gates": {
+    "G1_input_identity": "manifest SHA256 + sizes match this contract",
+    "G2_causal_ordering": "regression count == 0 and receive-before-event count == 0 over the full development leaf",
+    "G3_anchor_sanity": "for every completed episode observed in the development leaf: live-snapshot first-entry timestamps equal emitted milestone timestamps for WEAK/ONLINE/STRONG/DECAY_RISK/DYING; mismatch count == 0; anchor counts per state reported (episodes right-censored at the cutoff are excluded from the completeness cross-check and counted separately)",
+    "G4_benchmark": "streaming rows/s with the WP2 projection (drift_burst + ts + sequence + bid/ask), peak RSS, and development-leaf full-run ETA recorded"
+  },
+  "deliverables": {
+    "preflight": "AP-001/R1_CONTRACT/AP-001_WP1_PREFLIGHT.json",
+    "report": "AP-001/R1_CONTRACT/AP-001_WP1_REPORT.md",
+    "code": "crates/research-tape (ap001 module + ap001_wp1_contract binary), committed with code identity recorded in preflight"
+  },
+  "change_rule": "Any deviation from this contract requires a decision-log entry and director approval before the affected evidence is used."
+}
