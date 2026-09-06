@@ -13,6 +13,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut batch = development_view::DEFAULT_BATCH_SIZE;
     let mut copy = false;
     let mut verify = false;
+    let mut code: Option<String> = std::env::var("DISCOVERYR_CODE_IDENTITY").ok();
     let mut args = std::env::args().skip(1);
     while let Some(arg) = args.next() {
         match arg.as_str() {
@@ -23,6 +24,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "--batch-size" => batch = args.next().ok_or("missing --batch-size")?.parse()?,
             "--copy-full-parts" => copy = true,
             "--verify" => verify = true,
+            "--code-identity" => code = Some(args.next().ok_or("missing --code-identity")?),
             other => return Err(format!("unknown argument: {other}").into()),
         }
     }
@@ -33,8 +35,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         println!("XAUUSD DEVELOPMENT VIEW VERIFIED");
         return Ok(());
     }
-    let code = std::env::var("DISCOVERYR_CODE_IDENTITY")
-        .map_err(|_| "DISCOVERYR_CODE_IDENTITY must be set to the worker commit SHA")?;
+    let code = code.ok_or(
+        "DISCOVERYR_CODE_IDENTITY must be set to the worker commit SHA, or supply --code-identity",
+    )?;
     let identity = materialize(&source, &inventory, &view, &audit, &code, batch, copy)?;
     println!("{identity}");
     Ok(())
