@@ -1,0 +1,333 @@
+{
+ "artifact_type": "AP-002_QUESTION_REGISTRY_V1",
+ "generated": "2026-09-06",
+ "program": "AP-002 FVG",
+ "basis": {
+  "e1_freeze_commit": "a7a9637410a74aba4e23827fc1b1e7dc6ec34a6f",
+  "blind_qg_freeze_commit": "8a966ee (AP-002_BLIND_QG_UNIVERSE/REPORT/MANIFEST frozen before this merge)",
+  "phenotype_ledger": "docs/research/ap-002-e1-final-challenge/AP-002_E1_FINAL_METHOD_CHALLENGE.json#question_generator_handoff"
+ },
+ "merge_rules": {
+  "provenance": "source = BLIND_QG | PHENOTYPE_DERIVED | DIRECTOR | MULTIPLE; all provenance tags retained",
+  "dedup": "semantic equivalence merged; blind question ids referenced rather than duplicated",
+  "priority_axes": [
+   "scientific importance",
+   "semantic centrality",
+   "dependency order",
+   "execution cost",
+   "support feasibility"
+  ],
+  "forbidden_priority_inputs": "observed E1 effect sizes, return signs, winner status - NOT used"
+ },
+ "overlap_accounting": {
+  "phenotype_derived_items": 7,
+  "overlapping_blind_strong": [
+   "A",
+   "E",
+   "F"
+  ],
+  "overlapping_blind_partial": [
+   "B",
+   "C",
+   "D",
+   "G"
+  ],
+  "unique_to_phenotype_derived": [],
+  "blind_core_questions": 14,
+  "blind_core_matched_by_phenotype": [
+   "QG1-CORE-01",
+   "QG1-CORE-02",
+   "QG1-CORE-03",
+   "QG1-CORE-10",
+   "QG1-CORE-12",
+   "SF-1",
+   "SF-2"
+  ],
+  "blind_core_unique": [
+   "QG1-CORE-04",
+   "QG1-CORE-05",
+   "QG1-CORE-06",
+   "QG1-CORE-07",
+   "QG1-CORE-08",
+   "QG1-CORE-09",
+   "QG1-CORE-11",
+   "QG1-CORE-13",
+   "QG1-CORE-14"
+  ],
+  "independence_note": "The blind generator independently reached the gap-through question (CORE-10) from the written producer fill predicate and the stage-history question (CORE-03) from lifecycle semantics - the two highest-value phenotype findings - without consuming any E1 outcome. Direction-asymmetry survival (D) was NOT blind-generated, consistent with it being an observed outcome rather than a semantic structure."
+ },
+ "expansion_accounting": {
+  "blind_expanded_test_cells": 758,
+  "blind_e2_cells": 346,
+  "blind_e3_cells": 412,
+  "registry_question_level_records": 17,
+  "note": "PD-A/DIR-01 add the stage-matched panel as a distinct E2 instrument; final multiplicity is computed at E2 contract freeze."
+ },
+ "records": [
+  {
+   "registry_id": "PD-A",
+   "source": "MULTIPLE",
+   "provenance": {
+    "phenotype_derived": "AP-002_E1_FINAL_METHOD_CHALLENGE question_generator_handoff item A (derived from E1 interpreter findings; challenger priority HIGHEST)",
+    "blind_qg_matches": [
+     "QG1-CORE-03",
+     "SF-1"
+    ],
+    "match_degree": "STRONG",
+    "match_note": "CORE-03 conditions outcomes on within-zone stage history (untouched vs already-touched-not-filled, stage age); SF-1 is the parameterized stage x horizon x stratum family. Neither references the observed sign pattern."
+   },
+   "plain_language_question": "Is the formation->touch sign change a genuine stage-conditioned effect after matching the same eligible population (within-zone matched anchors, matched clock offsets)?",
+   "exposure_class": "E2_SAME_DOMAIN",
+   "exposure_note": null,
+   "priority_tier": 1,
+   "challenger_priority": "HIGHEST",
+   "justification": "18-neg/1-zero/2-pos (formation cohort) vs 21/21-positive (touch cohort) with outcome selection, anchor re-definition and horizon-clock shift confounded; no within-zone evidence exists; the E2 STAGE-MATCHED LIFECYCLE PANEL is the designated instrument.",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "PD-B",
+   "source": "MULTIPLE",
+   "provenance": {
+    "phenotype_derived": "AP-002_E1_FINAL_METHOD_CHALLENGE question_generator_handoff item B (derived from E1 interpreter findings; challenger priority HIGH)",
+    "blind_qg_matches": [
+     "QG1-CORE-03",
+     "QG1-CORE-02"
+    ],
+    "match_degree": "PARTIAL",
+    "match_note": "CORE-03 covers stage-history conditioning; CORE-02 provides the session/time-matched conditioning axis with within-direction matched nulls. No blind question names a formation-stage control cohort as such."
+   },
+   "plain_language_question": "Does post-touch behavior differ from matched formation-stage and time-matched controls?",
+   "exposure_class": "E2_SAME_DOMAIN",
+   "exposure_note": null,
+   "priority_tier": 2,
+   "challenger_priority": "HIGH",
+   "justification": "Complements A with a between-zone matched control: rules out drift and calendar/session artifacts as the source of the 21/21 post-touch positive medians.",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "PD-C",
+   "source": "MULTIPLE",
+   "provenance": {
+    "phenotype_derived": "AP-002_E1_FINAL_METHOD_CHALLENGE question_generator_handoff item C (derived from E1 interpreter findings; challenger priority HIGH)",
+    "blind_qg_matches": [
+     "QG1-CORE-03"
+    ],
+    "match_degree": "PARTIAL",
+    "match_note": "CORE-03's already-touched-not-filled state is the pre-fill baseline concept; no blind question specifies a matched pre-fill anchor contrast as such."
+   },
+   "plain_language_question": "Does post-fill behavior differ from matched pre-fill controls?",
+   "exposure_class": "E2_SAME_DOMAIN",
+   "exposure_note": null,
+   "priority_tier": 2,
+   "challenger_priority": "HIGH",
+   "justification": "FILL 21/21 positive but no pre-fill baseline anchor exists in E1B; 'continuation', 'neutralization' and 'reversion' labels are currently indistinguishable without it.",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "PD-D",
+   "source": "MULTIPLE",
+   "provenance": {
+    "phenotype_derived": "AP-002_E1_FINAL_METHOD_CHALLENGE question_generator_handoff item D (derived from E1 interpreter findings; challenger priority HIGHEST)",
+    "blind_qg_matches": [
+     "QG1-CORE-02",
+     "QG1-CORE-12"
+    ],
+    "match_degree": "PARTIAL",
+    "match_note": "CORE-02 conditions direction on calendar session with within-direction matched nulls; CORE-12 tests sign robustness of same-domain structures. No blind question targets direction asymmetry survival specifically - correct blindness behavior, since the asymmetry is an observed outcome."
+   },
+   "plain_language_question": "Does the direction asymmetry (bullish 42/42 positive; bearish mostly zero/negative) survive direction-matched, time-matched, drift-aware nulls?",
+   "exposure_class": "E2_SAME_DOMAIN",
+   "exposure_note": "direction/time-matched controls and drift-aware nulls may require E3 cross-domain surfaces (session/time context); recorded per question",
+   "priority_tier": 1,
+   "challenger_priority": "HIGHEST",
+   "justification": "The development window is upward-drifted (raw 41/42 positive across anchors), the direction-adjusted transform leaves drift residue under direction imbalance, and the formation population is bullish-skewed with scale (51.0%..60.5%); drift attribution is unresolved.",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "PD-E",
+   "source": "MULTIPLE",
+   "provenance": {
+    "phenotype_derived": "AP-002_E1_FINAL_METHOD_CHALLENGE question_generator_handoff item E (derived from E1 interpreter findings; challenger priority MEDIUM)",
+    "blind_qg_matches": [
+     "QG1-CORE-10"
+    ],
+    "match_degree": "STRONG",
+    "match_note": "CORE-10 independently derives anomalous completion modes including fill-without-prior-touch from the written producer fill predicate (fill test independent of overlap), with no knowledge of the 1,010-case observation."
+   },
+   "plain_language_question": "Does gap-through fill differ from ordinary touch->fill after proper matching (direction/composition-matched, adequate-N strata)?",
+   "exposure_class": "E2_SAME_DOMAIN",
+   "exposure_note": null,
+   "priority_tier": 3,
+   "challenger_priority": "MEDIUM",
+   "justification": "15s null vs 30s single-stratum contrast (n=213, 55.9% vs 51.1% bullish, wider IQR); no matched test exists; 5m-4h unmeasurable in-window.",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "PD-F",
+   "source": "MULTIPLE",
+   "provenance": {
+    "phenotype_derived": "AP-002_E1_FINAL_METHOD_CHALLENGE question_generator_handoff item F (derived from E1 interpreter findings; challenger priority MEDIUM)",
+    "blind_qg_matches": [
+     "QG1-CORE-01",
+     "SF-2"
+    ],
+    "match_degree": "STRONG",
+    "match_note": "CORE-01 conditions later-stage outcomes on formation-time magnitude attributes (gap in formation-ATR units, impulse body fraction); SF-2 is the attribute x horizon family."
+   },
+   "plain_language_question": "Do gap_atr or fvg_quality modify lifecycle duration or stage response?",
+   "exposure_class": "E2_SAME_DOMAIN",
+   "exposure_note": null,
+   "priority_tier": 3,
+   "challenger_priority": "MEDIUM",
+   "justification": "Median-split orderings are sign-unstable across anchors/horizons/strata and largest at smallest N; gap_atr p05 is floor-pinned at 0.2205-0.2294 vs min_gap_atr 0.2 (threshold-selected population); duration modification is untested and censor-aware estimation is required.",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "PD-G",
+   "source": "MULTIPLE",
+   "provenance": {
+    "phenotype_derived": "AP-002_E1_FINAL_METHOD_CHALLENGE question_generator_handoff item G (derived from E1 interpreter findings; challenger priority MEDIUM)",
+    "blind_qg_matches": [
+     "QG1-CORE-10"
+    ],
+    "match_degree": "PARTIAL",
+    "match_note": "CORE-10's anomalous completion modes include zero-duration completion; no blind question isolates same-bar resolution as a distinct phenotype hypothesis."
+   },
+   "plain_language_question": "Does same-bar fill represent a distinct lifecycle phenotype (vs multi-bar touch->fill) after matching?",
+   "exposure_class": "E2_SAME_DOMAIN",
+   "exposure_note": null,
+   "priority_tier": 3,
+   "challenger_priority": "MEDIUM",
+   "justification": "34.2-40.4% same-bar mass with p25=0 everywhere; geometric point-mass alternative unresolved; no committed outcome comparison between the two modes (P-04 QG3 registered, unmeasured).",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "DIR-01",
+   "source": "MULTIPLE",
+   "provenance": {
+    "director": "Director mandatory selection audit (AP-002 E1 final challenge paste): recommend the exact E2/QG experiment separating stage-conditioned behavior from selection into touch/fill",
+    "blind_qg_matches": [
+     "QG1-CORE-03",
+     "SF-1"
+    ],
+    "match_degree": "STRONG",
+    "match_note": "The blind stage-conditioned family and stage-history core question occupy the same semantic cell without knowledge of the selection confound."
+   },
+   "plain_language_question": "E2 STAGE-MATCHED LIFECYCLE PANEL: within-zone matched formation-vs-first-touch contrasts at identical calendar offsets, censor-aware selection model of touched vs never-touched and filled vs touched-unfilled, time-matched no-FVG drift-aware null; pre-registered rule: stage-conditioned = within-zone sign change that also beats the null, selection-only = it vanishes.",
+   "exposure_class": "E2_SAME_DOMAIN",
+   "priority_tier": 1,
+   "justification": "The only pre-registered instrument that can convert the cohort-pattern sign reversal into (or rule out) a stage effect; ordered by the director before any E1 freeze.",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "BQ-QG1-CORE-04",
+   "source": "BLIND_QG",
+   "provenance": {
+    "blind_qg": "AP-002_BLIND_QG_UNIVERSE.json CORE_QUESTIONS (generated with no E1 behavioral inputs)"
+   },
+   "plain_language_question": "Does the same-stratum spatial configuration of simultaneously active FVG zones at formation - count of active zones overlapping the anchor's price interval, containment within another active zone, and normalized distance to the nearest active zone edge - condition the anchor zone's touch/fill/invalidation outcomes?",
+   "exposure_class": "E2_SAME_DOMAIN (sub-rule E2C: same-detector population properties)",
+   "priority_tier": 3,
+   "priority_note": "tiered on semantic centrality to the FVG object, dependency order (same-domain before cross-domain), and execution cost; no observed outcomes used",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "BQ-QG1-CORE-05",
+   "source": "BLIND_QG",
+   "provenance": {
+    "blind_qg": "AP-002_BLIND_QG_UNIVERSE.json CORE_QUESTIONS (generated with no E1 behavioral inputs)"
+   },
+   "plain_language_question": "Do the terminal outcomes of recently completed same-stratum, same-direction zones - a rolling fill fraction over the prior K completed zones - condition the next formed zone's outcomes beyond its own formation attributes?",
+   "exposure_class": "E2_SAME_DOMAIN (sub-rule E2C: own past instances / population history)",
+   "priority_tier": 2,
+   "priority_note": "tiered on semantic centrality to the FVG object, dependency order (same-domain before cross-domain), and execution cost; no observed outcomes used",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "BQ-QG1-CORE-06",
+   "source": "BLIND_QG",
+   "provenance": {
+    "blind_qg": "AP-002_BLIND_QG_UNIVERSE.json CORE_QUESTIONS (generated with no E1 behavioral inputs)"
+   },
+   "plain_language_question": "Do tick-surface microstructure context families (declared candidate set: drift_burst, spread_state, quote_dynamics, quote_arrival, micro_volatility, feed_health, quote_pressure), read as presence-in-window or state-bucket readouts at formation availability time, condition FVG touch/fill outcomes beyond magnitude, direction, and session controls?",
+   "exposure_class": "E3_CROSS_DOMAIN",
+   "priority_tier": 2,
+   "priority_note": "tiered on semantic centrality to the FVG object, dependency order (same-domain before cross-domain), and execution cost; no observed outcomes used",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "BQ-QG1-CORE-07",
+   "source": "BLIND_QG",
+   "provenance": {
+    "blind_qg": "AP-002_BLIND_QG_UNIVERSE.json CORE_QUESTIONS (generated with no E1 behavioral inputs)"
+   },
+   "plain_language_question": "Do bar-surface structural context families (declared candidate set: swings, raw3, range, bos_choch, order_blocks, local_structure, structural_liquidity, dealing_range, micro_liquidity, micro_liquidity_context) with presence-in-window or recency readouts over prior windows condition FVG touch/fill outcomes?",
+   "exposure_class": "E3_CROSS_DOMAIN",
+   "priority_tier": 2,
+   "priority_note": "tiered on semantic centrality to the FVG object, dependency order (same-domain before cross-domain), and execution cost; no observed outcomes used",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "BQ-QG1-CORE-08",
+   "source": "BLIND_QG",
+   "provenance": {
+    "blind_qg": "AP-002_BLIND_QG_UNIVERSE.json CORE_QUESTIONS (generated with no E1 behavioral inputs)"
+   },
+   "plain_language_question": "Is there lead/lag structure between context-family event counts (bar-structural and tick classes) and FVG formation intensity within each stratum, at lags measured on lawful availability times?",
+   "exposure_class": "E3_CROSS_DOMAIN",
+   "priority_tier": 3,
+   "priority_note": "tiered on semantic centrality to the FVG object, dependency order (same-domain before cross-domain), and execution cost; no observed outcomes used",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "BQ-QG1-CORE-09",
+   "source": "BLIND_QG",
+   "provenance": {
+    "blind_qg": "AP-002_BLIND_QG_UNIVERSE.json CORE_QUESTIONS (generated with no E1 behavioral inputs)"
+   },
+   "plain_language_question": "Do FVG formations cluster in time within a stratum beyond a homogeneous-rate baseline - i.e., does a formation elevate short-horizon formation hazard for subsequent same-stratum zones (or disperse them)?",
+   "exposure_class": "E2_SAME_DOMAIN (sub-rule E2C: own past instances)",
+   "priority_tier": 2,
+   "priority_note": "tiered on semantic centrality to the FVG object, dependency order (same-domain before cross-domain), and execution cost; no observed outcomes used",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "BQ-QG1-CORE-11",
+   "source": "BLIND_QG",
+   "provenance": {
+    "blind_qg": "AP-002_BLIND_QG_UNIVERSE.json CORE_QUESTIONS (generated with no E1 behavioral inputs)"
+   },
+   "plain_language_question": "Beyond the same-domain conditioning set (formation magnitude, stage history, crowding, session), do cross-domain context readouts (SF-4 forms) improve prospective prediction of FVG touch/fill outcomes?",
+   "exposure_class": "E3_CROSS_DOMAIN",
+   "priority_tier": 3,
+   "priority_note": "tiered on semantic centrality to the FVG object, dependency order (same-domain before cross-domain), and execution cost; no observed outcomes used",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "BQ-QG1-CORE-13",
+   "source": "BLIND_QG",
+   "provenance": {
+    "blind_qg": "AP-002_BLIND_QG_UNIVERSE.json CORE_QUESTIONS (generated with no E1 behavioral inputs)"
+   },
+   "plain_language_question": "Are duration and transition conclusions robust to the treatment of end-of-stream right-censoring (censored-aware survival estimators vs naive complete-case deletion), given the authority's no-synthetic-tail-bar rule?",
+   "exposure_class": "E2_SAME_DOMAIN (sub-rule E2C: population composition rules, including censoring rules, are same-detector population properties)",
+   "priority_tier": 3,
+   "priority_note": "tiered on semantic centrality to the FVG object, dependency order (same-domain before cross-domain), and execution cost; no observed outcomes used",
+   "status": "REGISTERED_NOT_TESTED"
+  },
+  {
+   "registry_id": "BQ-QG1-CORE-14",
+   "source": "BLIND_QG",
+   "provenance": {
+    "blind_qg": "AP-002_BLIND_QG_UNIVERSE.json CORE_QUESTIONS (generated with no E1 behavioral inputs)"
+   },
+   "plain_language_question": "Does the formation availability lag (lawful available_time minus bar_close_ts, per the frozen boundary-crossing tick receipt rule) materially change (a) which context values are causally eligible at the anchor and (b) measured horizon lengths, relative to using bar_close_ts as the anchor time?",
+   "exposure_class": "E3_CROSS_DOMAIN (instrument-level context: frozen availability sidecar metadata)",
+   "priority_tier": 3,
+   "priority_note": "tiered on semantic centrality to the FVG object, dependency order (same-domain before cross-domain), and execution cost; no observed outcomes used",
+   "status": "REGISTERED_NOT_TESTED"
+  }
+ ],
+ "confirmation_status": "LOCKED",
+ "status": "REGISTERED_NOT_TESTED - no question has been executed"
+}

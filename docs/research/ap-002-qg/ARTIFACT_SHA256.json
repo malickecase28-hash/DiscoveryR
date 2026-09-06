@@ -1,0 +1,32 @@
+{
+  "artifact_type": "ARTIFACT_HASH_REGISTRY",
+  "entries": [
+    {
+      "bytes": 8242,
+      "logical_name": "AP-002_BLIND_QG_MANIFEST.json",
+      "path": "docs/research/ap-002-qg/AP-002_BLIND_QG_MANIFEST.json",
+      "sha256": "cf9575e3c3f1caed966dd4fc2295a67f2914ce1b6936e49522f15f2e39ae354c"
+    },
+    {
+      "bytes": 16478,
+      "logical_name": "AP-002_BLIND_QG_REPORT.md",
+      "path": "docs/research/ap-002-qg/AP-002_BLIND_QG_REPORT.md",
+      "sha256": "2e5ea92d0d92a4a2ae92cd366ebaef97cc193a044edfd89d2f8cbeae2f11420c"
+    },
+    {
+      "bytes": 79914,
+      "logical_name": "AP-002_BLIND_QG_UNIVERSE.json",
+      "path": "docs/research/ap-002-qg/AP-002_BLIND_QG_UNIVERSE.json",
+      "sha256": "835d6e89007919d842b3d40434f664adaef5549ef1d3e98ee0995f0d401b54ee"
+    },
+    {
+      "bytes": 18799,
+      "logical_name": "AP-002_QUESTION_REGISTRY_V1.json",
+      "path": "docs/research/ap-002-qg/AP-002_QUESTION_REGISTRY_V1.json",
+      "sha256": "ccf162a72fe68109732be00c443f1cc88d16b339422dc8ad1da67ab627b809e4"
+    }
+  ],
+  "generator": "artifact_hash_registry",
+  "generator_code_identity": "8a966ee9697930570d8c49a4962e4eda7136bbbe",
+  "root": "."
+}
