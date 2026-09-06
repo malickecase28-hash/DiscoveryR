@@ -1,10 +1,15 @@
 //! Canonical population-level Program R execution.
 //!
-//! The older `research` module is retained as a bounded synthetic compatibility
-//! path. This module is the production-facing generic runner: an experiment is a
-//! population of anchor instances across time, context is checked per anchor,
-//! native anchor/context scales are preserved separately, and candidate
-//! promotion requires an explicit pre-declared gate.
+//! An experiment is a population of anchor instances across time. Missing
+//! context never removes an anchor from the population; it is counted as
+//! missingness for the relevant question. Context is checked against each
+//! anchor's causal clock, anchor/context native scales remain separate, and
+//! candidate promotion requires an explicit predeclared gate.
+//!
+//! Only three generic numeric kernels live here. Semantic operators that need
+//! lifecycle, nesting, spatial, regime or detector-specific logic must be
+//! executed by typed detector adapters rather than being mislabeled as a
+//! correlation.
 
 use crate::{DetectorAtlas, DetectorDescriptor, RelationshipOperator};
 use research_contracts::{
@@ -16,7 +21,7 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet};
 
-const REPORT_DOMAIN: &[u8] = b"trinityr-population-r-report-v1\0";
+const REPORT_DOMAIN: &[u8] = b"trinityr-population-r-report-v2\0";
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
@@ -42,8 +47,11 @@ impl DetectorDescriptorInput {
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum MetricKind {
+    /// Generic numeric association only; maps to the `context` relationship.
     Pearson,
+    /// Sign-alignment fraction; maps only to the `directional` relationship.
     DirectionalConcordance,
+    /// Mean anchor-availability lag; maps to `temporal` or `lead_lag`.
     MeanLagNs,
 }
 
@@ -87,6 +95,9 @@ pub struct PopulationRecordInput {
     pub scope_identity: String,
     pub source_manifest_identity: String,
     pub anchor: AnchorInstance,
+    /// Zero or more causally available contexts. A requested context may be
+    /// absent; that absence is recorded in result denominators rather than
+    /// filtering the anchor population.
     pub contexts: Vec<ContextObservation>,
 }
 
@@ -97,10 +108,15 @@ pub struct PopulationRunInput {
     pub permission: ContextPermission,
     pub reproducibility: ReproducibilityIdentity,
     pub complete_reproducibility: CompleteReproducibilityIdentity,
+    /// A canonical result is instrument-scoped. Reuse is achieved by running the
+    /// same contract for the next instrument, not by mixing instruments inside
+    /// one statistical population.
     pub instrument_ids: Vec<String>,
     pub anchor_detector_id: String,
     pub anchor_ids: Vec<String>,
+    /// Empty means the detector role does not use lifecycle-state filtering.
     pub lifecycle_states: Vec<String>,
+    /// Empty is valid for phenotype-only E1 work.
     pub metric_requests: Vec<MetricRequest>,
     pub max_records: usize,
     pub records: Vec<PopulationRecordInput>,
@@ -111,7 +127,8 @@ pub struct PopulationRunInput {
 pub struct PopulationPhenotype {
     pub native_scale: NativeScale,
     pub lifecycle_state: String,
-    pub samples: usize,
+    pub anchor_instances: usize,
+    pub value_samples: usize,
     pub mean: Option<f64>,
     pub minimum: Option<f64>,
     pub p10: Option<f64>,
@@ -132,7 +149,13 @@ pub struct MetricDiscovery {
     pub anchor_scale: NativeScale,
     pub context_scale: NativeScale,
     pub same_native_scale: bool,
+    pub anchor_population: usize,
+    pub context_present: usize,
     pub observations: usize,
+    pub missing_context: usize,
+    pub missing_anchor_value: usize,
+    pub missing_context_value: usize,
+    pub zero_direction_excluded: usize,
     pub value: Option<f64>,
     pub mean_lag_ns: Option<f64>,
     pub identity: String,
@@ -169,7 +192,7 @@ pub struct PopulationResearchReport {
 
 impl PopulationResearchReport {
     pub fn validate_identity(&self) -> Result<(), ContractError> {
-        if self.report_version != 1 || self.output_identity != report_identity(self)? {
+        if self.report_version != 2 || self.output_identity != report_identity(self)? {
             return Err(ContractError::Invalid(
                 "population Program R report identity mismatch".into(),
             ));
@@ -192,13 +215,12 @@ pub fn run_population_research(
     if input.max_records == 0
         || input.records.len() > input.max_records
         || input.detectors.is_empty()
-        || input.instrument_ids.is_empty()
+        || input.instrument_ids.len() != 1
         || input.anchor_detector_id.is_empty()
         || input.anchor_ids.is_empty()
-        || input.metric_requests.is_empty()
     {
         return Err(ContractError::Invalid(
-            "population runner has an empty or exceeded bound".into(),
+            "population runner has an invalid scope or exceeded bound".into(),
         ));
     }
     if has_duplicates(&input.instrument_ids)
@@ -207,6 +229,11 @@ pub fn run_population_research(
     {
         return Err(ContractError::Invalid(
             "population identities must be unique".into(),
+        ));
+    }
+    if input.complete_reproducibility.instrument_identity != input.instrument_ids[0] {
+        return Err(ContractError::Invalid(
+            "reproducibility instrument identity mismatch".into(),
         ));
     }
 
@@ -242,17 +269,23 @@ pub fn run_population_research(
     let scope_end_ns = input.records.iter().map(|record| record.anchor.anchor_time).max();
     let status = if input.records.is_empty() {
         EvidenceState::Unknown
-    } else if discoveries
-        .iter()
-        .all(|discovery| discovery.status == EvidenceState::Inconclusive)
+    } else if !discoveries.is_empty()
+        && discoveries.iter().all(|discovery| {
+            matches!(
+                discovery.status,
+                EvidenceState::Unknown | EvidenceState::Inconclusive
+            )
+        })
     {
         EvidenceState::Inconclusive
+    } else if discoveries.is_empty() {
+        EvidenceState::Known
     } else {
         EvidenceState::Partial
     };
 
     let mut report = PopulationResearchReport {
-        report_version: 1,
+        report_version: 2,
         records: input.records.len(),
         anchor_instances: input.records.len(),
         scope_start_ns,
@@ -278,10 +311,16 @@ fn validate_metric_requests(
         .detector(&input.anchor_detector_id)
         .ok_or_else(|| ContractError::Invalid("unknown anchor detector".into()))?;
     let mut question_ids = BTreeSet::new();
+    let mut requested_pairs = BTreeSet::new();
     for request in &input.metric_requests {
         if request.question_id.is_empty()
             || request.context_detector_id.is_empty()
             || !question_ids.insert(request.question_id.clone())
+            || !requested_pairs.insert((
+                request.context_detector_id.clone(),
+                request.context_scale.clone(),
+                request.question_id.clone(),
+            ))
         {
             return Err(ContractError::Invalid(
                 "metric request identities must be unique and nonempty".into(),
@@ -294,6 +333,11 @@ fn validate_metric_requests(
             .transpose()?;
         let operator = parse_operator(&request.operator)
             .ok_or_else(|| ContractError::Invalid("unknown relationship operator".into()))?;
+        if !metric_supports_operator(request.metric, operator) {
+            return Err(ContractError::Invalid(
+                "generic metric does not implement the declared semantic operator".into(),
+            ));
+        }
         let context = atlas
             .detector(&request.context_detector_id)
             .ok_or_else(|| ContractError::Invalid("unknown context detector".into()))?;
@@ -333,21 +377,23 @@ fn validate_records(
     input: &PopulationRunInput,
     atlas: &DetectorAtlas,
 ) -> Result<(), ContractError> {
-    let expected_contexts = input
+    let requested_pairs = input
         .metric_requests
         .iter()
-        .map(|request| request.context_detector_id.clone())
+        .map(|request| {
+            (
+                request.context_detector_id.clone(),
+                request.context_scale.clone(),
+            )
+        })
         .collect::<BTreeSet<_>>();
     let anchor = atlas
         .detector(&input.anchor_detector_id)
         .ok_or_else(|| ContractError::Invalid("unknown anchor detector".into()))?;
-    let mut previous: Option<(String, i64, String, u64)> = None;
+    let mut previous: Option<(i64, String, u64)> = None;
 
     for record in &input.records {
-        if record.instrument_id.is_empty()
-            || record.scope_identity.is_empty()
-            || record.source_manifest_identity.is_empty()
-            || !input.instrument_ids.contains(&record.instrument_id)
+        if record.instrument_id != input.instrument_ids[0]
             || record.scope_identity != input.complete_reproducibility.data_scope_identity
             || record.source_manifest_identity
                 != input.complete_reproducibility.source_manifest_identity
@@ -371,7 +417,6 @@ fn validate_records(
         }
 
         let key = (
-            record.instrument_id.clone(),
             record.anchor.anchor_time,
             record.anchor.source.part.clone(),
             record.anchor.source.row_index,
@@ -383,22 +428,15 @@ fn validate_records(
         }
         previous = Some(key);
 
-        let actual_contexts = record
-            .contexts
-            .iter()
-            .map(|context| context.detector_id.clone())
-            .collect::<BTreeSet<_>>();
-        if actual_contexts != expected_contexts || actual_contexts.len() != record.contexts.len() {
-            return Err(ContractError::Invalid(
-                "population record context set mismatch".into(),
-            ));
-        }
-
+        let mut seen_contexts = BTreeSet::new();
         for context in &record.contexts {
+            let pair = (context.detector_id.clone(), context.native_scale.clone());
             let descriptor = atlas
                 .detector(&context.detector_id)
                 .ok_or_else(|| ContractError::Invalid("unknown context detector".into()))?;
-            if context.source.part.is_empty()
+            if !requested_pairs.contains(&pair)
+                || !seen_contexts.insert(pair)
+                || context.source.part.is_empty()
                 || context.available_time < 0
                 || context.available_time > record.anchor.anchor_time
                 || context.value.is_some_and(|value| !value.is_finite())
@@ -436,11 +474,12 @@ fn phenotype_summary(
 
     counts
         .into_iter()
-        .map(|((native_scale, lifecycle_state), samples)| {
+        .map(|((native_scale, lifecycle_state), anchor_instances)| {
             let mut values = groups
                 .remove(&(native_scale.clone(), lifecycle_state.clone()))
                 .unwrap_or_default();
             values.sort_by(|left, right| left.total_cmp(right));
+            let value_samples = values.len();
             let mean = (!values.is_empty())
                 .then(|| values.iter().sum::<f64>() / values.len() as f64);
             let minimum = values.first().copied();
@@ -451,7 +490,8 @@ fn phenotype_summary(
             let identity = hash_json(&(
                 &native_scale,
                 &lifecycle_state,
-                samples,
+                anchor_instances,
+                value_samples,
                 &values,
                 mean,
                 minimum,
@@ -463,7 +503,8 @@ fn phenotype_summary(
             Ok(PopulationPhenotype {
                 native_scale,
                 lifecycle_state,
-                samples,
+                anchor_instances,
+                value_samples,
                 mean,
                 minimum,
                 p10,
@@ -471,7 +512,7 @@ fn phenotype_summary(
                 p90,
                 maximum,
                 identity,
-                status: if samples == 0 {
+                status: if anchor_instances == 0 {
                     EvidenceState::Unknown
                 } else {
                     EvidenceState::Known
@@ -485,51 +526,69 @@ fn discover(
     request: &MetricRequest,
     records: &[PopulationRecordInput],
 ) -> Result<MetricDiscovery, ContractError> {
-    let mut pairs = Vec::new();
-    for record in records {
-        if record.anchor.native_scale != request.anchor_scale {
-            continue;
-        }
+    let relevant = records
+        .iter()
+        .filter(|record| record.anchor.native_scale == request.anchor_scale)
+        .collect::<Vec<_>>();
+    let anchor_population = relevant.len();
+    let mut context_present = 0usize;
+    let mut missing_anchor_value = 0usize;
+    let mut missing_context_value = 0usize;
+    let mut zero_direction_excluded = 0usize;
+    let mut numeric_pairs = Vec::new();
+    let mut lags = Vec::new();
+
+    for record in relevant {
         let Some(context) = record.contexts.iter().find(|context| {
             context.detector_id == request.context_detector_id
                 && context.native_scale == request.context_scale
         }) else {
             continue;
         };
+        context_present += 1;
         let lag = record.anchor.anchor_time - context.available_time;
-        match request.metric {
-            MetricKind::MeanLagNs => pairs.push((0.0, 0.0, lag)),
-            MetricKind::Pearson | MetricKind::DirectionalConcordance => {
-                if let (Some(anchor), Some(context_value)) = (record.anchor.value, context.value) {
-                    pairs.push((anchor, context_value, lag));
-                }
-            }
+        lags.push(lag);
+        if request.metric == MetricKind::MeanLagNs {
+            continue;
         }
+        let Some(anchor_value) = record.anchor.value else {
+            missing_anchor_value += 1;
+            continue;
+        };
+        let Some(context_value) = context.value else {
+            missing_context_value += 1;
+            continue;
+        };
+        if request.metric == MetricKind::DirectionalConcordance
+            && (anchor_value == 0.0 || context_value == 0.0)
+        {
+            zero_direction_excluded += 1;
+            continue;
+        }
+        numeric_pairs.push((anchor_value, context_value));
     }
 
-    let observations = pairs.len();
-    let mean_lag_ns = (!pairs.is_empty())
-        .then(|| pairs.iter().map(|pair| pair.2 as f64).sum::<f64>() / observations as f64);
-    let value = match request.metric {
-        MetricKind::Pearson => pearson(&pairs),
+    let missing_context = anchor_population.saturating_sub(context_present);
+    let mean_lag_ns = (!lags.is_empty())
+        .then(|| lags.iter().map(|value| *value as f64).sum::<f64>() / lags.len() as f64);
+    let (observations, value) = match request.metric {
+        MetricKind::Pearson => (numeric_pairs.len(), pearson(&numeric_pairs)),
         MetricKind::DirectionalConcordance => {
-            let usable = pairs
-                .iter()
-                .filter(|(anchor, context, _)| *anchor != 0.0 && *context != 0.0)
-                .collect::<Vec<_>>();
-            (!usable.is_empty()).then(|| {
-                usable
+            let observations = numeric_pairs.len();
+            let value = (observations > 0).then(|| {
+                numeric_pairs
                     .iter()
-                    .filter(|(anchor, context, _)| anchor.signum() == context.signum())
+                    .filter(|(anchor, context)| anchor.signum() == context.signum())
                     .count() as f64
-                    / usable.len() as f64
-            })
+                    / observations as f64
+            });
+            (observations, value)
         }
-        MetricKind::MeanLagNs => mean_lag_ns,
+        MetricKind::MeanLagNs => (lags.len(), mean_lag_ns),
     };
-    let status = if observations == 0 {
+    let status = if anchor_population == 0 {
         EvidenceState::Unknown
-    } else if value.is_none() {
+    } else if observations == 0 || value.is_none() {
         EvidenceState::Inconclusive
     } else {
         EvidenceState::Partial
@@ -541,7 +600,13 @@ fn discover(
         request.metric,
         &request.anchor_scale,
         &request.context_scale,
+        anchor_population,
+        context_present,
         observations,
+        missing_context,
+        missing_anchor_value,
+        missing_context_value,
+        zero_direction_excluded,
         value,
         mean_lag_ns,
     ))?;
@@ -553,7 +618,13 @@ fn discover(
         anchor_scale: request.anchor_scale.clone(),
         context_scale: request.context_scale.clone(),
         same_native_scale: request.anchor_scale == request.context_scale,
+        anchor_population,
+        context_present,
         observations,
+        missing_context,
+        missing_anchor_value,
+        missing_context_value,
+        zero_direction_excluded,
         value,
         mean_lag_ns,
         identity,
@@ -579,21 +650,32 @@ fn evaluate_candidate(
         && discovery
             .value
             .is_some_and(|value| value.abs() >= gate.min_abs_metric);
+    let reason = if eligible {
+        "PREDECLARED_GATE_PASSED"
+    } else {
+        "PREDECLARED_GATE_NOT_PASSED"
+    };
     Ok(CandidateEvaluation {
         question_id: request.question_id.clone(),
         discovery_identity: discovery.identity.clone(),
         gate: Some(gate.clone()),
         eligible,
-        reason: if eligible {
-            "PREDECLARED_GATE_PASSED"
-        } else {
-            "PREDECLARED_GATE_NOT_PASSED"
-        }
-        .into(),
+        reason: reason.into(),
     })
 }
 
-fn pearson(pairs: &[(f64, f64, i64)]) -> Option<f64> {
+fn metric_supports_operator(metric: MetricKind, operator: RelationshipOperator) -> bool {
+    match metric {
+        MetricKind::Pearson => operator == RelationshipOperator::Context,
+        MetricKind::DirectionalConcordance => operator == RelationshipOperator::Directional,
+        MetricKind::MeanLagNs => matches!(
+            operator,
+            RelationshipOperator::Temporal | RelationshipOperator::LeadLag
+        ),
+    }
+}
+
+fn pearson(pairs: &[(f64, f64)]) -> Option<f64> {
     if pairs.len() < 2 {
         return None;
     }
@@ -645,7 +727,9 @@ fn parse_operator(value: &str) -> Option<RelationshipOperator> {
 
 fn has_duplicates(values: &[String]) -> bool {
     let mut seen = BTreeSet::new();
-    values.iter().any(|value| value.is_empty() || !seen.insert(value))
+    values
+        .iter()
+        .any(|value| value.is_empty() || !seen.insert(value))
 }
 
 fn report_identity(report: &PopulationResearchReport) -> Result<String, ContractError> {
