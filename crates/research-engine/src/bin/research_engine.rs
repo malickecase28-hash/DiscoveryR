@@ -3,9 +3,18 @@ use research_contracts::{
     CompleteReproducibilityIdentity, ConfirmationContract, InstrumentScope, MethodChallenge,
     Question, ReproducibilityIdentity,
 };
+use research_contracts::{ContextPermission, DetectorRole, EvidenceAccess, ProgramConsumer};
 use research_engine::verify_identity;
+use research_engine::{
+    run_research, simulate_untrusted_strategy, CausalResearchRecord, ConfirmedBehavioralInput,
+    ConfirmedInputManifest, DetectorAtlas, DetectorDescriptor, Direction,
+    QuestionGenerationRequest, ResearchPlan, SimulationConfig, StrategyArchetype,
+    StrategyObservation, StrategySpec,
+};
+use research_tape::{AnchorInstance, ContextObservation, NativeScale, SourceRef};
 use serde::Deserialize;
 use serde_json::{json, Value};
+use std::collections::{BTreeMap, BTreeSet};
 use std::{
     env, fs,
     path::{Component, Path, PathBuf},
@@ -109,6 +118,12 @@ struct MaterializeScopeInput {
     batch_size: Option<usize>,
 }
 
+#[derive(Deserialize)]
+struct SyntheticStageInput {
+    stage: String,
+    instrument_id: String,
+}
+
 fn main() {
     if let Err(error) = run() {
         eprintln!("research-engine: {error}");
@@ -188,14 +203,270 @@ fn run() -> Result<(), String> {
         "generate-report" => {
             json!({"status":"not_run", "report_generation":"typed_runner_required"})
         }
+        "synthetic-stage" => synthetic_stage(value_as(value)?)?,
         _ => return Err(usage("unknown command")),
     };
     write_json(result, output.as_deref())
 }
 
+fn synthetic_stage(input: SyntheticStageInput) -> Result<Value, String> {
+    if input.instrument_id.is_empty() || !matches!(input.stage.as_str(), "r" | "s" | "p") {
+        return Err("synthetic stage requires stage r, s, or p and an instrument".into());
+    }
+    match input.stage.as_str() {
+        "r" => {
+            let scale = NativeScale::Tick;
+            let atlas = DetectorAtlas::new(vec![
+                DetectorDescriptor::new(
+                    "anchor",
+                    vec![DetectorRole::StructuralObject],
+                    BTreeSet::from([scale.clone()]),
+                )
+                .map_err(|e| e.to_string())?,
+                DetectorDescriptor::new(
+                    "context",
+                    vec![DetectorRole::Event],
+                    BTreeSet::from([scale.clone()]),
+                )
+                .map_err(|e| e.to_string())?,
+            ])
+            .map_err(|e| e.to_string())?;
+            let request = QuestionGenerationRequest {
+                experiment_id: "synthetic-r".into(),
+                instrument_ids: vec![input.instrument_id.clone()],
+                anchor_detector_id: "anchor".into(),
+                anchor_ids: vec!["anchor-1".into()],
+                context_detector_ids: vec!["context".into()],
+                lifecycle_states: vec!["formed".into()],
+                context_ids: vec!["context".into()],
+                native_scales: BTreeSet::from([scale.clone()]),
+                anchor_time_ns: 100,
+                context_available_time_ns: BTreeMap::from([("context".into(), 90)]),
+                directions: vec![Direction::Positive],
+                max_questions: 1,
+            };
+            let permission = ContextPermission {
+                permission_id: "synthetic-r-permission".into(),
+                consumer: ProgramConsumer::MarketResearch,
+                allowed_detector_ids: vec!["context".into()],
+                allowed_scales: BTreeSet::from([scale.clone()]),
+                evidence_access: EvidenceAccess::UnconfirmedAllowed,
+            };
+            let identity = |name: &str| name.to_owned();
+            let complete = research_contracts::CompleteReproducibilityIdentity {
+                instrument_identity: identity(&input.instrument_id),
+                producer_commit_identity: identity("producer"),
+                producer_source_identity: identity("source"),
+                producer_blob_identity: identity("blob"),
+                authority_version_identity: identity("authority"),
+                detector_version_identity: identity("detector"),
+                parameter_identity: identity("parameters"),
+                source_manifest_identity: identity("manifest"),
+                payload_manifest_identity: identity("payload"),
+                data_scope_identity: identity("scope"),
+                experiment_contract_identity: identity("experiment"),
+                code_identity: identity("code"),
+                scanner_version_identity: identity("scanner"),
+                control_design_identity: identity("controls"),
+                null_design_identity: identity("null"),
+                seed_identity: identity("seed"),
+                output_identity: identity("output"),
+                native_scale_identity: identity("tick"),
+                availability_contract_identity: identity("availability"),
+            };
+            let records = vec![
+                CausalResearchRecord::from_tape(
+                    input.instrument_id.clone(),
+                    "scope",
+                    "manifest",
+                    AnchorInstance {
+                        anchor_id: "anchor-1".into(),
+                        detector_id: "anchor".into(),
+                        lifecycle_state: "formed".into(),
+                        native_scale: scale.clone(),
+                        anchor_time: 100,
+                        value: Some(1.0),
+                        occur_time: Some(80),
+                        object_id: Some("a1".into()),
+                        source: SourceRef {
+                            part: "a".into(),
+                            row_index: 0,
+                        },
+                    },
+                    vec![ContextObservation {
+                        detector_id: "context".into(),
+                        native_scale: scale.clone(),
+                        available_time: 90,
+                        value: Some(2.0),
+                        occur_time: Some(70),
+                        object_id: Some("c1".into()),
+                        source: SourceRef {
+                            part: "c".into(),
+                            row_index: 0,
+                        },
+                    }],
+                )
+                .map_err(|e| e.to_string())?,
+                CausalResearchRecord::from_tape(
+                    input.instrument_id.clone(),
+                    "scope",
+                    "manifest",
+                    AnchorInstance {
+                        anchor_id: "anchor-1".into(),
+                        detector_id: "anchor".into(),
+                        lifecycle_state: "formed".into(),
+                        native_scale: scale.clone(),
+                        anchor_time: 100,
+                        value: Some(2.0),
+                        occur_time: Some(80),
+                        object_id: Some("a2".into()),
+                        source: SourceRef {
+                            part: "a".into(),
+                            row_index: 1,
+                        },
+                    },
+                    vec![ContextObservation {
+                        detector_id: "context".into(),
+                        native_scale: scale,
+                        available_time: 90,
+                        value: Some(4.0),
+                        occur_time: Some(70),
+                        object_id: Some("c2".into()),
+                        source: SourceRef {
+                            part: "c".into(),
+                            row_index: 1,
+                        },
+                    }],
+                )
+                .map_err(|e| e.to_string())?,
+            ];
+            let plan = ResearchPlan {
+                atlas,
+                request,
+                permission,
+                reproducibility: research_contracts::ReproducibilityIdentity {
+                    source_identity: "source".into(),
+                    binary_identity: "binary".into(),
+                    configuration_identity: "config".into(),
+                    parameter_identity: "parameters".into(),
+                    seed_identity: "seed".into(),
+                    output_identity: "output".into(),
+                    user_identities: vec![input.instrument_id],
+                },
+                complete_reproducibility: complete,
+                max_records: 4,
+            };
+            let report = run_research(&plan, &records).map_err(|e| e.to_string())?;
+            Ok(
+                json!({"stage":"r","status":format!("{:?}", report.evidence_state),"identity":report.output_identity}),
+            )
+        }
+        "s" => {
+            let input_manifest = ConfirmedInputManifest::untrusted_for_description(
+                "synthetic-strategy",
+                "synthetic-holdout",
+                vec![
+                    ConfirmedBehavioralInput::untrusted_for_description("finding", 0)
+                        .map_err(|e| e.to_string())?,
+                ],
+            )
+            .map_err(|e| e.to_string())?;
+            let spec = StrategySpec {
+                archetype: StrategyArchetype::Continuation,
+                hypothesis: research_contracts::StrategyHypothesis {
+                    strategy_id: "synthetic-strategy".into(),
+                    hypothesis_id: "synthetic-hypothesis".into(),
+                    confirmed_finding_ids: vec!["finding".into()],
+                    parameters: BTreeMap::from([("bound".into(), json!(true))]),
+                },
+                decision_rule: research_contracts::DecisionRule {
+                    rule_id: "rule".into(),
+                    entry: "signal_threshold".into(),
+                    exit: "observation_end".into(),
+                    sizing: "unit".into(),
+                    management: "none".into(),
+                    parameters: BTreeMap::from([("entry_threshold".into(), json!(0.5))]),
+                },
+                execution_assumption: research_contracts::ExecutionAssumption {
+                    assumption_id: "execution".into(),
+                    assumptions: BTreeMap::from([("fill_model".into(), json!("analytical_close"))]),
+                },
+                cost_model: research_contracts::CostModel {
+                    cost_model_id: "cost".into(),
+                    parameters: BTreeMap::from([("per_observation".into(), json!(0.0))]),
+                },
+                risk_rule: research_contracts::RiskRule {
+                    risk_rule_id: "risk".into(),
+                    parameters: BTreeMap::from([("max_abs_outcome".into(), json!(2.0))]),
+                },
+            };
+            let observations = vec![StrategyObservation {
+                timestamp_ns: 1,
+                available_time_ns: 1,
+                signal: Some(1.0),
+                outcome: Some(1.0),
+            }];
+            let report = simulate_untrusted_strategy(
+                &spec,
+                &input_manifest,
+                &observations,
+                &SimulationConfig::default(),
+            )
+            .map_err(|e| e.to_string())?;
+            Ok(
+                json!({"stage":"s","status":"descriptive","identity":report.runtime_spec_identity,"authority_eligible":report.authority_eligible,"instrument_id":input.instrument_id}),
+            )
+        }
+        "p" => {
+            let streams = vec![
+                research_engine::StrategyStream {
+                    strategy_id: "s1".into(),
+                    confirmation: research_contracts::ConfirmationState::Confirmed,
+                    evidence_state: research_contracts::EvidenceState::Known,
+                    returns: vec![Some(1.0), Some(-1.0)],
+                    signals: vec![Some(1.0), Some(0.0)],
+                    regimes: vec![Some("r".into()), Some("r".into())],
+                    capital: Some(1.0),
+                    capacity: Some(1.0),
+                    liquidity: vec![Some(1.0), Some(1.0)],
+                    risk_budget: Some(1.0),
+                },
+                research_engine::StrategyStream {
+                    strategy_id: "s2".into(),
+                    confirmation: research_contracts::ConfirmationState::Confirmed,
+                    evidence_state: research_contracts::EvidenceState::Known,
+                    returns: vec![Some(-1.0), Some(1.0)],
+                    signals: vec![Some(1.0), Some(1.0)],
+                    regimes: vec![Some("r".into()), Some("r".into())],
+                    capital: Some(1.0),
+                    capacity: Some(1.0),
+                    liquidity: vec![Some(1.0), Some(1.0)],
+                    risk_budget: Some(1.0),
+                },
+            ];
+            let component = research_contracts::PortfolioComponent {
+                component_id: "synthetic-portfolio".into(),
+                confirmed_strategy_ids: vec!["s1".into(), "s2".into()],
+                parameters: BTreeMap::from([("scope".into(), json!(input.instrument_id))]),
+            };
+            let report = research_engine::portfolio_report(
+                &research_engine::PortfolioInput {
+                    component,
+                    strategies: streams,
+                    constraints: vec![],
+                },
+                &[],
+            )
+            .map_err(|e| e.to_string())?;
+            Ok(json!({"stage":"p","status":"descriptive","identity":report.identity}))
+        }
+        _ => unreachable!(),
+    }
+}
+
 fn usage(message: &str) -> String {
     format!(
-        "{message}; usage: research_engine <validate-instrument|materialize-scope|run-experiment|verify-result|challenge-result|confirm-frozen-claim|generate-report> <input.json> [output.json]"
+        "{message}; usage: research_engine <validate-instrument|materialize-scope|run-experiment|verify-result|challenge-result|confirm-frozen-claim|generate-report|synthetic-stage> <input.json> [output.json]"
     )
 }
 

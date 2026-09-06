@@ -31,6 +31,7 @@ operations; this document defines no scientific threshold or result.
 
 R confirmation freezes its claim and method contract before a separately
 authorized process consumes held-out data. The current synthetic runner covers
-causal tape-record adaptation, bounded question generation, provenance, and
-evidence states. Discovery over real detector questions and held-out consumption
-remain intentionally unavailable. A worker cannot unlock confirmation.
+bound causal records, paired descriptive relations, bounded question generation,
+provenance, and evidence states. Full tape materialization adapters, real
+detector discovery, and held-out consumption remain unavailable. A worker cannot
+unlock confirmation.

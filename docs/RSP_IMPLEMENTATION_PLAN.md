@@ -1,5 +1,9 @@
 # R→S→P System Implementation Plan
 
+> Status at this revision: semantic contracts and synthetic R/S/P plumbing are
+> implemented; strict external confirmation, challenge coverage, materializer
+> recovery, and fresh-process pipeline coverage remain partial or not run.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add deterministic infrastructure for R Market Research, S Strategy / Alpha Research, and P Portfolio Research while preserving v1 contracts, causal tape behavior, workflow blinding, and locked confirmation.
@@ -61,9 +65,9 @@ Boundary audit targets: development-view expected instrument/scope/source bindin
 - Add `Instrument`, `InstrumentScope`, `ProducerAuthority`, `AuthorityCompatibility`, `DetectorRole`, `DetectorVersion`, `AvailabilityRule`, `OccurrenceRule`, `LifecycleVocabulary`, `LifecycleTransition`, `ObjectIdentity`, `DetectorLineage`, `AnchorDefinition`, `AnchorProgram`, `ContextPermission`, `NormalizationBasis`, `OutcomeDefinition`, `Question`, `Hypothesis`, `ControlDesign`, `NullDesign`, `MethodChallenge`, `ConfirmationContract`, `StrategyHypothesis`, `DecisionRule`, `ExecutionAssumption`, `CostModel`, `RiskRule`, `StrategyValidation`, `PortfolioComponent`, `PortfolioConstraint`, and `ReproducibilityIdentity` as small serde contracts.
 - Reuse existing `ExposureClass`, `ExperimentContract`, `RunManifest`, `Finding`, and `KnowledgeRecord`; expose `validate_compatibility(...)` and `record_exposure(...)` with explicit error types.
 
-- [ ] Add failing tests for v1 round trips, all ten roles, all eleven operators, illegal authority/operator combinations, nested/future exposure, path-independent identity, and partial/contradictory/null evidence retention.
-- [ ] Implement minimal modules and additive schemas; use `NativeScale` as the single shared scale type.
-- [ ] Add expected view identity/scope/source and reparse checks, then run targeted tests and schema verification.
+- [x] Add failing tests for v1 round trips, all ten roles, all eleven operators, illegal authority/operator combinations, nested/future exposure, path-independent identity, and partial/contradictory/null evidence retention.
+- [x] Implement minimal modules and additive schemas; use `NativeScale` as the single shared scale type.
+- [ ] Add expected view identity/scope/source and reparse checks, then run targeted tests and schema verification. (partial)
 
 ### Task 2: Program R engine and statistics
 
@@ -79,7 +83,7 @@ Boundary audit targets: development-view expected instrument/scope/source bindin
 
 - [ ] Test each implemented operation against a small analytic or exhaustive oracle, including seed repeatability, declared approximation bounds, and explicit abstention; do not add an estimator without its oracle.
 - [ ] Test two synthetic instruments, multiple resolutions, positive/negative signs, role-compatible operators, and non-Cartesian question generation.
-- [ ] Implement R atlas, question generation, challenge/reproducibility identity, and immutable knowledge queries by reusing existing records.
+- [x] Implement R atlas, question generation, challenge/reproducibility identity, and immutable knowledge queries by reusing existing records. (synthetic; report stages remain bounded)
 
 ### Task 3: Program S strategy / alpha research
 
@@ -92,8 +96,8 @@ Boundary audit targets: development-view expected instrument/scope/source bindin
 - Produce `StrategyValidation` with causal partitions, coverage, abstentions, costs, risks, and performance fields; promotion is a lifecycle operation over this evidence, never Program P.
 - `confirm_strategy(request, external_custodian) -> Result<StrategyConfirmation, ConfirmationError>` requires injectable external policy/authentication; a worker bool, shared secret, or self-issued signature is invalid.
 
-- [ ] Test causal walk-forward boundaries, explicit cost/risk parameters, missing or future inputs, deterministic replay, and worker self-confirmation rejection.
-- [ ] Implement strategy simulation and method challenge without live orders, live fills, or hardcoded scientific outcomes.
+- [x] Test causal walk-forward boundaries, explicit cost/risk parameters, missing or future inputs, deterministic replay, and worker self-confirmation rejection.
+- [x] Implement strategy simulation and method challenge without live orders, live fills, or hardcoded scientific outcomes. (external strategy confirmation remains not run)
 
 ### Task 4: Program P portfolio research and boundary-safe CLI
 
@@ -107,7 +111,7 @@ Boundary audit targets: development-view expected instrument/scope/source bindin
 - Produce reports for correlation/conditional correlation, overlap, capital allocation, drawdown, regime diversification, capacity, turnover, liquidity, concentration, risk budgets, optimization, stress, and portfolio confirmation.
 - CLI is a thin adapter over the existing scope materializer and emits machine-readable reports, provenance, exposure ledger, and locked confirmation status under declared output roots.
 
-- [ ] Test synthetic two-instrument R→S→P end-to-end with missing/future inputs, partial/contradictory evidence, deterministic path-independent identity, output containment, expected identity binding, and locked confirmation.
+- [ ] Test synthetic two-instrument R→S→P end-to-end with missing/future inputs, partial/contradictory evidence, deterministic path-independent identity, output containment, expected identity binding, and locked confirmation. (partial: stage artifacts and two fresh processes are not complete)
 - [ ] Test portfolio methods against small analytic/exhaustive oracles; report unknowns and abstentions without fabricating performance.
 - [ ] Add regressions for launcher CWD, root/ancestor reparse escapes, interruption-safe knowledge publication, and applicable report-gate junction escape.
 

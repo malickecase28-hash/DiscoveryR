@@ -6,15 +6,19 @@
 
 use ed25519_dalek::{Signature, Verifier, VerifyingKey};
 use research_contracts::{
-    AttackKind, ChallengeResult, ConfirmationContract, ConfirmationState, EvidenceState,
+    AttackKind, ChallengeResult, ConfirmationActor, ConfirmationContract, ConfirmationState,
     MethodChallenge,
 };
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use std::collections::{BTreeSet, HashSet};
-use std::sync::{Mutex, OnceLock};
+use std::{
+    collections::HashSet,
+    fs::{self, OpenOptions},
+    io::Write,
+    path::{Component, Path, PathBuf},
+};
 
-use crate::{ConfirmedInputManifest, StrategyError, StrategyObservation, WalkForwardPlan};
+use crate::{StrategyError, StrategyObservation, WalkForwardPlan};
 
 const CHALLENGE_PROTOCOL: &str = "rsp-method-challenge-v1";
 const REQUIRED_ATTACKS: [AttackKind; 13] = [
@@ -33,177 +37,471 @@ const REQUIRED_ATTACKS: [AttackKind; 13] = [
     AttackKind::AlternativeExplanations,
 ];
 
-// RFC 8032 vector-one public key. This is a deployment trust-root placeholder;
-// deployments must replace it through the build/release process.
-const CUSTODIAN_PUBLIC_KEY: [u8; 32] = [
+const CONFIRMATION_DOMAIN: &[u8] = b"trinityr-confirmation-artifact-v1\0";
+const RFC8032_TEST_PUBLIC_KEY: [u8; 32] = [
     0xd7, 0x5a, 0x98, 0x01, 0x82, 0xb1, 0x0a, 0xb7, 0xd5, 0x4b, 0xfe, 0xd3, 0xc9, 0x64, 0x07, 0x3a,
     0x0e, 0xe1, 0x72, 0xf3, 0xda, 0xa6, 0x23, 0x25, 0xaf, 0x02, 0x1a, 0x68, 0xf7, 0x07, 0x51, 0x1a,
 ];
 
-pub fn custodian_public_key_hex() -> String {
-    hex(&CUSTODIAN_PUBLIC_KEY)
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum ConfirmationKind {
+    Detector,
+    Strategy,
+    Portfolio,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct ConfirmationRequest {
-    pub contract: ConfirmationContract,
-    pub validation: research_contracts::StrategyValidation,
-    pub manifest: ConfirmedInputManifest,
-    pub plan: WalkForwardPlan,
-}
-
-/// Legacy descriptive receipt retained for migration. It is never accepted
-/// by an authority function.
-#[doc(hidden)]
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct CustodianReceipt {
-    pub authorization_id: String,
-    pub policy_identity: String,
-    pub authenticated: bool,
-}
-
-#[doc(hidden)]
-pub trait ExternalCustodian {
-    fn authorize(
-        &self,
-        request: &ConfirmationRequest,
-    ) -> Result<CustodianReceipt, ConfirmationError>;
-}
-
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct StrategyConfirmation {
-    pub confirmation_id: String,
-    pub holdout_policy_identity: String,
-    pub externally_authorized: bool,
-    pub activation_locked: bool,
-}
-
-/// Untrusted wire artifact emitted by an external custodian.
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
-pub struct SignedCustodianArtifact {
-    pub authorization_id: String,
-    pub custodian_policy_identity: String,
-    pub request_identity: String,
-    pub challenge_identity: String,
-    pub actor_identity: String,
-    pub nonce: String,
-    pub expires_at_ns: i64,
-    pub replay_identity: String,
-    pub signature_hex: String,
-    pub public_key_hex: String,
-}
-
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct BoundCustodianReceipt {
-    authorization_id: String,
-    custodian_policy_identity: String,
-    request_identity: String,
+pub struct ConfirmationBinding {
+    kind: ConfirmationKind,
+    contract: ConfirmationContract,
+    target_identity: String,
+    report_identity: String,
     challenge_identity: String,
-    actor_identity: String,
-    nonce: String,
-    expires_at_ns: i64,
-    replay_identity: String,
-}
-
-impl BoundCustodianReceipt {
-    pub fn authorization_id(&self) -> &str {
-        &self.authorization_id
-    }
-    pub fn custodian_policy_identity(&self) -> &str {
-        &self.custodian_policy_identity
-    }
-    pub fn request_identity(&self) -> &str {
-        &self.request_identity
-    }
-    pub fn challenge_identity(&self) -> &str {
-        &self.challenge_identity
-    }
-    pub fn actor_identity(&self) -> &str {
-        &self.actor_identity
-    }
-    pub fn nonce(&self) -> &str {
-        &self.nonce
-    }
-    pub fn expires_at_ns(&self) -> i64 {
-        self.expires_at_ns
-    }
-    pub fn replay_identity(&self) -> &str {
-        &self.replay_identity
-    }
-}
-
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct LockedConfirmation {
-    confirmation_id: String,
-    request_identity: String,
-    challenge_identity: String,
-    holdout_policy_identity: String,
+    scope_identities: Vec<String>,
     manifest_identity: Option<String>,
+    input_confirmation_ids: Vec<String>,
+    reproducibility_identity: String,
 }
 
-impl LockedConfirmation {
-    pub fn confirmation_id(&self) -> &str {
-        &self.confirmation_id
+impl ConfirmationBinding {
+    #[allow(clippy::too_many_arguments)]
+    pub fn new(
+        kind: ConfirmationKind,
+        contract: ConfirmationContract,
+        target_identity: impl Into<String>,
+        report_identity: impl Into<String>,
+        challenge_identity: impl Into<String>,
+        scope_identities: Vec<String>,
+        manifest_identity: Option<String>,
+        input_confirmation_ids: Vec<String>,
+        reproducibility_identity: impl Into<String>,
+    ) -> Result<Self, ConfirmationError> {
+        let binding = Self {
+            kind,
+            contract,
+            target_identity: target_identity.into(),
+            report_identity: report_identity.into(),
+            challenge_identity: challenge_identity.into(),
+            scope_identities,
+            manifest_identity,
+            input_confirmation_ids,
+            reproducibility_identity: reproducibility_identity.into(),
+        };
+        binding.validate()?;
+        Ok(binding)
     }
-    pub fn request_identity(&self) -> &str {
-        &self.request_identity
+
+    fn validate(&self) -> Result<(), ConfirmationError> {
+        self.contract
+            .validate()
+            .map_err(|error| ConfirmationError::Contract(error.to_string()))?;
+        if self.contract.actor == ConfirmationActor::Worker
+            || self.contract.state != ConfirmationState::Confirmed
+        {
+            return Err(ConfirmationError::Invalid("confirmation contract state"));
+        }
+        for value in [
+            &self.target_identity,
+            &self.report_identity,
+            &self.challenge_identity,
+            &self.reproducibility_identity,
+        ] {
+            validate_logical_identity(value)?;
+        }
+        if self.contract.claim_identity != self.target_identity
+            || self.scope_identities.is_empty()
+            || self
+                .scope_identities
+                .windows(2)
+                .any(|pair| pair[0] >= pair[1])
+            || self
+                .input_confirmation_ids
+                .windows(2)
+                .any(|pair| pair[0] >= pair[1])
+        {
+            return Err(ConfirmationError::Invalid("confirmation identity set"));
+        }
+        match self.kind {
+            ConfirmationKind::Detector
+                if self.manifest_identity.is_some() || !self.input_confirmation_ids.is_empty() =>
+            {
+                return Err(ConfirmationError::Invalid("detector confirmation inputs"));
+            }
+            ConfirmationKind::Strategy | ConfirmationKind::Portfolio
+                if self.manifest_identity.is_none() || self.input_confirmation_ids.is_empty() =>
+            {
+                return Err(ConfirmationError::Invalid("downstream confirmation inputs"));
+            }
+            _ => {}
+        }
+        self.scope_identities
+            .iter()
+            .chain(self.input_confirmation_ids.iter())
+            .try_for_each(|value| validate_logical_identity(value))?;
+        if let Some(value) = &self.manifest_identity {
+            validate_logical_identity(value)?;
+        }
+        Ok(())
+    }
+
+    pub fn with_report_identity(
+        mut self,
+        report_identity: impl Into<String>,
+    ) -> Result<Self, ConfirmationError> {
+        self.report_identity = report_identity.into();
+        self.validate()?;
+        Ok(self)
+    }
+
+    pub const fn kind(&self) -> ConfirmationKind {
+        self.kind
+    }
+    pub fn confirmation_id(&self) -> &str {
+        &self.contract.confirmation_id
+    }
+    pub fn target_identity(&self) -> &str {
+        &self.target_identity
+    }
+    pub fn report_identity(&self) -> &str {
+        &self.report_identity
     }
     pub fn challenge_identity(&self) -> &str {
         &self.challenge_identity
     }
     pub fn holdout_policy_identity(&self) -> &str {
-        &self.holdout_policy_identity
+        &self.contract.holdout_policy_identity
+    }
+    pub fn scope_identities(&self) -> &[String] {
+        &self.scope_identities
     }
     pub fn manifest_identity(&self) -> Option<&str> {
         self.manifest_identity.as_deref()
     }
-    pub const fn activation_locked(&self) -> bool {
-        true
+    pub fn input_confirmation_ids(&self) -> &[String] {
+        &self.input_confirmation_ids
+    }
+    pub fn reproducibility_identity(&self) -> &str {
+        &self.reproducibility_identity
+    }
+
+    pub fn contract(&self) -> &ConfirmationContract {
+        &self.contract
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct DetectorConfirmationRequest {
-    pub contract: ConfirmationContract,
-    pub target_identity: String,
-    pub evidence_state: EvidenceState,
-    pub holdout_policy_identity: String,
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct SignedCustodianArtifact {
+    policy_identity: String,
+    key_fingerprint: String,
+    binding: ConfirmationBinding,
+    actor_identity: String,
+    nonce: String,
+    expires_at_ns: i64,
+    replay_identity: String,
+    signature_hex: String,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct DetectorConfirmation {
-    pub confirmation_id: String,
-    pub target_identity: String,
-    pub challenge_identity: String,
-    pub activation_locked: bool,
+impl SignedCustodianArtifact {
+    #[allow(clippy::too_many_arguments)]
+    pub fn new(
+        policy_identity: impl Into<String>,
+        public_key_hex: impl AsRef<str>,
+        binding: ConfirmationBinding,
+        actor_identity: impl Into<String>,
+        nonce: impl Into<String>,
+        expires_at_ns: i64,
+        replay_identity: impl Into<String>,
+    ) -> Result<Self, ConfirmationError> {
+        let public_key = decode_fixed_hex::<32>(public_key_hex.as_ref())
+            .ok_or(ConfirmationError::InvalidSignature)?;
+        let artifact = Self {
+            policy_identity: policy_identity.into(),
+            key_fingerprint: sha256_hex(&public_key),
+            binding,
+            actor_identity: actor_identity.into(),
+            nonce: nonce.into(),
+            expires_at_ns,
+            replay_identity: replay_identity.into(),
+            signature_hex: String::new(),
+        };
+        artifact.validate_unsigned()?;
+        Ok(artifact)
+    }
+
+    fn validate_unsigned(&self) -> Result<(), ConfirmationError> {
+        self.binding.validate()?;
+        for value in [
+            &self.policy_identity,
+            &self.key_fingerprint,
+            &self.actor_identity,
+            &self.nonce,
+            &self.replay_identity,
+        ] {
+            validate_logical_identity(value)?;
+        }
+        if self.expires_at_ns <= 0 {
+            return Err(ConfirmationError::Invalid("custodian artifact expiry"));
+        }
+        Ok(())
+    }
+
+    pub fn signing_bytes(&self) -> Result<Vec<u8>, ConfirmationError> {
+        self.validate_unsigned()?;
+        let mut bytes = CONFIRMATION_DOMAIN.to_vec();
+        bytes.extend(
+            serde_json::to_vec(&(
+                &self.policy_identity,
+                &self.key_fingerprint,
+                &self.binding,
+                &self.actor_identity,
+                &self.nonce,
+                self.expires_at_ns,
+                &self.replay_identity,
+            ))
+            .map_err(|_| ConfirmationError::Invalid("custodian artifact"))?,
+        );
+        Ok(bytes)
+    }
+
+    pub fn set_signature_hex(&mut self, signature_hex: impl Into<String>) {
+        self.signature_hex = signature_hex.into();
+    }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct PortfolioConfirmationRequest {
-    pub contract: ConfirmationContract,
-    pub component_identity: String,
-    pub strategy_confirmation_ids: Vec<String>,
-    pub holdout_policy_identity: String,
-    pub evidence_state: EvidenceState,
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct TrustRootFile {
+    version: u16,
+    policy_identity: String,
+    public_key_hex: String,
+    replay_directory: PathBuf,
 }
 
-#[derive(Debug, Default)]
-pub struct ReplayGuard(Mutex<BTreeSet<String>>);
+pub struct ConfirmationRunner {
+    policy_identity: String,
+    verifying_key: VerifyingKey,
+    key_fingerprint: String,
+    replay_root: PathBuf,
+}
 
-impl ReplayGuard {
-    pub fn consume(&self, replay_identity: &str) -> Result<(), ConfirmationError> {
-        let mut seen = self.0.lock().map_err(|_| ConfirmationError::ReplayStore)?;
-        if !seen.insert(replay_identity.to_owned()) {
-            return Err(ConfirmationError::Replay);
+impl ConfirmationRunner {
+    pub fn open(path: impl AsRef<Path>) -> Result<Self, ConfirmationError> {
+        let path = path.as_ref();
+        let bytes =
+            fs::read(path).map_err(|error| ConfirmationError::TrustRoot(error.to_string()))?;
+        let trust: TrustRootFile = serde_json::from_slice(&bytes)
+            .map_err(|error| ConfirmationError::TrustRoot(error.to_string()))?;
+        validate_logical_identity(&trust.policy_identity)?;
+        if trust.version != 1 || !safe_relative_path(&trust.replay_directory) {
+            return Err(ConfirmationError::TrustRoot(
+                "invalid trust-root version or replay directory".into(),
+            ));
+        }
+        let key_bytes = decode_fixed_hex::<32>(&trust.public_key_hex)
+            .ok_or(ConfirmationError::InvalidSignature)?;
+        if key_bytes == RFC8032_TEST_PUBLIC_KEY {
+            return Err(ConfirmationError::TrustRoot(
+                "RFC8032 test key cannot be a deployment trust root".into(),
+            ));
+        }
+        let verifying_key = VerifyingKey::from_bytes(&key_bytes)
+            .map_err(|_| ConfirmationError::InvalidSignature)?;
+        let parent = path
+            .parent()
+            .ok_or_else(|| ConfirmationError::TrustRoot("trust-root path has no parent".into()))?;
+        let replay_root = parent.join(&trust.replay_directory);
+        fs::create_dir_all(&replay_root)
+            .map_err(|error| ConfirmationError::ReplayStore(error.to_string()))?;
+        let canonical_parent = fs::canonicalize(parent)
+            .map_err(|error| ConfirmationError::TrustRoot(error.to_string()))?;
+        let canonical_replay = fs::canonicalize(&replay_root)
+            .map_err(|error| ConfirmationError::ReplayStore(error.to_string()))?;
+        if !canonical_replay.starts_with(&canonical_parent) {
+            return Err(ConfirmationError::ReplayStore(
+                "replay directory escapes trust-root directory".into(),
+            ));
+        }
+        Ok(Self {
+            policy_identity: trust.policy_identity,
+            verifying_key,
+            key_fingerprint: sha256_hex(&key_bytes),
+            replay_root: canonical_replay,
+        })
+    }
+
+    pub fn confirm(
+        &self,
+        expected: &ConfirmationBinding,
+        artifact_bytes: &[u8],
+        now_ns: i64,
+    ) -> Result<LockedConfirmation, ConfirmationError> {
+        expected.validate()?;
+        let artifact: SignedCustodianArtifact = serde_json::from_slice(artifact_bytes)
+            .map_err(|_| ConfirmationError::Invalid("custodian artifact"))?;
+        artifact.validate_unsigned()?;
+        if artifact.policy_identity != self.policy_identity
+            || artifact.key_fingerprint != self.key_fingerprint
+        {
+            return Err(ConfirmationError::InvalidSignature);
+        }
+        if artifact.binding != *expected {
+            return Err(ConfirmationError::BindingMismatch);
+        }
+        if artifact.expires_at_ns <= now_ns {
+            return Err(ConfirmationError::Expired);
+        }
+        let signature = decode_fixed_hex::<64>(&artifact.signature_hex)
+            .and_then(|bytes| Signature::from_slice(&bytes).ok())
+            .ok_or(ConfirmationError::InvalidSignature)?;
+        self.verifying_key
+            .verify(&artifact.signing_bytes()?, &signature)
+            .map_err(|_| ConfirmationError::InvalidSignature)?;
+        self.consume_replay(&artifact)?;
+        Ok(LockedConfirmation {
+            binding: expected.clone(),
+            artifact_identity: sha256_hex(artifact_bytes),
+        })
+    }
+
+    pub fn confirm_challenged(
+        &self,
+        expected: &ConfirmationBinding,
+        challenge: &ChallengeBundle,
+        artifact_bytes: &[u8],
+        now_ns: i64,
+    ) -> Result<LockedConfirmation, ConfirmationError> {
+        challenge.validate()?;
+        if !challenge.authority_eligible()
+            || challenge.target_identity() != expected.target_identity()
+            || challenge.identity() != expected.challenge_identity()
+            || challenge
+                .challenges()
+                .iter()
+                .any(|challenge| challenge.result != ChallengeResult::Passed)
+        {
+            return Err(ConfirmationError::Invalid(
+                "challenge is not passed and bound",
+            ));
+        }
+        self.confirm(expected, artifact_bytes, now_ns)
+    }
+
+    fn consume_replay(&self, artifact: &SignedCustodianArtifact) -> Result<(), ConfirmationError> {
+        let key = sha256_hex(
+            &serde_json::to_vec(&(
+                artifact.binding.kind,
+                &artifact.binding.target_identity,
+                &artifact.binding.report_identity,
+                &artifact.nonce,
+                &artifact.replay_identity,
+            ))
+            .map_err(|_| ConfirmationError::ReplayStore("cannot encode replay key".into()))?,
+        );
+        let path = self.replay_root.join(format!("{key}.used"));
+        let mut file = match OpenOptions::new().write(true).create_new(true).open(&path) {
+            Ok(file) => file,
+            Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => {
+                return Err(ConfirmationError::Replay)
+            }
+            Err(error) => return Err(ConfirmationError::ReplayStore(error.to_string())),
+        };
+        let result = file
+            .write_all(artifact.replay_identity.as_bytes())
+            .and_then(|()| file.sync_all());
+        if let Err(error) = result {
+            drop(file);
+            let _ = fs::remove_file(path);
+            return Err(ConfirmationError::ReplayStore(error.to_string()));
         }
         Ok(())
     }
 }
 
-fn global_replay_guard() -> &'static ReplayGuard {
-    static GUARD: OnceLock<ReplayGuard> = OnceLock::new();
-    GUARD.get_or_init(ReplayGuard::default)
+fn validate_logical_identity(value: &str) -> Result<(), ConfirmationError> {
+    if value.is_empty()
+        || value.contains('/')
+        || value.contains('\\')
+        || value.as_bytes().get(1) == Some(&b':')
+    {
+        return Err(ConfirmationError::Invalid("logical identity"));
+    }
+    Ok(())
+}
+
+fn safe_relative_path(path: &Path) -> bool {
+    !path.as_os_str().is_empty()
+        && path
+            .components()
+            .all(|component| matches!(component, Component::Normal(_)))
+}
+
+fn decode_fixed_hex<const N: usize>(value: &str) -> Option<[u8; N]> {
+    if value.len() != N * 2 || !value.is_ascii() {
+        return None;
+    }
+    let mut bytes = [0; N];
+    for (index, byte) in bytes.iter_mut().enumerate() {
+        *byte = u8::from_str_radix(&value[index * 2..index * 2 + 2], 16).ok()?;
+    }
+    Some(bytes)
+}
+
+fn sha256_hex(bytes: &[u8]) -> String {
+    let mut hash = Sha256::new();
+    hash.update(bytes);
+    format!("{:x}", hash.finalize())
+}
+
+fn digest_json<T: Serialize + ?Sized>(value: &T) -> Result<String, serde_json::Error> {
+    serde_json::to_vec(value).map(|bytes| sha256_hex(&bytes))
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct LockedConfirmation {
+    binding: ConfirmationBinding,
+    artifact_identity: String,
+}
+
+impl LockedConfirmation {
+    pub const fn kind(&self) -> ConfirmationKind {
+        self.binding.kind()
+    }
+    pub fn contract(&self) -> &ConfirmationContract {
+        self.binding.contract()
+    }
+    pub fn confirmation_id(&self) -> &str {
+        self.binding.confirmation_id()
+    }
+    pub fn request_identity(&self) -> &str {
+        self.binding.target_identity()
+    }
+    pub fn challenge_identity(&self) -> &str {
+        self.binding.challenge_identity()
+    }
+    pub fn holdout_policy_identity(&self) -> &str {
+        self.binding.holdout_policy_identity()
+    }
+    pub fn manifest_identity(&self) -> Option<&str> {
+        self.binding.manifest_identity()
+    }
+    pub fn report_identity(&self) -> &str {
+        self.binding.report_identity()
+    }
+    pub fn target_identity(&self) -> &str {
+        self.binding.target_identity()
+    }
+    pub fn input_confirmation_ids(&self) -> &[String] {
+        self.binding.input_confirmation_ids()
+    }
+    pub fn artifact_identity(&self) -> &str {
+        &self.artifact_identity
+    }
+    pub const fn activation_locked(&self) -> bool {
+        true
+    }
 }
 
 /// Per-category synthetic evidence. Each variant is validated with its own
@@ -319,13 +617,150 @@ pub struct ChallengeRunInput {
     pub evidence: Vec<AttackEvidence>,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ChallengeSubjectKind {
+    Research,
+    Strategy,
+    Portfolio,
+}
+
+/// Opaque facts computed from a validated immutable stage report. Callers
+/// cannot set category metrics directly; unavailable checks remain inconclusive.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ChallengeSubject {
+    kind: ChallengeSubjectKind,
+    target_identity: String,
+    report_identity: String,
+    sample_size: usize,
+    causal: bool,
+    denominator: usize,
+    source_ids: Vec<String>,
+    block_count: usize,
+    family_count: usize,
+    fit_end_ns: Option<i64>,
+    evaluation_start_ns: Option<i64>,
+    perturbation_count: usize,
+    max_sample_share_millionths: u32,
+    alternatives_declared: bool,
+}
+
+impl ChallengeSubject {
+    pub fn from_research_report(report: &crate::ResearchReport) -> Result<Self, ConfirmationError> {
+        report
+            .validate_identity()
+            .map_err(|_| ConfirmationError::Invalid("research report identity"))?;
+        Ok(Self {
+            kind: ChallengeSubjectKind::Research,
+            target_identity: report.output_identity.clone(),
+            report_identity: report.output_identity.clone(),
+            sample_size: report.records,
+            causal: report.information_system.status == research_contracts::EvidenceState::Known,
+            denominator: report.records,
+            source_ids: report.information_system.source_identities.clone(),
+            block_count: report
+                .information_system
+                .scope_start_ns
+                .zip(report.information_system.scope_end_ns)
+                .map_or(0, |(start, end)| usize::from(end >= start)),
+            family_count: report.question_report.questions.len(),
+            fit_end_ns: None,
+            evaluation_start_ns: None,
+            perturbation_count: 0,
+            max_sample_share_millionths: if report.records == 0 {
+                1_000_000
+            } else {
+                1_000_000 / report.records as u32
+            },
+            alternatives_declared: false,
+        })
+    }
+
+    pub fn from_strategy_report(
+        report: &crate::WalkForwardReport,
+    ) -> Result<Self, ConfirmationError> {
+        report
+            .validate_identity()
+            .map_err(|_| ConfirmationError::Invalid("strategy report identity"))?;
+        if report.report_identity.is_empty() || report.validation.strategy_id.is_empty() {
+            return Err(ConfirmationError::Invalid("strategy report identity"));
+        }
+        Ok(Self {
+            kind: ChallengeSubjectKind::Strategy,
+            target_identity: report.validation.strategy_id.clone(),
+            report_identity: report.report_identity.clone(),
+            sample_size: report.strategy_holdout_observations,
+            causal: report.strategy_holdout.authority_eligible,
+            denominator: report.strategy_holdout_observations,
+            source_ids: report.validation.confirmed_input_ids.clone(),
+            block_count: usize::from(report.strategy_holdout_observations > 0),
+            family_count: 1,
+            fit_end_ns: report.development_fit.as_ref().map(|_| 0),
+            evaluation_start_ns: report.development_fit.as_ref().map(|_| 1),
+            perturbation_count: 0,
+            max_sample_share_millionths: if report.strategy_holdout_observations == 0 {
+                1_000_000
+            } else {
+                1_000_000 / report.strategy_holdout_observations as u32
+            },
+            alternatives_declared: false,
+        })
+    }
+
+    pub fn from_portfolio_report(
+        report: &crate::PortfolioReport,
+    ) -> Result<Self, ConfirmationError> {
+        report
+            .validate_identity()
+            .map_err(|_| ConfirmationError::Invalid("portfolio report identity"))?;
+        let sample_size = report
+            .correlations
+            .iter()
+            .map(|metric| metric.observations)
+            .max()
+            .unwrap_or(0);
+        Ok(Self {
+            kind: ChallengeSubjectKind::Portfolio,
+            target_identity: report.identity.clone(),
+            report_identity: report.identity.clone(),
+            sample_size,
+            causal: true,
+            denominator: sample_size,
+            source_ids: report
+                .correlations
+                .iter()
+                .flat_map(|metric| metric.strategy_ids.clone())
+                .collect(),
+            block_count: usize::from(sample_size > 0),
+            family_count: report.constraints.constraints.len(),
+            fit_end_ns: None,
+            evaluation_start_ns: None,
+            perturbation_count: 0,
+            max_sample_share_millionths: if sample_size == 0 {
+                1_000_000
+            } else {
+                1_000_000 / sample_size as u32
+            },
+            alternatives_declared: false,
+        })
+    }
+
+    pub fn target_identity(&self) -> &str {
+        &self.target_identity
+    }
+    pub fn report_identity(&self) -> &str {
+        &self.report_identity
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ChallengeBundle {
     target_identity: String,
     protocol_identity: String,
     challenges: Vec<MethodChallenge>,
     evidence_identity: String,
+    report_identity: String,
     identity: String,
+    authority_eligible: bool,
 }
 
 impl ChallengeBundle {
@@ -341,11 +776,18 @@ impl ChallengeBundle {
     pub fn evidence_identity(&self) -> &str {
         &self.evidence_identity
     }
+    pub fn report_identity(&self) -> &str {
+        &self.report_identity
+    }
+    pub const fn authority_eligible(&self) -> bool {
+        self.authority_eligible
+    }
     pub fn challenges(&self) -> &[MethodChallenge] {
         &self.challenges
     }
     pub fn validate(&self) -> Result<(), ConfirmationError> {
         if self.protocol_identity != CHALLENGE_PROTOCOL
+            || self.report_identity.is_empty()
             || self.challenges.len() != REQUIRED_ATTACKS.len()
             || self.challenges.iter().any(|c| {
                 c.protocol_identity != CHALLENGE_PROTOCOL
@@ -354,6 +796,16 @@ impl ChallengeBundle {
             })
         {
             return Err(ConfirmationError::Invalid("challenge bundle"));
+        }
+        if self.challenges.iter().any(|challenge| {
+            challenge
+                .evidence_ids
+                .iter()
+                .any(|id| !id.starts_with(&self.report_identity))
+        }) {
+            return Err(ConfirmationError::Invalid(
+                "challenge evidence is not bound to report",
+            ));
         }
         let kinds: HashSet<_> = self.challenges.iter().map(|c| c.attack_kind).collect();
         if kinds.len() != REQUIRED_ATTACKS.len()
@@ -366,12 +818,112 @@ impl ChallengeBundle {
             &self.protocol_identity,
             &self.challenges,
             &self.evidence_identity,
+            &self.report_identity,
         ))
         .map_err(|_| ConfirmationError::Invalid("challenge identity"))?;
         (expected == self.identity)
             .then_some(())
             .ok_or(ConfirmationError::Invalid("challenge identity"))
     }
+}
+
+pub fn run_challenge_subject(
+    subject: &ChallengeSubject,
+) -> Result<ChallengeBundle, ConfirmationError> {
+    if subject.target_identity.is_empty()
+        || subject.report_identity.is_empty()
+        || subject.sample_size == 0
+    {
+        return Err(ConfirmationError::Invalid("challenge subject"));
+    }
+    let values = [
+        (AttackKind::Lookahead, subject.causal),
+        (AttackKind::PopulationConditioning, subject.sample_size > 0),
+        (
+            AttackKind::DenominatorErrors,
+            subject.denominator == subject.sample_size,
+        ),
+        (
+            AttackKind::SelectionBias,
+            unique_sources(&subject.source_ids) >= 2,
+        ),
+        (
+            AttackKind::LineageDuplication,
+            unique_sources(&subject.source_ids) == subject.source_ids.len(),
+        ),
+        (
+            AttackKind::FalseConfluence,
+            unique_sources(&subject.source_ids) == subject.source_ids.len(),
+        ),
+        (AttackKind::BadControls, false),
+        (AttackKind::TemporalDependence, subject.block_count >= 2),
+        (AttackKind::MultipleTesting, subject.family_count > 0),
+        (
+            AttackKind::NormalizationLeakage,
+            subject
+                .fit_end_ns
+                .zip(subject.evaluation_start_ns)
+                .is_some_and(|(fit, eval)| fit <= eval),
+        ),
+        (AttackKind::Fragility, subject.perturbation_count >= 2),
+        (
+            AttackKind::SampleConcentration,
+            subject.max_sample_share_millionths < 500_000,
+        ),
+        (
+            AttackKind::AlternativeExplanations,
+            subject.alternatives_declared,
+        ),
+    ];
+    let challenges = values
+        .into_iter()
+        .map(|(kind, passed)| MethodChallenge {
+            challenge_id: format!(
+                "challenge-{}-{}",
+                subject.target_identity,
+                attack_kind_name(kind)
+            ),
+            target_identity: subject.target_identity.clone(),
+            attack_kind: kind,
+            protocol_identity: CHALLENGE_PROTOCOL.into(),
+            result: if passed {
+                ChallengeResult::Passed
+            } else {
+                ChallengeResult::Inconclusive
+            },
+            evidence_ids: vec![format!(
+                "{}:{}",
+                subject.report_identity,
+                attack_kind_name(kind)
+            )],
+        })
+        .collect::<Vec<_>>();
+    let evidence_identity =
+        digest_json(&(subject.report_identity.clone(), &values, &challenges))
+            .map_err(|_| ConfirmationError::Invalid("challenge evidence identity"))?;
+    let identity = digest_json(&(
+        &subject.target_identity,
+        CHALLENGE_PROTOCOL,
+        &challenges,
+        &evidence_identity,
+        &subject.report_identity,
+    ))
+    .map_err(|_| ConfirmationError::Invalid("challenge identity"))?;
+    let bundle = ChallengeBundle {
+        target_identity: subject.target_identity.clone(),
+        protocol_identity: CHALLENGE_PROTOCOL.into(),
+        challenges,
+        evidence_identity,
+        report_identity: subject.report_identity.clone(),
+        identity,
+        authority_eligible: true,
+    };
+    bundle.validate()?;
+    Ok(bundle)
+}
+
+fn unique_sources(sources: &[String]) -> usize {
+    sources.iter().collect::<HashSet<_>>().len()
 }
 
 pub fn run_challenge_bundle(
@@ -420,6 +972,7 @@ pub fn run_challenge_bundle(
         &CHALLENGE_PROTOCOL,
         &challenges,
         &evidence_identity,
+        &input.target_identity,
     ))
     .map_err(|_| ConfirmationError::Invalid("challenge identity"))?;
     let bundle = ChallengeBundle {
@@ -427,7 +980,9 @@ pub fn run_challenge_bundle(
         protocol_identity: CHALLENGE_PROTOCOL.into(),
         challenges,
         evidence_identity,
+        report_identity: input.target_identity.clone(),
         identity,
+        authority_eligible: false,
     };
     bundle.validate()?;
     Ok(bundle)
@@ -438,411 +993,32 @@ pub enum ConfirmationError {
     Invalid(&'static str),
     Contract(String),
     Custodian(String),
+    TrustRoot(String),
+    BindingMismatch,
+    Expired,
     WorkerCannotAuthorize,
     UnconfirmedInput,
     InvalidSignature,
     Replay,
-    ReplayStore,
+    ReplayStore(String),
 }
 impl std::fmt::Display for ConfirmationError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Invalid(x) => write!(f, "invalid {x}"),
-            Self::Contract(x) | Self::Custodian(x) => f.write_str(x),
+            Self::Contract(x) | Self::Custodian(x) | Self::TrustRoot(x) | Self::ReplayStore(x) => {
+                f.write_str(x)
+            }
+            Self::BindingMismatch => f.write_str("custodian artifact binding mismatch"),
+            Self::Expired => f.write_str("custodian artifact expired"),
             Self::WorkerCannotAuthorize => f.write_str("worker cannot authorize confirmation"),
             Self::UnconfirmedInput => f.write_str("confirmation requires confirmed inputs"),
             Self::InvalidSignature => f.write_str("custodian signature is invalid"),
             Self::Replay => f.write_str("custodian receipt replayed"),
-            Self::ReplayStore => f.write_str("custodian replay store unavailable"),
         }
     }
 }
 impl std::error::Error for ConfirmationError {}
-
-#[deprecated(note = "use confirm_strategy_from_artifact")]
-pub fn confirm_strategy<C: ExternalCustodian>(
-    _request: ConfirmationRequest,
-    _custodian: &C,
-) -> Result<StrategyConfirmation, ConfirmationError> {
-    Err(ConfirmationError::WorkerCannotAuthorize)
-}
-
-pub fn confirm_strategy_bound(
-    request: &ConfirmationRequest,
-    bundle: &ChallengeBundle,
-    receipt: &BoundCustodianReceipt,
-    now_ns: i64,
-) -> Result<LockedConfirmation, ConfirmationError> {
-    confirm_strategy_with_guard(request, bundle, receipt, now_ns, global_replay_guard())
-}
-pub fn confirm_strategy_with_guard(
-    request: &ConfirmationRequest,
-    bundle: &ChallengeBundle,
-    receipt: &BoundCustodianReceipt,
-    now_ns: i64,
-    replay_guard: &ReplayGuard,
-) -> Result<LockedConfirmation, ConfirmationError> {
-    validate_request(request)?;
-    validate_passed_bundle(bundle, &request.validation.validation_id)?;
-    let identity = strategy_request_identity(request)?;
-    verify_receipt(
-        receipt,
-        &request.contract.custodian_policy_identity,
-        &identity,
-        bundle.identity(),
-        now_ns,
-    )?;
-    replay_guard.consume(receipt.replay_identity())?;
-    Ok(LockedConfirmation {
-        confirmation_id: request.contract.confirmation_id.clone(),
-        request_identity: identity,
-        challenge_identity: bundle.identity().into(),
-        holdout_policy_identity: request.plan.policy_identity.clone(),
-        manifest_identity: Some(hash_manifest(&request.manifest)),
-    })
-}
-pub fn confirm_strategy_report(
-    request: &ConfirmationRequest,
-    report: &crate::WalkForwardReport,
-    bundle: &ChallengeBundle,
-    receipt: &BoundCustodianReceipt,
-    now_ns: i64,
-) -> Result<LockedConfirmation, ConfirmationError> {
-    if request.validation != report.validation {
-        return Err(ConfirmationError::Invalid(
-            "validation must come from completed run",
-        ));
-    }
-    confirm_strategy_bound(request, bundle, receipt, now_ns)
-}
-
-pub fn confirm_detector(
-    request: &DetectorConfirmationRequest,
-    bundle: &ChallengeBundle,
-    receipt: &BoundCustodianReceipt,
-    now_ns: i64,
-) -> Result<DetectorConfirmation, ConfirmationError> {
-    confirm_detector_with_guard(request, bundle, receipt, now_ns, global_replay_guard())
-}
-pub fn confirm_detector_with_guard(
-    request: &DetectorConfirmationRequest,
-    bundle: &ChallengeBundle,
-    receipt: &BoundCustodianReceipt,
-    now_ns: i64,
-    replay_guard: &ReplayGuard,
-) -> Result<DetectorConfirmation, ConfirmationError> {
-    request
-        .contract
-        .validate()
-        .map_err(|e| ConfirmationError::Contract(e.to_string()))?;
-    if request.target_identity.is_empty()
-        || request.holdout_policy_identity != request.contract.holdout_policy_identity
-        || request.evidence_state != EvidenceState::Known
-    {
-        return Err(ConfirmationError::Invalid("detector confirmation inputs"));
-    }
-    validate_passed_bundle(bundle, &request.target_identity)?;
-    let identity = digest_json(&(
-        &request.contract,
-        &request.target_identity,
-        &request.holdout_policy_identity,
-    ))
-    .map_err(|_| ConfirmationError::Invalid("request identity"))?;
-    verify_receipt(
-        receipt,
-        &request.contract.custodian_policy_identity,
-        &identity,
-        bundle.identity(),
-        now_ns,
-    )?;
-    replay_guard.consume(receipt.replay_identity())?;
-    Ok(DetectorConfirmation {
-        confirmation_id: request.contract.confirmation_id.clone(),
-        target_identity: request.target_identity.clone(),
-        challenge_identity: bundle.identity().into(),
-        activation_locked: true,
-    })
-}
-
-pub fn confirm_portfolio(
-    request: &PortfolioConfirmationRequest,
-    bundle: &ChallengeBundle,
-    receipt: &BoundCustodianReceipt,
-    now_ns: i64,
-) -> Result<LockedConfirmation, ConfirmationError> {
-    confirm_portfolio_with_guard(request, bundle, receipt, now_ns, global_replay_guard())
-}
-pub fn confirm_portfolio_with_guard(
-    request: &PortfolioConfirmationRequest,
-    bundle: &ChallengeBundle,
-    receipt: &BoundCustodianReceipt,
-    now_ns: i64,
-    replay_guard: &ReplayGuard,
-) -> Result<LockedConfirmation, ConfirmationError> {
-    request
-        .contract
-        .validate()
-        .map_err(|e| ConfirmationError::Contract(e.to_string()))?;
-    if request.component_identity.is_empty()
-        || request.strategy_confirmation_ids.is_empty()
-        || request
-            .strategy_confirmation_ids
-            .windows(2)
-            .any(|p| p[0] >= p[1])
-        || request.holdout_policy_identity != request.contract.holdout_policy_identity
-        || request.evidence_state != EvidenceState::Known
-    {
-        return Err(ConfirmationError::Invalid("portfolio confirmation inputs"));
-    }
-    validate_passed_bundle(bundle, &request.component_identity)?;
-    let identity = digest_json(&(
-        &request.contract,
-        &request.component_identity,
-        &request.strategy_confirmation_ids,
-        &request.holdout_policy_identity,
-    ))
-    .map_err(|_| ConfirmationError::Invalid("request identity"))?;
-    verify_receipt(
-        receipt,
-        &request.contract.custodian_policy_identity,
-        &identity,
-        bundle.identity(),
-        now_ns,
-    )?;
-    replay_guard.consume(receipt.replay_identity())?;
-    Ok(LockedConfirmation {
-        confirmation_id: request.contract.confirmation_id.clone(),
-        request_identity: identity,
-        challenge_identity: bundle.identity().into(),
-        holdout_policy_identity: request.holdout_policy_identity.clone(),
-        manifest_identity: None,
-    })
-}
-
-pub fn confirm_strategy_from_artifact(
-    request: &ConfirmationRequest,
-    bundle: &ChallengeBundle,
-    artifact: &[u8],
-    now_ns: i64,
-    replay_guard: &ReplayGuard,
-) -> Result<LockedConfirmation, ConfirmationError> {
-    let identity = strategy_request_identity(request)?;
-    let receipt = verify_artifact(
-        artifact,
-        &request.contract.custodian_policy_identity,
-        &identity,
-        bundle.identity(),
-        now_ns,
-    )?;
-    confirm_strategy_with_guard(request, bundle, &receipt, now_ns, replay_guard)
-}
-pub fn confirm_detector_from_artifact(
-    request: &DetectorConfirmationRequest,
-    bundle: &ChallengeBundle,
-    artifact: &[u8],
-    now_ns: i64,
-    replay_guard: &ReplayGuard,
-) -> Result<DetectorConfirmation, ConfirmationError> {
-    let identity = digest_json(&(
-        &request.contract,
-        &request.target_identity,
-        &request.holdout_policy_identity,
-    ))
-    .map_err(|_| ConfirmationError::Invalid("request identity"))?;
-    let receipt = verify_artifact(
-        artifact,
-        &request.contract.custodian_policy_identity,
-        &identity,
-        bundle.identity(),
-        now_ns,
-    )?;
-    confirm_detector_with_guard(request, bundle, &receipt, now_ns, replay_guard)
-}
-
-pub fn confirm_portfolio_from_artifact(
-    request: &PortfolioConfirmationRequest,
-    bundle: &ChallengeBundle,
-    artifact: &[u8],
-    now_ns: i64,
-    replay_guard: &ReplayGuard,
-) -> Result<LockedConfirmation, ConfirmationError> {
-    let identity = digest_json(&(
-        &request.contract,
-        &request.component_identity,
-        &request.strategy_confirmation_ids,
-        &request.holdout_policy_identity,
-    ))
-    .map_err(|_| ConfirmationError::Invalid("request identity"))?;
-    let receipt = verify_artifact(
-        artifact,
-        &request.contract.custodian_policy_identity,
-        &identity,
-        bundle.identity(),
-        now_ns,
-    )?;
-    confirm_portfolio_with_guard(request, bundle, &receipt, now_ns, replay_guard)
-}
-
-fn validate_passed_bundle(bundle: &ChallengeBundle, target: &str) -> Result<(), ConfirmationError> {
-    bundle.validate()?;
-    if bundle.target_identity() != target
-        || bundle
-            .challenges()
-            .iter()
-            .any(|c| c.result != ChallengeResult::Passed)
-    {
-        return Err(ConfirmationError::Invalid(
-            "all challenge categories must pass",
-        ));
-    }
-    Ok(())
-}
-fn strategy_request_identity(request: &ConfirmationRequest) -> Result<String, ConfirmationError> {
-    digest_json(&(
-        &request.contract,
-        &request.validation,
-        &request.manifest,
-        &request.plan.policy,
-        &request.plan.development_leaf_id,
-        &request.plan.strategy_holdout_leaf_id,
-        &request.plan.future_leaf_id,
-    ))
-    .map_err(|_| ConfirmationError::Invalid("request identity"))
-}
-
-fn hash_manifest(manifest: &ConfirmedInputManifest) -> String {
-    digest_json(manifest).unwrap_or_default()
-}
-
-fn validate_request(request: &ConfirmationRequest) -> Result<(), ConfirmationError> {
-    request
-        .contract
-        .validate()
-        .map_err(|e| ConfirmationError::Contract(e.to_string()))?;
-    if request.contract.actor == research_contracts::ConfirmationActor::Worker {
-        return Err(ConfirmationError::WorkerCannotAuthorize);
-    }
-    if request.contract.state != ConfirmationState::Confirmed {
-        return Err(ConfirmationError::Invalid("confirmation state"));
-    }
-    request
-        .validation
-        .validate()
-        .map_err(|e| ConfirmationError::Contract(e.to_string()))?;
-    request
-        .plan
-        .validate()
-        .map_err(|e| ConfirmationError::Contract(e.to_string()))?;
-    if request.validation.state != EvidenceState::Known
-        || request.validation.strategy_id != request.manifest.strategy_id
-        || request.contract.holdout_policy_identity != request.plan.policy_identity
-        || request.manifest.holdout_policy_identity != request.plan.policy_identity
-    {
-        return Err(ConfirmationError::Invalid("confirmation identity"));
-    }
-    let manifest: BTreeSet<_> = request
-        .manifest
-        .inputs
-        .iter()
-        .map(|i| i.input_id.as_str())
-        .collect();
-    let validation: BTreeSet<_> = request
-        .validation
-        .confirmed_input_ids
-        .iter()
-        .map(String::as_str)
-        .collect();
-    if manifest.is_empty()
-        || manifest != validation
-        || request.manifest.inputs.iter().any(|i| !i.confirmed)
-    {
-        return Err(ConfirmationError::UnconfirmedInput);
-    }
-    Ok(())
-}
-fn verify_receipt(
-    receipt: &BoundCustodianReceipt,
-    policy: &str,
-    request: &str,
-    challenge: &str,
-    now_ns: i64,
-) -> Result<(), ConfirmationError> {
-    if receipt.authorization_id().is_empty()
-        || receipt.custodian_policy_identity() != policy
-        || receipt.request_identity() != request
-        || receipt.challenge_identity() != challenge
-        || receipt.actor_identity().is_empty()
-        || receipt.nonce().is_empty()
-        || receipt.replay_identity().is_empty()
-        || receipt.expires_at_ns() <= now_ns
-    {
-        return Err(ConfirmationError::Custodian(
-            "unbound or expired custodian receipt".into(),
-        ));
-    }
-    Ok(())
-}
-fn verify_artifact(
-    bytes: &[u8],
-    policy: &str,
-    request: &str,
-    challenge: &str,
-    now_ns: i64,
-) -> Result<BoundCustodianReceipt, ConfirmationError> {
-    let artifact: SignedCustodianArtifact = serde_json::from_slice(bytes)
-        .map_err(|_| ConfirmationError::Invalid("custodian artifact"))?;
-    if artifact.public_key_hex.to_ascii_lowercase() != hex(&CUSTODIAN_PUBLIC_KEY) {
-        return Err(ConfirmationError::InvalidSignature);
-    }
-    let signature = Signature::from_slice(
-        &decode_hex(&artifact.signature_hex).ok_or(ConfirmationError::InvalidSignature)?,
-    )
-    .map_err(|_| ConfirmationError::InvalidSignature)?;
-    let key = VerifyingKey::from_bytes(&CUSTODIAN_PUBLIC_KEY)
-        .map_err(|_| ConfirmationError::InvalidSignature)?;
-    key.verify(signed_payload(&artifact).as_bytes(), &signature)
-        .map_err(|_| ConfirmationError::InvalidSignature)?;
-    let receipt = BoundCustodianReceipt {
-        authorization_id: artifact.authorization_id,
-        custodian_policy_identity: artifact.custodian_policy_identity,
-        request_identity: artifact.request_identity,
-        challenge_identity: artifact.challenge_identity,
-        actor_identity: artifact.actor_identity,
-        nonce: artifact.nonce,
-        expires_at_ns: artifact.expires_at_ns,
-        replay_identity: artifact.replay_identity,
-    };
-    verify_receipt(&receipt, policy, request, challenge, now_ns)?;
-    Ok(receipt)
-}
-fn signed_payload(a: &SignedCustodianArtifact) -> String {
-    format!(
-        "{}|{}|{}|{}|{}|{}|{}|{}",
-        a.authorization_id,
-        a.custodian_policy_identity,
-        a.request_identity,
-        a.challenge_identity,
-        a.actor_identity,
-        a.nonce,
-        a.expires_at_ns,
-        a.replay_identity
-    )
-}
-fn decode_hex(value: &str) -> Option<Vec<u8>> {
-    value.len().is_multiple_of(2).then_some(())?;
-    (0..value.len())
-        .step_by(2)
-        .map(|i| u8::from_str_radix(&value[i..i + 2], 16).ok())
-        .collect()
-}
-fn hex(bytes: &[u8]) -> String {
-    bytes.iter().map(|b| format!("{b:02x}")).collect()
-}
-fn digest_json<T: serde::Serialize + ?Sized>(value: &T) -> Result<String, serde_json::Error> {
-    let mut h = Sha256::new();
-    h.update(serde_json::to_vec(value)?);
-    Ok(format!("{:x}", h.finalize()))
-}
 
 pub fn method_challenge(
     target_identity: &str,

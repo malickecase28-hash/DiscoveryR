@@ -13,9 +13,10 @@ use research_contracts::{
 };
 
 use crate::stats::{StatsError, StreamingMoments};
+use serde::Serialize;
 use sha2::{Digest, Sha256};
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub enum PortfolioStatus {
     Known,
     Partial,
@@ -74,7 +75,7 @@ impl From<research_contracts::ContractError> for PortfolioError {
 }
 
 /// One confirmed strategy's aligned descriptive stream.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct StrategyStream {
     pub strategy_id: String,
     pub confirmation: ConfirmationState,
@@ -88,7 +89,7 @@ pub struct StrategyStream {
     pub risk_budget: Option<f64>,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct PortfolioInput {
     pub component: PortfolioComponent,
     pub strategies: Vec<StrategyStream>,
@@ -108,6 +109,50 @@ pub struct AlignedStrategyStream {
     pub time_grid_identity: String,
     pub context_permission: research_contracts::ContextPermission,
     pub confirmation: LockedConfirmation,
+    pub stream_identity: String,
+}
+
+impl AlignedStrategyStream {
+    #[allow(clippy::too_many_arguments)]
+    pub fn new(
+        stream: StrategyStream,
+        timestamps_ns: Vec<i64>,
+        availability_ns: Vec<i64>,
+        instrument_scope_identity: String,
+        source_identity: String,
+        context_permission: research_contracts::ContextPermission,
+        confirmation: LockedConfirmation,
+    ) -> Result<Self, PortfolioError> {
+        let stream_identity = canonical_stream_identity(
+            &stream,
+            &timestamps_ns,
+            &availability_ns,
+            &instrument_scope_identity,
+            &source_identity,
+            &context_permission,
+        );
+        if confirmation.kind() != crate::ConfirmationKind::Strategy
+            || confirmation.confirmation_id() != stream.strategy_id
+            || confirmation.target_identity() != stream.strategy_id
+            || confirmation.report_identity() != stream_identity
+        {
+            return Err(PortfolioError::InvalidParameter(
+                "strategy stream confirmation binding",
+            ));
+        }
+        let time_grid_identity = canonical_time_grid_identity(&timestamps_ns, &availability_ns);
+        Ok(Self {
+            stream,
+            timestamps_ns,
+            availability_ns,
+            instrument_scope_identity,
+            source_identity,
+            time_grid_identity,
+            context_permission,
+            confirmation,
+            stream_identity,
+        })
+    }
 }
 
 pub fn validate_aligned_streams(streams: &[AlignedStrategyStream]) -> Result<(), PortfolioError> {
@@ -124,7 +169,19 @@ pub fn validate_aligned_streams(streams: &[AlignedStrategyStream]) -> Result<(),
     for stream in streams {
         if !stream.confirmation.activation_locked()
             || stream.confirmation.confirmation_id().is_empty()
+            || stream.confirmation.kind() != crate::ConfirmationKind::Strategy
             || stream.confirmation.confirmation_id() != stream.stream.strategy_id
+            || stream.confirmation.target_identity() != stream.stream.strategy_id
+            || stream.confirmation.report_identity() != stream.stream_identity
+            || stream.stream_identity
+                != canonical_stream_identity(
+                    &stream.stream,
+                    &stream.timestamps_ns,
+                    &stream.availability_ns,
+                    &stream.instrument_scope_identity,
+                    &stream.source_identity,
+                    &stream.context_permission,
+                )
             || stream.stream.evidence_state != EvidenceState::Known
             || stream.timestamps_ns.is_empty()
             || stream.timestamps_ns.len() != stream.availability_ns.len()
@@ -198,10 +255,26 @@ pub fn portfolio_report_aligned(
         },
         scenarios,
     )?;
-    let mut hash = Sha256::new();
-    hash.update(format!("{component:?}|{streams:?}|{constraints:?}|{scenarios:?}").as_bytes());
-    report.identity = format!("{:x}", hash.finalize());
+    report.input_identity =
+        canonical_aligned_report_identity(&component, streams, &constraints, scenarios);
+    report.identity = canonical_report_identity(&report);
     Ok(report)
+}
+
+pub fn require_confirmed_portfolio_report(
+    report: &PortfolioReport,
+    confirmation: &LockedConfirmation,
+) -> Result<(), PortfolioError> {
+    if confirmation.kind() != crate::ConfirmationKind::Portfolio
+        || confirmation.target_identity() != report.identity
+        || confirmation.report_identity() != report.identity
+        || confirmation.contract().state != ConfirmationState::Confirmed
+    {
+        return Err(PortfolioError::InvalidParameter(
+            "portfolio confirmation binding",
+        ));
+    }
+    Ok(())
 }
 
 impl PortfolioInput {
@@ -289,7 +362,7 @@ impl PortfolioInput {
     }
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct MetricReport {
     pub strategy_ids: Vec<String>,
     pub metric: String,
@@ -299,7 +372,7 @@ pub struct MetricReport {
 }
 pub type CorrelationReport = MetricReport;
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct CapacityReport {
     pub total_capacity: Option<f64>,
     pub bottleneck: Option<f64>,
@@ -307,7 +380,7 @@ pub struct CapacityReport {
     pub status: PortfolioStatus,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct TurnoverReport {
     pub total: Option<f64>,
     pub per_strategy: Vec<MetricReport>,
@@ -315,7 +388,7 @@ pub struct TurnoverReport {
     pub status: PortfolioStatus,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct LiquidityReport {
     pub mean: Option<f64>,
     pub minimum: Option<f64>,
@@ -323,14 +396,14 @@ pub struct LiquidityReport {
     pub status: PortfolioStatus,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct RiskBudgetReport {
     pub total_budget: f64,
     pub allocations: Vec<MetricReport>,
     pub status: PortfolioStatus,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct ConditionalCorrelationReport {
     pub strategy_ids: [String; 2],
     pub regime: String,
@@ -340,7 +413,7 @@ pub struct ConditionalCorrelationReport {
     pub status: PortfolioStatus,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct OverlapReport {
     pub strategy_ids: [String; 2],
     pub intersection: usize,
@@ -349,14 +422,14 @@ pub struct OverlapReport {
     pub status: PortfolioStatus,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct AllocationShare {
     pub strategy_id: String,
     pub capital: Option<f64>,
     pub fraction: Option<f64>,
     pub status: PortfolioStatus,
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct AllocationReport {
     pub allocations: Vec<AllocationShare>,
     pub total_capital: f64,
@@ -364,7 +437,7 @@ pub struct AllocationReport {
 }
 pub type CapitalAllocationReport = AllocationReport;
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct DrawdownReport {
     pub max_drawdown: f64,
     pub strategy_drawdowns: Vec<(String, Option<f64>)>,
@@ -372,14 +445,14 @@ pub struct DrawdownReport {
     pub status: PortfolioStatus,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct ConcentrationReport {
     pub herfindahl: f64,
     pub largest_fraction: Option<f64>,
     pub status: PortfolioStatus,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct ConstraintOutcome {
     pub constraint_id: String,
     pub kind: PortfolioConstraintKind,
@@ -387,30 +460,30 @@ pub struct ConstraintOutcome {
     pub limit: Option<f64>,
     pub status: PortfolioStatus,
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct ConstraintReport {
     pub constraints: Vec<ConstraintOutcome>,
     pub status: PortfolioStatus,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct StressScenario {
     pub scenario_id: String,
     pub returns: BTreeMap<String, f64>,
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct StressOutcome {
     pub scenario_id: String,
     pub portfolio_return: f64,
     pub status: PortfolioStatus,
 }
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct StressReport {
     pub scenarios: Vec<StressOutcome>,
     pub status: PortfolioStatus,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct SyntheticOptimizationResult {
     pub strategy_ids: Vec<String>,
     pub weights: BTreeMap<String, f64>,
@@ -448,9 +521,10 @@ pub fn optimize_synthetic(
     })
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct PortfolioReport {
     pub identity: String,
+    pub input_identity: String,
     pub correlations: Vec<CorrelationReport>,
     pub conditional_correlations: Vec<ConditionalCorrelationReport>,
     pub overlaps: Vec<OverlapReport>,
@@ -463,6 +537,99 @@ pub struct PortfolioReport {
     pub risk_budget: RiskBudgetReport,
     pub constraints: ConstraintReport,
     pub stress: StressReport,
+}
+
+impl PortfolioReport {
+    pub fn validate_identity(&self) -> Result<(), PortfolioError> {
+        if self.identity != canonical_report_identity(self) {
+            return Err(PortfolioError::InvalidParameter(
+                "portfolio report identity",
+            ));
+        }
+        Ok(())
+    }
+}
+
+fn canonical_stream_identity(
+    stream: &StrategyStream,
+    timestamps_ns: &[i64],
+    availability_ns: &[i64],
+    scope: &str,
+    source: &str,
+    permission: &research_contracts::ContextPermission,
+) -> String {
+    let bytes = serde_json::to_vec(&(
+        stream,
+        timestamps_ns,
+        availability_ns,
+        scope,
+        source,
+        permission,
+    ))
+    .expect("portfolio stream serializes");
+    let mut hash = Sha256::new();
+    hash.update(b"trinityr-portfolio-stream-v2\0");
+    hash.update(bytes);
+    format!("{:x}", hash.finalize())
+}
+
+pub fn strategy_stream_identity(
+    stream: &StrategyStream,
+    timestamps_ns: &[i64],
+    availability_ns: &[i64],
+    scope: &str,
+    source: &str,
+    permission: &research_contracts::ContextPermission,
+) -> String {
+    canonical_stream_identity(
+        stream,
+        timestamps_ns,
+        availability_ns,
+        scope,
+        source,
+        permission,
+    )
+}
+
+fn canonical_aligned_report_identity(
+    component: &PortfolioComponent,
+    streams: &[AlignedStrategyStream],
+    constraints: &[PortfolioConstraint],
+    scenarios: &[StressScenario],
+) -> String {
+    let stream_ids = streams
+        .iter()
+        .map(|stream| stream.stream_identity.clone())
+        .collect::<Vec<_>>();
+    let bytes = serde_json::to_vec(&(component, stream_ids, constraints, scenarios))
+        .expect("portfolio report serializes");
+    let mut hash = Sha256::new();
+    hash.update(b"trinityr-portfolio-report-v2\0");
+    hash.update(bytes);
+    format!("{:x}", hash.finalize())
+}
+
+fn canonical_report_identity(report: &PortfolioReport) -> String {
+    let bytes = serde_json::to_vec(&(
+        &report.input_identity,
+        &report.correlations,
+        &report.conditional_correlations,
+        &report.overlaps,
+        &report.capital_allocation,
+        &report.drawdown,
+        &report.capacity,
+        &report.turnover,
+        &report.liquidity,
+        &report.concentration,
+        &report.risk_budget,
+        &report.constraints,
+        &report.stress,
+    ))
+    .expect("portfolio report serializes");
+    let mut hash = Sha256::new();
+    hash.update(b"trinityr-portfolio-report-v3\0");
+    hash.update(bytes);
+    format!("{:x}", hash.finalize())
 }
 
 fn status(states: impl Iterator<Item = EvidenceState>) -> PortfolioStatus {
@@ -1065,7 +1232,7 @@ pub fn portfolio_report(
     scenarios: &[StressScenario],
 ) -> Result<PortfolioReport, PortfolioError> {
     input.validate()?;
-    let identity = canonical_portfolio_identity(input, scenarios);
+    let input_identity = canonical_portfolio_identity(input, scenarios);
     let mut correlations = Vec::new();
     let mut overlaps = Vec::new();
     for (i, left) in input.strategies.iter().enumerate() {
@@ -1092,8 +1259,9 @@ pub fn portfolio_report(
             )?);
         }
     }
-    Ok(PortfolioReport {
-        identity,
+    let mut report = PortfolioReport {
+        identity: String::new(),
+        input_identity,
         correlations,
         conditional_correlations,
         overlaps,
@@ -1106,11 +1274,14 @@ pub fn portfolio_report(
         risk_budget: risk_budget_report(input)?,
         constraints: constraints_report_with_scenarios(input, scenarios)?,
         stress: stress_report(input, scenarios)?,
-    })
+    };
+    report.identity = canonical_report_identity(&report);
+    Ok(report)
 }
 
 fn canonical_portfolio_identity(input: &PortfolioInput, scenarios: &[StressScenario]) -> String {
     let mut hash = Sha256::new();
-    hash.update(format!("{input:?}|{scenarios:?}").as_bytes());
+    hash.update(b"trinityr-portfolio-input-v2\0");
+    hash.update(serde_json::to_vec(&(input, scenarios)).expect("portfolio input serializes"));
     format!("{:x}", hash.finalize())
 }

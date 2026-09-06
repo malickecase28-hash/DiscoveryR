@@ -23,6 +23,7 @@ impl KnowledgeStore {
                 "knowledge_id must match embedded record_id".into(),
             ));
         }
+        validate_links(&self.records, &envelope)?;
         match self.records.entry(envelope.knowledge_id.clone()) {
             Entry::Vacant(slot) => {
                 slot.insert(envelope);
@@ -70,6 +71,7 @@ impl DurableKnowledgeStore {
         reject_unsafe_ancestors(&root)
             .map_err(|error| ContractError::Invalid(error.to_string()))?;
         let mut memory = KnowledgeStore::default();
+        let mut envelopes = Vec::new();
         for entry in
             fs::read_dir(&root).map_err(|error| ContractError::Invalid(error.to_string()))?
         {
@@ -85,7 +87,29 @@ impl DurableKnowledgeStore {
                 &fs::read(&path).map_err(|error| ContractError::Invalid(error.to_string()))?,
             )
             .map_err(|error| ContractError::Invalid(error.to_string()))?;
-            memory.append(envelope)?;
+            envelopes.push(envelope);
+        }
+        let mut pending = envelopes;
+        while !pending.is_empty() {
+            let mut next = Vec::new();
+            let mut progressed = false;
+            for envelope in pending {
+                let predecessor_ready = record_links(&envelope)
+                    .1
+                    .is_none_or(|id| memory.get(id).is_some());
+                if predecessor_ready {
+                    memory.append(envelope)?;
+                    progressed = true;
+                } else {
+                    next.push(envelope);
+                }
+            }
+            if !progressed {
+                return Err(ContractError::Invalid(
+                    "knowledge supersession chain has an absent predecessor".into(),
+                ));
+            }
+            pending = next;
         }
         Ok(Self { root, memory })
     }
@@ -106,6 +130,7 @@ impl DurableKnowledgeStore {
                 "knowledge_id must match embedded record_id".into(),
             ));
         }
+        validate_links(&self.memory.records, &envelope)?;
         if self.memory.get(&id).is_some() {
             return Err(ContractError::Invalid(
                 "knowledge identity already exists".into(),
@@ -121,10 +146,19 @@ impl DurableKnowledgeStore {
     }
 
     pub fn query_as_of(&self, query: &KnowledgeQuery, as_of_utc: &str) -> Vec<&KnowledgeEnvelope> {
-        let Some(as_of) = parse_utc(as_of_utc) else {
-            return Vec::new();
-        };
-        self.memory
+        self.query_as_of_checked(query, as_of_utc)
+            .unwrap_or_default()
+    }
+
+    pub fn query_as_of_checked(
+        &self,
+        query: &KnowledgeQuery,
+        as_of_utc: &str,
+    ) -> Result<Vec<&KnowledgeEnvelope>, ContractError> {
+        let as_of = parse_utc(as_of_utc)
+            .ok_or_else(|| ContractError::Invalid("invalid RFC3339 UTC value".into()))?;
+        Ok(self
+            .memory
             .query(query)
             .into_iter()
             .filter(|envelope| {
@@ -132,8 +166,56 @@ impl DurableKnowledgeStore {
                     .and_then(parse_utc)
                     .is_some_and(|created| created <= as_of)
             })
-            .collect()
+            .collect())
     }
+}
+
+fn record_links(envelope: &KnowledgeEnvelope) -> (&str, Option<&str>, Option<&str>) {
+    match &envelope.record {
+        KnowledgeRecord::Question(record) => (
+            &record.record_id,
+            record.supersedes.as_deref(),
+            record.superseded_by.as_deref(),
+        ),
+        KnowledgeRecord::Finding(record) => (
+            &record.record_id,
+            record.supersedes.as_deref(),
+            record.superseded_by.as_deref(),
+        ),
+        KnowledgeRecord::Challenge(record) => (
+            &record.record_id,
+            record.supersedes.as_deref(),
+            record.superseded_by.as_deref(),
+        ),
+        KnowledgeRecord::Knowledge(record) => (
+            &record.record_id,
+            record.supersedes.as_deref(),
+            record.superseded_by.as_deref(),
+        ),
+    }
+}
+
+fn validate_links(
+    records: &BTreeMap<String, KnowledgeEnvelope>,
+    envelope: &KnowledgeEnvelope,
+) -> Result<(), ContractError> {
+    let (_, supersedes, superseded_by) = record_links(envelope);
+    if let Some(previous_id) = supersedes {
+        let previous = records
+            .get(previous_id)
+            .ok_or_else(|| ContractError::Invalid("supersedes predecessor is absent".into()))?;
+        if previous.facets != envelope.facets
+            || record_links(previous)
+                .2
+                .is_some_and(|id| id != envelope.knowledge_id.as_str())
+        {
+            return Err(ContractError::Invalid(
+                "supersession link is not reciprocal and compatible".into(),
+            ));
+        }
+    }
+    let _ = superseded_by; // forward links are descriptive; `supersedes` is the authoritative predecessor edge.
+    Ok(())
 }
 
 fn record_created_utc(envelope: &KnowledgeEnvelope) -> Option<&str> {
@@ -146,11 +228,15 @@ fn record_created_utc(envelope: &KnowledgeEnvelope) -> Option<&str> {
 }
 
 fn parse_utc(value: &str) -> Option<i128> {
-    if value.len() < 20
+    if !value.is_ascii()
+        || value.len() < 20
         || value.as_bytes().get(4) != Some(&b'-')
         || value.as_bytes().get(7) != Some(&b'-')
         || value.as_bytes().get(10) != Some(&b'T')
     {
+        return None;
+    }
+    if value.as_bytes().get(13) != Some(&b':') || value.as_bytes().get(16) != Some(&b':') {
         return None;
     }
     let year: i128 = value[0..4].parse().ok()?;
@@ -159,11 +245,27 @@ fn parse_utc(value: &str) -> Option<i128> {
     let hour: i128 = value[11..13].parse().ok()?;
     let minute: i128 = value[14..16].parse().ok()?;
     let second: i128 = value[17..19].parse().ok()?;
+    let leap = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+    let month_days = [
+        31,
+        if leap { 29 } else { 28 },
+        31,
+        30,
+        31,
+        30,
+        31,
+        31,
+        30,
+        31,
+        30,
+        31,
+    ];
     if !(1..=12).contains(&month)
-        || !(1..=31).contains(&day)
+        || day < 1
+        || day > month_days[(month - 1) as usize]
         || hour > 23
         || minute > 59
-        || second > 60
+        || second > 59
     {
         return None;
     }
@@ -178,7 +280,7 @@ fn parse_utc(value: &str) -> Option<i128> {
         {
             end += 1;
         }
-        if start == end {
+        if start == end || end - start > 9 {
             return None;
         }
         let digits = &value[start..end];
@@ -199,7 +301,7 @@ fn parse_utc(value: &str) -> Option<i128> {
             }
             let hours: i128 = value[end + 1..end + 3].parse().ok()?;
             let minutes: i128 = value[end + 4..end + 6].parse().ok()?;
-            if hours > 23 || minutes > 59 {
+            if hours > 23 || minutes > 59 || (hours == 23 && minutes != 59) {
                 return None;
             }
             sign * (hours * 3600 + minutes * 60)
@@ -274,5 +376,46 @@ mod tests {
             ..KnowledgeQuery::default()
         });
         assert_eq!(matches.len(), 1);
+    }
+
+    #[test]
+    fn as_of_parser_rejects_invalid_dates_unicode_and_long_fractions() {
+        let store = DurableKnowledgeStore::open(
+            std::env::temp_dir().join(format!("rsp-knowledge-{}", std::process::id())),
+        )
+        .unwrap();
+        let query = KnowledgeQuery::default();
+        for value in [
+            "2026-02-31T00:00:00Z",
+            "2026-01-01T00:00:00.1234567890Z",
+            "２０２６-01-01T00:00:00Z",
+            "2026-01-01T00:00:00+24:00",
+        ] {
+            assert!(
+                store.query_as_of_checked(&query, value).is_err(),
+                "accepted invalid UTC value: {value}"
+            );
+        }
+    }
+
+    #[test]
+    fn supersession_requires_existing_compatible_reciprocal_records() {
+        let mut store = KnowledgeStore::default();
+        let mut predecessor = record("k1", "xauusd");
+        if let KnowledgeRecord::Question(question) = &mut predecessor.record {
+            question.superseded_by = Some("k2".into());
+        }
+        let mut successor = record("k2", "xauusd");
+        if let KnowledgeRecord::Question(question) = &mut successor.record {
+            question.supersedes = Some("k1".into());
+        }
+        store.append(predecessor).unwrap();
+        store.append(successor).unwrap();
+
+        let mut orphan = record("k3", "xauusd");
+        if let KnowledgeRecord::Question(question) = &mut orphan.record {
+            question.supersedes = Some("missing".into());
+        }
+        assert!(store.append(orphan).is_err());
     }
 }

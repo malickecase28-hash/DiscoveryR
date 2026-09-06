@@ -24,12 +24,75 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     fs::{self, File},
     io,
-    path::Path,
+    path::{Path, PathBuf},
     process::Command,
     time::Instant,
 };
 
 pub const DEFAULT_BATCH_SIZE: usize = 65_536;
+
+struct PublicationLock(PathBuf);
+impl Drop for PublicationLock {
+    fn drop(&mut self) {
+        let _ = fs::remove_dir(&self.0);
+    }
+}
+
+struct StagingGuard {
+    path: PathBuf,
+    keep: bool,
+}
+
+impl Drop for StagingGuard {
+    fn drop(&mut self) {
+        if !self.keep {
+            let _ = fs::remove_dir_all(&self.path);
+        }
+    }
+}
+
+fn acquire_publication_lock(view_root: &Path) -> Result<PublicationLock, io::Error> {
+    let parent = view_root
+        .parent()
+        .ok_or_else(|| io::Error::other("view has no parent"))?;
+    fs::create_dir_all(parent)?;
+    let name = view_root
+        .file_name()
+        .ok_or_else(|| io::Error::other("view has no name"))?;
+    let lock = parent.join(format!(".{}.publication-lock", name.to_string_lossy()));
+    fs::create_dir(&lock)
+        .map(|()| PublicationLock(lock))
+        .map_err(|error| {
+            if error.kind() == io::ErrorKind::AlreadyExists {
+                io::Error::other("development view publication is busy")
+            } else {
+                error
+            }
+        })
+}
+
+fn unique_staging_directory(parent: &Path) -> Result<PathBuf, io::Error> {
+    let seed = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap_or_default()
+        .as_nanos();
+    for attempt in 0..32u128 {
+        let path = parent.join(format!(
+            ".development-building-{}-{}-{}",
+            std::process::id(),
+            seed,
+            attempt
+        ));
+        match fs::create_dir(&path) {
+            Ok(()) => return Ok(path),
+            Err(error) if error.kind() == io::ErrorKind::AlreadyExists => continue,
+            Err(error) => return Err(error),
+        }
+    }
+    Err(io::Error::other(
+        "unable to allocate unique staging directory",
+    ))
+}
 
 #[derive(Debug, Clone)]
 pub struct ExpectedDevelopmentScope {
@@ -849,6 +912,7 @@ pub fn materialize(
     validate_workspace_path(workspace_root, inventory_path)?;
     validate_workspace_path(workspace_root, view_root)?;
     validate_workspace_path(workspace_root, audit_root)?;
+    let _publication_lock = acquire_publication_lock(view_root)?;
     let inventory = validate_input_binding(source_root, inventory_path, expected)?;
     let source_id = expected.source_manifest_identity.clone();
     let payload_id = expected.payload_manifest_identity.clone();
@@ -881,11 +945,15 @@ pub fn materialize(
         return Err(io::Error::other("existing development view conflicts").into());
     }
     let parent = view_root.parent().ok_or("view has no parent")?;
-    let temp = parent.join(format!(".development-building-{}", std::process::id()));
-    if temp.exists() {
-        fs::remove_dir_all(&temp)?;
-    }
-    fs::create_dir_all(&temp)?;
+    let temp = unique_staging_directory(parent)?;
+    let mut staging_guard = StagingGuard {
+        path: temp.clone(),
+        keep: false,
+    };
+    fs::write(
+        temp.join(".staging-owner"),
+        format!("pid={}\nview={}\n", std::process::id(), view_root.display()),
+    )?;
     let mut groups = BTreeMap::new();
     let mut paths = Vec::new();
     let mut stats = Vec::new();
@@ -1008,6 +1076,7 @@ pub fn materialize(
     let manifest = Manifest { schema_version: 1, scope_id: expected.scope_id.clone(), instrument: expected.instrument.clone(), source_manifest_identity: source_id.into(), payload_manifest_identity: payload_id.into(), boundary_rule: "PHYSICAL DEVELOPMENT SCOPE FILTERS: end-exclusive; bars bar_close_ts < boundary; ticks event_ts_ns AND received_ts_ns < boundary_ns; null gating time is fatal".into(), boundary_ms: Some(expected.boundary_ms), development_end_exclusive: expected.development_end_exclusive.clone(), builder_code_identity: code.into(), source_groups: groups, logical_view_identity: identity.clone() };
     let manifest_path = temp.join("view_manifest.json");
     serde_json::to_writer_pretty(File::create(manifest_path)?, &manifest)?;
+    fs::remove_file(temp.join(".staging-owner"))?;
     verify_view_with_expected(&temp, &manifest, batch_size, expected)?;
     let audit = serde_json::to_vec_pretty(
         &serde_json::json!({"status":"complete","scope_id":expected.scope_id,"source_parts_examined":audit_parts,"hardlinked_parts":kinds.iter().filter(|k| k.as_str()=="HARDLINK_FULL_DEVELOPMENT").count(),"filtered_mixed_parts":kinds.iter().filter(|k| k.as_str()=="FILTERED_MIXED_PART").count(),"confirmation_only_parts":audit_parts.iter().filter(|p| p["classification"]=="FULL_CONFIRMATION").count(),"bytes_linked":bytes_linked,"bytes_rewritten":bytes_rewritten,"elapsed_millis":started.elapsed().as_millis(),"logical_view_identity":identity}),
@@ -1015,6 +1084,7 @@ pub fn materialize(
     fs::create_dir_all(audit_root)?;
     reject_unsafe_ancestors(audit_root)?;
     fs::rename(&temp, view_root)?;
+    staging_guard.keep = true;
     let commit = serde_json::to_vec_pretty(&serde_json::json!({
         "status": "committed",
         "scope_id": expected.scope_id,
@@ -1072,6 +1142,12 @@ fn ensure_audit(
             .get("view_root")
             .and_then(serde_json::Value::as_str)
             .ok_or("commit marker missing view root")?;
+        reject_unsafe_ancestors(view_root)?;
+        let expected_view = view_root.canonicalize()?;
+        let committed_view = Path::new(committed_view_root).canonicalize()?;
+        if committed_view != expected_view {
+            return Err(io::Error::other("materialization commit view root mismatch").into());
+        }
         if !expected_scope_view_exists(identity, Path::new(committed_view_root))? {
             return Err(io::Error::other("materialization commit has no matching view").into());
         }

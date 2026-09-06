@@ -1,10 +1,13 @@
+mod support;
+
 use std::collections::BTreeMap;
 
 use research_contracts::{
     evidence::{ConfirmationState, EvidenceState},
-    PortfolioComponent,
+    ContextPermission, EvidenceAccess, PortfolioComponent, ProgramConsumer,
 };
 use research_engine::portfolio::*;
+use research_engine::ConfirmationKind;
 
 fn stream(id: &str, returns: Vec<Option<f64>>, signals: Vec<Option<f64>>) -> StrategyStream {
     let n = returns.len();
@@ -31,6 +34,16 @@ fn input(strategies: Vec<StrategyStream>) -> PortfolioInput {
         },
         strategies,
         constraints: vec![],
+    }
+}
+
+fn aligned_permission() -> ContextPermission {
+    ContextPermission {
+        permission_id: "p-permission".into(),
+        consumer: ProgramConsumer::PortfolioResearch,
+        allowed_detector_ids: vec!["strategy".into()],
+        allowed_scales: std::collections::BTreeSet::from([research_contracts::NativeScale::Tick]),
+        evidence_access: EvidenceAccess::ConfirmedOnly,
     }
 }
 
@@ -141,4 +154,56 @@ fn descriptive_risk_reports_do_not_optimize_or_allocate_live_capital() {
     .unwrap();
     assert_eq!(stress.scenarios.len(), 1);
     assert!(stress.scenarios[0].portfolio_return < 0.0);
+}
+
+#[test]
+fn aligned_portfolio_binds_stream_report_and_time_grid() {
+    let permission = aligned_permission();
+    let stream = stream("s1", vec![Some(1.0), Some(2.0)], vec![Some(1.0), Some(1.0)]);
+    let timestamps = vec![1, 2];
+    let availability = vec![1, 2];
+    let scope = "scope-s1";
+    let source = "source-s1";
+    let report_identity = strategy_stream_identity(
+        &stream,
+        &timestamps,
+        &availability,
+        scope,
+        source,
+        &permission,
+    );
+    let confirmation = support::strategy_lock("s1", &report_identity, "holdout-s1");
+    assert_eq!(confirmation.kind(), ConfirmationKind::Strategy);
+    let aligned = AlignedStrategyStream::new(
+        stream.clone(),
+        timestamps.clone(),
+        availability.clone(),
+        scope.into(),
+        source.into(),
+        permission.clone(),
+        confirmation,
+    )
+    .unwrap();
+    let component = PortfolioComponent {
+        component_id: "p1".into(),
+        confirmed_strategy_ids: vec!["s1".into()],
+        parameters: BTreeMap::from([(String::from("scope"), serde_json::json!("synthetic"))]),
+    };
+    let report =
+        portfolio_report_aligned(component, std::slice::from_ref(&aligned), vec![], &[]).unwrap();
+    assert!(!report.identity.is_empty());
+    report.validate_identity().unwrap();
+    let mut changed = aligned;
+    changed.stream.returns[0] = Some(9.0);
+    assert!(portfolio_report_aligned(
+        PortfolioComponent {
+            component_id: "p1".into(),
+            confirmed_strategy_ids: vec!["s1".into()],
+            parameters: BTreeMap::from([(String::from("scope"), serde_json::json!("synthetic"))])
+        },
+        &[changed],
+        vec![],
+        &[]
+    )
+    .is_err());
 }

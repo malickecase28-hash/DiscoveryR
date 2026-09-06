@@ -3,6 +3,7 @@
 //! These routines are descriptive infrastructure. They do not select scientific
 //! thresholds or imply independence when observations are blocked or clustered.
 
+use serde::Serialize;
 use std::{
     cmp::Ordering,
     collections::{BTreeMap, BTreeSet},
@@ -39,7 +40,7 @@ impl fmt::Display for StatsError {
 }
 impl Error for StatsError {}
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct MethodMetadata {
     pub method: String,
     pub assumptions: Vec<String>,
@@ -488,9 +489,6 @@ pub fn bootstrap_by_block(
                 // is incorrectly presented as a null p-value.
                 total += v.value - observed;
                 n += 1;
-                if n == values.len() {
-                    break;
-                }
             }
         }
         let replicate = total / n as f64;
@@ -508,7 +506,7 @@ pub fn bootstrap_by_block(
             &[
                 "whole blocks sampled with replacement",
                 "values are centered at the observed mean for a declared null tail",
-                "each replicate retains exactly the input row count",
+                "each replicate contains complete sampled blocks; unequal block sizes are not truncated",
                 "xorshift64* deterministic non-cryptographic RNG",
             ],
             replicates,

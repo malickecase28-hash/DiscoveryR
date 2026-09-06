@@ -12,9 +12,10 @@ execution/abstention; labels do not hardcode a strategy.
 
 The descriptive runner produces a `StrategyValidation` containing input
 identities, timing, coverage, abstentions, costs, risks, and validation
-evidence. The strict causal simulation path attaches input IDs per observation;
-the bound confirmation API requires all declared challenge attacks and a
-custodian receipt. Method challenge
+evidence. The executable causal simulation path requires an opaque manifest
+issued from detector confirmation and attaches input IDs per observation. The
+bound confirmation API requires all declared challenge attacks and a custodian
+receipt. Method challenge
 attacks lookahead, selection, controls, temporal dependence, multiple testing,
 fragility, concentration, and alternative explanations. Challenge survival and
 promotion are evidence states, not confirmation.

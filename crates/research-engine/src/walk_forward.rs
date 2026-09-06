@@ -3,8 +3,8 @@ use serde::Serialize;
 use sha2::{Digest, Sha256};
 
 use crate::{
-    simulate_strategy, ConfirmedInputManifest, SimulationConfig, SimulationReport, StrategyError,
-    StrategyObservation, StrategySpec,
+    simulate_strategy, CausalStrategyObservation, CustodiedInputManifest, SimulationConfig,
+    SimulationReport, StrategyError, StrategySpec,
 };
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
@@ -128,7 +128,7 @@ impl WalkForwardPlan {
     }
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct WalkForwardReport {
     pub development_observations: usize,
     pub strategy_holdout_observations: usize,
@@ -137,9 +137,20 @@ pub struct WalkForwardReport {
     pub future: Option<SimulationReport>,
     pub validation: research_contracts::StrategyValidation,
     pub development_fit: Option<DevelopmentFit>,
+    pub input_manifest_identity: String,
+    pub report_identity: String,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+impl WalkForwardReport {
+    pub fn validate_identity(&self) -> Result<(), StrategyError> {
+        if self.report_identity != report_identity(self)? {
+            return Err(StrategyError::IdentityMismatch("walk-forward report"));
+        }
+        Ok(())
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct DevelopmentFit {
     pub mean_signal: f64,
     pub scale_signal: f64,
@@ -148,27 +159,28 @@ pub struct DevelopmentFit {
 
 pub fn run_walk_forward(
     spec: &StrategySpec,
-    manifest: &ConfirmedInputManifest,
-    observations: &[StrategyObservation],
+    manifest: &CustodiedInputManifest,
+    observations: &[CausalStrategyObservation],
     plan: &WalkForwardPlan,
     config: &SimulationConfig,
 ) -> Result<WalkForwardReport, StrategyError> {
     plan.validate()?;
-    if manifest.holdout_policy_identity != plan.policy_identity {
+    if manifest.manifest().holdout_policy_identity() != plan.policy_identity {
         return Err(StrategyError::IdentityMismatch("holdout policy"));
     }
     let mut development = Vec::new();
     let mut strategy = Vec::new();
     let mut future = Vec::new();
     for observation in observations {
-        let bucket = if contains(&plan.development_scope, observation.timestamp_ns) {
+        let timestamp_ns = observation.observation.timestamp_ns;
+        let bucket = if contains(&plan.development_scope, timestamp_ns) {
             &mut development
-        } else if contains(&plan.strategy_holdout_scope, observation.timestamp_ns) {
+        } else if contains(&plan.strategy_holdout_scope, timestamp_ns) {
             &mut strategy
         } else if plan
             .future_scope
             .as_ref()
-            .is_some_and(|scope| contains(scope, observation.timestamp_ns))
+            .is_some_and(|scope| contains(scope, timestamp_ns))
         {
             &mut future
         } else {
@@ -185,9 +197,10 @@ pub fn run_walk_forward(
         .map(|_| simulate_strategy(spec, manifest, &future, config))
         .transpose()?;
     let mut confirmed_input_ids: Vec<String> = manifest
-        .inputs
+        .manifest()
+        .inputs()
         .iter()
-        .map(|input| input.input_id.clone())
+        .map(|input| input.input_id().to_owned())
         .collect();
     confirmed_input_ids.sort();
     let validation = research_contracts::StrategyValidation {
@@ -225,7 +238,7 @@ pub fn run_walk_forward(
             ),
         ]),
     };
-    Ok(WalkForwardReport {
+    let mut report = WalkForwardReport {
         development_observations: development.len(),
         strategy_holdout_observations: strategy.len(),
         future_observations: future.len(),
@@ -233,15 +246,19 @@ pub fn run_walk_forward(
         future: future_report,
         validation,
         development_fit: None,
-    })
+        input_manifest_identity: manifest.manifest().identity(),
+        report_identity: String::new(),
+    };
+    report.report_identity = report_identity(&report)?;
+    Ok(report)
 }
 
 pub type WalkForwardResult = WalkForwardReport;
 
 pub fn walk_forward(
     spec: &StrategySpec,
-    manifest: &ConfirmedInputManifest,
-    observations: &[StrategyObservation],
+    manifest: &CustodiedInputManifest,
+    observations: &[CausalStrategyObservation],
     plan: &WalkForwardPlan,
     config: &SimulationConfig,
 ) -> Result<WalkForwardReport, StrategyError> {
@@ -253,8 +270,8 @@ pub fn walk_forward(
 /// so later confirmation cannot silently rebuild a different rule.
 pub fn run_walk_forward_fitted(
     spec: &StrategySpec,
-    manifest: &ConfirmedInputManifest,
-    observations: &[StrategyObservation],
+    manifest: &CustodiedInputManifest,
+    observations: &[CausalStrategyObservation],
     plan: &WalkForwardPlan,
     config: &SimulationConfig,
 ) -> Result<WalkForwardReport, StrategyError> {
@@ -262,13 +279,16 @@ pub fn run_walk_forward_fitted(
     if report.development_observations == 0 || report.strategy_holdout_observations == 0 {
         return Err(StrategyError::EmptySample);
     }
-    let development = observations
-        .iter()
-        .filter(|observation| contains(&plan.development_scope, observation.timestamp_ns));
+    let development = observations.iter().filter(|observation| {
+        contains(
+            &plan.development_scope,
+            observation.observation.timestamp_ns,
+        )
+    });
     let development = development.collect::<Vec<_>>();
     let signals = development
         .iter()
-        .filter_map(|o| o.signal)
+        .filter_map(|o| o.observation.signal)
         .collect::<Vec<_>>();
     if signals.is_empty() {
         return Err(StrategyError::EmptySample);
@@ -295,13 +315,16 @@ pub fn run_walk_forward_fitted(
         .iter()
         .map(|observation| {
             let mut normalized = observation.clone();
-            normalized.signal = observation.signal.map(|signal| (signal - mean) / scale);
+            normalized.observation.signal = observation
+                .observation
+                .signal
+                .map(|signal| (signal - mean) / scale);
             normalized
         })
         .collect::<Vec<_>>();
     let strategy = normalized
         .iter()
-        .filter(|o| contains(&plan.strategy_holdout_scope, o.timestamp_ns))
+        .filter(|o| contains(&plan.strategy_holdout_scope, o.observation.timestamp_ns))
         .cloned()
         .collect::<Vec<_>>();
     let future = normalized
@@ -309,7 +332,7 @@ pub fn run_walk_forward_fitted(
         .filter(|o| {
             plan.future_scope
                 .as_ref()
-                .is_some_and(|scope| contains(scope, o.timestamp_ns))
+                .is_some_and(|scope| contains(scope, o.observation.timestamp_ns))
         })
         .cloned()
         .collect::<Vec<_>>();
@@ -329,7 +352,26 @@ pub fn run_walk_forward_fitted(
         "development_fit_observations".into(),
         serde_json::json!(development.len()),
     );
+    report.report_identity = report_identity(&report)?;
     Ok(report)
+}
+
+fn report_identity(report: &WalkForwardReport) -> Result<String, StrategyError> {
+    let bytes = serde_json::to_vec(&(
+        report.development_observations,
+        report.strategy_holdout_observations,
+        report.future_observations,
+        &report.strategy_holdout,
+        &report.future,
+        &report.validation,
+        &report.development_fit,
+        &report.input_manifest_identity,
+    ))
+    .map_err(|_| StrategyError::Invalid("walk-forward report identity"))?;
+    let mut hash = Sha256::new();
+    hash.update(b"trinityr-walk-forward-report-v2\0");
+    hash.update(bytes);
+    Ok(format!("{:x}", hash.finalize()))
 }
 
 fn contains(scope: &ScopeInterval, timestamp_ns: i64) -> bool {
