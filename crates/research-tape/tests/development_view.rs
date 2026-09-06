@@ -178,6 +178,7 @@ fn valid_view(root: &std::path::Path) -> Manifest {
         source_manifest_identity: "source".into(),
         payload_manifest_identity: "payload".into(),
         boundary_rule: "x".into(),
+        development_start_inclusive: "x".into(),
         development_end_exclusive: "x".into(),
         builder_code_identity: code,
         source_groups: std::collections::BTreeMap::from([(
@@ -295,6 +296,7 @@ fn malformed_received_time_fails_exposed_view_verification() {
         source_manifest_identity: "x".into(),
         payload_manifest_identity: "x".into(),
         boundary_rule: "x".into(),
+        development_start_inclusive: "x".into(),
         development_end_exclusive: "x".into(),
         builder_code_identity: "x".into(),
         source_groups: std::collections::BTreeMap::from([(
