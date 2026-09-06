@@ -74,6 +74,20 @@ impl SimulationConfig {
         Ok(())
     }
 }
+
+fn validate_reference_unit_score_runtime(spec: &StrategySpec) -> Result<(), StrategyError> {
+    if spec.decision_rule.entry != "signal_threshold"
+        || spec.decision_rule.exit != "observation_end"
+        || spec.decision_rule.sizing != "unit"
+        || spec.decision_rule.management != "none"
+    {
+        return Err(StrategyError::Invalid(
+            "decision rule is not executable by the reference unit-score simulator",
+        ));
+    }
+    Ok(())
+}
+
 fn declared_number(
     values: &std::collections::BTreeMap<String, serde_json::Value>,
     key: &str,
@@ -154,6 +168,7 @@ fn simulate(
     authority_eligible: bool,
 ) -> Result<SimulationReport, StrategyError> {
     spec.validate(manifest)?;
+    validate_reference_unit_score_runtime(spec)?;
     validate_observation_inputs(manifest, observations)?;
     let config = effective_config(spec, config)?;
     let mut report = SimulationReport {
@@ -174,6 +189,7 @@ fn simulate(
                 "confirmed inputs are required".into(),
                 "referenced input availability is causal".into(),
                 "unit exposure score is not P&L".into(),
+                "this runtime implements signal_threshold/observation_end/unit/none only".into(),
             ],
             approximate: false,
             allocation_bound: observations.len(),
