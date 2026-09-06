@@ -1,0 +1,384 @@
+{
+  "interpreter_id": "P-01",
+  "generated_utc": "2026-09-06T02:49:25Z",
+  "experiment_id": "AP-002-FVG-E1-NATIVE-STRATA",
+  "review_type": "E1_PHENOTYPE_INTERPRETATION",
+  "program": "AP-002 FVG",
+  "instrument": "XAUUSD",
+  "development_scope": "XAUUSD_DATA_SCOPE_V1 DEVELOPMENT only",
+  "confirmation_status": "LOCKED",
+  "evidence_base": [
+    "docs/research/ap-002-e1-causal-rework/E1_EXPERIMENT.json",
+    "docs/research/ap-002-e1-causal-rework/E1_RESULTS.json",
+    "docs/research/ap-002-e1-causal-rework/PREFLIGHT.json",
+    "docs/research/ap-002-e1-causal-rework/RUN_MANIFEST.json",
+    "docs/research/ap-002-e1-causal-rework/SCANNER_INTEGRITY_GATE.json",
+    "docs/research/ap-002-e1-causal-rework/REPRODUCIBILITY.json",
+    "knowledge/wave1_authority_closure/AP-002_AUTHORITY_V1.json"
+  ],
+  "scope_compliance": {
+    "peer_interpretation_read": false,
+    "scanner_source_read": false,
+    "sidecar_or_zone_rows_consumed": false,
+    "scanner_rerun": false,
+    "cross_scale_identity_used": false,
+    "e2_e3_confirmation_data_used": false,
+    "pooled_scale_analysis_performed": false,
+    "note": "All quantitative statements cite the exact source table or an arithmetic derivation from one source table; derivations are marked derived."
+  },
+  "evidence_integrity_background": {
+    "type": "DIRECT_OBSERVATION",
+    "statements": [
+      "Two independent runs produced identical logical_result_hash (735bd7ab...c4c52), identical preflight hash, identical zone row count 381527 and identical zone physical hash (REPRODUCIBILITY.json.comparison; RUN_MANIFEST.json.zone_artifacts).",
+      "PREFLIGHT.json reports rows_scanned=54415940, regressions_count=0 (PREFLIGHT.json.rows_scanned, PREFLIGHT.json.regressions_count).",
+      "SCANNER_INTEGRITY_GATE.json status PASS with 9/9 checks PASS, including native_identity (381527 unique (timeframe, zone_id)), formation_outcome_separation, lifecycle_availability, prospective_response_causality, right_censoring, confirmation_locked_scope (SCANNER_INTEGRITY_GATE.json.checks).",
+      "All availability counters are zero: unavailable_bars_n=0, unavailable_formation_n=0, unavailable_touch_events_n=0, unavailable_fill_events_n=0, unavailable_outcome_events_n=0 at every stratum (E1_RESULTS.json.tables.strata.rows[tf=*]); REPRODUCIBILITY.json.comparison.unavailable_counters all 0.",
+      "Sum of lawful_formation_n across the 7 strata equals 381527, exactly matching zones_n in SCANNER_INTEGRITY_GATE.json and E1_RESULTS.json.tables.zones.n (derived: E1_RESULTS.json.tables.strata.rows[tf=*].lawful_formation_n)."
+    ]
+  },
+  "executive_phenotype_summary": {
+    "text": "The frozen E1 DEVELOPMENT evidence characterizes 381,527 lawful FVG formations across 7 native strata of XAUUSD (E1_RESULTS.json.tables.strata.rows). The lifecycle is governed by native bar counts, not wall-clock: median formation-to-first-touch is exactly 2 native bars at every stratum (p25 = 1 bar everywhere), and median formation-to-fill is 5-8 native bars (E1_RESULTS.json.tables.strata.rows[tf=*].formation_to_touch_market_ms, formation_to_fill_market_ms, converted to bars). Observed fill fractions decline from 99.55% (15s) to 84.43% (4h) in near lockstep with right-censoring rising from 0.45% to 15.57%; at coarse scales the fill fraction is a window-truncated lower bound, not a lifetime probability. A four-way path decomposition (touched-then-filled / touched-never-filled / filled-without-prior-touch / never-touched-never-filled) closes exactly at every stratum. Direction populations are near-balanced at fine strata (51.0% bullish at 15s) and drift to a bullish majority at coarse strata (60.5% at 4h). Prospective native closes show positive raw-return medians at all 21 stratum-horizon cells (consistent with development-window drift) while direction-adjusted medians are negative in 19 of 21 cells, growing in magnitude with horizon: a descriptive counter-directional median tendency that requires a formal null test before any further weight is placed on it. Anomalies are small and registered but not resolved here: 356 orphan fill events and 177 orphan touch events, fill-without-prior-recorded-touch at up to 0.83% of stratum formations (0 at 4h), known-time versus market-time divergences up to about 1 bar in both directions, and a 4h incidence uptick after a monotone decline. Overall the evidence is complete, internally consistent, and sufficient for phenotype synthesis; nothing blocks passage to synthesis.",
+    "headline_numbers": {
+      "formations_total": 381527,
+      "source": "E1_RESULTS.json.tables.strata.rows[tf=*].lawful_formation_n (derived sum); matches E1_RESULTS.json.tables.zones.n and SCANNER_INTEGRITY_GATE.json.zones_n",
+      "tick_rows": 54415940,
+      "source": "PREFLIGHT.json.rows_scanned",
+      "strata_n": 7,
+      "source": "E1_RESULTS.json.tables.strata.n"
+    }
+  },
+  "per_stratum_observations": {
+    "citation_convention": "All per-stratum fields cite E1_RESULTS.json.tables.strata.rows[tf=<TF>].<field>; derived fields are arithmetic combinations as marked.",
+    "strata": {
+      "15s": {
+        "bars": 1054977, "formations": 227925, "formation_incidence_rate": 0.2160,
+        "bullish_share": 0.5103,
+        "observed_fill_fraction": 0.9955, "first_touch_fraction": 0.9946, "right_censored_fraction": 0.0045,
+        "path_decomposition_derived": {"touched_then_filled": 226226, "touched_never_filled": 476, "filled_without_prior_touch": 682, "never_touched_never_filled": 541},
+        "touch_bars_p25_p50_p75_p95_derived": [1, 2, 8, 190],
+        "fill_bars_p25_p50_p75_p95_derived": [2, 7, 30, 717],
+        "gap_atr_p50": 0.5638, "fvg_quality_p50": 0.7974,
+        "dir_adj_median_bps": {"h1": -0.000, "h3": -0.050, "h5": -0.076},
+        "raw_median_bps": {"h1": 0.012, "h3": 0.038, "h5": 0.059},
+        "notes": [
+          "DIRECT_OBSERVATION: Largest cohort; observed fill fraction 99.55% (226908/227925) actually exceeds first-touch fraction 99.46% (226702/227925) because 682 fills had no prior recorded touch (E1_RESULTS.json.tables.strata.rows[tf=15s].fill_rate, first_touch_rate, formed_fill_without_prior_touch_n).",
+          "DIRECT_OBSERVATION: Observation window is ~1.05M native bars while fill p95 is ~717 bars, so censoring (0.45%) barely touches the observable fill-time tail; the fine-scale fill fraction is close to window-asymptotic within this development scope.",
+          "DIRECT_OBSERVATION: Horizon 3 and 5 responses have n=227924 vs denominator 227925 (E1_RESULTS.json.tables.strata.rows[tf=15s].horizons[1].n, horizons[2].n); one formation lacked 3 later lawful closes (end-of-stream truncation)."
+        ]
+      },
+      "30s": {
+        "bars": 527896, "formations": 99874, "formation_incidence_rate": 0.1892,
+        "bullish_share": 0.5171,
+        "observed_fill_fraction": 0.9936, "first_touch_fraction": 0.9944, "right_censored_fraction": 0.0064,
+        "path_decomposition_derived": {"touched_then_filled": 99019, "touched_never_filled": 294, "filled_without_prior_touch": 213, "never_touched_never_filled": 348},
+        "touch_bars_p25_p50_p75_p95_derived": [1, 2, 8, 184],
+        "fill_bars_p25_p50_p75_p95_derived": [2, 7, 30, 695],
+        "gap_atr_p50": 0.5199, "fvg_quality_p50": 0.7831,
+        "dir_adj_median_bps": {"h1": -0.027, "h3": -0.107, "h5": -0.142},
+        "raw_median_bps": {"h1": 0.022, "h3": 0.063, "h5": 0.091},
+        "notes": [
+          "DIRECT_OBSERVATION: Lifecycle quantiles in native-bar units are essentially identical to 15s (touch 1/2/8; fill 2/7/30) (derived from E1_RESULTS.json.tables.strata.rows[tf=30s].formation_to_touch_market_ms, formation_to_fill_market_ms at 30000 ms/bar).",
+          "DIRECT_OBSERVATION: All three horizons have full n=99874 (E1_RESULTS.json.tables.strata.rows[tf=30s].horizons[*].n)."
+        ]
+      },
+      "1m": {
+        "bars": 263976, "formations": 43706, "formation_incidence_rate": 0.1656,
+        "bullish_share": 0.5244,
+        "observed_fill_fraction": 0.9910, "first_touch_fraction": 0.9938, "right_censored_fraction": 0.0090,
+        "path_decomposition_derived": {"touched_then_filled": 43232, "touched_never_filled": 201, "filled_without_prior_touch": 81, "never_touched_never_filled": 192},
+        "touch_bars_p25_p50_p75_p95_derived": [1, 2, 8, 184],
+        "fill_bars_p25_p50_p75_p95_derived": [2, 7, 31, 669],
+        "gap_atr_p50": 0.4918, "fvg_quality_p50": 0.7737,
+        "dir_adj_median_bps": {"h1": -0.075, "h3": -0.206, "h5": -0.214},
+        "raw_median_bps": {"h1": 0.059, "h3": 0.100, "h5": 0.135},
+        "notes": [
+          "DIRECT_OBSERVATION: Fill known-time p95 is 120009 ms shorter than market-time p95 (40019991 vs 40140000; E1_RESULTS.json.tables.strata.rows[tf=1m].formation_to_fill_known_ms.p95 vs formation_to_fill_market_ms.p95) - about 2 native bars of intra-bar knowability at the tail.",
+          "DIRECT_OBSERVATION: All horizons full n=43706 (E1_RESULTS.json.tables.strata.rows[tf=1m].horizons[*].n)."
+        ]
+      },
+      "5m": {
+        "bars": 52841, "formations": 7140, "formation_incidence_rate": 0.1351,
+        "bullish_share": 0.5429,
+        "observed_fill_fraction": 0.9777, "first_touch_fraction": 0.9859, "right_censored_fraction": 0.0223,
+        "path_decomposition_derived": {"touched_then_filled": 6961, "touched_never_filled": 78, "filled_without_prior_touch": 20, "never_touched_never_filled": 81},
+        "touch_bars_p25_p50_p75_p95_derived": [1, 2, 8, 158],
+        "fill_bars_p25_p50_p75_p95_derived": [2, 7, 33, 701],
+        "gap_atr_p50": 0.4570, "fvg_quality_p50": 0.7503,
+        "dir_adj_median_bps": {"h1": -0.225, "h3": -0.553, "h5": -0.516},
+        "raw_median_bps": {"h1": 0.182, "h3": 0.668, "h5": 1.030},
+        "notes": [
+          "DIRECT_OBSERVATION: Fill known-time p75 is 299772 ms (about 1 bar) shorter than market-time p75 (E1_RESULTS.json.tables.strata.rows[tf=5m].formation_to_fill_known_ms.p75=9600228 vs formation_to_fill_market_ms.p75=9900000).",
+          "DIRECT_OBSERVATION: Horizon 3/5 n=7139 vs denominator 7140 (E1_RESULTS.json.tables.strata.rows[tf=5m].horizons[1].n, horizons[2].n)."
+        ]
+      },
+      "15m": {
+        "bars": 17615, "formations": 2192, "formation_incidence_rate": 0.1244,
+        "bullish_share": 0.5798,
+        "observed_fill_fraction": 0.9599, "first_touch_fraction": 0.9745, "right_censored_fraction": 0.0401,
+        "path_decomposition_derived": {"touched_then_filled": 2094, "touched_never_filled": 42, "filled_without_prior_touch": 10, "never_touched_never_filled": 46},
+        "touch_bars_p25_p50_p75_p95_derived": [1, 2, 8, 186],
+        "fill_bars_p25_p50_p75_p95_derived": [2, 8, 34, 562],
+        "gap_atr_p50": 0.4591, "fvg_quality_p50": 0.7497,
+        "dir_adj_median_bps": {"h1": -0.455, "h3": -0.672, "h5": -1.114},
+        "raw_median_bps": {"h1": 0.470, "h3": 1.046, "h5": 2.456},
+        "notes": [
+          "DIRECT_OBSERVATION: Fill p95 shortens to ~562 native bars from ~669-717 at finer strata while censoring rises to 4.01%; the observable tail is beginning to be truncated (E1_RESULTS.json.tables.strata.rows[tf=15m].formation_to_fill_market_ms.p95; right_censored_n=88/2192).",
+          "DIRECT_OBSERVATION: Direction-adjusted h5 p05 (-63.41 bps) vs p95 (+60.75 bps) are near-symmetric; h1 is near-symmetric with slight right weight (E1_RESULTS.json.tables.strata.rows[tf=15m].horizons[*].direction_adjusted_return_bps).",
+          "DIRECT_OBSERVATION: Horizon n shortfalls: h3 n=2191, h5 n=2189 vs denominator 2192 (E1_RESULTS.json.tables.strata.rows[tf=15m].horizons[*].n)."
+        ]
+      },
+      "1h": {
+        "bars": 4406, "formations": 523, "formation_incidence_rate": 0.1187,
+        "bullish_share": 0.5832,
+        "observed_fill_fraction": 0.9216, "first_touch_fraction": 0.9503, "right_censored_fraction": 0.0784,
+        "path_decomposition_derived": {"touched_then_filled": 478, "touched_never_filled": 19, "filled_without_prior_touch": 4, "never_touched_never_filled": 22},
+        "touch_bars_p25_p50_p75_p95_derived": [1, 2, 9, 193],
+        "fill_bars_p25_p50_p75_p95_derived": [3, 8, 33, 403],
+        "gap_atr_p50": 0.4543, "fvg_quality_p50": 0.7452,
+        "dir_adj_median_bps": {"h1": -0.108, "h3": 0.852, "h5": -1.589},
+        "raw_median_bps": {"h1": 2.085, "h3": 6.948, "h5": 7.301},
+        "notes": [
+          "DIRECT_OBSERVATION: Fill known-time p75 is 14399866 ms (~4 bars) shorter than market-time p75, and fill p25 known-time is 3595685 ms (~1 bar) shorter; touch p75 known-time is ~1 bar shorter (E1_RESULTS.json.tables.strata.rows[tf=1h].formation_to_fill_known_ms vs formation_to_fill_market_ms; formation_to_touch_known_ms.p75=28800355 vs market 32400000). Upper-quantile durations are materially clock-dependent at this stratum.",
+          "DIRECT_OBSERVATION: Fill p95 shortens to ~403 native bars with censoring 7.84% (41/523) (E1_RESULTS.json.tables.strata.rows[tf=1h].formation_to_fill_market_ms.p95; right_censored_n).",
+          "DIRECT_OBSERVATION: This is one of only two stratum-horizon cells with a positive direction-adjusted median (h3 +0.852 bps, n=523) (E1_RESULTS.json.tables.strata.rows[tf=1h].horizons[1].direction_adjusted_return_bps.p50).",
+          "INTERPRETATION: With n=523 formations and 41 censored, coarse-stratum lifecycle statements carry wide sampling uncertainty; no significance claim is made."
+        ]
+      },
+      "4h": {
+        "bars": 1169, "formations": 167, "formation_incidence_rate": 0.1429,
+        "bullish_share": 0.6048,
+        "observed_fill_fraction": 0.8443, "first_touch_fraction": 0.9401, "right_censored_fraction": 0.1557,
+        "path_decomposition_derived": {"touched_then_filled": 141, "touched_never_filled": 16, "filled_without_prior_touch": 0, "never_touched_never_filled": 10},
+        "touch_bars_p25_p50_p75_p95_derived": [1, 2, 12, 89],
+        "fill_bars_p25_p50_p75_p95_derived": [2, 5, 31, 170],
+        "gap_atr_p50": 0.5266, "fvg_quality_p50": 0.7562,
+        "dir_adj_median_bps": {"h1": -1.134, "h3": -2.094, "h5": 12.508},
+        "raw_median_bps": {"h1": 2.531, "h3": 19.729, "h5": 25.980},
+        "notes": [
+          "DIRECT_OBSERVATION: Smallest cohort (167 formations on 1169 bars); 26 zones (15.57%) right-censored (E1_RESULTS.json.tables.strata.rows[tf=4h].right_censored_n/denominator).",
+          "DIRECT_OBSERVATION: Touch p75 is 12 native bars and touch p95 only ~89 bars, both shorter in bar units than the ~8-bar p75 and ~158-193-bar p95 seen at finer strata; the observable upper tail is truncated by the short window (fill p95 ~170 bars is ~14.5% of the entire 1169-bar history) (derived from E1_RESULTS.json.tables.strata.rows[tf=4h].formation_to_touch_market_ms, formation_to_fill_market_ms).",
+          "DIRECT_OBSERVATION: Touch known-time p75 is 14399950 ms (about 1 bar) LONGER than market-time p75 (187199950 vs 172800000; E1_RESULTS.json.tables.strata.rows[tf=4h].formation_to_touch_known_ms.p75 vs formation_to_touch_market_ms.p75) - known time can exceed market time at this stratum.",
+          "DIRECT_OBSERVATION: Zero fill-without-prior-touch events and the only positive direction-adjusted h5 median (+12.508 bps, n=167) (E1_RESULTS.json.tables.strata.rows[tf=4h].formed_fill_without_prior_touch_n; horizons[2].direction_adjusted_return_bps.p50). Small-n cells; treated as descriptive only."
+        ]
+      }
+    }
+  },
+  "cross_stratum_observations": [
+    {
+      "id": "X1",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "Formation incidence declines monotonically with scale from 21.60% (15s) through 11.87% (1h) and then ticks up to 14.29% at 4h (E1_RESULTS.json.tables.strata.rows[tf=*].formation_incidence.rate). The 4h uptick breaks an otherwise monotone pattern."
+    },
+    {
+      "id": "X2",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "Median formation-to-first-touch is exactly 2 native bars at every stratum, and p25 is exactly 1 native bar at every stratum (E1_RESULTS.json.tables.strata.rows[tf=*].formation_to_touch_market_ms.p50/p25 divided by bar period; derived). In wall-clock this ranges from 30 s (15s) to 8 h (4h)."
+    },
+    {
+      "id": "X3",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "Median formation-to-fill is 7 native bars at 15s/30s/1m/5m, 8 bars at 15m/1h, and 5 bars at 4h; p75 is 30-34 bars at every stratum (E1_RESULTS.json.tables.strata.rows[tf=*].formation_to_fill_market_ms; derived). Lifecycle timing in the body of the distribution is approximately invariant in native-bar time across a 960x span of bar periods."
+    },
+    {
+      "id": "X4",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "Touch p95 in bar units is 158-193 bars at 15s through 1h but only ~89 bars at 4h; fill p95 in bar units declines from ~717 (15s) through ~562 (15m), ~403 (1h) to ~170 (4h) (derived from E1_RESULTS.json.tables.strata.rows[tf=*].formation_to_touch_market_ms.p95, formation_to_fill_market_ms.p95). The coarse-scale tails are truncated, consistent with rising right-censoring (0.45% to 15.57%), not demonstrably with a genuine shortening of long lifetimes."
+    },
+    {
+      "id": "X5",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "Observed fill fraction falls monotonically with scale: 99.55%, 99.36%, 99.10%, 97.77%, 95.99%, 92.16%, 84.43% (E1_RESULTS.json.tables.strata.rows[tf=*].fill_rate.rate); right-censored fraction rises monotonically: 0.45%, 0.64%, 0.90%, 2.23%, 4.01%, 7.84%, 15.57% (right_censored_rate.rate). The two gradients are near-complementary."
+    },
+    {
+      "id": "X6",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "Bullish share of formations rises monotonically with scale: 51.03% (15s), 51.71% (30s), 52.44% (1m), 54.29% (5m), 57.98% (15m), 58.32% (1h), 60.48% (4h) (E1_RESULTS.json.tables.strata.rows[tf=*].bullish_n / (bullish_n + bearish_n); derived)."
+    },
+    {
+      "id": "X7",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "The four-way path decomposition (touched-then-filled = formed_touch_fill_n; touched-never-filled = first_touch_n - formed_touch_fill_n; filled-without-prior-touch = formed_fill_without_prior_touch_n; never-touched-never-filled = lawful_formation_n - first_touch_n - formed_fill_without_prior_touch_n) sums exactly to lawful_formation_n, and touched-never-filled + never-touched-never-filled equals right_censored_n, at all 7 strata (derived from E1_RESULTS.json.tables.strata.rows[tf=*])."
+    },
+    {
+      "id": "X8",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "Both censored sub-populations grow with scale as a share of formations: touched-never-filled 0.209% (15s) to 9.581% (4h); never-touched-never-filled 0.237% (15s) to 5.988% (4h) (derived from E1_RESULTS.json.tables.strata.rows[tf=*]). At every stratum except 4h (61.5%), roughly 46-51% of censored zones were touched but never filled."
+    },
+    {
+      "id": "X9",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "gap_atr p05 is pinned near the detector floor at every stratum (0.2205-0.2294, against min_gap_atr=0.2 in AP-002_AUTHORITY_V1.json.parameters) while the median declines from 0.5638 (15s) to 0.4543 (1h) and rises to 0.5266 (4h); p95 is U-shaped (1.62, 1.44, 1.34, 1.35, 1.48, 1.62, 1.60) (E1_RESULTS.json.tables.strata.rows[tf=*].gap_atr)."
+    },
+    {
+      "id": "X10",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "fvg_quality is nearly scale-stable: median 0.7974 (15s) to 0.7452 (1h), 0.7562 (4h); p05 0.479-0.501; p95 0.943-0.989 (E1_RESULTS.json.tables.strata.rows[tf=*].fvg_quality)."
+    },
+    {
+      "id": "X11",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "Orphan lifecycle events (touch/fill events with no formation payload counterpart in the stratum) total 177 touches and 356 fills; their burden per formation rises with scale: orphan fills are 0.069% of formations at 15s vs 3.593% at 4h (E1_RESULTS.json.tables.strata.rows[tf=*].orphan_touch_n, orphan_fill_n; derived)."
+    },
+    {
+      "id": "X12",
+      "type": "INTERPRETATION",
+      "statement": "Read together, X2/X3/X5/X4 indicate that the apparent scale dependence of the fill fraction is largely an observation-window effect in bar-time: the fill-time tail (p95 roughly 560-720 bars at fine/mid scales) is negligible against a ~1.05M-bar 15s window but is a large fraction of the 1169-bar 4h window. The evidence does not establish that coarse-scale zones are intrinsically less likely to fill."
+    },
+    {
+      "id": "X13",
+      "type": "HYPOTHESIS_FOR_LATER_TESTING",
+      "statement": "The monotone bullish-share gradient (X6) may reflect development-window upward drift in XAUUSD interacting with bar aggregation, or session-structure effects at coarse bars, rather than a detector property. Testable later per stratum with a formal direction-balance null; no significance claim is made here."
+    }
+  ],
+  "prospective_response_observations": {
+    "definition": "Native closes 1, 3, 5 lawful bars after formation; raw and direction-adjusted returns in bps vs anchor_mid (E1_EXPERIMENT.json.prospective_response). Denominators are lawful_formation_n per stratum; n shortfalls are end-of-stream truncations.",
+    "cells": "7 strata x 3 horizons = 21 cells",
+    "observations": [
+      {
+        "id": "P1",
+        "type": "DIRECT_OBSERVATION",
+        "statement": "Raw-return medians are positive at all 21 stratum-horizon cells and grow with horizon and with bar period: e.g. 15s h1 +0.012 bps to h5 +0.059 bps; 4h h1 +2.531 bps to h5 +25.980 bps (E1_RESULTS.json.tables.strata.rows[tf=*].horizons[*].raw_return_bps.p50)."
+      },
+      {
+        "id": "P2",
+        "type": "DIRECT_OBSERVATION",
+        "statement": "Direction-adjusted medians are negative in 19 of 21 cells. Exceptions: 1h h3 (+0.852 bps, n=523) and 4h h5 (+12.508 bps, n=167). Magnitudes grow with horizon at every stratum except 5m h5 (-0.516) vs h3 (-0.553), and grow with scale in bps: h1 medians -0.000 (15s), -0.027 (30s), -0.075 (1m), -0.225 (5m), -0.455 (15m), -0.108 (1h), -1.134 (4h) (E1_RESULTS.json.tables.strata.rows[tf=*].horizons[*].direction_adjusted_return_bps.p50)."
+      },
+      {
+        "id": "P3",
+        "type": "INTERPRETATION",
+        "statement": "The raw-positive / direction-adjusted-negative split (P1/P2) reads as a drift confound plus a small counter-directional median tendency after formation: conditional on formation, the median native forward close moves opposite to the forming impulse direction, in both direction cohorts, at nearly all scales and horizons. This is a descriptive phenotype statement about medians only; the tails are wide and no null test has been applied."
+      },
+      {
+        "id": "P4",
+        "type": "DIRECT_OBSERVATION",
+        "statement": "Tails are wide and mostly near-symmetric in direction-adjusted space, with left-heavier tails at some coarse cells: 4h h1 p05 -124.45 vs p95 +84.10; 1h h1 p05 -55.33 vs p95 +49.53; while 1h h5 (p05 -104.65, p95 +125.69) and 4h h5 (p05 -278.56, p95 +282.74) are right-heavy or symmetric (E1_RESULTS.json.tables.strata.rows[tf=1h,4h].horizons[*].direction_adjusted_return_bps)."
+      },
+      {
+        "id": "P5",
+        "type": "DIRECT_OBSERVATION",
+        "statement": "Dispersion scales with bar period as expected for returns: raw h1 p95-p05 span is ~6.4 bps at 15s, ~31 bps at 5m, ~113.6 bps at 1h, ~209.7 bps at 4h (E1_RESULTS.json.tables.strata.rows[tf=*].horizons[0].raw_return_bps p95 minus p05; derived). No anomalous scaling regime is apparent."
+      },
+      {
+        "id": "P6",
+        "type": "DIRECT_OBSERVATION",
+        "statement": "Sample sizes: full n at 30s/1m/1h/4h for all horizons; shortfalls only at 15s (h3/h5 n=227924), 5m (h3/h5 n=7139), 15m (h3 n=2191, h5 n=2189), each against the full lawful_formation_n denominator (E1_RESULTS.json.tables.strata.rows[tf=*].horizons[*].n and .denominator)."
+      },
+      {
+        "id": "P7",
+        "type": "HYPOTHESIS_FOR_LATER_TESTING",
+        "statement": "Register for later formal testing: (a) per stratum, whether direction-adjusted median at each horizon differs from zero (sign/permutation test); (b) whether the counter-directional median tendency intensifies per-bar with scale (h1 medians per bar: ~0 at 15s vs -1.134 bps at 4h); (c) whether the 4h h5 positive median survives given n=167; (d) whether left-tail weight at 1h/4h h1 differs from right-tail weight. None of these is established by this development evidence."
+      }
+    ]
+  },
+  "anomalies": [
+    {
+      "id": "A1",
+      "name": "fill_without_prior_recorded_touch",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "Fills with no prior recorded first touch exist at every stratum except 4h: 682 (15s), 213 (30s), 81 (1m), 20 (5m), 10 (15m), 4 (1h), 0 (4h) - up to 0.83% of stratum formations (E1_RESULTS.json.tables.strata.rows[tf=*].formed_fill_without_prior_touch_n). These are included in fill_n and fill_rate.",
+      "interpretation": "A mechanically possible explanation is a later bar that gaps entirely through the zone (no range overlap, hence no touch event) while its extreme reaches the fill edge - e.g. across session breaks/weekends - or same-bar touch/fill ordering semantics; the authority defines touch as range overlap and fill as far-edge reach (AP-002_AUTHORITY_V1.json.authoritative_semantics.first_touch, .fill). This cannot be verified from the frozen tables alone.",
+      "status": "requires explanation before any fill-anchored cohort is promoted"
+    },
+    {
+      "id": "A2",
+      "name": "orphan_lifecycle_events",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "177 orphan touch events and 356 orphan fill events with no formation payload counterpart (E1_RESULTS.json.tables.strata.rows[tf=*].orphan_touch_n, orphan_fill_n). Formation payloads cover all 381527 zone identities, so these events reference identities outside the formed cohort tables or unreconciled state.",
+      "interpretation": "Plausible sources include detector-state serialization/restoration edges or availability-gated suppression of formation rows while lifecycle events still fired; not resolvable from the frozen tables. Orphans are already excluded from formed_* cohort counts, so headline fractions are not contaminated.",
+      "status": "requires scanner-author explanation before E1B cohort freeze; proportional burden is largest at 4h (3.593% of formations)"
+    },
+    {
+      "id": "A3",
+      "name": "known_time_vs_market_time_divergence",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "Known-time durations differ from market-time durations at upper quantiles: known is SHORTER by up to ~1 bar at 5m/15m fill p75, ~2 bars at 1m fill p95, ~1 bar at 1h fill p25 and touch p75, and ~4 bars at 1h fill p75 (104400134 vs 118800000 ms); known is LONGER by ~1 bar at 4h touch p75 (187199950 vs 172800000 ms) (E1_RESULTS.json.tables.strata.rows[tf=*].formation_to_fill_known_ms, formation_to_touch_known_ms vs market_ms). At fine strata all listed quantiles agree within sub-second to ~0.3 s.",
+      "interpretation": "Known <= market at upper quantiles is consistent with intra-bar knowability of the touching/filling extreme (bar-boundary market time overstates when the information existed). Known > market at 4h touch p75 is consistent with delayed receipt of bar completion across quiet or closed sessions. Both directions are availability-clock mechanics, not causality violations (SCANNER_INTEGRITY_GATE.json.checks prospective_response_causality PASS), but they mean lifecycle durations are clock-dependent and E1B anchors must declare their clock.",
+      "status": "registered; clock choice must be pre-registered for E1B"
+    },
+    {
+      "id": "A4",
+      "name": "incidence_uptick_at_4h",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "Formation incidence declines monotonically 21.60% -> 11.87% (15s -> 1h) then rises to 14.29% at 4h (E1_RESULTS.json.tables.strata.rows[tf=*].formation_incidence.rate).",
+      "interpretation": "With only 1169 4h bars (167 formations) the 4h estimate is imprecise; the uptick may be sampling noise or a genuine session-gap aggregation effect. Descriptive only.",
+      "status": "open descriptive question"
+    },
+    {
+      "id": "A5",
+      "name": "fill_fraction_exceeds_touch_fraction_at_15s",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "At 15s the observed fill fraction (99.554%) exceeds the first-touch fraction (99.463%) because 682 fills lacked prior touch while only 476 zones were touched and never filled (E1_RESULTS.json.tables.strata.rows[tf=15s].fill_rate.rate, first_touch_rate.rate; derived).",
+      "status": "arithmetic consequence of A1; flagged so the inversion is not misread as an inconsistency"
+    },
+    {
+      "id": "A6",
+      "name": "end_of_stream_response_shortfalls",
+      "type": "DIRECT_OBSERVATION",
+      "statement": "Horizon n falls 1-3 short of denominator at 15s (h3/h5), 5m (h3/h5) and 15m (h3/h5), consistent with the authority rule that no synthetic tail bar is emitted (AP-002_AUTHORITY_V1.json.lawful_availability.end_of_stream) (E1_RESULTS.json.tables.strata.rows[tf=*].horizons[*].n).",
+      "status": "expected behavior; quantified for completeness"
+    }
+  ],
+  "censoring_cautions": [
+    "Right-censored zones are active, unfilled zones at the final lawful native bar (SCANNER_INTEGRITY_GATE.json.checks right_censoring). Censoring is 0.45% (15s) to 15.57% (4h) of formations (E1_RESULTS.json.tables.strata.rows[tf=*].right_censored_rate.rate).",
+    "Observed fill fractions are window-truncated lower bounds on eventual fill behavior; they must never be read as hazards or lifetime probabilities. At 4h, fill p95 (~170 bars) is ~14.5% of the entire 1169-bar history, so the coarse-scale fill fraction is materially truncated (derived from E1_RESULTS.json.tables.strata.rows[tf=4h]).",
+    "The censored population is heterogeneous: at every stratum it splits into touched-never-filled (e.g. 16 of 26 at 4h) and never-touched-never-filled (10 of 26 at 4h) (derived from E1_RESULTS.json.tables.strata.rows[tf=*]). Any E1B design must keep these distinct; pooling them assumes they are the same phenotype, which is not established.",
+    "Censoring also truncates time-to-fill and time-to-touch upper quantiles at coarse scales (X4), so cross-stratum tail comparisons in bar-time are observation-limited, not necessarily behavioral.",
+    "Prospective responses are complete or near-complete (n shortfalls of 1-3 rows, A6), so response statistics are far less censoring-exposed than lifecycle-duration statistics; but 1/3/5-bar responses are fixed horizons and say nothing about longer horizons.",
+    "Development-data-only scope: all quantities are in-sample descriptions of XAUUSD_DATA_SCOPE_V1 DEVELOPMENT; no out-of-sample or confirmation inference is licensed (E1_EXPERIMENT.json.development_scope; confirmation_status LOCKED)."
+  ],
+  "e1b_stage_anchor_requirements": {
+    "FIRST_TOUCH": {
+      "justified": true,
+      "justification": "First touch is near-universal where observed (touch fractions 94.0%-99.5%) and occurs at median 2 native bars at every stratum, so a touch-anchored study yields large, fast-realizing cohorts at all scales, with the touched-never-filled population (476 at 15s down to 16 at 4h) as a built-in contrast class.",
+      "requirements": [
+        "Cohort denominator per stratum = first_touch_n (E1_RESULTS.json.tables.strata.rows[tf=*].first_touch_n); never-touched zones excluded by construction and reported.",
+        "Pre-register the anchor clock (known-time vs market-time) given A3 divergences up to ~1 bar.",
+        "Pre-register treatment of filled-without-prior-touch zones (A1): they cannot enter a touch-anchored cohort; decide exclusion vs a separate cohort before freezing.",
+        "Keep touched-never-filled vs touched-then-filled distinct when interpreting later outcomes; censoring-heterogeneity caution applies.",
+        "Per-stratum analysis only; no cross-scale pooling; (timeframe, zone_id) identity only (AP-002_AUTHORITY_V1.json.identity)."
+      ]
+    },
+    "FILL": {
+      "justified": true,
+      "justification": "Fill cohorts are near-complete at fine/mid strata (fill fractions 97.8%-99.6% at 15s-5m) and fill is the cleanest zone-consumption event, but at 1h/4h the cohort is survivor-conditioned (92.2%/84.4% of formations with 7.8%/15.6% censoring), which must be registered as a selection caveat.",
+      "requirements": [
+        "Cohort denominator per stratum = fill_n (E1_RESULTS.json.tables.strata.rows[tf=*].fill_n); report the censored complement explicitly.",
+        "Register the survivor-conditioning of coarse-scale fill cohorts (1h/4h) and any selection handling before freezing cohorts.",
+        "Pre-register anchor clock (A3) and the treatment of same-bar touch+fill pairs and of fill-without-prior-touch rows (A1).",
+        "Define the response grid strictly after the fill event's lawful availability; integrity gate confirms later-lawful-close responses are enforceable (SCANNER_INTEGRITY_GATE.json.checks prospective_response_causality).",
+        "Per-stratum analysis only; no cross-scale pooling."
+      ]
+    },
+    "shared_preconditions": [
+      "Orphan events (A2) must receive a scanner-author explanation, and an exclusion/reconciliation policy must be fixed, before any E1B cohort freeze.",
+      "Both anchors require explicit right-censoring accounting and separate tracking of the two censored sub-populations (X8).",
+      "min_gap_atr=0.2 floor-pinning of gap_atr p05 (X9) means formations near the threshold may be a selected population; any E1B conditioning on gap_atr should account for threshold selection."
+    ]
+  },
+  "questions_for_question_generator": [
+    "Q1: What mechanism produces the 177 orphan touch and 356 orphan fill events, and do they concentrate at detector-state restoration boundaries or availability edges? (Directs to scanner author; blocks E1B cohort freeze policy only, not synthesis.)",
+    "Q2: Are fill-without-prior-touch rows (682 at 15s ... 0 at 4h) gap-through bars across session breaks/weekends, and does their per-stratum rate track session-gap density?",
+    "Q3: Is the monotone bullish-share gradient with scale (51.0% at 15s to 60.5% at 4h) explained by development-window drift, session-aggregation asymmetry, or detector mechanics? Requires a formal direction-balance test per stratum.",
+    "Q4: Is the counter-directional median tendency in direction-adjusted returns (negative in 19 of 21 cells) a reversion-to-impulse artifact of the three-bar formation geometry (middle body >= 0.20 ATR) rather than a zone property? Testable against matched non-formation impulses later.",
+    "Q5: Does the 4h formation-incidence uptick (14.29% after a monotone decline to 11.87%) survive an interval estimate given n=1169 bars / 167 formations?",
+    "Q6: Which clock (known-time vs market-time) should define E1B anchors and horizon grids, given divergences up to ~1 bar in both directions (A3)?",
+    "Q7: Do touched-never-filled and never-touched-never-filled censored zones differ in gap_atr, fvg_quality, or formation context (censoring heterogeneity, X8)?",
+    "Q8: Does gap_atr p05 pinning at ~0.22 against the min_gap_atr=0.2 floor (X9) indicate a threshold-selected formation population, and should sensitivity near the floor be studied before any gap_atr conditioning is frozen?"
+  ],
+  "claims_that_must_not_be_made": [
+    "That any observed fill fraction is a hazard, lifetime probability, or the probability an FVG eventually fills; they are window-truncated descriptive fractions with material right-censoring at coarse scales.",
+    "That raw or direction-adjusted return patterns constitute an edge, alpha, profitability, predictive advantage, or any strategy-grade result; no null test has been run and confirmation is locked.",
+    "That strata are statistically interchangeable or may be pooled to raise N; every statement here is per-stratum.",
+    "That cross-scale zone identity exists; identity is (timeframe, zone_id) only and cross-scale identity is prohibited (AP-002_AUTHORITY_V1.json).",
+    "That the 4h bullish majority (60.48%) or the bullish-share gradient is a statistically established direction bias; it is a descriptive gradient awaiting a formal test.",
+    "That unfilled 1h/4h zones would or would not eventually fill, or that coarse-scale fill fractions are asymptotic.",
+    "That fill-without-prior-touch rows or orphan events are scanner defects; they are unexplained but not demonstrated to be errors.",
+    "Any causal claim that formation causes subsequent native returns beyond the descriptive, in-development-sample association recorded here.",
+    "Any transfer of these development-only quantities to E2/E3 contexts, confirmation, or live behavior.",
+    "That lifecycle-duration distributions are scale-invariant in full, including tails; only the body quantiles are approximately bar-time invariant, and coarse-scale tails are censoring-truncated."
+  ],
+  "overall_assessment": "PASS_TO_SYNTHESIS",
+  "overall_assessment_rationale": "The frozen evidence is complete (zero unavailable counters, all 381527 zone identities reconciled to formation payloads), deterministic across two independent runs (identical logical hashes), integrity-gated on all nine checks including prospective-response causality and right-censoring handling, and internally consistent to the zone at every stratum (four-way lifecycle decomposition closes exactly). The phenotype questions posed for E1 - incidence, direction balance, lifecycle paths and timing, censoring, distributions of gap_atr/fvg_quality, and lawful prospective behavior at 1/3/5 bars - are all answerable from these tables. Registered anomalies (orphans, fill-without-prior-touch, clock divergences, 4h incidence uptick) are small, quantified, and do not contaminate cohort-level fractions; they are carried forward as questions, not blockers. No rework of the scanner or the experiment is indicated by this evidence.",
+  "interpretation_discipline_declaration": "This review separates DIRECT_OBSERVATION, INTERPRETATION, and HYPOTHESIS_FOR_LATER_TESTING throughout; no significance claim is made anywhere; no forbidden vocabulary is used to assert unestablished properties; censoring is attached to every fill-fraction statement; and no scale pooling was performed."
+}
