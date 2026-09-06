@@ -45,7 +45,11 @@ superseded `4562b87b…`. Chain and deltas: `AP-002_E1A_SCOPE_REPAIR_IMPACT_ASSE
   zone" is false and removed from the canonical record.
 - **A2 `LEFT_TRUNCATED_PRE_DEVELOPMENT_STATE`** — 536 orphan events (178/358);
   every orphan zone predates its stratum's first lawful in-window formation.
-  Not missing formations; excluded from formed cohorts.
+  Not missing formations; excluded from formed cohorts. Note: two lifecycle
+  events have detection timestamps exactly at the 16:15 boundary but originate
+  from excluded pre-boundary formation-bar state (the corrected bar-view gate
+  requires the formation bar itself to belong to the lawful cohort, not merely
+  a detection timestamp equal to the boundary instant).
 - **SCOPE `REPAIRED_AND_RE_RUN`** — start-boundary misalignment found, repaired,
   re-materialized, re-scanned twice, re-verified.
 

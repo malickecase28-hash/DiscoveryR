@@ -1,20 +1,116 @@
 {
- "AP-002_E1_PHENOTYPE_REVIEW_P01.json": "b25749125bad6081032d9beba31299ddfa64ea0e1146e8b2cfd20ba05fafe287",
- "AP-002_E1_PHENOTYPE_REVIEW_P01.md": "d6912f12e52138093a36a6093226b98702f773d746c9418d48feaf89ec50ea7a",
- "AP-002_E1_PHENOTYPE_REVIEW_P02.json": "c634a91b09fb56655b3067af0174200abc936c6db85cedc149559445d9098b12",
- "AP-002_E1_PHENOTYPE_REVIEW_P02.md": "1f7de107f6884aa900bf5e4e6a7a791bd6ba600c2a5f0c6cd7e321686f992399",
- "AP-002_E1A_RECONCILIATION_corrected.md": "b15e4ef7f57ab200bed97a8d919456b62136a5b5ebe9f31566c56dc9a9d7883c",
- "AP-002_E1_METHOD_CHALLENGE.json": "0b3bc47ebd8bb0cd2f3e749188fd4ef7e9207d5f864b30881ab57a075bc3df91",
- "AP-002_E1_METHOD_CHALLENGE.md": "b8ad39a64f0d9fc81dfd353038498c05e1ef8d400611b7abbe7be0732f8b5c67",
- "AP-002_E1_ANOMALY_AUDIT.json": "1f2962a86f2b20d730ee4b59e5826a64e0cdc7a1cb46479826f0309128ae2d68",
- "AP-002_E1A_SCOPE_REPAIR_AUDIT.json": "c8e89d559fe3697bbe19f9ba9b24d6b6aca0977da894e55ae68da65b9c5b3773",
- "E1_RESULTS_corrected.json": "9173e5d42f64a25a45d4532bdc234b83de11b6cc79b32237b101fdd67c477262",
- "E1_EXPERIMENT_corrected.json": "a40fe62a6a9aa0c16e56ac7aafeb30ddda57cb60dc2f285052804fec20c5ddd2",
- "PREFLIGHT_corrected.json": "77109bccd50944e9c0a250cda186186019dff3ec665067a9e43b12c54f5176fe",
- "RUN_MANIFEST_corrected.json": "5f08c5b1919a2c62f6363e1570ad52e826cb4632480000ebd6bd1626d6deb79f",
- "SCANNER_INTEGRITY_GATE_corrected.json": "24695063df376f0a66233f927fd2f6264d2208c4e2fbd2434de938a2b8affc06",
- "REPRODUCIBILITY.json": "1e3c3c86113c1228f3524138560dd2a3e33c20009c8a722c9e00e305e0956039",
- "AP-002_E1A_SCOPE_REPAIR_IMPACT_ASSESSMENT.md": "ffeeec1fbb19ec1daba8de40aeda2a27c4ecf21c14de31157db27504b13fe35f",
- "AP-002_E1A_SYNTHESIS.json": "178f6db8b77ac5c093920c427ac2b97cbba90872ea3e19574c600e55864e61a6",
- "AP-002_E1A_SYNTHESIS.md": "548281134abb729579812e808226abe3edc1c8563d1957202c26c97017499e0e"
+  "artifact_type": "ARTIFACT_HASH_REGISTRY",
+  "entries": [
+    {
+      "bytes": 22573,
+      "logical_name": "AP-002_E1A_RECONCILIATION_corrected.md",
+      "path": "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1A_RECONCILIATION.md",
+      "sha256": "b15e4ef7f57ab200bed97a8d919456b62136a5b5ebe9f31566c56dc9a9d7883c"
+    },
+    {
+      "bytes": 134577,
+      "logical_name": "AP-002_E1A_SCOPE_REPAIR_AUDIT.json",
+      "path": "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SCOPE_REPAIR_AUDIT.json",
+      "sha256": "c8e89d559fe3697bbe19f9ba9b24d6b6aca0977da894e55ae68da65b9c5b3773"
+    },
+    {
+      "bytes": 5920,
+      "logical_name": "AP-002_E1A_SCOPE_REPAIR_IMPACT_ASSESSMENT.md",
+      "path": "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SCOPE_REPAIR_IMPACT_ASSESSMENT.md",
+      "sha256": "ffeeec1fbb19ec1daba8de40aeda2a27c4ecf21c14de31157db27504b13fe35f"
+    },
+    {
+      "bytes": 8585,
+      "logical_name": "AP-002_E1A_SYNTHESIS.json",
+      "path": "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SYNTHESIS.json",
+      "sha256": "178f6db8b77ac5c093920c427ac2b97cbba90872ea3e19574c600e55864e61a6"
+    },
+    {
+      "bytes": 4841,
+      "logical_name": "AP-002_E1A_SYNTHESIS.md",
+      "path": "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SYNTHESIS.md",
+      "sha256": "548281134abb729579812e808226abe3edc1c8563d1957202c26c97017499e0e"
+    },
+    {
+      "bytes": 32012,
+      "logical_name": "AP-002_E1_ANOMALY_AUDIT.json",
+      "path": "docs/research/ap-002-e1-causal-rework/challenge/AP-002_E1_ANOMALY_AUDIT.json",
+      "sha256": "1f2962a86f2b20d730ee4b59e5826a64e0cdc7a1cb46479826f0309128ae2d68"
+    },
+    {
+      "bytes": 21242,
+      "logical_name": "AP-002_E1_METHOD_CHALLENGE.json",
+      "path": "docs/research/ap-002-e1-causal-rework/challenge/AP-002_E1_METHOD_CHALLENGE.json",
+      "sha256": "0b3bc47ebd8bb0cd2f3e749188fd4ef7e9207d5f864b30881ab57a075bc3df91"
+    },
+    {
+      "bytes": 17838,
+      "logical_name": "AP-002_E1_METHOD_CHALLENGE.md",
+      "path": "docs/research/ap-002-e1-causal-rework/challenge/AP-002_E1_METHOD_CHALLENGE.md",
+      "sha256": "b8ad39a64f0d9fc81dfd353038498c05e1ef8d400611b7abbe7be0732f8b5c67"
+    },
+    {
+      "bytes": 38353,
+      "logical_name": "AP-002_E1_PHENOTYPE_REVIEW_P01.json",
+      "path": "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1_PHENOTYPE_REVIEW_P01.json",
+      "sha256": "b25749125bad6081032d9beba31299ddfa64ea0e1146e8b2cfd20ba05fafe287"
+    },
+    {
+      "bytes": 23157,
+      "logical_name": "AP-002_E1_PHENOTYPE_REVIEW_P01.md",
+      "path": "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1_PHENOTYPE_REVIEW_P01.md",
+      "sha256": "d6912f12e52138093a36a6093226b98702f773d746c9418d48feaf89ec50ea7a"
+    },
+    {
+      "bytes": 40401,
+      "logical_name": "AP-002_E1_PHENOTYPE_REVIEW_P02.json",
+      "path": "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1_PHENOTYPE_REVIEW_P02.json",
+      "sha256": "c634a91b09fb56655b3067af0174200abc936c6db85cedc149559445d9098b12"
+    },
+    {
+      "bytes": 21641,
+      "logical_name": "AP-002_E1_PHENOTYPE_REVIEW_P02.md",
+      "path": "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1_PHENOTYPE_REVIEW_P02.md",
+      "sha256": "1f7de107f6884aa900bf5e4e6a7a791bd6ba600c2a5f0c6cd7e321686f992399"
+    },
+    {
+      "bytes": 1341,
+      "logical_name": "E1_EXPERIMENT_corrected.json",
+      "path": "docs/research/ap-002-e1a-scope-repair/E1_EXPERIMENT.json",
+      "sha256": "a40fe62a6a9aa0c16e56ac7aafeb30ddda57cb60dc2f285052804fec20c5ddd2"
+    },
+    {
+      "bytes": 39094,
+      "logical_name": "E1_RESULTS_corrected.json",
+      "path": "docs/research/ap-002-e1a-scope-repair/E1_RESULTS.json",
+      "sha256": "9173e5d42f64a25a45d4532bdc234b83de11b6cc79b32237b101fdd67c477262"
+    },
+    {
+      "bytes": 378,
+      "logical_name": "PREFLIGHT_corrected.json",
+      "path": "docs/research/ap-002-e1a-scope-repair/PREFLIGHT.json",
+      "sha256": "77109bccd50944e9c0a250cda186186019dff3ec665067a9e43b12c54f5176fe"
+    },
+    {
+      "bytes": 1453,
+      "logical_name": "REPRODUCIBILITY.json",
+      "path": "docs/research/ap-002-e1a-scope-repair/REPRODUCIBILITY.json",
+      "sha256": "1e3c3c86113c1228f3524138560dd2a3e33c20009c8a722c9e00e305e0956039"
+    },
+    {
+      "bytes": 807,
+      "logical_name": "RUN_MANIFEST_corrected.json",
+      "path": "docs/research/ap-002-e1a-scope-repair/RUN_MANIFEST.json",
+      "sha256": "5f08c5b1919a2c62f6363e1570ad52e826cb4632480000ebd6bd1626d6deb79f"
+    },
+    {
+      "bytes": 1653,
+      "logical_name": "SCANNER_INTEGRITY_GATE_corrected.json",
+      "path": "docs/research/ap-002-e1a-scope-repair/SCANNER_INTEGRITY_GATE.json",
+      "sha256": "24695063df376f0a66233f927fd2f6264d2208c4e2fbd2434de938a2b8affc06"
+    }
+  ],
+  "generator": "artifact_hash_registry",
+  "generator_code_identity": "091b84155cfd254984d92b1db3b24fb7d162d938",
+  "root": "."
 }

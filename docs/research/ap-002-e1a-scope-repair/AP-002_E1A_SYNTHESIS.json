@@ -50,7 +50,7 @@
    "observation": "536 orphan lifecycle events (178 touch / 358 fill) on the corrected cohort.",
    "explanation": "Detector state whose formation predates the development cohort boundary; every orphan zone was detected strictly before its stratum's first lawful in-window formation (detection window 2025-07-22 .. 2025-07-31T16:15:00Z, two events exactly at the boundary instant).",
    "status": "LEFT_TRUNCATED_PRE_DEVELOPMENT_STATE",
-   "note": "Excluded from in-window formed-zone cohorts; not missing formations."
+   "note": "Two lifecycle events have detection timestamps exactly at the 16:15 boundary but originate from excluded pre-boundary formation-bar state: the corrected bar-view gate requires the formation bar itself to belong to the lawful cohort, not merely a detection timestamp equal to the boundary instant."
   },
   {
    "id": "SCOPE",

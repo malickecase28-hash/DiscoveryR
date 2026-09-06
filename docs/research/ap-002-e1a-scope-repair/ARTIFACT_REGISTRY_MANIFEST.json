@@ -1,0 +1,76 @@
+{
+ "entries": [
+  {
+   "logical_name": "AP-002_E1_PHENOTYPE_REVIEW_P01.json",
+   "path": "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1_PHENOTYPE_REVIEW_P01.json"
+  },
+  {
+   "logical_name": "AP-002_E1_PHENOTYPE_REVIEW_P01.md",
+   "path": "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1_PHENOTYPE_REVIEW_P01.md"
+  },
+  {
+   "logical_name": "AP-002_E1_PHENOTYPE_REVIEW_P02.json",
+   "path": "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1_PHENOTYPE_REVIEW_P02.json"
+  },
+  {
+   "logical_name": "AP-002_E1_PHENOTYPE_REVIEW_P02.md",
+   "path": "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1_PHENOTYPE_REVIEW_P02.md"
+  },
+  {
+   "logical_name": "AP-002_E1A_RECONCILIATION_corrected.md",
+   "path": "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1A_RECONCILIATION.md"
+  },
+  {
+   "logical_name": "AP-002_E1_METHOD_CHALLENGE.json",
+   "path": "docs/research/ap-002-e1-causal-rework/challenge/AP-002_E1_METHOD_CHALLENGE.json"
+  },
+  {
+   "logical_name": "AP-002_E1_METHOD_CHALLENGE.md",
+   "path": "docs/research/ap-002-e1-causal-rework/challenge/AP-002_E1_METHOD_CHALLENGE.md"
+  },
+  {
+   "logical_name": "AP-002_E1_ANOMALY_AUDIT.json",
+   "path": "docs/research/ap-002-e1-causal-rework/challenge/AP-002_E1_ANOMALY_AUDIT.json"
+  },
+  {
+   "logical_name": "AP-002_E1A_SCOPE_REPAIR_AUDIT.json",
+   "path": "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SCOPE_REPAIR_AUDIT.json"
+  },
+  {
+   "logical_name": "E1_RESULTS_corrected.json",
+   "path": "docs/research/ap-002-e1a-scope-repair/E1_RESULTS.json"
+  },
+  {
+   "logical_name": "E1_EXPERIMENT_corrected.json",
+   "path": "docs/research/ap-002-e1a-scope-repair/E1_EXPERIMENT.json"
+  },
+  {
+   "logical_name": "PREFLIGHT_corrected.json",
+   "path": "docs/research/ap-002-e1a-scope-repair/PREFLIGHT.json"
+  },
+  {
+   "logical_name": "RUN_MANIFEST_corrected.json",
+   "path": "docs/research/ap-002-e1a-scope-repair/RUN_MANIFEST.json"
+  },
+  {
+   "logical_name": "SCANNER_INTEGRITY_GATE_corrected.json",
+   "path": "docs/research/ap-002-e1a-scope-repair/SCANNER_INTEGRITY_GATE.json"
+  },
+  {
+   "logical_name": "REPRODUCIBILITY.json",
+   "path": "docs/research/ap-002-e1a-scope-repair/REPRODUCIBILITY.json"
+  },
+  {
+   "logical_name": "AP-002_E1A_SCOPE_REPAIR_IMPACT_ASSESSMENT.md",
+   "path": "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SCOPE_REPAIR_IMPACT_ASSESSMENT.md"
+  },
+  {
+   "logical_name": "AP-002_E1A_SYNTHESIS.json",
+   "path": "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SYNTHESIS.json"
+  },
+  {
+   "logical_name": "AP-002_E1A_SYNTHESIS.md",
+   "path": "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SYNTHESIS.md"
+  }
+ ]
+}
