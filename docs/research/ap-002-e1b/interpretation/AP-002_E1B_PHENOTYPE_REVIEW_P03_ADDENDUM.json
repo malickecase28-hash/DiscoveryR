@@ -1,0 +1,156 @@
+{
+  "artifact_type": "AP-002_E1B_PHENOTYPE_REVIEW_ADDENDUM",
+  "interpreter_id": "P-03",
+  "generated_utc": "2026-09-06T14:18:57Z",
+  "addendum_type": "CONTRACT_COMPLETION",
+  "program": "AP-002 FVG",
+  "stage": "E1B lifecycle-stage phenotype (sealed addendum to AP-002_E1B_PHENOTYPE_REVIEW_P03)",
+  "instrument": "XAUUSD",
+  "exposure_class": "E1_PHENOTYPE",
+  "basis": {
+    "new_evidence": [
+      "docs/research/ap-002-e1b/E1B_FILL_STRATIFICATION.json",
+      "docs/research/ap-002-e1b/E1B_INTERPRETER_FACT_CHECK.json"
+    ],
+    "prior_review": "docs/research/ap-002-e1b/interpretation/AP-002_E1B_PHENOTYPE_REVIEW_P03.json",
+    "peer_interpretation_or_addendum_inspected": false,
+    "reconciliation": {
+      "touched_fill_total": 378122,
+      "gap_through_fill_total": 1010,
+      "fill_anchors_total": 379132,
+      "anchors_rows_total": 758380,
+      "anchors_logical_rows_sha256": "911301ee6ac985f76a954af5ddac10d9d8957508f4c2d44e348c718d564285c2",
+      "matches_prior_review_basis": true,
+      "per_cell_reconciliation": "every touched-fill cell equals prior E1B fill anchor count minus gap-through count per stratum (e.g. 30s: 99,224 - 213 = 99,011; 1h h5 outcome 481 - 4 = 477); 4h touched-fill cell (n=141) is identical to the full 4h FILL cohort because gap-through = 0"
+    },
+    "predeclared_support_rule": {
+      "DESCRIPTIVE_ADEQUATE": "anchor_n >= 200",
+      "DESCRIPTIVE_THIN": "30 <= anchor_n < 200",
+      "TOO_SPARSE_FOR_COMPARISON": "1 <= anchor_n < 30",
+      "EMPTY": "anchor_n = 0",
+      "artifact_note": "rule fixed before inspecting per-cell aggregates; labels carry no significance meaning"
+    },
+    "fact_check_acknowledgment": "The mechanical fact check (E1B_INTERPRETER_FACT_CHECK.json) verified all three P-03 sign-count claims as TRUE (FIRST_TOUCH direction-adjusted p50 positive 21/21; FILL 21/21; FILL > FIRST_TOUCH in 19/21 of 21 cells); no corrections were issued against P-03."
+  },
+
+  "q1_touched_fill_vs_gap_through_descriptive_difference": {
+    "answer": "No robust descriptive difference is supported. At the only two strata where both populations carry the predeclared DESCRIPTIVE_ADEQUATE label (15s and 30s), the two populations show the same weak, positive-leaning central tendency; where they differ (30s), the difference is stratum-inconsistent, small relative to dispersion, and hypothesis-grade only.",
+    "direct_observations": [
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "15s (touched n=226,210; gap-through n=682; both DESCRIPTIVE_ADEQUATE): direction-adjusted p50 h1/h3/h5 = touched +0.0217/+0.0661/+0.0848 bps vs gap-through 0.0/+0.0716/+0.1902 bps. The ordering flips across horizons (gap-through lower-or-equal at h1, near-identical at h3, higher at h5); every value is a small fraction of the respective IQRs (touched h1 IQR [-0.839, +0.910]; gap-through h1 IQR [-0.850, +0.864]). Path: E1B_FILL_STRATIFICATION.json cells[tf=15s, TOUCHED_FILL / GAP_THROUGH_FILL].horizons[h].direction_adjusted_return_bps.p50.",
+        "timeframe": "15s",
+        "n": {"touched_fill": 226210, "gap_through_fill": 682},
+        "stage_anchor": "FILL",
+        "horizon_bars": [1, 3, 5]
+      },
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "30s (touched n=99,011; gap-through n=213; both DESCRIPTIVE_ADEQUATE): direction-adjusted p50 h1/h3/h5 = touched +0.0298/+0.1077/+0.1607 bps vs gap-through +0.8894/+1.3700/+0.8009 bps - gap-through uniformly higher (5-13x at h1/h3), with sign-consistent positive medians at all three horizons. Gap-through dispersion is also wider (h1 p05 -3.93 to p95 +15.14 vs touched -4.94 to +5.14), and the h1 median difference (0.86 bps) remains small against the gap-through h1 IQR [-0.800, +5.204]. Path: cells[tf=30s].horizons.",
+        "timeframe": "30s",
+        "n": {"touched_fill": 99011, "gap_through_fill": 213},
+        "stage_anchor": "FILL",
+        "horizon_bars": [1, 3, 5]
+      },
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "Direction composition of the gap-through cells: bullish share 350/682 = 51.3% (15s) and 119/213 = 55.9% (30s), versus 51.0% (115,315/226,210) and 51.1% (51,116/99,011) in the touched-fill cells. The 30s gap-through cell is modestly bullish-overweight, and the P-03 review established the post-fill positive lean is bullish-carried.",
+        "timeframe": "30s",
+        "n": {"gap_through_15s": 682, "gap_through_30s": 213},
+        "stage_anchor": "FILL"
+      },
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "Mixture-negligibility check (closes P-03's unverified expectation): pooled FILL direction-adjusted p50 (E1B_RESULTS.json) minus touched-fill-only p50 (this artifact) is at most ~0.002 bps across all shared cells (e.g. 15s h1: 0.0214 vs 0.0217; 30s h3: 0.1092 vs 0.1077; 1m h1: identical to 6 decimals), consistent with gap-through being 0.19-0.83% of fills.",
+        "timeframe": "15s/30s/1m/5m/15m/1h/4h",
+        "stage_anchor": "FILL"
+      },
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "The 1m gap-through cell (n=81, DESCRIPTIVE_THIN) shows non-monotone, sign-flipping medians (0.0/-0.942/+2.469 bps) - already unstable at n=81, illustrating why the predeclared labels matter.",
+        "timeframe": "1m",
+        "n": 81,
+        "stage_anchor": "FILL"
+      },
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "The 5m (n=20), 15m (n=10), 1h (n=4) gap-through cells are predeclared TOO_SPARSE_FOR_COMPARISON and the 4h cell is EMPTY (n=0). Their quantiles are deliberately not quoted here and carry zero interpretive weight.",
+        "timeframe": "5m/15m/1h/4h",
+        "stage_anchor": "FILL"
+      }
+    ],
+    "interpretation": {
+      "class": "INTERPRETATION",
+      "text": "Taken together: at 15s the two fill populations are descriptively indistinguishable (weak positive lean, ordering flips by horizon); at 30s gap-through medians are uniformly higher but the pattern (a) rests on n=213, (b) sits inside a wide IQR, (c) is confounded by a modest bullish composition overweight, and (d) is contradicted by the 15s null. A stratum-inconsistent, single-stratum pattern is not a descriptive difference; it is a registered hypothesis. The load-bearing P-03 characterization of post-fill behavior (weak, sign-consistent, bullish-carried, in-zone-direction lean) applies to both populations where comparison is lawful."
+    },
+    "hypothesis_for_later_testing": "Does gap-through fill exhibit a systematically larger post-fill direction-adjusted response than touched-fill at strata where both are adequately sampled (P-03 QG-2, now partially answered: no robust difference at 15s/30s; suggestive-only at 30s)?"
+  },
+
+  "q2_strata_with_sufficient_n": {
+    "answer": "Using the predeclared eligibility labels (rule: anchor_n >= 200 = DESCRIPTIVE_ADEQUATE; 30-199 = DESCRIPTIVE_THIN; 1-29 = TOO_SPARSE_FOR_COMPARISON; 0 = EMPTY; rule fixed before per-cell inspection): a touched-fill vs gap-through descriptive comparison is adequately supported ONLY at 15s (682 vs 226,210) and 30s (213 vs 99,011).",
+    "per_cell_labels": {
+      "touched_fill": {
+        "15s": {"n": 226210, "eligibility": "DESCRIPTIVE_ADEQUATE"},
+        "30s": {"n": 99011, "eligibility": "DESCRIPTIVE_ADEQUATE"},
+        "1m": {"n": 43227, "eligibility": "DESCRIPTIVE_ADEQUATE"},
+        "5m": {"n": 6961, "eligibility": "DESCRIPTIVE_ADEQUATE"},
+        "15m": {"n": 2094, "eligibility": "DESCRIPTIVE_ADEQUATE"},
+        "1h": {"n": 478, "eligibility": "DESCRIPTIVE_ADEQUATE"},
+        "4h": {"n": 141, "eligibility": "DESCRIPTIVE_THIN"}
+      },
+      "gap_through_fill": {
+        "15s": {"n": 682, "eligibility": "DESCRIPTIVE_ADEQUATE"},
+        "30s": {"n": 213, "eligibility": "DESCRIPTIVE_ADEQUATE"},
+        "1m": {"n": 81, "eligibility": "DESCRIPTIVE_THIN"},
+        "5m": {"n": 20, "eligibility": "TOO_SPARSE_FOR_COMPARISON"},
+        "15m": {"n": 10, "eligibility": "TOO_SPARSE_FOR_COMPARISON"},
+        "1h": {"n": 4, "eligibility": "TOO_SPARSE_FOR_COMPARISON"},
+        "4h": {"n": 0, "eligibility": "EMPTY"}
+      }
+    },
+    "class": "DIRECT_OBSERVATION",
+    "note": "Labels are denominators-based support labels only; they carry no significance meaning (artifact note). Touched-fill alone is adequate at 15s-1h and thin at 4h, matching the P-03 small-N caveats on 4h."
+  },
+
+  "q3_impact_on_prior_p03_conclusions": {
+    "answer": "No major P-03 conclusion changes. The new evidence closes the one scope limitation P-03 recorded (AN-5 / gap-through outcomes unmeasured) and confirms the expectation P-03 had flagged as unverified (the 0.19-0.83% gap-through mixture negligibly moves pooled FILL quantiles). One new hypothesis-grade observation is registered (30s gap-through medians uniformly higher); it is stratum-inconsistent and changes nothing established.",
+    "unchanged_conclusions": [
+      "Stage sign flip (formation 18-negative-of-21 to FIRST_TOUCH/FILL 21/21 positive) - unchanged; fact-check verified all P-03 sign counts TRUE.",
+      "Weak-central-tendency characterization (medians small vs dispersion; bullish-carried) - unchanged; the stratified touched-fill medians reproduce the pooled medians within ~0.002 bps.",
+      "Tail/censoring ceilings and the no-unconditional-p99-beyond-1m rule - unchanged (this addendum introduces no duration data).",
+      "Development split assessment and must-not-claim list - unchanged and extended (below)."
+    ],
+    "refinements": [
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "P-03 AN-5 (scope-limitation: no per-population FILL outcomes committed) is RESOLVED by E1B_FILL_STRATIFICATION.json; P-03 QG-2 receives a partial descriptive answer: no robust touched-fill vs gap-through difference at the two adequately powered strata."
+      },
+      {
+        "class": "INTERPRETATION",
+        "text": "P-03's statement 'even at 15s (n=682) no per-population outcomes are committed' is superseded: outcomes are now committed at 15s and 30s, and the 15s comparison shows descriptive indistinguishability rather than a difference."
+      }
+    ],
+    "new_registered_hypothesis": "30s gap-through post-fill medians uniformly exceed touched-fill medians (h1/h3/h5, n=213 vs 99,011) - hypothesis-grade only, stratum-inconsistent (15s shows no difference), composition-confounded (55.9% bullish vs 51.1%)."
+  },
+
+  "claim_corrections_from_fact_check": {
+    "corrections": [],
+    "verified_true": [
+      "P03_first_touch_adjusted_positive_21_of_21 = true",
+      "P03_P04_fill_adjusted_positive_21_of_21 = true",
+      "P03_fill_greater_than_first_touch_19_of_21 = true (19/21; exceptions 1h h3 and 4h h1, as stated in the P-03 review)"
+    ],
+    "additional_consistency": "Fact-check same-bar touch+fill rates reproduce the P-03 computed shares exactly at all seven strata (35.31/35.41/35.36/34.43/34.19/36.61/40.43 percent)."
+  },
+
+  "must_not_claim_addendum_scoped": [
+    "No alpha/edge/profitable/strategy/signal claims; nothing tested; confirmation LOCKED; E2/E3 NOT STARTED.",
+    "The 30s gap-through median pattern is not an established effect (n=213, stratum-inconsistent, composition-confounded).",
+    "No interpretation of the 5m/15m/1h gap-through cells (TOO_SPARSE_FOR_COMPARISON) or the empty 4h cell.",
+    "Eligibility labels are support labels, not significance statements.",
+    "No cross-scale identity or pooling; all comparisons are within-stratum, same-anchor, same-horizon.",
+    "The sparse-cell quantiles deliberately left unquoted in this addendum must not be quoted later as findings."
+  ],
+
+  "addendum_status": "NO_REWORK_PRIOR_REVIEW_STANDS"
+}

@@ -20,6 +20,18 @@
       "sha256": "ffc61c648361877ef6cfcaf2a70cd7e6a1f1c7f2e7d895f578eff7a2eed727bd"
     },
     {
+      "bytes": 34094,
+      "logical_name": "E1B_FILL_STRATIFICATION.json",
+      "path": "docs/research/ap-002-e1b/E1B_FILL_STRATIFICATION.json",
+      "sha256": "5ef79dbfd8b2ee575accc6ffd30c53029cbd298b100f5a48b3ad0b1a81736375"
+    },
+    {
+      "bytes": 2356,
+      "logical_name": "E1B_INTERPRETER_FACT_CHECK.json",
+      "path": "docs/research/ap-002-e1b/E1B_INTERPRETER_FACT_CHECK.json",
+      "sha256": "1c7af84142f196555ec0bc00af5476576ad71003186af9caf53603b485fcb794"
+    },
+    {
       "bytes": 143456,
       "logical_name": "E1B_RESULTS.json",
       "path": "docs/research/ap-002-e1b/E1B_RESULTS.json",
@@ -57,6 +69,6 @@
     }
   ],
   "generator": "artifact_hash_registry",
-  "generator_code_identity": "6ee35384486619d725f2d15e33ab08742d3fab37",
+  "generator_code_identity": "a05b86b5abc09b3d0b14b4f2524007a331d62695",
   "root": "."
 }

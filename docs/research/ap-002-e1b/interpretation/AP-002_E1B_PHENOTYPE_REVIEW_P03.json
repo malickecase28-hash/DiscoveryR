@@ -1,0 +1,614 @@
+{
+  "artifact_type": "AP-002_E1B_PHENOTYPE_REVIEW",
+  "interpreter_id": "P-03",
+  "generated_utc": "2026-09-06T13:05:27Z",
+  "program": "AP-002 FVG",
+  "stage": "E1B lifecycle-stage phenotype",
+  "instrument": "XAUUSD",
+  "exposure_class": "E1_PHENOTYPE",
+  "basis": {
+    "active_logical_result_hash": "2a7a142cadb36449d14d4128361d11ce99a3a4d7d8a004dd539bc4dc32fb823c",
+    "hash_verified_against": [
+      "E1B_RESULTS.json logical_result_hash",
+      "RUN_MANIFEST.json output_identity",
+      "REPRODUCIBILITY.json run_1/run_2 logical_result_hash (identical=true)"
+    ],
+    "native_strata": ["15s", "30s", "1m", "5m", "15m", "1h", "4h"],
+    "development_window": {
+      "start_utc_inclusive": "2025-07-31T16:15:00Z",
+      "end_utc_exclusive": "2026-05-05T12:39:00Z"
+    },
+    "cross_scale_object_identity": "PROHIBITED (respected; no cross-scale identity claim is made anywhere in this review)",
+    "confirmation_status": "LOCKED",
+    "e2_status": "NOT STARTED",
+    "e3_status": "NOT STARTED",
+    "peer_interpretation_inspected": false,
+    "evidence_base": [
+      "docs/research/ap-002-e1b/AP-002_E1B_EXPERIMENT_CONTRACT.json",
+      "docs/research/ap-002-e1b/E1B_EXPERIMENT.json",
+      "docs/research/ap-002-e1b/E1B_RESULTS.json",
+      "docs/research/ap-002-e1b/PREFLIGHT.json",
+      "docs/research/ap-002-e1b/RUN_MANIFEST.json",
+      "docs/research/ap-002-e1b/E1B_SCANNER_INTEGRITY_GATE.json",
+      "docs/research/ap-002-e1b/REPRODUCIBILITY.json",
+      "docs/research/ap-002-e1b/FILL_TOUCH_CONSISTENCY_AUDIT.json",
+      "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SYNTHESIS.json"
+    ],
+    "integrity_context": {
+      "preflight_rows_scanned": 51969691,
+      "preflight_regressions": 0,
+      "anchors_n": 758380,
+      "first_touch_anchors_n": 379248,
+      "fill_anchors_n": 379132,
+      "gap_through_fill_n_total": 1010,
+      "integrity_gate": "PASS (E1B_SCANNER_INTEGRITY_GATE.json, 5/5 checks)",
+      "fill_touch_consistency_audit": "PASS, 0 disagreements across 379,132 fill anchors (FILL_TOUCH_CONSISTENCY_AUDIT.json)",
+      "reproducibility": "two independent runs, identical logical_result_hash, identical anchor logical_rows_sha256 (REPRODUCIBILITY.json)",
+      "stratum_sum_reconciliation": {
+        "lawful_formations_sum": 381498,
+        "matches_E1A_zones": true,
+        "touch_anchors_sum": 379248,
+        "fill_anchors_sum": 379132,
+        "gap_through_sum": 1010,
+        "orphan_touch_sum": 178,
+        "orphan_fill_sum": 358
+      }
+    },
+    "reading_conventions": {
+      "json_path_citation": "E1B_RESULTS.json :: tables.strata.rows[tf=<tf>].<field> ; horizons indexed 0/1/2 = 1/3/5 bars",
+      "bars_conversion": "native-bar counts derived by dividing market_ms quantiles by the stratum bar duration (15s=15000ms ... 4h=14400000ms); conversions are the interpreter's arithmetic on committed values and are marked derived",
+      "sign_convention_note": {
+        "class": "INTERPRETATION",
+        "text": "Positive direction_adjusted_return_bps is read as movement in the zone's registered direction. Basis: (a) at the FORMATION anchor (E1A synthesis canonical observation) direction-adjusted medians are 18 negative / 1 zero / 2 positive of 21 cells while >99% of zones are reached within a median of 2 bars, i.e. price drifts toward/into zones, which is movement against the registered direction; (b) at both E1B anchors the medians are uniformly positive. These two facts are jointly consistent only under the in-zone-direction-positive convention. This convention is not re-derived from scanner code (prohibited); all continuation/reversion language below depends on it and is labeled INTERPRETATION.",
+        "serialization_note": "Several bearish direction_adjusted_p50 cells are serialized as -0.0 (e.g. 15s FIRST_TOUCH h1/h3/h5, 30s FIRST_TOUCH h1/h3). These are sign-bit artifacts of exact-zero medians under sign flip (same artifact class already recorded in E1A synthesis); they are read as exactly zero, not negative."
+      },
+      "rounding": "committed values quoted at 3-6 significant digits; full precision lives in E1B_RESULTS.json"
+    }
+  },
+
+  "executive_phenotype_summary": {
+    "one_line": "The FVG lifecycle body is extremely fast (median formation->touch 2 native bars and touch->fill 1 native bar at all seven strata; 34.2-40.4% of touched fills resolve on the same bar), a scale-growing minority of touched zones never fills in-window (touch->fill right-censor 0.21% at 15s to 10.19% at 4h), and post-anchor direction-adjusted medians flip to uniformly positive (21/21 cells at FIRST_TOUCH and 21/21 at FILL) versus the formation anchor's predominantly negative pattern (18/21), with magnitudes small relative to dispersion at fine strata and carried by the bullish direction.",
+    "key_points": [
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "Touch incidence (lawful first-touch zones / lawful formations) declines monotonically with native scale: 0.9946 (15s, 226,686/227,909), 0.9944 (30s, 99,305/99,866), 0.9938 (1m, 43,428/43,701), 0.9859 (5m, 7,039/7,140), 0.9745 (15m, 2,136/2,192), 0.9503 (1h, 497/523), 0.9401 (4h, 157/167). Path: E1B_RESULTS.json :: tables.strata.rows[tf].touch_incidence."
+      },
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "Touch->fill duration (touched fills only): p25=0 native bars and p50=1 native bar at every stratum; p75 4-9 bars; p95 66-226 bars; observed-event p99 175-4,394 bars. Same-bar touch+fill is a substantial lifecycle mode at every stratum: 35.3% (15s, 79,865/226,210), 35.4% (30s, 35,055/99,011), 35.4% (1m, 15,286/43,227), 34.4% (5m, 2,397/6,961), 34.2% (15m, 716/2,094), 36.6% (1h, 175/478), 40.4% (4h, 57/141). Path: tables.strata.rows[tf].same_bar_touch_fill_n, .touch_to_fill_market_ms, .touched_fill_n."
+      },
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "Touched-but-unfilled (right-censored after touch) fraction rises with scale: 0.21% (15s), 0.30% (30s), 0.46% (1m), 1.11% (5m), 1.97% (15m), 3.82% (1h), 10.19% (4h). Path: tables.strata.rows[tf].touch_to_fill_right_censor_fraction."
+      },
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "Direction-adjusted prospective medians are positive in 21/21 stratum-horizon cells at FIRST_TOUCH and 21/21 at FILL, versus the FORMATION anchor's 18 negative / 1 zero / 2 positive of 21 (E1A synthesis). This is a descriptive sign-pattern flip across lifecycle stages, not a tested effect. Paths: tables.strata.rows[tf].first_touch/fill.horizons[h].direction_adjusted_return_bps.p50; E1A synthesis canonical_observations."
+      },
+      {
+        "class": "INTERPRETATION",
+        "text": "The positive post-touch/post-fill central tendency is weak relative to dispersion at fine strata (15s FIRST_TOUCH h1: median +0.014 bps against IQR [-0.818, +0.870] bps and p05-p95 [-3.22, +3.32] bps, n=226,686) and rests on small samples at coarse strata (4h FILL: n=141). It is also asymmetric by direction: bearish direction-adjusted medians are approximately zero or negative at most cells while bullish medians are positive and grow with horizon. 'Weak central tendency, not strong directional behavior' is the correct description."
+      },
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "Gap-through fills (first_touch_observed=false, never imputed) total 1,010: 682 (15s), 213 (30s), 81 (1m), 20 (5m), 10 (15m), 4 (1h), 0 (4h); 0.19-0.83% of per-stratum fill anchors. The committed FILL aggregates do not stratify prospective outcomes by first_touch_observed, and these counts are far too small for descriptive outcome comparison at 5m and coarser scales. Path: tables.strata.rows[tf].gap_through_fill_n; E1B_SCANNER_INTEGRITY_GATE.json gap_through_fill_n."
+      },
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "Development-derived median splits on gap_atr and fvg_quality produce no scale-consistent, horizon-stable descriptive gradient at either anchor; the largest split differences occur in the smallest strata (1h ~248/cell, 4h ~70-79/cell), consistent with small-sample noise. All split readings remain partition descriptions, not thresholds."
+      }
+    ],
+    "verdict_context": "All core phenotype questions (lifecycle timing, censoring, prospective response, splits, stage comparison) are answerable from the committed aggregates and are internally consistent across the integrity gate, the fill-touch audit, reproducibility, and the E1A/E1B formation counts. One mission sub-question (gap-through vs touched-fill post-fill behavior) is not assessable from the committed evidence and is registered as a limitation plus a later-testable question rather than as a scanner defect; hence PASS_TO_SYNTHESIS rather than REWORK_REQUIRED."
+  },
+
+  "first_touch_per_stratum_observations": {
+    "anchor_definition": "FIRST_TOUCH anchor = first actual emitted fvg_first_touch event on lawful in-window formations; anchor price = boundary-crossing tick mid; gap-through fills excluded, never imputed (AP-002_E1B_EXPERIMENT_CONTRACT.json first_touch_anchor).",
+    "per_stratum": [
+      {
+        "tf": "15s",
+        "counts": {
+          "lawful_formations": 227909,
+          "touch_anchors": 226686,
+          "touch_incidence": 0.994634,
+          "orphan_touch_excluded": 75,
+          "same_bar_touch_fill_share_of_touched_fills": 0.35305,
+          "touch_to_fill_right_censor_fraction": 0.002100,
+          "end_of_window_missing_h1_h3_h5": [0, 0, 0]
+        },
+        "durations_native_bars_derived": {
+          "formation_to_touch": {"p50": 2.0, "p75": 8.0, "p95": 190.0, "p99": 3495.0, "max": 682737.0},
+          "touch_to_fill": {"p25": 0.0, "p50": 1.0, "p75": 8.0, "p95": 204.0, "p99": 3885.0, "max": 682739.0}
+        },
+        "prospective_direction_adjusted_p50_bps": {"h1": 0.0136, "h3": 0.0303, "h5": 0.0362},
+        "prospective_h1_context": {"p05": -3.217, "p25": -0.818, "p75": 0.870, "p95": 3.316, "p99": 7.471, "n": 226686},
+        "direction_split_p50_bps": {"bullish_n": 115617, "bullish_h1_h3_h5": [0.0274, 0.0594, 0.0726], "bearish_n": 111069, "bearish_h1_h3_h5": [-0.0, -0.0, -0.0]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [0.0151, 0.0389, 0.0304], "high": [0.0122, 0.0274, 0.0407]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [0.0123, 0.0313, 0.0300], "high": [0.0148, 0.0301, 0.0411]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "Median touch->fill is 1 native bar (p25=0): over half of touched zones fill within one bar of first touch; 35.3% fill on the same bar."},
+          {"class": "DIRECT_OBSERVATION", "text": "0.21% of touched zones remain unfilled at window end (476 of 226,686 touch anchors, derived as touch_anchors - touched_fill_n)."},
+          {"class": "DIRECT_OBSERVATION", "text": "FIRST_TOUCH direction-adjusted medians are positive at all three horizons but tiny against dispersion (h1 median +0.014 bps vs p05-p95 span 6.53 bps)."},
+          {"class": "DIRECT_OBSERVATION", "text": "Bearish direction-adjusted medians are serialized -0.0 (exact zero) at all three horizons; the pooled positive medians are carried entirely by the bullish half."}
+        ]
+      },
+      {
+        "tf": "30s",
+        "counts": {
+          "lawful_formations": 99866,
+          "touch_anchors": 99305,
+          "touch_incidence": 0.994382,
+          "orphan_touch_excluded": 47,
+          "same_bar_touch_fill_share_of_touched_fills": 0.35405,
+          "touch_to_fill_right_censor_fraction": 0.002961,
+          "end_of_window_missing_h1_h3_h5": [0, 0, 0]
+        },
+        "durations_native_bars_derived": {
+          "formation_to_touch": {"p50": 2.0, "p75": 8.0, "p95": 184.0, "p99": 3619.0, "max": 341365.0},
+          "touch_to_fill": {"p25": 0.0, "p50": 1.0, "p75": 7.0, "p95": 188.0, "p99": 4394.0, "max": 341358.0}
+        },
+        "prospective_direction_adjusted_p50_bps": {"h1": 0.0141, "h3": 0.0482, "h5": 0.0444},
+        "prospective_h1_context": {"p05": -4.694, "p25": -1.232, "p75": 1.289, "p95": 4.821, "p99": 10.723, "n": 99305},
+        "direction_split_p50_bps": {"bullish_n": 51299, "bullish_h1_h3_h5": [0.0297, 0.1045, 0.1175], "bearish_n": 48006, "bearish_h1_h3_h5": [-0.0, -0.0, -0.030]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [0.0212, 0.0445, 0.0254], "high": [0.0116, 0.0549, 0.0598]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [0.0110, 0.0431, 0.0439], "high": [0.0207, 0.0566, 0.0445]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "Same lifecycle body as 15s (p50 touch->fill = 1 bar; 35.4% same-bar); censoring 0.30%."},
+          {"class": "DIRECT_OBSERVATION", "text": "Direction-adjusted medians positive at h1/h3, slightly lower at h5 (0.0482 -> 0.0444): positive sign is horizon-consistent, magnitude is not monotone."},
+          {"class": "DIRECT_OBSERVATION", "text": "Bearish medians zero at h1/h3 and -0.030 bps at h5 (n=48,006): no bearish-side positive central tendency."}
+        ]
+      },
+      {
+        "tf": "1m",
+        "counts": {
+          "lawful_formations": 43701,
+          "touch_anchors": 43428,
+          "touch_incidence": 0.993753,
+          "orphan_touch_excluded": 33,
+          "same_bar_touch_fill_share_of_touched_fills": 0.35360,
+          "touch_to_fill_right_censor_fraction": 0.004628,
+          "end_of_window_missing_h1_h3_h5": [0, 0, 1]
+        },
+        "durations_native_bars_derived": {
+          "formation_to_touch": {"p50": 2.0, "p75": 8.0, "p95": 185.0, "p99": 3630.0, "max": 170682.0},
+          "touch_to_fill": {"p25": 0.0, "p50": 1.0, "p75": 7.0, "p95": 181.0, "p99": 3582.0, "max": 170679.0}
+        },
+        "prospective_direction_adjusted_p50_bps": {"h1": 0.0654, "h3": 0.0759, "h5": 0.0741},
+        "prospective_h1_context": {"p05": -6.824, "p25": -1.813, "p75": 1.946, "p95": 6.939, "p99": 15.830, "n": 43428},
+        "direction_split_p50_bps": {"bullish_n": 22759, "bullish_h1_h3_h5": [0.0981, 0.1699, 0.1937], "bearish_n": 20669, "bearish_h1_h3_h5": [0.0313, -0.0120, -0.0644]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [0.0843, 0.1313, 0.1350], "high": [0.0499, 0.0243, 0.0098]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [0.0686, 0.0896, 0.1065], "high": [0.0622, 0.0635, 0.0457]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "First stratum where the bearish split turns negative with horizon (+0.031 -> -0.012 -> -0.064 bps, n=20,669) while bullish grows (+0.098 -> +0.194, n=22,759)."},
+          {"class": "DIRECT_OBSERVATION", "text": "At FIRST_TOUCH both development splits run low>high at all three horizons (gap_atr: 0.084/0.131/0.135 vs 0.050/0.024/0.010; fvg_quality: 0.069/0.090/0.107 vs 0.062/0.064/0.046) - a within-stratum pattern that does not replicate at other strata."}
+        ]
+      },
+      {
+        "tf": "5m",
+        "counts": {
+          "lawful_formations": 7140,
+          "touch_anchors": 7039,
+          "touch_incidence": 0.985854,
+          "orphan_touch_excluded": 8,
+          "same_bar_touch_fill_share_of_touched_fills": 0.34432,
+          "touch_to_fill_right_censor_fraction": 0.011081,
+          "end_of_window_missing_h1_h3_h5": [1, 1, 1]
+        },
+        "durations_native_bars_derived": {
+          "formation_to_touch": {"p50": 2.0, "p75": 8.0, "p95": 158.0, "p99": 2173.0, "max": 29938.0},
+          "touch_to_fill": {"p25": 0.0, "p50": 1.0, "p75": 8.0, "p95": 209.0, "p99": 2388.0, "max": 34135.0}
+        },
+        "prospective_direction_adjusted_p50_bps": {"h1": 0.1449, "h3": 0.2353, "h5": 0.1689},
+        "prospective_h1_context": {"p05": -15.558, "p25": -4.228, "p75": 4.416, "p95": 15.016, "p99": 33.108, "n": 7038},
+        "direction_split_p50_bps": {"bullish_n": 3806, "bullish_h1_h3_h5": [0.3009, 0.6795, 0.9831], "bearish_n": 3232, "bearish_h1_h3_h5": [-0.0378, -0.2068, -0.7556]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [0.0960, 0.3475, 0.2335], "high": [0.2122, 0.0673, 0.1334]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [0.0429, 0.2193, 0.1376], "high": [0.3046, 0.2353, 0.1729]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "Direction asymmetry is now sign-opposite: bullish medians +0.30/+0.68/+0.98 bps (n=3,806) versus bearish -0.038/-0.207/-0.756 bps (n=3,232); the pooled positive median (+0.145/+0.235/+0.169) is a bullish-side phenomenon."},
+          {"class": "DIRECT_OBSERVATION", "text": "Per-horizon end-of-window missing = 1 (of 7,039 anchors): the single window-end anchor lacks all three horizons."}
+        ]
+      },
+      {
+        "tf": "15m",
+        "counts": {
+          "lawful_formations": 2192,
+          "touch_anchors": 2136,
+          "touch_incidence": 0.974453,
+          "orphan_touch_excluded": 7,
+          "same_bar_touch_fill_share_of_touched_fills": 0.34193,
+          "touch_to_fill_right_censor_fraction": 0.019663,
+          "end_of_window_missing_h1_h3_h5": [0, 3, 3]
+        },
+        "durations_native_bars_derived": {
+          "formation_to_touch": {"p50": 2.0, "p75": 8.0, "p95": 186.0, "p99": 1238.0, "max": 7601.0},
+          "touch_to_fill": {"p25": 0.0, "p50": 1.0, "p75": 9.0, "p95": 226.0, "p99": 1648.0, "max": 11257.0}
+        },
+        "prospective_direction_adjusted_p50_bps": {"h1": 0.1167, "h3": 0.9927, "h5": 1.0821},
+        "prospective_h1_context": {"p05": -25.015, "p25": -7.452, "p75": 7.830, "p95": 29.751, "p99": 90.292, "n": 2136},
+        "direction_split_p50_bps": {"bullish_n_h1": 1231, "bullish_h1_h3_h5": [0.6325, 2.4100, 2.9308], "bearish_n_h1": 905, "bearish_h1_h3_h5": [-0.3598, -0.9342, -1.5156]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [-0.2727, 0.7893, 1.1696], "high": [0.6546, 1.0053, 0.8922]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [0.2670, 1.2338, 1.1714], "high": [0.0223, 0.6747, 0.9349]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "Bullish/bearish medians are sign-opposite at all three horizons (+0.63/+2.41/+2.93 vs -0.36/-0.93/-1.52 bps); pooled medians are positive and grow roughly 10x from h1 to h3."},
+          {"class": "DIRECT_OBSERVATION", "text": "fvg_quality split runs low>high at all horizons here, opposite in sign of difference to the FILL-anchor ordering at finer strata - no stable quality gradient."},
+          {"class": "DIRECT_OBSERVATION", "text": "h3/h5 have 3 end-of-window-missing outcomes (n=2,133 of 2,136 anchors)."}
+        ]
+      },
+      {
+        "tf": "1h",
+        "counts": {
+          "lawful_formations": 523,
+          "touch_anchors": 497,
+          "touch_incidence": 0.950287,
+          "orphan_touch_excluded": 5,
+          "same_bar_touch_fill_share_of_touched_fills": 0.36611,
+          "touch_to_fill_right_censor_fraction": 0.038229,
+          "end_of_window_missing_h1_h3_h5": [0, 0, 0]
+        },
+        "durations_native_bars_derived": {
+          "formation_to_touch": {"p50": 2.0, "p75": 9.0, "p95": 193.0, "p99": 742.0, "max": 2439.0},
+          "touch_to_fill": {"p25": 0.0, "p50": 1.0, "p75": 8.0, "p95": 152.0, "p99": 699.0, "max": 2831.0}
+        },
+        "prospective_direction_adjusted_p50_bps": {"h1": 1.4079, "h3": 2.7102, "h5": 5.1683},
+        "prospective_h1_context": {"p05": -53.786, "p25": -15.929, "p75": 19.473, "p95": 58.943, "p99": 156.022, "n": 497},
+        "direction_split_p50_bps": {"bullish_n": 288, "bullish_h1_h3_h5": [1.6122, 8.3829, 14.7226], "bearish_n": 209, "bearish_h1_h3_h5": [0.9325, -3.6372, -4.3689]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [-1.6039, 0.9980, 1.7827], "high": [6.0915, 3.6610, 7.2397]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [-0.9150, 2.7102, 4.7266], "high": [6.6475, 1.3160, 6.2725]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "Medians grow monotonically with horizon (+1.41/+2.71/+5.17 bps, n=497) but the h1 IQR is [-15.93, +19.47] bps: the median remains small relative to dispersion."},
+          {"class": "INTERPRETATION", "text": "Split differences are largest here (e.g. fvg_quality h1: -0.92 vs +6.65 bps) but with ~248-249 per cell this is exactly where small-sample medians are least stable; treat as hypothesis-grade only."},
+          {"class": "DIRECT_OBSERVATION", "text": "Bearish medians flip from +0.93 (h1) to -3.64/-4.37 (h3/h5) with n=209: the pooled monotone growth is again bullish-driven (n=288)."}
+        ]
+      },
+      {
+        "tf": "4h",
+        "counts": {
+          "lawful_formations": 167,
+          "touch_anchors": 157,
+          "touch_incidence": 0.940120,
+          "orphan_touch_excluded": 3,
+          "same_bar_touch_fill_share_of_touched_fills": 0.40426,
+          "touch_to_fill_right_censor_fraction": 0.101911,
+          "end_of_window_missing_h1_h3_h5": [0, 0, 0]
+        },
+        "durations_native_bars_derived": {
+          "formation_to_touch": {"p50": 2.0, "p75": 12.0, "p95": 89.0, "p99": 312.0, "max": 609.0},
+          "touch_to_fill": {"p25": 0.0, "p50": 1.0, "p75": 4.0, "p95": 66.0, "p99": 175.0, "max": 459.0}
+        },
+        "prospective_direction_adjusted_p50_bps": {"h1": 10.6759, "h3": 9.3747, "h5": 13.2671},
+        "prospective_h1_context": {"p05": -92.050, "p25": -25.269, "p75": 45.131, "p95": 237.602, "p99": 389.597, "n": 157},
+        "direction_split_p50_bps": {"bullish_n": 94, "bullish_h1_h3_h5": [11.2237, 17.2807, 15.7234], "bearish_n": 63, "bearish_h1_h3_h5": [4.5013, 1.3519, 7.7319]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [14.0850, 17.2807, 18.7328], "high": [6.7062, 8.1311, 7.7319]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [12.7375, 2.0338, 18.7328], "high": [9.1085, 14.1805, 0.7361]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "Medians are the largest in the program (+10.7/+9.4/+13.3 bps) but n=157 and the h1 IQR is [-25.27, +45.13] bps with p05 -92.05 and p95 +237.60: magnitude-to-dispersion remains weak."},
+          {"class": "DIRECT_OBSERVATION", "text": "gap_atr split runs low>high at all horizons (unique among strata at FIRST_TOUCH); fvg_quality split flips sign across horizons (h1 low>high, h3 high>low, h5 low>high): no coherent split structure at this sample size."},
+          {"class": "DIRECT_OBSERVATION", "text": "Both directions are positive here (bullish +11.2/+17.3/+15.7, n=94; bearish +4.5/+1.4/+7.7, n=63) - the only stratum where the bearish split is clearly positive at FIRST_TOUCH."}
+        ]
+      }
+    ],
+    "cross_stratum_descriptive_comparison": {
+      "class": "INTERPRETATION",
+      "text": "Descriptive only (no pooling, no cross-scale identity): (1) the touch->fill body shape in native-bar units is scale-invariant through the median (p25=0, p50=1 everywhere) while the tail in native bars narrows with scale (p95 204/188/181/209/226/152/66 bars for 15s..4h); in wall-clock terms p95 rises from ~51 minutes (15s) to ~11 days (4h). (2) Touch incidence and post-touch censoring both degrade monotonically with scale. (3) Direction-adjusted medians grow with scale and horizon, but so does dispersion and so does small-N exposure; horizons are native-bar-relative, so cross-stratum magnitude comparison conflates horizon wall-clock length and is not an exposure-matched comparison."
+    }
+  },
+
+  "fill_per_stratum_observations": {
+    "anchor_definition": "FILL anchor = lawful fvg_filled events on lawful in-window formations; stratified by first_touch_observed in the contract, but the committed prospective aggregates pool the two populations (see gap_through_analysis).",
+    "per_stratum": [
+      {
+        "tf": "15s",
+        "fill_anchors": 226892,
+        "touched_fill_n": 226210,
+        "gap_through_fill_n": 682,
+        "formation_to_fill_p50_native_bars_derived": 7.0,
+        "fill_right_censor_fraction": 0.004462,
+        "prospective_direction_adjusted_p50_bps": {"h1": 0.0214, "h3": 0.0662, "h5": 0.0850},
+        "h1_context": {"p05": -3.404, "p25": -0.839, "p75": 0.910, "p95": 3.517, "n": 226892},
+        "direction_split_p50_bps": {"bullish_h1_h3_h5": [0.0402, 0.1046, 0.1415], "bearish_h1_h3_h5": [-0.0, 0.0271, 0.0297]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [0.0214, 0.0561, 0.0600], "high": [0.0214, 0.0754, 0.1063]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [0.0197, 0.0534, 0.0666], "high": [0.0232, 0.0803, 0.1037]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "Post-fill medians exceed post-touch medians at all three horizons (+0.021 vs +0.014; +0.066 vs +0.030; +0.085 vs +0.036) and grow monotonically with horizon."},
+          {"class": "DIRECT_OBSERVATION", "text": "Both development splits run high>low at h3 and h5 (gap_atr h5: 0.106 vs 0.060; fvg_quality h5: 0.104 vs 0.067) - the one place a split ordering is direction-stable across horizons at this stratum, still development-partition-only."},
+          {"class": "DIRECT_OBSERVATION", "text": "Formation->fill p50 = 7 native bars (105,000 ms), consistent with the E1A formation-stage figure of 7 bars."}
+        ]
+      },
+      {
+        "tf": "30s",
+        "fill_anchors": 99224,
+        "touched_fill_n": 99011,
+        "gap_through_fill_n": 213,
+        "formation_to_fill_p50_native_bars_derived": 7.0,
+        "fill_right_censor_fraction": 0.006429,
+        "prospective_direction_adjusted_p50_bps": {"h1": 0.0299, "h3": 0.1092, "h5": 0.1620},
+        "h1_context": {"p05": -4.936, "p25": -1.255, "p75": 1.368, "p95": 5.170, "n": 99224},
+        "direction_split_p50_bps": {"bullish_h1_h3_h5": [0.0721, 0.1812, 0.2678], "bearish_h1_h3_h5": [-0.0, 0.0375, 0.0545]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [0.0282, 0.0847, 0.1184], "high": [0.0354, 0.1364, 0.2033]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [0.0299, 0.1052, 0.1495], "high": [0.0299, 0.1166, 0.1770]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "Post-fill medians grow monotonically with horizon and exceed the FIRST_TOUCH medians at every horizon."},
+          {"class": "DIRECT_OBSERVATION", "text": "Both splits run high>=low at all horizons (fvg_quality h1 is an exact tie 0.0299/0.0299)."},
+          {"class": "DIRECT_OBSERVATION", "text": "h5 has 1 end-of-window-missing outcome (n=99,223 of 99,224)."}
+        ]
+      },
+      {
+        "tf": "1m",
+        "fill_anchors": 43308,
+        "touched_fill_n": 43227,
+        "gap_through_fill_n": 81,
+        "formation_to_fill_p50_native_bars_derived": 7.0,
+        "fill_right_censor_fraction": 0.008993,
+        "prospective_direction_adjusted_p50_bps": {"h1": 0.1041, "h3": 0.1896, "h5": 0.2662},
+        "h1_context": {"p05": -7.271, "p25": -1.826, "p75": 2.109, "p95": 7.580, "n": 43308},
+        "direction_split_p50_bps": {"bullish_h1_h3_h5": [0.1776, 0.3177, 0.4328], "bearish_h1_h3_h5": [0.0399, 0.0555, 0.0651]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [0.0799, 0.1817, 0.2227], "high": [0.1296, 0.1959, 0.3128]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [0.0827, 0.1708, 0.2517], "high": [0.1262, 0.2126, 0.2808]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "Both directions positive at all horizons after fill (bullish +0.18/+0.32/+0.43, n=22,673; bearish +0.04/+0.06/+0.07, n=20,635), unlike the FIRST_TOUCH anchor where bearish turned negative."},
+          {"class": "DIRECT_OBSERVATION", "text": "Both splits run high>low at all horizons - the cleanest split ordering in the dataset, but still a development partition."}
+        ]
+      },
+      {
+        "tf": "5m",
+        "fill_anchors": 6981,
+        "touched_fill_n": 6961,
+        "gap_through_fill_n": 20,
+        "formation_to_fill_p50_native_bars_derived": 7.0,
+        "fill_right_censor_fraction": 0.022269,
+        "prospective_direction_adjusted_p50_bps": {"h1": 0.1762, "h3": 0.4032, "h5": 0.1905},
+        "h1_context": {"p05": -16.508, "p25": -4.522, "p75": 4.888, "p95": 16.887, "n": 6980},
+        "direction_split_p50_bps": {"bullish_h1_h3_h5": [0.3673, 0.9658, 1.2093], "bearish_h1_h3_h5": [-0.0192, -0.0976, -0.9708]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [0.1072, 0.3045, 0.0220], "high": [0.3046, 0.5983, 0.4915]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [0.0493, 0.1990, 0.0844], "high": [0.3653, 0.6240, 0.3701]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "Direction asymmetry persists post-fill and strengthens with horizon: bullish +0.37/+0.97/+1.21 vs bearish -0.02/-0.10/-0.97 bps (n=3,766/3,214)."},
+          {"class": "DIRECT_OBSERVATION", "text": "Pooled median dips at h5 (0.403 -> 0.190) while the direction splits diverge further - the h5 dip is a bearish-side composition effect, visible only because the split is reported."},
+          {"class": "DIRECT_OBSERVATION", "text": "fvg_quality split runs high>low at all horizons; gap_atr split runs high>low at all horizons (h5: 0.492 vs 0.022)."}
+        ]
+      },
+      {
+        "tf": "15m",
+        "fill_anchors": 2104,
+        "touched_fill_n": 2094,
+        "gap_through_fill_n": 10,
+        "formation_to_fill_p50_native_bars_derived": 8.0,
+        "fill_right_censor_fraction": 0.040146,
+        "prospective_direction_adjusted_p50_bps": {"h1": 0.1178, "h3": 1.1108, "h5": 1.6074},
+        "h1_context": {"p05": -31.659, "p25": -8.052, "p75": 8.464, "p95": 30.167, "n": 2103},
+        "direction_split_p50_bps": {"bullish_h1_h3_h5": [1.0943, 2.1097, 4.5953], "bearish_h1_h3_h5": [-0.8049, -0.6228, -1.7444]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [-0.2306, 1.2551, 0.5741], "high": [0.5308, 0.8440, 2.1320]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [-0.1251, 0.7594, 0.8411], "high": [0.4033, 1.3476, 2.0993]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "h1 pooled median (+0.118, n=2,103) is far below h3/h5 (+1.111/+1.607): the post-fill response at this stratum is concentrated at h3-h5, not h1."},
+          {"class": "DIRECT_OBSERVATION", "text": "Sign-opposite direction splits at all horizons (bullish +1.09/+2.11/+4.60, n~1,211; bearish -0.80/-0.62/-1.74, n=891)."},
+          {"class": "DIRECT_OBSERVATION", "text": "End-of-window missing: 1 (h1), 2 (h3), 2 (h5) of 2,104 fill anchors."}
+        ]
+      },
+      {
+        "tf": "1h",
+        "fill_anchors": 482,
+        "touched_fill_n": 478,
+        "gap_through_fill_n": 4,
+        "formation_to_fill_p50_native_bars_derived": 8.0,
+        "fill_right_censor_fraction": 0.078394,
+        "prospective_direction_adjusted_p50_bps": {"h1": 2.0200, "h3": 1.7706, "h5": 8.0925},
+        "h1_context": {"p05": -59.558, "p25": -18.427, "p75": 23.574, "p95": 79.214, "n": 482},
+        "direction_split_p50_bps": {"bullish_h1_h3_h5": [3.7745, 8.0965, 15.4124], "bearish_h1_h3_h5": [0.8197, -3.0579, -4.8899]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [0.0637, 1.9514, 2.1900], "high": [4.6654, 1.0023, 11.4317]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [-0.0720, -2.1762, 0.2422], "high": [6.4764, 4.1956, 10.9166]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "fvg_quality split is high>low at all horizons with the low half near zero or negative (-0.07/-2.18/+0.24 vs +6.48/+4.20/+10.92 bps, ~241 per cell): the strongest split separation anywhere in E1B, entirely hypothesis-grade at this N."},
+          {"class": "DIRECT_OBSERVATION", "text": "Pooled median dips at h3 (2.020 -> 1.771) then jumps at h5 (8.093); bearish split is negative at h3/h5 (n=203/202)."},
+          {"class": "DIRECT_OBSERVATION", "text": "Fill right-censor fraction 7.84%: unconditional quantiles beyond p92.2 of formation->fill are not identifiable here."}
+        ]
+      },
+      {
+        "tf": "4h",
+        "fill_anchors": 141,
+        "touched_fill_n": 141,
+        "gap_through_fill_n": 0,
+        "formation_to_fill_p50_native_bars_derived": 5.0,
+        "fill_right_censor_fraction": 0.155689,
+        "prospective_direction_adjusted_p50_bps": {"h1": 8.3089, "h3": 18.1627, "h5": 15.7234},
+        "h1_context": {"p05": -95.650, "p25": -36.127, "p75": 41.030, "p95": 237.602, "n": 141},
+        "direction_split_p50_bps": {"bullish_h1_h3_h5": [8.3250, 25.5115, 39.1847], "bearish_h1_h3_h5": [5.8094, 6.1734, -1.1681]},
+        "gap_atr_split_p50_h1_h3_h5": {"low": [8.3250, 22.9403, 13.8413], "high": [2.3972, 8.1311, 21.0732]},
+        "fvg_quality_split_p50_h1_h3_h5": {"low": [12.7375, 25.5756, 17.8286], "high": [-4.7588, 6.1734, 12.4840]},
+        "observations": [
+          {"class": "DIRECT_OBSERVATION", "text": "Raw h1 median is negative (-0.145 bps) while direction-adjusted h1 median is +8.309 bps: raw and direction-adjusted signs diverge at this cell because the pooled raw median mixes opposite-signed directional moves; n=141."},
+          {"class": "DIRECT_OBSERVATION", "text": "15.57% of 4h fills are right-censored (formation->fill): only quantiles up to p84.4 are identifiable unconditionally at this stratum; every tail statement here is a lower bound."},
+          {"class": "DIRECT_OBSERVATION", "text": "Zero gap-through fills: the fill cohort is 100% touched-fill at 4h (n=141)."}
+        ]
+      }
+    ]
+  },
+
+  "formation_vs_touch_vs_fill_comparison": {
+    "basis": "FORMATION anchor figures from the frozen E1A synthesis (canonical_observations) against E1B FIRST_TOUCH/FILL aggregates. The E1A and E1B logical result hashes differ (1b701c01... vs 2a7a142c...) because the anchor stage differs; formation counts reconcile exactly (381,498 both).",
+    "observations": [
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "Direction-adjusted median sign pattern by stage: FORMATION 18 negative / 1 zero / 2 positive of 21 cells (E1A synthesis); FIRST_TOUCH 21/21 positive; FILL 21/21 positive. The descriptive directional behavior changes sign class after contact."
+      },
+      {
+        "class": "INTERPRETATION",
+        "text": "Stage conditioning changes the descriptive picture materially: at formation the central tendency is movement against the zone's registered direction (drift toward/into the zone, which is why zones touch and fill with median 2 and 1-8 bars); after touch and after fill the central tendency is movement back in the registered direction. The formation-stage apparent tendency is therefore REVERSED, not merely weakened, at the later anchors - subject to the sign-convention note and to the caveat that anchor populations are selected (touched/filled zones) and horizon clocks differ (formation-anchored windows start earlier in zone life)."
+      },
+      {
+        "class": "INTERPRETATION",
+        "text": "Magnitude grows monotonically along the lifecycle at most cells: e.g. 1m direction-adjusted h5 median +0.074 (FT) -> +0.266 (FILL); 15m +1.082 (FT) -> +1.607 (FILL); 4h +13.267 (FT) -> +15.723 (FILL). FILL medians exceed FIRST_TOUCH medians in 19/21 cells (exceptions: 1h h3, 4h h1). This is descriptive sharpening with stage progression, not incremental predictive value."
+      },
+      {
+        "class": "INTERPRETATION",
+        "text": "Dispersion grows with stage too (FILL h1 IQRs are wider than FIRST_TOUCH h1 IQRs at fine strata, e.g. 15s [-0.839, +0.910] vs [-0.818, +0.870] bps; 5m [-4.52, +4.89] vs [-4.23, +4.42]); so the stage-wise median growth is not matched by a proportionate tightening. Stage conditioning re-centers the distribution; it does not visibly concentrate it in the committed quantiles."
+      },
+      {
+        "class": "DIRECT_OBSERVATION",
+        "text": "Lifecycle timing reconciles across stages: formation->fill p50 in native bars is 7/7/7/7/8/8/5 (15s..4h) in E1B, matching the E1A formation-stage figure exactly, and formation->touch p50 is 2 bars at every stratum in both."
+      }
+    ],
+    "is_stage_conditioning_more_informative": {
+      "class": "INTERPRETATION",
+      "text": "Descriptively yes: the sign-class flip (formation-negative to touch/fill-positive) and the direction-asymmetry structure (bullish-positive, bearish-zero-to-negative) are only visible once the lifecycle stage is conditioned on; the formation anchor alone mixes pre-contact drift with post-contact response. This is a statement about descriptive resolution, explicitly NOT a claim of incremental predictive value - no test, no null, no out-of-sample anything."
+    }
+  },
+
+  "gap_through_analysis": {
+    "definition": "Fills with first_touch_observed=false: the filling bar crossed the far edge without a recorded overlap touch. Never imputed as touch; excluded from the FIRST_TOUCH cohort (contract gap_through_rule; E1A resolved anomaly A1 = expected producer semantics).",
+    "counts": {
+      "total": 1010,
+      "per_stratum": {"15s": 682, "30s": 213, "1m": 81, "5m": 20, "15m": 10, "1h": 4, "4h": 0},
+      "share_of_fill_anchors": {"15s": 0.003006, "30s": 0.002147, "1m": 0.001870, "5m": 0.002865, "15m": 0.004753, "1h": 0.008299, "4h": 0.0}
+    },
+    "observations": [
+      {"class": "DIRECT_OBSERVATION", "text": "Absolute counts concentrate at fine strata (682 of 1,010 at 15s); relative share of fills rises with scale to 0.83% at 1h and is exactly 0 at 4h (n=141 fills)."},
+      {"class": "DIRECT_OBSERVATION", "text": "The committed FILL prospective tables do not split outcomes by first_touch_observed; the direction/gap_atr/fvg_quality splits pool both populations. No gap-through-specific post-fill behavior is observable in this evidence base."},
+      {"class": "INTERPRETATION", "text": "Adequacy verdict for descriptive comparison: NOT SUPPORTED at any stratum. Even at 15s (n=682) no per-population outcomes are committed; at 5m/15m/1h the counts (20/10/4) are an order of magnitude below any defensible descriptive sample; at 4h the population is empty. Aggregate FILL statistics therefore carry a 0.19-0.83% gap-through mixture whose influence on committed quantiles is expected to be negligible but is unverified."},
+      {"class": "HYPOTHESIS_FOR_LATER_TESTING", "text": "Does gap-through fill have different post-fill behavior from ordinary touch->fill? Registered; requires a per-population outcome split in a future measurement contract; not testable from committed aggregates and not tested here."}
+    ]
+  },
+
+  "tail_censoring_assessment": {
+    "committed_censor_quantities": {
+      "fill_right_censor_fraction": {"15s": 0.004462, "30s": 0.006429, "1m": 0.008993, "5m": 0.022269, "15m": 0.040146, "1h": 0.078394, "4h": 0.155689},
+      "fill_max_identifiable_unconditional_quantile": {"15s": 0.995538, "30s": 0.993571, "1m": 0.991007, "5m": 0.977731, "15m": 0.959854, "1h": 0.921606, "4h": 0.844311},
+      "touch_to_fill_right_censor_fraction": {"15s": 0.002100, "30s": 0.002961, "1m": 0.004628, "5m": 0.011081, "15m": 0.019663, "1h": 0.038229, "4h": 0.101911},
+      "touch_to_fill_max_identifiable_unconditional_quantile": {"15s": 0.997900, "30s": 0.997039, "1m": 0.995372, "5m": 0.988919, "15m": 0.980337, "1h": 0.961771, "4h": 0.898089},
+      "formation_to_touch_derived_ceiling": {
+        "class": "DIRECT_OBSERVATION",
+        "note": "derived: never-touched fraction = 1 - touch_incidence caps identifiable formation->touch quantiles",
+        "max_identifiable": {"15s": 0.994634, "30s": 0.994382, "1m": 0.993753, "5m": 0.985854, "15m": 0.974453, "1h": 0.950287, "4h": 0.940120}
+      }
+    },
+    "observed_event_quantiles_vs_unconditional": [
+      {"class": "DIRECT_OBSERVATION", "text": "Touch->fill unconditional p99 is identifiable ONLY at 15s/30s/1m (ceilings 0.9979/0.9970/0.9954). At 5m/15m/1h/4h the committed p99 values (2,388/1,648/699/175 native bars) are observed-event (filled-zone) quantiles, NOT unconditional population quantiles: 1.1%/2.0%/3.8%/10.2% of touched zones never filled in-window."},
+      {"class": "DIRECT_OBSERVATION", "text": "Formation->fill unconditional p99 is identifiable only at 15s/30s/1m (ceilings 0.9955/0.9936/0.9910)."},
+      {"class": "DIRECT_OBSERVATION", "text": "Observed-event maxima for touch->fill: 682,739 native bars at 15s (~118.5 days), 341,358 at 30s, 170,679 at 1m, 34,135 at 5m, 11,257 at 15m, 2,831 at 1h, 459 at 4h (~76.5 days). Max/p99 ratios are extreme (e.g. 15s: 682,739/3,885 ~ 176x)."}
+    ],
+    "challenge_of_the_phenotype_label": {
+      "class": "INTERPRETATION",
+      "text": "'Rapid body + long tail' SURVIVES as the touch->fill phenotype at fine/mid strata and for the body at all strata: p25=0 and p50=1 native bar everywhere (34-40% same-bar), p75 4-9 bars, p95 66-226 bars, observed-event p99 175-4,394 bars at fine strata. The required refinement is: (1) at 5m-4h the 'long tail' is administratively truncated - the unconditional upper tail beyond p98.9/p98.0/p96.2/p89.8 (5m/15m/1h/4h) is unidentifiable, so the true unconditional p99 is not observed anywhere coarser than 1m and must not be quoted as if it were; (2) 'long' should be quantified in native bars per stratum, since wall-clock tail length scales with bar size (p95 from ~51 minutes at 15s to ~11 days at 4h); (3) the label describes duration-to-fill, not post-fill or post-touch response behavior, which is a separate phenotype dimension."
+    },
+    "do_not_pretend": [
+      "No unconditional p99 or max claim at 5m/15m/1h/4h for any duration variable.",
+      "No interpretation of right-censored lifetimes as completed fills; coarse-scale fill fractions are window-censored lower bounds (E1A must-not-claim, reaffirmed)."
+    ]
+  },
+
+  "prospective_response_assessment": {
+    "sign_census": {
+      "class": "DIRECT_OBSERVATION",
+      "text": "Direction-adjusted p50 positive in 21/21 cells at FIRST_TOUCH and 21/21 at FILL. Raw p50 positive in 21/21 at FIRST_TOUCH and 20/21 at FILL (4h FILL h1 raw p50 = -0.145 bps, n=141). Magnitudes (direction-adjusted p50, bps): FIRST_TOUCH h1/h3/h5 = 15s 0.014/0.030/0.036; 30s 0.014/0.048/0.044; 1m 0.065/0.076/0.074; 5m 0.145/0.235/0.169; 15m 0.117/0.993/1.082; 1h 1.408/2.710/5.168; 4h 10.676/9.375/13.267. FILL h1/h3/h5 = 15s 0.021/0.066/0.085; 30s 0.030/0.109/0.162; 1m 0.104/0.190/0.266; 5m 0.176/0.403/0.190; 15m 0.118/1.111/1.607; 1h 2.020/1.771/8.092; 4h 8.309/18.163/15.723."
+    },
+    "magnitude_vs_dispersion": [
+      {"class": "DIRECT_OBSERVATION", "text": "Fine strata: medians are 0.2-3% of the p05-p95 span (15s FT h1: 0.014 vs 6.53 bps span; 1m FT h1: 0.065 vs 13.76 bps span) - weak central tendency."},
+      {"class": "DIRECT_OBSERVATION", "text": "Coarse strata: 4h FILL h3 median +18.16 bps against h1 IQR [-36.13, +41.03] and p05 -95.65, n=141 - proportionally larger but small-N."},
+      {"class": "DIRECT_OBSERVATION", "text": "Sign consistency across horizons within stratum: direction-adjusted medians positive at all three horizons in all seven strata at both anchors; raw medians negative in exactly one cell (4h FILL h1). Magnitude is non-monotone in horizon in several cells (30s FT h5 < h3; 5m FT h5 < h3; 5m FILL h5 < h3; 1h FILL h3 < h1; 4h FT h3 < h1)."}
+    ],
+    "direction_asymmetry": {
+      "class": "INTERPRETATION",
+      "text": "The pooled positive medians are asymmetrically composed: bullish direction-adjusted medians are positive and grow with horizon at every stratum (e.g. 15m FT: +0.63/+2.41/+2.93, n=1,231; 1h FILL: +3.77/+8.10/+15.41, n=279), while bearish medians are approximately zero or negative at most cells (15s FT: -0.0/-0.0/-0.0, n=111,069; 5m FILL: -0.02/-0.10/-0.97, n=3,214; 1h FILL h3/h5: -3.06/-4.89, n=203). Only 4h shows clearly positive bearish medians at FIRST_TOUCH (+4.5/+1.4/+7.7, n=63). Sign consistency across directions is therefore NOT established; the phenotype's positive lean is a bullish-side descriptive structure."
+    },
+    "post_fill_characterization": {
+      "class": "INTERPRETATION",
+      "text": "Under the in-zone-direction-positive convention, post-fill direction-adjusted medians positive and growing with horizon are most consistent with movement in the zone's registered direction after structural fill - i.e. continuation of the gap-direction leg, equivalently reversion of the filling move (the two labels describe the same committed quantity from different reference frames). Neutralization (near-zero post-fill center) fits the fine-stratum magnitudes only in the sense that all fine-stratum medians are near zero relative to dispersion; it does not fit the coarse strata. 'No clear central tendency' would overstate the null case given 21/21 sign consistency at both anchors, but 'strong directional behavior' would overstate 0.014-bps medians against 6.5-bps spans. The defensible description: sign-consistent, magnitude-weak, bullish-carried in-zone-direction lean after touch and after fill, strengthening with horizon and with native scale."
+    },
+    "not_claimed": "None of the above is a trading claim; 'continuation'/'reversion' are descriptive leanings under a derived sign convention, not strategy statements, and no significance test has been run anywhere in E1B."
+  },
+
+  "development_derived_split_assessment": {
+    "status": "gap_atr and fvg_quality median splits are DEVELOPMENT-derived descriptive partitions. They are NOT pre-registered thresholds, NOT decision thresholds, NOT confirmed cutoffs, NOT strategy rules.",
+    "findings": [
+      {"class": "DIRECT_OBSERVATION", "text": "FIRST_TOUCH gap_atr split: low>high at 1m (all horizons) and 4h (all horizons); high>low at 1h (all horizons); mixed at 15s, 30s, 5m, 15m. No cross-stratum consistency."},
+      {"class": "DIRECT_OBSERVATION", "text": "FIRST_TOUCH fvg_quality split: low>high at 1m and 15m (all horizons); high>low at 30s h1 and 5m h1; mixed elsewhere; sign flips across horizons within strata (4h: h1 low>high, h3 high>low, h5 low>high)."},
+      {"class": "DIRECT_OBSERVATION", "text": "FILL gap_atr split: high>low at 15s h3/h5, 30s, 1m, 5m (all horizons); mixed at 15m/1h; low>high at 4h h1/h3. Consistency is partial and scale-dependent."},
+      {"class": "DIRECT_OBSERVATION", "text": "FILL fvg_quality split: high>low at 15s, 30s, 1m, 5m, 1h (all horizons); mixed at 15m and 4h (4h h1: low +12.74 vs high -4.76, n=71/70)."},
+      {"class": "INTERPRETATION", "text": "Overall: no development partition exhibits a stable, scale-consistent descriptive gradient; where orderings are locally stable (1m/5m FILL, 1h FILL fvg_quality) the cells are exactly the mid-size strata, and the largest separations occur in the smallest cells (1h ~241-249, 4h ~70-79 per cell), the regime where median-split differences are least trustworthy. The splits generate hypotheses (e.g. 'fvg_quality modifies post-fill response'), not findings."},
+      {"class": "HYPOTHESIS_FOR_LATER_TESTING", "text": "Does FVG quality modify touch->fill duration and/or post-fill response after controlling for native scale? Registered only."}
+    ]
+  },
+
+  "anomalies_or_suspicious_patterns": [
+    {
+      "id": "AN-1",
+      "severity": "cosmetic",
+      "class": "DIRECT_OBSERVATION",
+      "text": "Negative-zero serialization: bearish direction_adjusted_p50 = -0.0 in multiple cells (15s FIRST_TOUCH h1/h3/h5; 30s FIRST_TOUCH h1/h3; 15s FILL h1; 30s FILL h1 = -2.1e-12). Same sign-bit artifact class already recorded in the E1A synthesis. Read as exact zero; recommend canonicalizing -0.0 to 0.0 in future artifacts."
+    },
+    {
+      "id": "AN-2",
+      "severity": "interpretive-hazard",
+      "class": "DIRECT_OBSERVATION",
+      "text": "Raw vs direction-adjusted sign divergence at 4h FILL h1 (raw p50 -0.145 vs direction-adjusted p50 +8.309 bps, n=141) and magnitude divergence at 4h FIRST_TOUCH h5 (raw +1.106 vs direction-adjusted +13.267 bps, n=157). Expected under sign-pooling with unbalanced directions, but any future reader quoting 'raw' medians at coarse strata will get opposite-signed answers to the direction-adjusted ones."
+    },
+    {
+      "id": "AN-3",
+      "severity": "low",
+      "class": "DIRECT_OBSERVATION",
+      "text": "Non-monotone maxima across horizons at fixed N (e.g. 15s FIRST_TOUCH raw_price_delta max 77.89 at h3 vs 65.37 at h5; both n=226,686, missing 0). Genuine property of differing window endpoints (the h3-extreme event declines by h5), not a data defect; flagged so monotonicity is not assumed in later reading."
+    },
+    {
+      "id": "AN-4",
+      "severity": "low",
+      "class": "DIRECT_OBSERVATION",
+      "text": "Direction-split imbalance: bullish anchors outnumber bearish at every stratum (e.g. 15s FT 115,617 vs 111,069; 4h FT 94 vs 63; 4h FILL 84 vs 57). Consistent with the E1A bullish-share gradient; carries into every pooled median."
+    },
+    {
+      "id": "AN-5",
+      "severity": "scope-limitation",
+      "class": "DIRECT_OBSERVATION",
+      "text": "The contract lists first_touch_observed as permitted FILL conditioning and stratifies the fill cohort by it, but the committed prospective aggregates do not report the true/false outcome split; the gap-through post-fill question (mission FILL item 3) is therefore unanswerable from the evidence base. Not a scanner defect (the fill-touch audit shows perfect true/false payload agreement); a reporting-scope gap to register."
+    },
+    {
+      "id": "AN-6",
+      "severity": "info",
+      "class": "DIRECT_OBSERVATION",
+      "text": "Repeated maxima near 1.024e10 ms for durations at 15s/30s/1m (~118.5 days) across formation->touch, touch->fill, and formation->fill: consistent with long-lived zones formed early in the window resolving late; not window-clipped (window length ~277.9 days) and consistent across strata."
+    }
+  ],
+
+  "question_generator_candidates": [
+    "Does post-first-touch response differ from an appropriately matched formation-stage control (same zones, matched clock), separating stage conditioning from population selection?",
+    "Does gap-through fill have different post-fill behavior from ordinary touch->fill (requires a per-population outcome split; currently unmeasured)?",
+    "Does FVG quality modify touch->fill duration after controlling for native scale?",
+    "Is the bullish-positive / bearish-zero direction-adjusted asymmetry at FIRST_TOUCH and FILL robust to a formal drift-aware null (window drift vs within-zone structure)?",
+    "Does gap_atr modify touch->fill duration (large-gap zones may be touched and filled on different clocks than small-gap zones)?",
+    "Do same-bar touch+fill zones (34-40% of touched fills) differ in post-fill response from multi-bar touch->fill zones (two candidate lifecycle modes)?",
+    "Is the 4h bearish-positive exception at FIRST_TOUCH (+4.5/+1.4/+7.7 bps, n=63) stable or small-sample noise?",
+    "Does touch->fill duration vary with session/time-of-day (links to E1A gap-through vs session-gap-density candidate)?",
+    "Are the 1h FILL fvg_quality split separations (-0.07/-2.18/+0.24 vs +6.48/+4.20/+10.92 bps) reproducible at matched N on out-of-window data?"
+  ],
+
+  "e2_candidates_that_must_remain_untested": [
+    "All nine Question Generator candidates above: registered only; no test, no threshold fitting, no optimization, no out-of-sample probing in E1B.",
+    "Any conversion of the direction-adjusted positive lean into an entry/exit rule or filter.",
+    "Any use of the development median-split values (gap_atr ~0.44-0.56, fvg_quality ~0.74-0.80 depending on stratum and anchor) as trading cutoffs.",
+    "Any cross-scale stacking or identity construction (PROHIBITED by contract).",
+    "Any E2 design work beyond registering candidates - E2 is NOT STARTED and confirmation is LOCKED."
+  ],
+
+  "must_not_claim": [
+    "No alpha, edge, profitability, strategy, signal, or predictive-advantage claims: nothing was tested; confirmation LOCKED; E2/E3 NOT STARTED.",
+    "No significance or confirmation claims of any kind.",
+    "No cross-scale identity, no pooling of strata, no claim that strata are interchangeable.",
+    "Direction-adjusted sign patterns are not tradable reversal/continuation effects; no null test was run.",
+    "Continuation/reversion/neutralization labels are descriptive leanings under a derived sign convention, not established behavior.",
+    "The stage comparison is not incremental predictive value.",
+    "Observed-event p99/max at 5m/15m/1h/4h are not unconditional population quantiles (administrative right censoring); no unconditional p99 beyond 1m.",
+    "Touch incidence, fill fractions, and censor fractions are window-censored accounting quantities, not lifetime probabilities or hazards.",
+    "Development median splits are not thresholds, cutoffs, or confirmed quality/gap effects.",
+    "1h/4h split separations and 4h bearish-positive medians are small-sample medians, not established effects.",
+    "Gap-through post-fill behavior was NOT characterized; no claim about gap-through zones' post-fill response.",
+    "Bearish -0.0 cells are sign-bit artifacts of exact-zero medians, not negative tendencies.",
+    "Horizons are native-bar-relative; no exposure-matched cross-stratum magnitude comparison.",
+    "Nothing here transfers to E2, E3, confirmation, or live use."
+  ],
+
+  "recommended_next_scientific_action": {
+    "verdict": "PASS_TO_SYNTHESIS",
+    "action": "Proceed to the E1B synthesis stage (peer-interpretation reconciliation across independent interpreters), carrying: (1) the stage sign-flip finding as the headline descriptive result; (2) the direction-asymmetry (bullish-carried) structure; (3) the censoring ceiling table as the binding constraint on all tail language; (4) the gap-through reporting gap and the nine Question Generator candidates as registered items. If the director elects a measurement amendment before E2, the highest-value additions are (a) per-population FILL outcomes stratified by first_touch_observed and (b) a matched formation-stage control for the touch/fill anchors; both are contract amendments, not interpreter work, and neither should be started informally.",
+    "prohibited_next_steps": "No E2 design, no threshold work, no survival-analysis subsystem, no re-runs of the scanner, no use of this phenotype as a strategy component."
+  },
+
+  "overall_verdict": "PASS_TO_SYNTHESIS"
+}

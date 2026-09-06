@@ -35,6 +35,14 @@
   {
    "logical_name": "FILL_TOUCH_CONSISTENCY_AUDIT.json",
    "path": "docs/research/ap-002-e1b/FILL_TOUCH_CONSISTENCY_AUDIT.json"
+  },
+  {
+   "logical_name": "E1B_FILL_STRATIFICATION.json",
+   "path": "docs/research/ap-002-e1b/E1B_FILL_STRATIFICATION.json"
+  },
+  {
+   "logical_name": "E1B_INTERPRETER_FACT_CHECK.json",
+   "path": "docs/research/ap-002-e1b/E1B_INTERPRETER_FACT_CHECK.json"
   }
  ]
 }

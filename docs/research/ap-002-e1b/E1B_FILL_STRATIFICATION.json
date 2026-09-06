@@ -1,0 +1,1167 @@
+{
+  "anchors_logical_rows_sha256": "911301ee6ac985f76a954af5ddac10d9d8957508f4c2d44e348c718d564285c2",
+  "anchors_physical_sha256": "911301ee6ac985f76a954af5ddac10d9d8957508f4c2d44e348c718d564285c2",
+  "anchors_rows_total": 758380,
+  "artifact_type": "AP-002_E1B_FILL_STRATIFICATION",
+  "cells": [
+    {
+      "anchor_n": 226210,
+      "bearish_n": 110895,
+      "bullish_n": 115315,
+      "eligibility": "DESCRIPTIVE_ADEQUATE",
+      "fill_type": "TOUCHED_FILL",
+      "horizons": [
+        {
+          "anchor_n": 226210,
+          "bearish_n": 110895,
+          "bullish_n": 115315,
+          "direction_adjusted_return_bps": {
+            "n": 226210,
+            "p05": -3.3923770929475356,
+            "p25": -0.8391901814741135,
+            "p50": 0.02165962548388855,
+            "p75": 0.91036792625658,
+            "p95": 3.5108382975815364
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 1,
+          "outcome_n": 226210,
+          "raw_return_bps": {
+            "n": 226210,
+            "p05": -3.3998374711852524,
+            "p25": -0.8436744590402278,
+            "p50": 0.02110993950992912,
+            "p75": 0.9063991781988394,
+            "p95": 3.502210704777043
+          }
+        },
+        {
+          "anchor_n": 226210,
+          "bearish_n": 110895,
+          "bullish_n": 115315,
+          "direction_adjusted_return_bps": {
+            "n": 226210,
+            "p05": -5.78756628742732,
+            "p25": -1.5085293621518956,
+            "p50": 0.0661283816403567,
+            "p75": 1.652586044857493,
+            "p95": 5.977528545231977
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 3,
+          "outcome_n": 226210,
+          "raw_return_bps": {
+            "n": 226210,
+            "p05": -5.7753226793664,
+            "p25": -1.5257442089809854,
+            "p50": 0.038652235211290624,
+            "p75": 1.639642347757096,
+            "p95": 5.994670706357785
+          }
+        },
+        {
+          "anchor_n": 226210,
+          "bearish_n": 110895,
+          "bullish_n": 115315,
+          "direction_adjusted_return_bps": {
+            "n": 226210,
+            "p05": -7.522017572269589,
+            "p25": -1.9782808739201272,
+            "p50": 0.08476360137866681,
+            "p75": 2.1483552667088945,
+            "p95": 7.580437145369036
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 5,
+          "outcome_n": 226210,
+          "raw_return_bps": {
+            "n": 226210,
+            "p05": -7.4661257247292685,
+            "p25": -1.991438053289623,
+            "p50": 0.054371761481165515,
+            "p75": 2.1390243604302337,
+            "p95": 7.629772632776562
+          }
+        }
+      ],
+      "timeframe": "15s"
+    },
+    {
+      "anchor_n": 682,
+      "bearish_n": 332,
+      "bullish_n": 350,
+      "eligibility": "DESCRIPTIVE_ADEQUATE",
+      "fill_type": "GAP_THROUGH_FILL",
+      "horizons": [
+        {
+          "anchor_n": 682,
+          "bearish_n": 332,
+          "bullish_n": 350,
+          "direction_adjusted_return_bps": {
+            "n": 682,
+            "p05": -7.210329094601095,
+            "p25": -0.8495879498446891,
+            "p50": 0.0,
+            "p75": 0.864228251621437,
+            "p95": 5.407156414624606
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 1,
+          "outcome_n": 682,
+          "raw_return_bps": {
+            "n": 682,
+            "p05": -7.210329094601095,
+            "p25": -1.0964662304687538,
+            "p50": -0.029587024315262403,
+            "p75": 0.8027946428354117,
+            "p95": 5.407156414624606
+          }
+        },
+        {
+          "anchor_n": 682,
+          "bearish_n": 332,
+          "bullish_n": 350,
+          "direction_adjusted_return_bps": {
+            "n": 682,
+            "p05": -7.484640069206042,
+            "p25": -1.4474402406059923,
+            "p50": 0.07161639394468074,
+            "p75": 2.1550843269631788,
+            "p95": 25.501355868071887
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 3,
+          "outcome_n": 682,
+          "raw_return_bps": {
+            "n": 682,
+            "p05": -9.730595402067772,
+            "p25": -1.5866596519585805,
+            "p50": 0.06793385959401654,
+            "p75": 2.0258914920529523,
+            "p95": 20.162904443598546
+          }
+        },
+        {
+          "anchor_n": 682,
+          "bearish_n": 332,
+          "bullish_n": 350,
+          "direction_adjusted_return_bps": {
+            "n": 682,
+            "p05": -9.117194164111028,
+            "p25": -1.981479437761389,
+            "p50": 0.1901546092802613,
+            "p75": 3.2648738749541435,
+            "p95": 14.167063336066787
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 5,
+          "outcome_n": 682,
+          "raw_return_bps": {
+            "n": 682,
+            "p05": -9.743942655950663,
+            "p25": -2.342713153269649,
+            "p50": 0.2625655518762041,
+            "p75": 2.727481600616864,
+            "p95": 12.107596254158432
+          }
+        }
+      ],
+      "timeframe": "15s"
+    },
+    {
+      "anchor_n": 99011,
+      "bearish_n": 47895,
+      "bullish_n": 51116,
+      "eligibility": "DESCRIPTIVE_ADEQUATE",
+      "fill_type": "TOUCHED_FILL",
+      "horizons": [
+        {
+          "anchor_n": 99011,
+          "bearish_n": 47895,
+          "bullish_n": 51116,
+          "direction_adjusted_return_bps": {
+            "n": 99011,
+            "p05": -4.936126522795032,
+            "p25": -1.255868043431798,
+            "p50": 0.029787924869546106,
+            "p75": 1.3644943411386543,
+            "p95": 5.141877034364456
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 1,
+          "outcome_n": 99011,
+          "raw_return_bps": {
+            "n": 99011,
+            "p05": -4.969707945427094,
+            "p25": -1.2614392307594704,
+            "p50": 0.03882449774126169,
+            "p75": 1.3616235954730256,
+            "p95": 5.101489899491855
+          }
+        },
+        {
+          "anchor_n": 99011,
+          "bearish_n": 47895,
+          "bullish_n": 51116,
+          "direction_adjusted_return_bps": {
+            "n": 99011,
+            "p05": -8.572715216465472,
+            "p25": -2.1936078267932246,
+            "p50": 0.10767994934774355,
+            "p75": 2.442255983821775,
+            "p95": 8.646868459360038
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 3,
+          "outcome_n": 99011,
+          "raw_return_bps": {
+            "n": 99011,
+            "p05": -8.59229396230787,
+            "p25": -2.2245871658066005,
+            "p50": 0.07522837184278233,
+            "p75": 2.411758476019542,
+            "p95": 8.620775615986796
+          }
+        },
+        {
+          "anchor_n": 99011,
+          "bearish_n": 47895,
+          "bullish_n": 51115,
+          "direction_adjusted_return_bps": {
+            "n": 99010,
+            "p05": -10.855787758970164,
+            "p25": -2.817036986704409,
+            "p50": 0.1607017846936115,
+            "p75": 3.124232666498662,
+            "p95": 11.058416642545463
+          },
+          "end_of_window_missing_n": 1,
+          "horizon_bars": 5,
+          "outcome_n": 99010,
+          "raw_return_bps": {
+            "n": 99010,
+            "p05": -10.944806726351535,
+            "p25": -2.8342889670255,
+            "p50": 0.1101662822321441,
+            "p75": 3.109798778337684,
+            "p95": 10.947941442604296
+          }
+        }
+      ],
+      "timeframe": "30s"
+    },
+    {
+      "anchor_n": 213,
+      "bearish_n": 94,
+      "bullish_n": 119,
+      "eligibility": "DESCRIPTIVE_ADEQUATE",
+      "fill_type": "GAP_THROUGH_FILL",
+      "horizons": [
+        {
+          "anchor_n": 213,
+          "bearish_n": 94,
+          "bullish_n": 119,
+          "direction_adjusted_return_bps": {
+            "n": 213,
+            "p05": -3.93009640724601,
+            "p25": -0.8004506240549697,
+            "p50": 0.8893667575945586,
+            "p75": 5.2040975420633195,
+            "p95": 15.142300694082772
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 1,
+          "outcome_n": 213,
+          "raw_return_bps": {
+            "n": 213,
+            "p05": -5.961376275220484,
+            "p25": -0.7805095612411337,
+            "p50": 0.9279455285999708,
+            "p75": 4.136704139917869,
+            "p95": 15.142300694082772
+          }
+        },
+        {
+          "anchor_n": 213,
+          "bearish_n": 94,
+          "bullish_n": 119,
+          "direction_adjusted_return_bps": {
+            "n": 213,
+            "p05": -5.2617072987396165,
+            "p25": -1.618998649335277,
+            "p50": 1.369999379062663,
+            "p75": 5.4751902787802145,
+            "p95": 15.089342476562166
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 3,
+          "outcome_n": 213,
+          "raw_return_bps": {
+            "n": 213,
+            "p05": -8.65220728867099,
+            "p25": -1.9497780764978403,
+            "p50": 1.369999379062663,
+            "p75": 3.6976482535706,
+            "p95": 15.089342476562166
+          }
+        },
+        {
+          "anchor_n": 213,
+          "bearish_n": 94,
+          "bullish_n": 119,
+          "direction_adjusted_return_bps": {
+            "n": 213,
+            "p05": -12.88405464134614,
+            "p25": -4.131283962904932,
+            "p50": 0.8008777620252393,
+            "p75": 6.281243611900552,
+            "p95": 18.52177366327449
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 5,
+          "outcome_n": 213,
+          "raw_return_bps": {
+            "n": 213,
+            "p05": -25.241499350975683,
+            "p25": -4.173365801053851,
+            "p50": -0.22475565849033433,
+            "p75": 3.875711707003669,
+            "p95": 18.52177366327449
+          }
+        }
+      ],
+      "timeframe": "30s"
+    },
+    {
+      "anchor_n": 43227,
+      "bearish_n": 20595,
+      "bullish_n": 22632,
+      "eligibility": "DESCRIPTIVE_ADEQUATE",
+      "fill_type": "TOUCHED_FILL",
+      "horizons": [
+        {
+          "anchor_n": 43227,
+          "bearish_n": 20595,
+          "bullish_n": 22632,
+          "direction_adjusted_return_bps": {
+            "n": 43227,
+            "p05": -7.241747640612049,
+            "p25": -1.8249616924995808,
+            "p50": 0.1040784890580498,
+            "p75": 2.107663993195622,
+            "p95": 7.56316489361797
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 1,
+          "outcome_n": 43227,
+          "raw_return_bps": {
+            "n": 43227,
+            "p05": -7.346733387380514,
+            "p25": -1.8852315397006572,
+            "p50": 0.05987880529802223,
+            "p75": 2.0619629887666155,
+            "p95": 7.475264490089709
+          }
+        },
+        {
+          "anchor_n": 43227,
+          "bearish_n": 20595,
+          "bullish_n": 22632,
+          "direction_adjusted_return_bps": {
+            "n": 43227,
+            "p05": -12.14380554651801,
+            "p25": -3.0999163140453314,
+            "p50": 0.18995471954355597,
+            "p75": 3.541473483480303,
+            "p95": 12.64767031885596
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 3,
+          "outcome_n": 43227,
+          "raw_return_bps": {
+            "n": 43227,
+            "p05": -12.34535042983655,
+            "p25": -3.124762246349833,
+            "p50": 0.1449336976623327,
+            "p75": 3.520171817258729,
+            "p95": 12.475618777746638
+          }
+        },
+        {
+          "anchor_n": 43227,
+          "bearish_n": 20595,
+          "bullish_n": 22632,
+          "direction_adjusted_return_bps": {
+            "n": 43227,
+            "p05": -15.247412934643275,
+            "p25": -3.98482739140066,
+            "p50": 0.26525596624258285,
+            "p75": 4.588377639439663,
+            "p95": 15.697378412687534
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 5,
+          "outcome_n": 43227,
+          "raw_return_bps": {
+            "n": 43227,
+            "p05": -15.269596315045275,
+            "p25": -4.0446916034590865,
+            "p50": 0.19143631723530563,
+            "p75": 4.578887330376826,
+            "p95": 15.786761728997837
+          }
+        }
+      ],
+      "timeframe": "1m"
+    },
+    {
+      "anchor_n": 81,
+      "bearish_n": 40,
+      "bullish_n": 41,
+      "eligibility": "DESCRIPTIVE_THIN",
+      "fill_type": "GAP_THROUGH_FILL",
+      "horizons": [
+        {
+          "anchor_n": 81,
+          "bearish_n": 40,
+          "bullish_n": 41,
+          "direction_adjusted_return_bps": {
+            "n": 81,
+            "p05": -11.314939100175012,
+            "p25": -4.342808190655337,
+            "p50": 0.0,
+            "p75": 6.416628816771077,
+            "p95": 11.065831944297198
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 1,
+          "outcome_n": 81,
+          "raw_return_bps": {
+            "n": 81,
+            "p05": -11.065831944297198,
+            "p25": -4.306057008774351,
+            "p50": -0.548646671543027,
+            "p75": 6.416628816771077,
+            "p95": 11.195931795997538
+          }
+        },
+        {
+          "anchor_n": 81,
+          "bearish_n": 40,
+          "bullish_n": 41,
+          "direction_adjusted_return_bps": {
+            "n": 81,
+            "p05": -20.44015249377759,
+            "p25": -5.342502492277413,
+            "p50": -0.9420880793465116,
+            "p75": 4.128037787592605,
+            "p95": 19.183215988039017
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 3,
+          "outcome_n": 81,
+          "raw_return_bps": {
+            "n": 81,
+            "p05": -20.44015249377759,
+            "p25": -5.342502492277413,
+            "p50": -1.8859729334283757,
+            "p75": 3.1904398935812455,
+            "p95": 22.705768221789462
+          }
+        },
+        {
+          "anchor_n": 81,
+          "bearish_n": 40,
+          "bullish_n": 41,
+          "direction_adjusted_return_bps": {
+            "n": 81,
+            "p05": -38.71420019534298,
+            "p25": -7.125393566660553,
+            "p50": 2.4689100219457005,
+            "p75": 7.606187920440952,
+            "p95": 25.01963680629279
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 5,
+          "outcome_n": 81,
+          "raw_return_bps": {
+            "n": 81,
+            "p05": -38.71420019534298,
+            "p25": -7.606187920440952,
+            "p50": -2.197634684519344,
+            "p75": 5.816743651929801,
+            "p95": 21.584680258238276
+          }
+        }
+      ],
+      "timeframe": "1m"
+    },
+    {
+      "anchor_n": 6961,
+      "bearish_n": 3210,
+      "bullish_n": 3751,
+      "eligibility": "DESCRIPTIVE_ADEQUATE",
+      "fill_type": "TOUCHED_FILL",
+      "horizons": [
+        {
+          "anchor_n": 6961,
+          "bearish_n": 3209,
+          "bullish_n": 3751,
+          "direction_adjusted_return_bps": {
+            "n": 6960,
+            "p05": -16.4748839006599,
+            "p25": -4.521740882835453,
+            "p50": 0.17058133051483948,
+            "p75": 4.830038736089345,
+            "p95": 16.693919328314944
+          },
+          "end_of_window_missing_n": 1,
+          "horizon_bars": 1,
+          "outcome_n": 6960,
+          "raw_return_bps": {
+            "n": 6960,
+            "p05": -15.896037858360131,
+            "p25": -4.20192526500108,
+            "p50": 0.2231684564784995,
+            "p75": 5.200801684552279,
+            "p95": 17.333559690677948
+          }
+        },
+        {
+          "anchor_n": 6961,
+          "bearish_n": 3209,
+          "bullish_n": 3751,
+          "direction_adjusted_return_bps": {
+            "n": 6960,
+            "p05": -28.700561608224092,
+            "p25": -7.817994713969107,
+            "p50": 0.4011338717441996,
+            "p75": 8.477403011304109,
+            "p95": 29.31234424732979
+          },
+          "end_of_window_missing_n": 1,
+          "horizon_bars": 3,
+          "outcome_n": 6960,
+          "raw_return_bps": {
+            "n": 6960,
+            "p05": -29.423218380856753,
+            "p25": -7.526901208888023,
+            "p50": 0.6157069986059408,
+            "p75": 8.762184721109502,
+            "p95": 28.72565987296008
+          }
+        },
+        {
+          "anchor_n": 6961,
+          "bearish_n": 3209,
+          "bullish_n": 3751,
+          "direction_adjusted_return_bps": {
+            "n": 6960,
+            "p05": -35.93815569329334,
+            "p25": -9.862805282570994,
+            "p50": 0.1645273130305364,
+            "p75": 10.438225501663409,
+            "p95": 35.82868611038291
+          },
+          "end_of_window_missing_n": 1,
+          "horizon_bars": 5,
+          "outcome_n": 6960,
+          "raw_return_bps": {
+            "n": 6960,
+            "p05": -35.99294006857472,
+            "p25": -9.026216424684804,
+            "p50": 1.065464822347301,
+            "p75": 11.259108828096949,
+            "p95": 35.8054604898584
+          }
+        }
+      ],
+      "timeframe": "5m"
+    },
+    {
+      "anchor_n": 20,
+      "bearish_n": 5,
+      "bullish_n": 15,
+      "eligibility": "TOO_SPARSE_FOR_COMPARISON",
+      "fill_type": "GAP_THROUGH_FILL",
+      "horizons": [
+        {
+          "anchor_n": 20,
+          "bearish_n": 5,
+          "bullish_n": 15,
+          "direction_adjusted_return_bps": {
+            "n": 20,
+            "p05": -26.360356234899424,
+            "p25": -4.271415811022058,
+            "p50": 5.2902573592411475,
+            "p75": 14.855310473993244,
+            "p95": 17.333559690677948
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 1,
+          "outcome_n": 20,
+          "raw_return_bps": {
+            "n": 20,
+            "p05": -26.360356234899424,
+            "p25": -10.25798546919192,
+            "p50": 5.136836698065791,
+            "p75": 10.135548663787793,
+            "p95": 17.333559690677948
+          }
+        },
+        {
+          "anchor_n": 20,
+          "bearish_n": 5,
+          "bullish_n": 15,
+          "direction_adjusted_return_bps": {
+            "n": 20,
+            "p05": -57.517093274801866,
+            "p25": -0.2137149427339149,
+            "p50": 0.9054534659966386,
+            "p75": 17.50524473132049,
+            "p95": 30.74445093349256
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 3,
+          "outcome_n": 20,
+          "raw_return_bps": {
+            "n": 20,
+            "p05": -57.517093274801866,
+            "p25": -12.111567778733448,
+            "p50": -0.18453044383217596,
+            "p75": 17.50524473132049,
+            "p95": 28.94236808057314
+          }
+        },
+        {
+          "anchor_n": 20,
+          "bearish_n": 5,
+          "bullish_n": 15,
+          "direction_adjusted_return_bps": {
+            "n": 20,
+            "p05": -40.0389237158329,
+            "p25": -14.927962408092917,
+            "p50": 8.80281690140775,
+            "p75": 8.918971451910137,
+            "p95": 32.715755036047256
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 5,
+          "outcome_n": 20,
+          "raw_return_bps": {
+            "n": 20,
+            "p05": -40.0389237158329,
+            "p25": 2.269364383127807,
+            "p50": 8.80281690140775,
+            "p75": 14.927962408092917,
+            "p95": 37.54500080649648
+          }
+        }
+      ],
+      "timeframe": "5m"
+    },
+    {
+      "anchor_n": 2094,
+      "bearish_n": 889,
+      "bullish_n": 1205,
+      "eligibility": "DESCRIPTIVE_ADEQUATE",
+      "fill_type": "TOUCHED_FILL",
+      "horizons": [
+        {
+          "anchor_n": 2094,
+          "bearish_n": 888,
+          "bullish_n": 1205,
+          "direction_adjusted_return_bps": {
+            "n": 2093,
+            "p05": -31.65914150601038,
+            "p25": -8.051941564551043,
+            "p50": 0.11033238243183056,
+            "p75": 8.376080880179822,
+            "p95": 30.16689783733761
+          },
+          "end_of_window_missing_n": 1,
+          "horizon_bars": 1,
+          "outcome_n": 2093,
+          "raw_return_bps": {
+            "n": 2093,
+            "p05": -30.63145409634451,
+            "p25": -7.158170514779833,
+            "p50": 0.9492456248713356,
+            "p75": 9.763349389274312,
+            "p95": 31.117363962660026
+          }
+        },
+        {
+          "anchor_n": 2094,
+          "bearish_n": 888,
+          "bullish_n": 1204,
+          "direction_adjusted_return_bps": {
+            "n": 2092,
+            "p05": -48.93651224798978,
+            "p25": -13.250894790218384,
+            "p50": 1.0355622429863958,
+            "p75": 15.619702476193956,
+            "p95": 52.292606662959365
+          },
+          "end_of_window_missing_n": 2,
+          "horizon_bars": 3,
+          "outcome_n": 2092,
+          "raw_return_bps": {
+            "n": 2092,
+            "p05": -50.10516790766507,
+            "p25": -12.570686937980993,
+            "p50": 1.3774170106249368,
+            "p75": 16.12129283710281,
+            "p95": 50.93950449483792
+          }
+        },
+        {
+          "anchor_n": 2094,
+          "bearish_n": 888,
+          "bullish_n": 1204,
+          "direction_adjusted_return_bps": {
+            "n": 2092,
+            "p05": -64.00741113181776,
+            "p25": -16.657620393421176,
+            "p50": 1.5766390939877564,
+            "p75": 20.77403039312856,
+            "p95": 71.11062202536408
+          },
+          "end_of_window_missing_n": 2,
+          "horizon_bars": 5,
+          "outcome_n": 2092,
+          "raw_return_bps": {
+            "n": 2092,
+            "p05": -68.11681379739858,
+            "p25": -14.438028612322569,
+            "p50": 3.4594567784893253,
+            "p75": 22.25300274072379,
+            "p95": 65.36123949070242
+          }
+        }
+      ],
+      "timeframe": "15m"
+    },
+    {
+      "anchor_n": 10,
+      "bearish_n": 3,
+      "bullish_n": 7,
+      "eligibility": "TOO_SPARSE_FOR_COMPARISON",
+      "fill_type": "GAP_THROUGH_FILL",
+      "horizons": [
+        {
+          "anchor_n": 10,
+          "bearish_n": 3,
+          "bullish_n": 7,
+          "direction_adjusted_return_bps": {
+            "n": 10,
+            "p05": -24.629054378273164,
+            "p25": -10.10467405948745,
+            "p50": 16.155233981389237,
+            "p75": 21.315655847018387,
+            "p95": 27.796861963645313
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 1,
+          "outcome_n": 10,
+          "raw_return_bps": {
+            "n": 10,
+            "p05": -21.315655847018387,
+            "p25": -3.980720534988914,
+            "p50": 19.04120863029408,
+            "p75": 24.629054378273164,
+            "p95": 27.796861963645313
+          }
+        },
+        {
+          "anchor_n": 10,
+          "bearish_n": 3,
+          "bullish_n": 7,
+          "direction_adjusted_return_bps": {
+            "n": 10,
+            "p05": -77.62050173874611,
+            "p25": -3.557562760588691,
+            "p50": 29.351670858300267,
+            "p75": 42.41073072500096,
+            "p95": 53.49374015359962
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 3,
+          "outcome_n": 10,
+          "raw_return_bps": {
+            "n": 10,
+            "p05": -53.49374015359962,
+            "p25": 10.360910023282212,
+            "p50": 38.88677609782253,
+            "p75": 42.41073072500096,
+            "p95": 77.62050173874611
+          }
+        },
+        {
+          "anchor_n": 10,
+          "bearish_n": 3,
+          "bullish_n": 7,
+          "direction_adjusted_return_bps": {
+            "n": 10,
+            "p05": -64.1585219492862,
+            "p25": -1.8116620127415783,
+            "p50": 70.70463392333399,
+            "p75": 106.60022915051202,
+            "p95": 127.82883491154814
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 5,
+          "outcome_n": 10,
+          "raw_return_bps": {
+            "n": 10,
+            "p05": -127.82883491154814,
+            "p25": 23.547677320089985,
+            "p50": 64.1585219492862,
+            "p75": 96.29800052434518,
+            "p95": 106.60022915051202
+          }
+        }
+      ],
+      "timeframe": "15m"
+    },
+    {
+      "anchor_n": 478,
+      "bearish_n": 200,
+      "bullish_n": 278,
+      "eligibility": "DESCRIPTIVE_ADEQUATE",
+      "fill_type": "TOUCHED_FILL",
+      "horizons": [
+        {
+          "anchor_n": 478,
+          "bearish_n": 200,
+          "bullish_n": 278,
+          "direction_adjusted_return_bps": {
+            "n": 478,
+            "p05": -59.55830112717328,
+            "p25": -18.42689557509476,
+            "p50": 2.021470140757126,
+            "p75": 23.57436560952796,
+            "p95": 79.21369679183006
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 1,
+          "outcome_n": 478,
+          "raw_return_bps": {
+            "n": 478,
+            "p05": -59.55830112717328,
+            "p25": -18.782595768008576,
+            "p50": 1.335319570149783,
+            "p75": 22.13623524619921,
+            "p95": 78.27303678794505
+          }
+        },
+        {
+          "anchor_n": 478,
+          "bearish_n": 200,
+          "bullish_n": 278,
+          "direction_adjusted_return_bps": {
+            "n": 478,
+            "p05": -100.44405299276998,
+            "p25": -25.69133455276071,
+            "p50": 1.951415439295341,
+            "p75": 32.30981371161834,
+            "p95": 108.24181958129957
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 3,
+          "outcome_n": 478,
+          "raw_return_bps": {
+            "n": 478,
+            "p05": -93.61510107563808,
+            "p25": -25.83023915350486,
+            "p50": 4.874430752241684,
+            "p75": 33.37629201310932,
+            "p95": 114.27214676324934
+          }
+        },
+        {
+          "anchor_n": 478,
+          "bearish_n": 199,
+          "bullish_n": 278,
+          "direction_adjusted_return_bps": {
+            "n": 477,
+            "p05": -146.61208640202597,
+            "p25": -34.72445152016235,
+            "p50": 8.246107027598892,
+            "p75": 38.47354370456939,
+            "p95": 164.36838545078723
+          },
+          "end_of_window_missing_n": 1,
+          "horizon_bars": 5,
+          "outcome_n": 477,
+          "raw_return_bps": {
+            "n": 477,
+            "p05": -164.36838545078723,
+            "p25": -29.062520773781372,
+            "p50": 9.762329159240211,
+            "p75": 42.66787485024309,
+            "p95": 132.83153776194715
+          }
+        }
+      ],
+      "timeframe": "1h"
+    },
+    {
+      "anchor_n": 4,
+      "bearish_n": 3,
+      "bullish_n": 1,
+      "eligibility": "TOO_SPARSE_FOR_COMPARISON",
+      "fill_type": "GAP_THROUGH_FILL",
+      "horizons": [
+        {
+          "anchor_n": 4,
+          "bearish_n": 3,
+          "bullish_n": 1,
+          "direction_adjusted_return_bps": {
+            "n": 4,
+            "p05": -41.07566467321088,
+            "p25": -15.835763114277889,
+            "p50": -15.835763114277889,
+            "p75": -15.835763114277889,
+            "p95": 74.43718988869634
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 1,
+          "outcome_n": 4,
+          "raw_return_bps": {
+            "n": 4,
+            "p05": 15.835763114277889,
+            "p25": 15.835763114277889,
+            "p50": 41.07566467321088,
+            "p75": 41.07566467321088,
+            "p95": 74.43718988869634
+          }
+        },
+        {
+          "anchor_n": 4,
+          "bearish_n": 3,
+          "bullish_n": 1,
+          "direction_adjusted_return_bps": {
+            "n": 4,
+            "p05": -63.3545737053907,
+            "p25": -11.42177167150447,
+            "p50": -11.42177167150447,
+            "p75": -11.42177167150447,
+            "p95": 38.80582003486749
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 3,
+          "outcome_n": 4,
+          "raw_return_bps": {
+            "n": 4,
+            "p05": 11.42177167150447,
+            "p25": 11.42177167150447,
+            "p50": 38.80582003486749,
+            "p75": 38.80582003486749,
+            "p95": 63.3545737053907
+          }
+        },
+        {
+          "anchor_n": 4,
+          "bearish_n": 3,
+          "bullish_n": 1,
+          "direction_adjusted_return_bps": {
+            "n": 4,
+            "p05": -80.6164327858499,
+            "p25": -39.418763786612686,
+            "p50": -39.418763786612686,
+            "p75": -39.418763786612686,
+            "p95": 38.753436368514485
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 5,
+          "outcome_n": 4,
+          "raw_return_bps": {
+            "n": 4,
+            "p05": 38.753436368514485,
+            "p25": 39.418763786612686,
+            "p50": 39.418763786612686,
+            "p75": 39.418763786612686,
+            "p95": 80.6164327858499
+          }
+        }
+      ],
+      "timeframe": "1h"
+    },
+    {
+      "anchor_n": 141,
+      "bearish_n": 57,
+      "bullish_n": 84,
+      "eligibility": "DESCRIPTIVE_THIN",
+      "fill_type": "TOUCHED_FILL",
+      "horizons": [
+        {
+          "anchor_n": 141,
+          "bearish_n": 57,
+          "bullish_n": 84,
+          "direction_adjusted_return_bps": {
+            "n": 141,
+            "p05": -95.64997667547648,
+            "p25": -36.12716763005708,
+            "p50": 8.308876067410607,
+            "p75": 41.030133554247314,
+            "p95": 237.6016015050277
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 1,
+          "outcome_n": 141,
+          "raw_return_bps": {
+            "n": 141,
+            "p05": -137.43515893982692,
+            "p25": -40.55430772136921,
+            "p50": -0.14514297187368858,
+            "p75": 34.92238869531187,
+            "p95": 140.89033602669852
+          }
+        },
+        {
+          "anchor_n": 141,
+          "bearish_n": 57,
+          "bullish_n": 84,
+          "direction_adjusted_return_bps": {
+            "n": 141,
+            "p05": -320.20676701266444,
+            "p25": -43.09263476051135,
+            "p50": 18.162727927393547,
+            "p75": 69.93272724065062,
+            "p95": 213.95905448648227
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 3,
+          "outcome_n": 141,
+          "raw_return_bps": {
+            "n": 141,
+            "p05": -364.5418389921688,
+            "p25": -46.51606296666266,
+            "p50": 6.893877832836509,
+            "p75": 67.79608185402725,
+            "p95": 161.33613452427988
+          }
+        },
+        {
+          "anchor_n": 141,
+          "bearish_n": 57,
+          "bullish_n": 84,
+          "direction_adjusted_return_bps": {
+            "n": 141,
+            "p05": -410.3684848361937,
+            "p25": -78.22230473986569,
+            "p50": 15.72335474462011,
+            "p75": 98.03944704288786,
+            "p95": 337.7191868820496
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 5,
+          "outcome_n": 141,
+          "raw_return_bps": {
+            "n": 141,
+            "p05": -433.3644899214101,
+            "p25": -56.00825787283373,
+            "p50": 15.72335474462011,
+            "p75": 98.03944704288786,
+            "p95": 221.3780232076432
+          }
+        }
+      ],
+      "timeframe": "4h"
+    },
+    {
+      "anchor_n": 0,
+      "bearish_n": 0,
+      "bullish_n": 0,
+      "eligibility": "EMPTY",
+      "fill_type": "GAP_THROUGH_FILL",
+      "horizons": [
+        {
+          "anchor_n": 0,
+          "bearish_n": 0,
+          "bullish_n": 0,
+          "direction_adjusted_return_bps": {
+            "n": 0,
+            "p05": null,
+            "p25": null,
+            "p50": null,
+            "p75": null,
+            "p95": null
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 1,
+          "outcome_n": 0,
+          "raw_return_bps": {
+            "n": 0,
+            "p05": null,
+            "p25": null,
+            "p50": null,
+            "p75": null,
+            "p95": null
+          }
+        },
+        {
+          "anchor_n": 0,
+          "bearish_n": 0,
+          "bullish_n": 0,
+          "direction_adjusted_return_bps": {
+            "n": 0,
+            "p05": null,
+            "p25": null,
+            "p50": null,
+            "p75": null,
+            "p95": null
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 3,
+          "outcome_n": 0,
+          "raw_return_bps": {
+            "n": 0,
+            "p05": null,
+            "p25": null,
+            "p50": null,
+            "p75": null,
+            "p95": null
+          }
+        },
+        {
+          "anchor_n": 0,
+          "bearish_n": 0,
+          "bullish_n": 0,
+          "direction_adjusted_return_bps": {
+            "n": 0,
+            "p05": null,
+            "p25": null,
+            "p50": null,
+            "p75": null,
+            "p95": null
+          },
+          "end_of_window_missing_n": 0,
+          "horizon_bars": 5,
+          "outcome_n": 0,
+          "raw_return_bps": {
+            "n": 0,
+            "p05": null,
+            "p25": null,
+            "p50": null,
+            "p75": null,
+            "p95": null
+          }
+        }
+      ],
+      "timeframe": "4h"
+    }
+  ],
+  "elapsed_millis": 12173,
+  "fill_anchors_total": 379132,
+  "gap_through_fill_total": 1010,
+  "predeclared_support_rule": {
+    "DESCRIPTIVE_ADEQUATE": "anchor_n >= 200",
+    "DESCRIPTIVE_THIN": "30 <= anchor_n < 200",
+    "EMPTY": "anchor_n = 0",
+    "TOO_SPARSE_FOR_COMPARISON": "1 <= anchor_n < 30",
+    "note": "rule fixed before inspecting per-cell aggregates; labels carry no significance meaning"
+  },
+  "touched_fill_total": 378122
+}

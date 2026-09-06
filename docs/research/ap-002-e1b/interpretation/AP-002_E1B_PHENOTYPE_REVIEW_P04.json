@@ -1,0 +1,617 @@
+{
+ "artifact_type": "AP-002_E1B_PHENOTYPE_REVIEW",
+ "interpreter_id": "P-04",
+ "generated_utc": "2026-09-06T13:21:18Z",
+ "program": "AP-002 FVG",
+ "stage": "E1B lifecycle-stage phenotype",
+ "instrument": "XAUUSD",
+ "exposure": "E1_PHENOTYPE",
+ "e1b_logical_result_hash": "2a7a142cadb36449d14d4128361d11ce99a3a4d7d8a004dd539bc4dc32fb823c",
+ "logical_hash_verified_in_evidence": true,
+ "confirmation_status": "LOCKED",
+ "e2_status": "NOT STARTED",
+ "e3_status": "NOT STARTED",
+ "cross_scale_object_identity": "PROHIBITED - respected: all quantitative statements are within-stratum; cross-stratum material is side-by-side descriptive comparison only",
+ "evidence_base": [
+  "docs/research/ap-002-e1b/AP-002_E1B_EXPERIMENT_CONTRACT.json",
+  "docs/research/ap-002-e1b/E1B_EXPERIMENT.json",
+  "docs/research/ap-002-e1b/E1B_RESULTS.json",
+  "docs/research/ap-002-e1b/PREFLIGHT.json",
+  "docs/research/ap-002-e1b/RUN_MANIFEST.json",
+  "docs/research/ap-002-e1b/E1B_SCANNER_INTEGRITY_GATE.json",
+  "docs/research/ap-002-e1b/REPRODUCIBILITY.json",
+  "docs/research/ap-002-e1b/FILL_TOUCH_CONSISTENCY_AUDIT.json",
+  "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SYNTHESIS.json"
+ ],
+ "evidence_discipline": "No other files read; no scanner re-run; no row-level anchor tables inspected; peer E1B interpretations not inspected; pipeline code untouched.",
+ "citation_notation": "Paths are of the form E1B_RESULTS.json:tables.strata[tf].<anchor>.horizons[h].<field>; quantities marked derived are arithmetic combinations of cited fields (formulas shown in-line). Development window 2025-07-31T16:15:00Z..2026-05-05T12:39:00Z (exclusive). Durations are market/event time in native-bar equivalents (bar_ms: 15s=15000 ... 4h=14400000); the separate known/availability clock tracks the market clock closely in the body and is never merged with it (contract clock_rule).",
+ "overall_verdict": "PASS_TO_SYNTHESIS",
+ "executive_phenotype_summary": {
+  "verdict_line": "PASS_TO_SYNTHESIS - the E1B evidence is internally consistent, complete for its frozen contract, and supports a descriptive lifecycle phenotype: a same-bar-or-one-bar resolution body, a heavy multi-bar tail that becomes administratively censored at coarse strata, and a descriptive stage-conditioning sign flip of weak pooled direction-adjusted central tendency between formation and contact.",
+  "direct_observations": [
+   {
+    "id": "D1",
+    "text": "Identity/reconciliation (DIRECT OBSERVATION): two fresh runs produced the identical logical result hash 2a7a142cadb36449d14d4128361d11ce99a3a4d7d8a004dd539bc4dc32fb823c (REPRODUCIBILITY.json:logical_result_hash.identical=true); integrity gate PASS with 379,248 FIRST_TOUCH and 379,132 FILL anchors and 1,010 gap-through fills (E1B_SCANNER_INTEGRITY_GATE.json:stage_stratification); fill/touch consistency audit 0 disagreements across 379,132 fills (FILL_TOUCH_CONSISTENCY_AUDIT.json:disagreement_n); per-stratum sums reconcile exactly to the E1A corrected cohort: formations 381,498 (E1A accepted_scanner_evidence.zones), orphan events 178 touch + 358 fill."
+   },
+   {
+    "id": "D2",
+    "text": "Touch incidence is near-universal at fine strata and declines monotonically with native scale: 99.463% (15s, 226,686/227,909), 99.438% (30s, 99,305/99,866), 99.375% (1m, 43,428/43,701), 98.585% (5m, 7,039/7,140), 97.445% (15m, 2,136/2,192), 95.029% (1h, 497/523), 94.012% (4h, 157/167) (E1B_RESULTS.json:tables.strata[tf].touch_incidence.rate). The complement (never touched by window end) is an administrative right-censoring fraction, not a lifetime probability."
+   },
+   {
+    "id": "D3",
+    "text": "The touch->fill body is extremely fast at EVERY stratum: market-time p25 = 0 (same-bar touch+fill) and p50 = 1.0 native bar at all 7 strata (E1B_RESULTS.json:tables.strata[tf].touch_to_fill_market_ms.p50). Same-bar touch+fill is a substantial lifecycle mode everywhere: 35.31% (15s), 35.41% (30s), 35.36% (1m), 34.43% (5m), 34.19% (15m), 36.61% (1h), 40.43% (4h) of touched fills (derived: same_bar_touch_fill_n/touched_fill_n)."
+   },
+   {
+    "id": "D4",
+    "text": "Touched-but-unfilled at window end (administrative right censoring of touch->fill) rises monotonically with scale: 0.210% (15s, 476/226,686), 0.296% (30s, 294/99,305), 0.463% (1m, 201/43,428), 1.108% (5m, 78/7,039), 1.966% (15m, 42/2,136), 3.823% (1h, 19/497), 10.191% (4h, 16/157) (E1B_RESULTS.json:tables.strata[tf].touch_to_fill_right_censor_fraction). Never-filled fraction (formation->fill censoring) likewise: 0.446% -> 0.643% -> 0.899% -> 2.227% -> 4.015% -> 7.839% -> 15.569%."
+   },
+   {
+    "id": "D5",
+    "text": "Touch->fill tail (conditional on fill): p95 = 204 (15s), 188 (30s), 181 (1m), 209 (5m), 226 (15m), 152 (1h), 66 (4h) native bars; p99 = 3,885 (15s), 4,394 (30s), 3,582 (1m), 2,388 (5m), 1,648 (15m), 699 (1h), 175 bars (4h). Observed maxima are ~118.5 days market time and coincide with the development-window end boundary: administrative censoring, not natural lifecycle endpoints (E1B_RESULTS.json:tables.strata[tf].touch_to_fill_market_ms)."
+   },
+   {
+    "id": "D6",
+    "text": "Post-anchor prospective direction-adjusted p50 is positive in 42/42 anchor x stratum x horizon cells (21 FIRST_TOUCH + 21 FILL); raw p50 is positive in 41/42 (sole exception: 4h FILL h1 = -0.145 bps, N=141). At 15s-15m the positive medians are tiny relative to dispersion: |p50|/IQR-width in the h1 cells spans 0.56%-2.64% (e.g., 15s FIRST_TOUCH h1 +0.0136 bps vs IQR width 1.688 bps), i.e., the median is roughly 38x-180x smaller than the interquartile width."
+   },
+   {
+    "id": "D7",
+    "text": "Direction split of direction-adjusted p50: bullish positive in 21/21 FIRST_TOUCH and 21/21 FILL cells; bearish positive in 5/21 FIRST_TOUCH cells (all three 4h cells, 1h h1, 1m h1), exactly zero (serialized -0.0) in 5, negative in 11; at FILL bearish is positive in 10, zero in 2, negative in 9. There is NO sign-consistent bearish pattern across strata or horizons."
+   },
+   {
+    "id": "D8",
+    "text": "gap_atr and fvg_quality median splits show no sign-consistent differences: the sign of (high-median minus low-median) flips between h1 and h5 within the same anchor and stratum in 6 (stratum, anchor, split) combinations (e.g., 15s FIRST_TOUCH gap_atr h1 low>high, h5 high>low; 5m FILL fvg_quality h1 low<high then h5 similar but 15m FIRST_TOUCH fvg_quality h1 low>high reverses the fine-stratum ordering). Split thresholds are cohort-specific (they differ between FIRST_TOUCH and FILL anchors, e.g., 15s gap_atr 0.56437207354277 vs 0.5632869877940201) and development-derived."
+   }
+  ],
+  "interpretation": [
+   {
+    "id": "I1",
+    "text": "Phenotype (INTERPRETATION): the native FVG lifecycle is a same-bar-or-one-bar resolution body with a heavy multi-bar tail and scale-widening administrative censoring. E1A's 'rapid body + long tail' survives only with three qualifications: (i) the body is faster than formation->fill medians (7-8 bars) imply because after touch the median is 1 bar with a ~34-40% same-bar mode; (ii) the tail is heavier than p95 suggests (p99 in the thousands of native bars at 15s-1m, identifiable only there); (iii) at 5m-4h the long-tail regime is increasingly unidentifiable rather than observed (censor ceilings p97.77/p95.99/p92.16/p84.43 for formation->fill at 5m/15m/1h/4h)."
+   },
+   {
+    "id": "I2",
+    "text": "Stage conditioning changes the descriptive sign (INTERPRETATION): formation-anchored direction-adjusted medians were 18/21 negative, 1 zero, 2 positive (frozen AP-002_E1A_SYNTHESIS.json canonical_observations[5]); touch-anchored and fill-anchored medians are 42/42 positive. Descriptively, the negative formation-stage central tendency is spent on the approach into the zone; after contact the pooled central tendency is flat-to-weakly-positive. This is a sign statement only - magnitudes remain 38x-180x smaller than IQR width at 15s-15m. Candidate mechanisms (not separable with this evidence): approach-phase concentration, anchor-price definition change (formation availability vs boundary-crossing tick mid), and cohort conditioning (touched-only)."
+   },
+   {
+    "id": "I3",
+    "text": "Post-fill descriptive character (INTERPRETATION): weak zone-direction drift at fine strata (equivalently, reversion of the filling move); no scale-consistent label at mid strata (bearish-zone adjusted medians continue adversely at 5m/15m h3/h5); apparent stronger zone-direction continuation at 1h/4h exactly where N is smallest (482/141 fills) and in-window instrument drift is an unresolved confound. No 'continuation'/'reversion'/'neutralization' label is scale-consistent; none is converted to a trading statement."
+   }
+  ],
+  "hypotheses_for_later_testing": [
+   {
+    "id": "H1",
+    "text": "HYPOTHESIS FOR LATER TESTING: the formation->touch sign flip reflects approach-phase dynamics rather than post-contact behavior (QG1)."
+   },
+   {
+    "id": "H2",
+    "text": "HYPOTHESIS FOR LATER TESTING: post-fill zone-direction drift at fine strata is an FVG-specific effect rather than unconditional instrument drift (QG5, requires drift-matched null)."
+   },
+   {
+    "id": "H3",
+    "text": "HYPOTHESIS FOR LATER TESTING: gap-through fills behave differently after fill from ordinary touch->fill (QG2; requires new measurement, not derivable from E1B aggregate tables)."
+   }
+  ]
+ },
+ "population_reconciliation": {
+  "formations_total": 381498,
+  "first_touch_anchors_total": 379248,
+  "fill_anchors_total": 379132,
+  "touched_fill_total": 378122,
+  "gap_through_total": 1010,
+  "orphan_touch_total": 178,
+  "orphan_fill_total": 358,
+  "matches": {
+   "E1A_zones_381498": true,
+   "integrity_gate_379248_379132_1010": true,
+   "fill_touch_audit_378122_true_1010_false": true,
+   "E1A_orphans_178_358": true,
+   "censor_fraction_formulas": "verified to 1e-9 for all 7 strata"
+  },
+  "citation": "sums over E1B_RESULTS.json:tables.strata rows; cross-checked against E1B_SCANNER_INTEGRITY_GATE.json, FILL_TOUCH_CONSISTENCY_AUDIT.json, REPRODUCIBILITY.json, AP-002_E1A_SYNTHESIS.json"
+ },
+ "first_touch_per_stratum_observations": {
+  "15s": {
+   "stage_anchor": "FIRST_TOUCH",
+   "observations": [
+    "Counts: formations 227,909; touch anchors 226,686 (incidence 99.463%); fill anchors 226,892 = touched-fill 226,210 + gap-through 682; same-bar touch+fill 79,865 = 35.31% of touched fills; touched-but-unfilled at window end 476 = 0.210% of touch anchors; orphans excluded: 75 touch / 159 fill. Citation: E1B_RESULTS.json:tables.strata[15s].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 190, p99 3495 bars; touch->fill (conditional on fill, n=226,210) p25 0 (same-bar), p50 1, p95 204, p99 3885 bars, max 118.5 days; formation->fill p50 7, p95 717, p99 14178 bars. Citations: E1B_RESULTS.json:tables.strata[15s].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[15s].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[15s].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 0.210% (max identifiable unconditional quantile 0.9979); formation->fill right-censor 0.446% (max identifiable 0.9955). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[15s].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FIRST_TOUCH h1: N=226,686, end-of-window missing 0; raw p50 +0.0119 bps; direction-adjusted p50 +0.0136 bps, IQR -0.8180..+0.8698 (width 1.688, |median| = 0.8% of width), p05 -3.2172, p95 +3.3161, p99 +7.4710, max +67.9973; bullish adj p50 +0.0274 (n=115,617), bearish adj p50 -0.0000 (n=111,069); gap_atr split low +0.0151 vs high +0.0122 (threshold 0.5644), fvg_quality split low +0.0123 vs high +0.0148 (threshold 0.7977). Citation: E1B_RESULTS.json:tables.strata[15s].first_touch.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h3: N=226,686, end-of-window missing 0; raw p50 +0.0273 bps; direction-adjusted p50 +0.0303 bps, IQR -1.5008..+1.5734 (width 3.074, |median| = 1.0% of width), p05 -5.5744, p95 +5.7330, p99 +12.6012, max +192.6443; bullish adj p50 +0.0594 (n=115,617), bearish adj p50 -0.0000 (n=111,069); gap_atr split low +0.0389 vs high +0.0274 (threshold 0.5644), fvg_quality split low +0.0313 vs high +0.0301 (threshold 0.7977). Citation: E1B_RESULTS.json:tables.strata[15s].first_touch.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h5: N=226,686, end-of-window missing 0; raw p50 +0.0363 bps; direction-adjusted p50 +0.0362 bps, IQR -1.9781..+2.0435 (width 4.022, |median| = 0.9% of width), p05 -7.2315, p95 +7.3730, p99 +16.1295, max +182.6496; bullish adj p50 +0.0726 (n=115,617), bearish adj p50 -0.0000 (n=111,069); gap_atr split low +0.0304 vs high +0.0407 (threshold 0.5644), fvg_quality split low +0.0300 vs high +0.0411 (threshold 0.7977). Citation: E1B_RESULTS.json:tables.strata[15s].first_touch.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  },
+  "30s": {
+   "stage_anchor": "FIRST_TOUCH",
+   "observations": [
+    "Counts: formations 99,866; touch anchors 99,305 (incidence 99.438%); fill anchors 99,224 = touched-fill 99,011 + gap-through 213; same-bar touch+fill 35,055 = 35.41% of touched fills; touched-but-unfilled at window end 294 = 0.296% of touch anchors; orphans excluded: 47 touch / 94 fill. Citation: E1B_RESULTS.json:tables.strata[30s].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 184, p99 3619 bars; touch->fill (conditional on fill, n=99,011) p25 0 (same-bar), p50 1, p95 188, p99 4394 bars, max 118.5 days; formation->fill p50 7, p95 695, p99 11481 bars. Citations: E1B_RESULTS.json:tables.strata[30s].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[30s].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[30s].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 0.296% (max identifiable unconditional quantile 0.9970); formation->fill right-censor 0.643% (max identifiable 0.9936). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[30s].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FIRST_TOUCH h1: N=99,305, end-of-window missing 0; raw p50 +0.0211 bps; direction-adjusted p50 +0.0141 bps, IQR -1.2325..+1.2886 (width 2.521, |median| = 0.6% of width), p05 -4.6939, p95 +4.8210, p99 +10.7230, max +133.2789; bullish adj p50 +0.0297 (n=51,299), bearish adj p50 -0.0000 (n=48,006); gap_atr split low +0.0212 vs high +0.0116 (threshold 0.5201), fvg_quality split low +0.0110 vs high +0.0207 (threshold 0.7832). Citation: E1B_RESULTS.json:tables.strata[30s].first_touch.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h3: N=99,305, end-of-window missing 0; raw p50 +0.0578 bps; direction-adjusted p50 +0.0482 bps, IQR -2.1905..+2.2978 (width 4.488, |median| = 1.1% of width), p05 -8.0963, p95 +8.2445, p99 +18.0711, max +132.5769; bullish adj p50 +0.1045 (n=51,299), bearish adj p50 -0.0000 (n=48,006); gap_atr split low +0.0445 vs high +0.0549 (threshold 0.5201), fvg_quality split low +0.0431 vs high +0.0566 (threshold 0.7832). Citation: E1B_RESULTS.json:tables.strata[30s].first_touch.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h5: N=99,305, end-of-window missing 0; raw p50 +0.0738 bps; direction-adjusted p50 +0.0444 bps, IQR -2.8496..+2.9728 (width 5.822, |median| = 0.8% of width), p05 -10.3456, p95 +10.5173, p99 +23.2270, max +204.8825; bullish adj p50 +0.1175 (n=51,299), bearish adj p50 -0.0300 (n=48,006); gap_atr split low +0.0254 vs high +0.0598 (threshold 0.5201), fvg_quality split low +0.0439 vs high +0.0445 (threshold 0.7832). Citation: E1B_RESULTS.json:tables.strata[30s].first_touch.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  },
+  "1m": {
+   "stage_anchor": "FIRST_TOUCH",
+   "observations": [
+    "Counts: formations 43,701; touch anchors 43,428 (incidence 99.375%); fill anchors 43,308 = touched-fill 43,227 + gap-through 81; same-bar touch+fill 15,286 = 35.36% of touched fills; touched-but-unfilled at window end 201 = 0.463% of touch anchors; orphans excluded: 33 touch / 62 fill. Citation: E1B_RESULTS.json:tables.strata[1m].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 185, p99 3630 bars; touch->fill (conditional on fill, n=43,227) p25 0 (same-bar), p50 1, p95 181, p99 3582 bars, max 118.5 days; formation->fill p50 7, p95 670, p99 10701 bars. Citations: E1B_RESULTS.json:tables.strata[1m].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[1m].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[1m].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 0.463% (max identifiable unconditional quantile 0.9954); formation->fill right-censor 0.899% (max identifiable 0.9910). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[1m].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FIRST_TOUCH h1: N=43,428, end-of-window missing 0; raw p50 +0.0358 bps; direction-adjusted p50 +0.0654 bps, IQR -1.8126..+1.9456 (width 3.758, |median| = 1.7% of width), p05 -6.8243, p95 +6.9395, p99 +15.8304, max +84.7348; bullish adj p50 +0.0981 (n=22,759), bearish adj p50 +0.0313 (n=20,669); gap_atr split low +0.0843 vs high +0.0499 (threshold 0.4918), fvg_quality split low +0.0686 vs high +0.0622 (threshold 0.7738). Citation: E1B_RESULTS.json:tables.strata[1m].first_touch.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h3: N=43,428, end-of-window missing 0; raw p50 +0.0899 bps; direction-adjusted p50 +0.0759 bps, IQR -3.0831..+3.3144 (width 6.397, |median| = 1.2% of width), p05 -11.5385, p95 +11.7002, p99 +26.4608, max +232.1854; bullish adj p50 +0.1699 (n=22,759), bearish adj p50 -0.0120 (n=20,669); gap_atr split low +0.1313 vs high +0.0243 (threshold 0.4918), fvg_quality split low +0.0896 vs high +0.0635 (threshold 0.7738). Citation: E1B_RESULTS.json:tables.strata[1m].first_touch.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h5: N=43,427, end-of-window missing 1; raw p50 +0.1350 bps; direction-adjusted p50 +0.0741 bps, IQR -4.0386..+4.2973 (width 8.336, |median| = 0.9% of width), p05 -14.6150, p95 +14.9216, p99 +34.1303, max +277.6201; bullish adj p50 +0.1937 (n=22,759), bearish adj p50 -0.0644 (n=20,668); gap_atr split low +0.1350 vs high +0.0098 (threshold 0.4918), fvg_quality split low +0.1065 vs high +0.0457 (threshold 0.7738). Citation: E1B_RESULTS.json:tables.strata[1m].first_touch.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  },
+  "5m": {
+   "stage_anchor": "FIRST_TOUCH",
+   "observations": [
+    "Counts: formations 7,140; touch anchors 7,039 (incidence 98.585%); fill anchors 6,981 = touched-fill 6,961 + gap-through 20; same-bar touch+fill 2,397 = 34.43% of touched fills; touched-but-unfilled at window end 78 = 1.108% of touch anchors; orphans excluded: 8 touch / 18 fill. Citation: E1B_RESULTS.json:tables.strata[5m].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 158, p99 2173 bars; touch->fill (conditional on fill, n=6,961) p25 0 (same-bar), p50 1, p95 209, p99 2388 bars, max 118.5 days; formation->fill p50 7, p95 701, p99 4654 bars. Citations: E1B_RESULTS.json:tables.strata[5m].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[5m].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[5m].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 1.108% (max identifiable unconditional quantile 0.9889); formation->fill right-censor 2.227% (max identifiable 0.9777). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[5m].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FIRST_TOUCH h1: N=7,038, end-of-window missing 1; raw p50 +0.1912 bps; direction-adjusted p50 +0.1449 bps, IQR -4.2281..+4.4157 (width 8.644, |median| = 1.7% of width), p05 -15.5576, p95 +15.0157, p99 +33.1078, max +174.1076; bullish adj p50 +0.3009 (n=3,806), bearish adj p50 -0.0378 (n=3,232); gap_atr split low +0.0960 vs high +0.2122 (threshold 0.4565), fvg_quality split low +0.0429 vs high +0.3046 (threshold 0.7503). Citation: E1B_RESULTS.json:tables.strata[5m].first_touch.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h3: N=7,038, end-of-window missing 1; raw p50 +0.4282 bps; direction-adjusted p50 +0.2353 bps, IQR -7.4663..+7.8531 (width 15.319, |median| = 1.5% of width), p05 -26.5578, p95 +27.0100, p99 +57.1305, max +347.6085; bullish adj p50 +0.6795 (n=3,806), bearish adj p50 -0.2068 (n=3,232); gap_atr split low +0.3475 vs high +0.0673 (threshold 0.4565), fvg_quality split low +0.2193 vs high +0.2353 (threshold 0.7503). Citation: E1B_RESULTS.json:tables.strata[5m].first_touch.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h5: N=7,038, end-of-window missing 1; raw p50 +0.8621 bps; direction-adjusted p50 +0.1689 bps, IQR -9.3680..+9.6365 (width 19.005, |median| = 0.9% of width), p05 -34.2408, p95 +34.3605, p99 +69.8438, max +428.1910; bullish adj p50 +0.9831 (n=3,806), bearish adj p50 -0.7556 (n=3,232); gap_atr split low +0.2335 vs high +0.1334 (threshold 0.4565), fvg_quality split low +0.1376 vs high +0.1729 (threshold 0.7503). Citation: E1B_RESULTS.json:tables.strata[5m].first_touch.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  },
+  "15m": {
+   "stage_anchor": "FIRST_TOUCH",
+   "observations": [
+    "Counts: formations 2,192; touch anchors 2,136 (incidence 97.445%); fill anchors 2,104 = touched-fill 2,094 + gap-through 10; same-bar touch+fill 716 = 34.19% of touched fills; touched-but-unfilled at window end 42 = 1.966% of touch anchors; orphans excluded: 7 touch / 12 fill. Citation: E1B_RESULTS.json:tables.strata[15m].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 186, p99 1238 bars; touch->fill (conditional on fill, n=2,094) p25 0 (same-bar), p50 1, p95 226, p99 1648 bars, max 117.3 days; formation->fill p50 8, p95 562, p99 2835 bars. Citations: E1B_RESULTS.json:tables.strata[15m].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[15m].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[15m].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 1.966% (max identifiable unconditional quantile 0.9803); formation->fill right-censor 4.015% (max identifiable 0.9599). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[15m].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FIRST_TOUCH h1: N=2,136, end-of-window missing 0; raw p50 +0.5533 bps; direction-adjusted p50 +0.1167 bps, IQR -7.4523..+7.8303 (width 15.283, |median| = 0.8% of width), p05 -25.0155, p95 +29.7511, p99 +90.2924, max +210.8515; bullish adj p50 +0.6325 (n=1,231), bearish adj p50 -0.3598 (n=905); gap_atr split low -0.2727 vs high +0.6546 (threshold 0.4585), fvg_quality split low +0.2670 vs high +0.0223 (threshold 0.7498). Citation: E1B_RESULTS.json:tables.strata[15m].first_touch.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h3: N=2,133, end-of-window missing 3; raw p50 +1.5572 bps; direction-adjusted p50 +0.9927 bps, IQR -12.1799..+14.3196 (width 26.499, |median| = 3.7% of width), p05 -44.8405, p95 +50.9812, p99 +148.6171, max +331.7680; bullish adj p50 +2.4100 (n=1,229), bearish adj p50 -0.9342 (n=904); gap_atr split low +0.7893 vs high +1.0053 (threshold 0.4585), fvg_quality split low +1.2338 vs high +0.6747 (threshold 0.7498). Citation: E1B_RESULTS.json:tables.strata[15m].first_touch.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h5: N=2,133, end-of-window missing 3; raw p50 +2.3846 bps; direction-adjusted p50 +1.0821 bps, IQR -16.2508..+19.0366 (width 35.287, |median| = 3.1% of width), p05 -58.3426, p95 +59.1794, p99 +149.8517, max +391.1271; bullish adj p50 +2.9308 (n=1,229), bearish adj p50 -1.5156 (n=904); gap_atr split low +1.1696 vs high +0.8922 (threshold 0.4585), fvg_quality split low +1.1714 vs high +0.9349 (threshold 0.7498). Citation: E1B_RESULTS.json:tables.strata[15m].first_touch.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  },
+  "1h": {
+   "stage_anchor": "FIRST_TOUCH",
+   "observations": [
+    "Counts: formations 523; touch anchors 497 (incidence 95.029%); fill anchors 482 = touched-fill 478 + gap-through 4; same-bar touch+fill 175 = 36.61% of touched fills; touched-but-unfilled at window end 19 = 3.823% of touch anchors; orphans excluded: 5 touch / 7 fill. Citation: E1B_RESULTS.json:tables.strata[1h].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 193, p99 742 bars; touch->fill (conditional on fill, n=478) p25 0 (same-bar), p50 1, p95 152, p99 699 bars, max 118.0 days; formation->fill p50 8, p95 403, p99 1249 bars. Citations: E1B_RESULTS.json:tables.strata[1h].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[1h].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[1h].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 3.823% (max identifiable unconditional quantile 0.9618); formation->fill right-censor 7.839% (max identifiable 0.9216). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[1h].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FIRST_TOUCH h1: N=497, end-of-window missing 0; raw p50 +0.7914 bps; direction-adjusted p50 +1.4079 bps, IQR -15.9287..+19.4735 (width 35.402, |median| = 4.0% of width), p05 -53.7862, p95 +58.9426, p99 +156.0216, max +173.4232; bullish adj p50 +1.6122 (n=288), bearish adj p50 +0.9325 (n=209); gap_atr split low -1.6039 vs high +6.0915 (threshold 0.4481), fvg_quality split low -0.9150 vs high +6.6475 (threshold 0.7427). Citation: E1B_RESULTS.json:tables.strata[1h].first_touch.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h3: N=497, end-of-window missing 0; raw p50 +6.0873 bps; direction-adjusted p50 +2.7102 bps, IQR -27.4709..+33.0764 (width 60.547, |median| = 4.5% of width), p05 -107.3601, p95 +96.9441, p99 +230.2854, max +399.6309; bullish adj p50 +8.3829 (n=288), bearish adj p50 -3.6372 (n=209); gap_atr split low +0.9980 vs high +3.6610 (threshold 0.4481), fvg_quality split low +2.7102 vs high +1.3160 (threshold 0.7427). Citation: E1B_RESULTS.json:tables.strata[1h].first_touch.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h5: N=497, end-of-window missing 0; raw p50 +9.7623 bps; direction-adjusted p50 +5.1683 bps, IQR -37.8891..+38.2916 (width 76.181, |median| = 6.8% of width), p05 -115.1630, p95 +122.4278, p99 +382.4987, max +499.9651; bullish adj p50 +14.7226 (n=288), bearish adj p50 -4.3689 (n=209); gap_atr split low +1.7827 vs high +7.2397 (threshold 0.4481), fvg_quality split low +4.7266 vs high +6.2725 (threshold 0.7427). Citation: E1B_RESULTS.json:tables.strata[1h].first_touch.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  },
+  "4h": {
+   "stage_anchor": "FIRST_TOUCH",
+   "observations": [
+    "Counts: formations 167; touch anchors 157 (incidence 94.012%); fill anchors 141 = touched-fill 141 + gap-through 0; same-bar touch+fill 57 = 40.43% of touched fills; touched-but-unfilled at window end 16 = 10.191% of touch anchors; orphans excluded: 3 touch / 6 fill. Citation: E1B_RESULTS.json:tables.strata[4h].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 89, p99 312 bars; touch->fill (conditional on fill, n=141) p25 0 (same-bar), p50 1, p95 66, p99 175 bars, max 76.5 days; formation->fill p50 5, p95 170, p99 462 bars. Citations: E1B_RESULTS.json:tables.strata[4h].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[4h].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[4h].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 10.191% (max identifiable unconditional quantile 0.8981); formation->fill right-censor 15.569% (max identifiable 0.8443). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[4h].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FIRST_TOUCH h1: N=157, end-of-window missing 0; raw p50 +4.8126 bps; direction-adjusted p50 +10.6759 bps, IQR -25.2690..+45.1305 (width 70.399, |median| = 15.2% of width), p05 -92.0496, p95 +237.6016, p99 +389.5971, max +445.4482; bullish adj p50 +11.2237 (n=94), bearish adj p50 +4.5013 (n=63); gap_atr split low +14.0850 vs high +6.7062 (threshold 0.5293), fvg_quality split low +12.7375 vs high +9.1085 (threshold 0.7596). Citation: E1B_RESULTS.json:tables.strata[4h].first_touch.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h3: N=157, end-of-window missing 0; raw p50 +10.9879 bps; direction-adjusted p50 +9.3747 bps, IQR -42.0713..+69.9327 (width 112.004, |median| = 8.4% of width), p05 -162.4037, p95 +213.9591, p99 +376.1206, max +556.0587; bullish adj p50 +17.2807 (n=94), bearish adj p50 +1.3519 (n=63); gap_atr split low +17.2807 vs high +8.1311 (threshold 0.5293), fvg_quality split low +2.0338 vs high +14.1805 (threshold 0.7596). Citation: E1B_RESULTS.json:tables.strata[4h].first_touch.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FIRST_TOUCH h5: N=157, end-of-window missing 0; raw p50 +1.1058 bps; direction-adjusted p50 +13.2671 bps, IQR -63.9811..+96.9308 (width 160.912, |median| = 8.2% of width), p05 -305.4587, p95 +285.0989, p99 +483.4705, max +929.4643; bullish adj p50 +15.7234 (n=94), bearish adj p50 +7.7319 (n=63); gap_atr split low +18.7328 vs high +7.7319 (threshold 0.5293), fvg_quality split low +18.7328 vs high +0.7361 (threshold 0.7596). Citation: E1B_RESULTS.json:tables.strata[4h].first_touch.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  }
+ },
+ "fill_per_stratum_observations": {
+  "15s": {
+   "stage_anchor": "FILL",
+   "observations": [
+    "Counts: formations 227,909; touch anchors 226,686 (incidence 99.463%); fill anchors 226,892 = touched-fill 226,210 + gap-through 682; same-bar touch+fill 79,865 = 35.31% of touched fills; touched-but-unfilled at window end 476 = 0.210% of touch anchors; orphans excluded: 75 touch / 159 fill. Citation: E1B_RESULTS.json:tables.strata[15s].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 190, p99 3495 bars; touch->fill (conditional on fill, n=226,210) p25 0 (same-bar), p50 1, p95 204, p99 3885 bars, max 118.5 days; formation->fill p50 7, p95 717, p99 14178 bars. Citations: E1B_RESULTS.json:tables.strata[15s].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[15s].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[15s].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 0.210% (max identifiable unconditional quantile 0.9979); formation->fill right-censor 0.446% (max identifiable 0.9955). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[15s].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FILL h1: N=226,892, end-of-window missing 0; raw p50 +0.0208 bps; direction-adjusted p50 +0.0214 bps, IQR -0.8393..+0.9102 (width 1.749, |median| = 1.2% of width), p05 -3.4038, p95 +3.5173, p99 +8.0710, max +67.9973; bullish adj p50 +0.0402 (n=115,665), bearish adj p50 -0.0000 (n=111,227); gap_atr split low +0.0214 vs high +0.0214 (threshold 0.5633), fvg_quality split low +0.0197 vs high +0.0232 (threshold 0.7973). Citation: E1B_RESULTS.json:tables.strata[15s].fill.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h3: N=226,892, end-of-window missing 0; raw p50 +0.0387 bps; direction-adjusted p50 +0.0662 bps, IQR -1.5083..+1.6537 (width 3.162, |median| = 2.1% of width), p05 -5.7955, p95 +5.9949, p99 +13.3718, max +151.8703; bullish adj p50 +0.1046 (n=115,665), bearish adj p50 +0.0271 (n=111,227); gap_atr split low +0.0561 vs high +0.0754 (threshold 0.5633), fvg_quality split low +0.0534 vs high +0.0803 (threshold 0.7973). Citation: E1B_RESULTS.json:tables.strata[15s].fill.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h5: N=226,892, end-of-window missing 0; raw p50 +0.0547 bps; direction-adjusted p50 +0.0850 bps, IQR -1.9783..+2.1498 (width 4.128, |median| = 2.1% of width), p05 -7.5319, p95 +7.6062, p99 +16.9603, max +297.2623; bullish adj p50 +0.1415 (n=115,665), bearish adj p50 +0.0297 (n=111,227); gap_atr split low +0.0600 vs high +0.1063 (threshold 0.5633), fvg_quality split low +0.0666 vs high +0.1037 (threshold 0.7973). Citation: E1B_RESULTS.json:tables.strata[15s].fill.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  },
+  "30s": {
+   "stage_anchor": "FILL",
+   "observations": [
+    "Counts: formations 99,866; touch anchors 99,305 (incidence 99.438%); fill anchors 99,224 = touched-fill 99,011 + gap-through 213; same-bar touch+fill 35,055 = 35.41% of touched fills; touched-but-unfilled at window end 294 = 0.296% of touch anchors; orphans excluded: 47 touch / 94 fill. Citation: E1B_RESULTS.json:tables.strata[30s].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 184, p99 3619 bars; touch->fill (conditional on fill, n=99,011) p25 0 (same-bar), p50 1, p95 188, p99 4394 bars, max 118.5 days; formation->fill p50 7, p95 695, p99 11481 bars. Citations: E1B_RESULTS.json:tables.strata[30s].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[30s].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[30s].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 0.296% (max identifiable unconditional quantile 0.9970); formation->fill right-censor 0.643% (max identifiable 0.9936). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[30s].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FILL h1: N=99,224, end-of-window missing 0; raw p50 +0.0400 bps; direction-adjusted p50 +0.0299 bps, IQR -1.2549..+1.3684 (width 2.623, |median| = 1.1% of width), p05 -4.9357, p95 +5.1703, p99 +11.6731, max +133.2789; bullish adj p50 +0.0721 (n=51,235), bearish adj p50 -0.0000 (n=47,989); gap_atr split low +0.0282 vs high +0.0354 (threshold 0.5192), fvg_quality split low +0.0299 vs high +0.0299 (threshold 0.7828). Citation: E1B_RESULTS.json:tables.strata[30s].fill.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h3: N=99,224, end-of-window missing 0; raw p50 +0.0773 bps; direction-adjusted p50 +0.1092 bps, IQR -2.1929..+2.4467 (width 4.640, |median| = 2.4% of width), p05 -8.5719, p95 +8.6657, p99 +19.1528, max +107.4086; bullish adj p50 +0.1812 (n=51,235), bearish adj p50 +0.0375 (n=47,989); gap_atr split low +0.0847 vs high +0.1364 (threshold 0.5192), fvg_quality split low +0.1052 vs high +0.1166 (threshold 0.7828). Citation: E1B_RESULTS.json:tables.strata[30s].fill.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h5: N=99,223, end-of-window missing 1; raw p50 +0.1097 bps; direction-adjusted p50 +0.1620 bps, IQR -2.8190..+3.1262 (width 5.945, |median| = 2.7% of width), p05 -10.8563, p95 +11.0711, p99 +25.4858, max +192.6610; bullish adj p50 +0.2678 (n=51,234), bearish adj p50 +0.0545 (n=47,989); gap_atr split low +0.1184 vs high +0.2033 (threshold 0.5192), fvg_quality split low +0.1495 vs high +0.1770 (threshold 0.7828). Citation: E1B_RESULTS.json:tables.strata[30s].fill.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  },
+  "1m": {
+   "stage_anchor": "FILL",
+   "observations": [
+    "Counts: formations 43,701; touch anchors 43,428 (incidence 99.375%); fill anchors 43,308 = touched-fill 43,227 + gap-through 81; same-bar touch+fill 15,286 = 35.36% of touched fills; touched-but-unfilled at window end 201 = 0.463% of touch anchors; orphans excluded: 33 touch / 62 fill. Citation: E1B_RESULTS.json:tables.strata[1m].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 185, p99 3630 bars; touch->fill (conditional on fill, n=43,227) p25 0 (same-bar), p50 1, p95 181, p99 3582 bars, max 118.5 days; formation->fill p50 7, p95 670, p99 10701 bars. Citations: E1B_RESULTS.json:tables.strata[1m].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[1m].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[1m].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 0.463% (max identifiable unconditional quantile 0.9954); formation->fill right-censor 0.899% (max identifiable 0.9910). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[1m].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FILL h1: N=43,308, end-of-window missing 0; raw p50 +0.0598 bps; direction-adjusted p50 +0.1041 bps, IQR -1.8261..+2.1094 (width 3.935, |median| = 2.6% of width), p05 -7.2715, p95 +7.5804, p99 +17.6192, max +84.7348; bullish adj p50 +0.1776 (n=22,673), bearish adj p50 +0.0399 (n=20,635); gap_atr split low +0.0799 vs high +0.1296 (threshold 0.4909), fvg_quality split low +0.0827 vs high +0.1262 (threshold 0.7734). Citation: E1B_RESULTS.json:tables.strata[1m].fill.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h3: N=43,308, end-of-window missing 0; raw p50 +0.1408 bps; direction-adjusted p50 +0.1896 bps, IQR -3.1028..+3.5415 (width 6.644, |median| = 2.9% of width), p05 -12.1606, p95 +12.6942, p99 +28.5756, max +193.1671; bullish adj p50 +0.3177 (n=22,673), bearish adj p50 +0.0555 (n=20,635); gap_atr split low +0.1817 vs high +0.1959 (threshold 0.4909), fvg_quality split low +0.1708 vs high +0.2126 (threshold 0.7734). Citation: E1B_RESULTS.json:tables.strata[1m].fill.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h5: N=43,308, end-of-window missing 0; raw p50 +0.1897 bps; direction-adjusted p50 +0.2662 bps, IQR -3.9897..+4.5903 (width 8.580, |median| = 3.1% of width), p05 -15.2696, p95 +15.7241, p99 +36.8906, max +188.8146; bullish adj p50 +0.4328 (n=22,673), bearish adj p50 +0.0651 (n=20,635); gap_atr split low +0.2227 vs high +0.3128 (threshold 0.4909), fvg_quality split low +0.2517 vs high +0.2808 (threshold 0.7734). Citation: E1B_RESULTS.json:tables.strata[1m].fill.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  },
+  "5m": {
+   "stage_anchor": "FILL",
+   "observations": [
+    "Counts: formations 7,140; touch anchors 7,039 (incidence 98.585%); fill anchors 6,981 = touched-fill 6,961 + gap-through 20; same-bar touch+fill 2,397 = 34.43% of touched fills; touched-but-unfilled at window end 78 = 1.108% of touch anchors; orphans excluded: 8 touch / 18 fill. Citation: E1B_RESULTS.json:tables.strata[5m].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 158, p99 2173 bars; touch->fill (conditional on fill, n=6,961) p25 0 (same-bar), p50 1, p95 209, p99 2388 bars, max 118.5 days; formation->fill p50 7, p95 701, p99 4654 bars. Citations: E1B_RESULTS.json:tables.strata[5m].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[5m].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[5m].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 1.108% (max identifiable unconditional quantile 0.9889); formation->fill right-censor 2.227% (max identifiable 0.9777). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[5m].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FILL h1: N=6,980, end-of-window missing 1; raw p50 +0.2232 bps; direction-adjusted p50 +0.1762 bps, IQR -4.5217..+4.8884 (width 9.410, |median| = 1.9% of width), p05 -16.5078, p95 +16.8874, p99 +42.3601, max +174.1076; bullish adj p50 +0.3673 (n=3,766), bearish adj p50 -0.0192 (n=3,214); gap_atr split low +0.1072 vs high +0.3046 (threshold 0.4557), fvg_quality split low +0.0493 vs high +0.3653 (threshold 0.7498). Citation: E1B_RESULTS.json:tables.strata[5m].fill.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h3: N=6,980, end-of-window missing 1; raw p50 +0.6150 bps; direction-adjusted p50 +0.4032 bps, IQR -7.8180..+8.4972 (width 16.315, |median| = 2.5% of width), p05 -28.8483, p95 +29.3521, p99 +64.4674, max +347.6085; bullish adj p50 +0.9658 (n=3,766), bearish adj p50 -0.0976 (n=3,214); gap_atr split low +0.3045 vs high +0.5983 (threshold 0.4557), fvg_quality split low +0.1990 vs high +0.6240 (threshold 0.7498). Citation: E1B_RESULTS.json:tables.strata[5m].fill.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h5: N=6,980, end-of-window missing 1; raw p50 +1.0827 bps; direction-adjusted p50 +0.1905 bps, IQR -9.8657..+10.4382 (width 20.304, |median| = 0.9% of width), p05 -36.0674, p95 +35.8287, p99 +84.7177, max +428.1910; bullish adj p50 +1.2093 (n=3,766), bearish adj p50 -0.9708 (n=3,214); gap_atr split low +0.0220 vs high +0.4915 (threshold 0.4557), fvg_quality split low +0.0844 vs high +0.3701 (threshold 0.7498). Citation: E1B_RESULTS.json:tables.strata[5m].fill.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  },
+  "15m": {
+   "stage_anchor": "FILL",
+   "observations": [
+    "Counts: formations 2,192; touch anchors 2,136 (incidence 97.445%); fill anchors 2,104 = touched-fill 2,094 + gap-through 10; same-bar touch+fill 716 = 34.19% of touched fills; touched-but-unfilled at window end 42 = 1.966% of touch anchors; orphans excluded: 7 touch / 12 fill. Citation: E1B_RESULTS.json:tables.strata[15m].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 186, p99 1238 bars; touch->fill (conditional on fill, n=2,094) p25 0 (same-bar), p50 1, p95 226, p99 1648 bars, max 117.3 days; formation->fill p50 8, p95 562, p99 2835 bars. Citations: E1B_RESULTS.json:tables.strata[15m].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[15m].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[15m].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 1.966% (max identifiable unconditional quantile 0.9803); formation->fill right-censor 4.015% (max identifiable 0.9599). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[15m].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FILL h1: N=2,103, end-of-window missing 1; raw p50 +0.9931 bps; direction-adjusted p50 +0.1178 bps, IQR -8.0519..+8.4640 (width 16.516, |median| = 0.7% of width), p05 -31.6591, p95 +30.1669, p99 +88.7056, max +216.0947; bullish adj p50 +1.0943 (n=1,212), bearish adj p50 -0.8049 (n=891); gap_atr split low -0.2306 vs high +0.5308 (threshold 0.4572), fvg_quality split low -0.1251 vs high +0.4033 (threshold 0.7492). Citation: E1B_RESULTS.json:tables.strata[15m].fill.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h3: N=2,102, end-of-window missing 2; raw p50 +1.4220 bps; direction-adjusted p50 +1.1108 bps, IQR -13.2509..+15.8361 (width 29.087, |median| = 3.8% of width), p05 -48.9365, p95 +52.2998, p99 +162.8870, max +313.5513; bullish adj p50 +2.1097 (n=1,211), bearish adj p50 -0.6228 (n=891); gap_atr split low +1.2551 vs high +0.8440 (threshold 0.4572), fvg_quality split low +0.7594 vs high +1.3476 (threshold 0.7492). Citation: E1B_RESULTS.json:tables.strata[15m].fill.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h5: N=2,102, end-of-window missing 2; raw p50 +3.5369 bps; direction-adjusted p50 +1.6074 bps, IQR -16.6576..+20.9234 (width 37.581, |median| = 4.3% of width), p05 -64.1585, p95 +72.2773, p99 +197.2482, max +391.1271; bullish adj p50 +4.5953 (n=1,211), bearish adj p50 -1.7444 (n=891); gap_atr split low +0.5741 vs high +2.1320 (threshold 0.4572), fvg_quality split low +0.8411 vs high +2.0993 (threshold 0.7492). Citation: E1B_RESULTS.json:tables.strata[15m].fill.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  },
+  "1h": {
+   "stage_anchor": "FILL",
+   "observations": [
+    "Counts: formations 523; touch anchors 497 (incidence 95.029%); fill anchors 482 = touched-fill 478 + gap-through 4; same-bar touch+fill 175 = 36.61% of touched fills; touched-but-unfilled at window end 19 = 3.823% of touch anchors; orphans excluded: 5 touch / 7 fill. Citation: E1B_RESULTS.json:tables.strata[1h].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 193, p99 742 bars; touch->fill (conditional on fill, n=478) p25 0 (same-bar), p50 1, p95 152, p99 699 bars, max 118.0 days; formation->fill p50 8, p95 403, p99 1249 bars. Citations: E1B_RESULTS.json:tables.strata[1h].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[1h].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[1h].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 3.823% (max identifiable unconditional quantile 0.9618); formation->fill right-censor 7.839% (max identifiable 0.9216). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[1h].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FILL h1: N=482, end-of-window missing 0; raw p50 +1.3576 bps; direction-adjusted p50 +2.0200 bps, IQR -18.4269..+23.5744 (width 42.001, |median| = 4.8% of width), p05 -59.5583, p95 +79.2137, p99 +157.5649, max +220.0138; bullish adj p50 +3.7745 (n=279), bearish adj p50 +0.8197 (n=203); gap_atr split low +0.0637 vs high +4.6654 (threshold 0.4405), fvg_quality split low -0.0720 vs high +6.4764 (threshold 0.7379). Citation: E1B_RESULTS.json:tables.strata[1h].fill.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h3: N=482, end-of-window missing 0; raw p50 +5.4304 bps; direction-adjusted p50 +1.7706 bps, IQR -25.6913..+32.3098 (width 58.001, |median| = 3.1% of width), p05 -100.4441, p95 +108.2418, p99 +301.8258, max +476.1345; bullish adj p50 +8.0965 (n=279), bearish adj p50 -3.0579 (n=203); gap_atr split low +1.9514 vs high +1.0023 (threshold 0.4405), fvg_quality split low -2.1762 vs high +4.1956 (threshold 0.7379). Citation: E1B_RESULTS.json:tables.strata[1h].fill.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h5: N=481, end-of-window missing 1; raw p50 +9.9229 bps; direction-adjusted p50 +8.0925 bps, IQR -35.0129..+38.4735 (width 73.486, |median| = 11.0% of width), p05 -146.6121, p95 +164.3684, p99 +409.8213, max +655.0474; bullish adj p50 +15.4124 (n=279), bearish adj p50 -4.8899 (n=202); gap_atr split low +2.1900 vs high +11.4317 (threshold 0.4405), fvg_quality split low +0.2422 vs high +10.9166 (threshold 0.7379). Citation: E1B_RESULTS.json:tables.strata[1h].fill.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  },
+  "4h": {
+   "stage_anchor": "FILL",
+   "observations": [
+    "Counts: formations 167; touch anchors 157 (incidence 94.012%); fill anchors 141 = touched-fill 141 + gap-through 0; same-bar touch+fill 57 = 40.43% of touched fills; touched-but-unfilled at window end 16 = 10.191% of touch anchors; orphans excluded: 3 touch / 6 fill. Citation: E1B_RESULTS.json:tables.strata[4h].{lawful_formation_n,touch_anchors_n,fill_anchors_n,touched_fill_n,gap_through_fill_n,same_bar_touch_fill_n,orphan_*_n,n_bars}.",
+    "Durations (market time, native bars): formation->touch p50 2, p95 89, p99 312 bars; touch->fill (conditional on fill, n=141) p25 0 (same-bar), p50 1, p95 66, p99 175 bars, max 76.5 days; formation->fill p50 5, p95 170, p99 462 bars. Citations: E1B_RESULTS.json:tables.strata[4h].formation_to_touch_market_ms; E1B_RESULTS.json:tables.strata[4h].touch_to_fill_market_ms; E1B_RESULTS.json:tables.strata[4h].formation_to_fill_market_ms.",
+    "Censoring: touch->fill right-censor 10.191% (max identifiable unconditional quantile 0.8981); formation->fill right-censor 15.569% (max identifiable 0.8443). Tail quantiles beyond these ceilings are NOT identifiable for the unconditional population. Citation: E1B_RESULTS.json:tables.strata[4h].{fill_right_censor_fraction,fill_max_identifiable_quantile,touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile}.",
+    "FILL h1: N=141, end-of-window missing 0; raw p50 -0.1451 bps; direction-adjusted p50 +8.3089 bps, IQR -36.1272..+41.0301 (width 77.157, |median| = 10.8% of width), p05 -95.6500, p95 +237.6016, p99 +389.5971, max +418.5104; bullish adj p50 +8.3250 (n=84), bearish adj p50 +5.8094 (n=57); gap_atr split low +8.3250 vs high +2.3972 (threshold 0.4913), fvg_quality split low +12.7375 vs high -4.7588 (threshold 0.7452). Citation: E1B_RESULTS.json:tables.strata[4h].fill.horizons[1].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h3: N=141, end-of-window missing 0; raw p50 +6.8939 bps; direction-adjusted p50 +18.1627 bps, IQR -43.0926..+69.9327 (width 113.025, |median| = 16.1% of width), p05 -320.2068, p95 +213.9591, p99 +462.6894, max +506.5152; bullish adj p50 +25.5115 (n=84), bearish adj p50 +6.1734 (n=57); gap_atr split low +22.9403 vs high +8.1311 (threshold 0.4913), fvg_quality split low +25.5756 vs high +6.1734 (threshold 0.7452). Citation: E1B_RESULTS.json:tables.strata[4h].fill.horizons[3].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}.",
+    "FILL h5: N=141, end-of-window missing 0; raw p50 +15.7234 bps; direction-adjusted p50 +15.7234 bps, IQR -78.2223..+98.0394 (width 176.262, |median| = 8.9% of width), p05 -410.3685, p95 +337.7192, p99 +483.4705, max +486.9657; bullish adj p50 +39.1847 (n=84), bearish adj p50 -1.1681 (n=57); gap_atr split low +13.8413 vs high +21.0732 (threshold 0.4913), fvg_quality split low +17.8286 vs high +12.4840 (threshold 0.7452). Citation: E1B_RESULTS.json:tables.strata[4h].fill.horizons[5].{N,end_of_window_missing,raw_return_bps,direction_adjusted_return_bps,direction_split,gap_atr_median_split,fvg_quality_median_split}."
+   ]
+  }
+ },
+ "formation_vs_touch_vs_fill_descriptive_comparison": {
+  "tier": "INTERPRETATION (built on DIRECT OBSERVATION)",
+  "formation_stage_frozen_e1a": {
+   "source": "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SYNTHESIS.json:canonical_observations[5]",
+   "raw_median": "positive in 21/21 stratum-horizon cells",
+   "direction_adjusted_median": "18 negative / 1 zero / 2 positive (15s h1 exactly 0.0; 1h h3 +0.85 bps n=523; 4h h5 +12.51 bps n=167)"
+  },
+  "first_touch_stage_e1b": {
+   "raw_median": "positive 21/21 cells",
+   "direction_adjusted_median": "positive 21/21 cells",
+   "citation": "E1B_RESULTS.json:tables.strata[tf].first_touch.horizons[h].direction_adjusted_return_bps.p50"
+  },
+  "fill_stage_e1b": {
+   "raw_median": "positive 20/21 cells (4h h1 = -0.145 bps, N=141)",
+   "direction_adjusted_median": "positive 21/21 cells",
+   "citation": "E1B_RESULTS.json:tables.strata[tf].fill.horizons[h].direction_adjusted_return_bps.p50"
+  },
+  "questions": {
+   "does_directional_behavior_materially_change_after_contact": "YES, descriptively: pooled direction-adjusted sign flips from predominantly negative at formation (18/21) to uniformly positive at touch/fill (42/42). Magnitudes at 15s-15m remain 38x-180x smaller than IQR width, so the change is a sign change of a weak central tendency, not the emergence of strong directional behavior.",
+   "does_it_materially_change_after_fill": "No material change from FIRST_TOUCH to FILL: both anchors show 21/21 positive direction-adjusted medians; fill-anchored medians are equal or modestly larger at most strata (e.g., 1m h5 +0.0741 -> +0.2662 bps; 15m h5 +1.0821 -> +1.6074 bps) with overlapping IQRs.",
+   "is_stage_conditioning_more_informative_than_formation_alone": "DESCRIPTIVELY YES: formation-only measurement attributes to the zone a negative direction-adjusted central tendency that, on this evidence, is concentrated in the formation->touch approach; conditioning on FIRST_TOUCH/FILL removes it. This is a stage-conditioning observation, NOT 'incremental predictive value' (prohibited).",
+   "formation_tendencies_weakened_reversed_or_sharpened": "REVERSED (sign) at the pooled level; bullish-cohort positive medians persist and sharpen with horizon; bearish-cohort medians move from negative (formation, per E1A sign summary) to ~zero at 15s/30s and remain negative at 5m/15m/1h h3/h5 - i.e., the reversal is NOT uniform across direction cohorts.",
+   "confounds_registered": [
+    "anchor-price definition differs (formation availability vs boundary-crossing tick mid inside the zone)",
+    "cohort conditioning (formation cohort includes never-touched zones; touch/fill cohorts are post-contact)",
+    "in-window XAUUSD upward drift (raw medians positive in 41/42 cells) interacts with the bullish share gradient (E1A: 51.0% at 15s -> 60.5% at 4h)"
+   ]
+  },
+  "discipline_note": "No significance claims; no 'incremental predictive value' language; comparison is descriptive only."
+ },
+ "gap_through_analysis": {
+  "tier": "DIRECT OBSERVATION (sizes) + INTERPRETATION (adequacy)",
+  "total": 1010,
+  "share_of_all_fills": 0.002663979827606216,
+  "per_stratum": {
+   "15s": {
+    "n": 682,
+    "share_of_stratum_fills": 0.003005835375420905
+   },
+   "30s": {
+    "n": 213,
+    "share_of_stratum_fills": 0.002146658066596791
+   },
+   "1m": {
+    "n": 81,
+    "share_of_stratum_fills": 0.0018703241895261845
+   },
+   "5m": {
+    "n": 20,
+    "share_of_stratum_fills": 0.0028649190660363843
+   },
+   "15m": {
+    "n": 10,
+    "share_of_stratum_fills": 0.004752851711026616
+   },
+   "1h": {
+    "n": 4,
+    "share_of_stratum_fills": 0.008298755186721992
+   },
+   "4h": {
+    "n": 0,
+    "share_of_stratum_fills": 0.0
+   }
+  },
+  "distribution_note": "67.5% of all gap-through fills are at 15s (682/1010); zero at 4h. E1A anomaly A1 (producer semantics: fill can occur without overlap-based touch; gap-through is NOT imputed as touch) stands; no new anomaly.",
+  "adequacy_verdict": {
+   "15s": "n=682: nominally adequate for a coarse descriptive median comparison.",
+   "30s": "n=213: marginal; wide uncertainty on any median.",
+   "1m": "n=81: marginal-to-inadequate.",
+   "5m": "n=20: inadequate.",
+   "15m": "n=10: inadequate.",
+   "1h": "n=4: inadequate.",
+   "4h": "n=0: no comparison possible."
+  },
+  "behavioral_comparison_status": "E1B_RESULTS.json aggregate tables contain COUNTS only for the first_touch_observed=true/false stratification (touched_fill_n, gap_through_fill_n) and NO outcome quantiles by population. A touched-fill vs gap-through post-fill behavioral comparison is therefore NOT derivable from this evidence base and must be a later, separately frozen measurement (QG2). No comparison is asserted here.",
+  "citation": "E1B_RESULTS.json:tables.strata[tf].{gap_through_fill_n,touched_fill_n,fill_anchors_n}; E1B_SCANNER_INTEGRITY_GATE.json:gap_through_fill_n; FILL_TOUCH_CONSISTENCY_AUDIT.json:{anchor_first_touch_observed_false,anchor_first_touch_observed_true}"
+ },
+ "tail_censoring_assessment": {
+  "tier": "DIRECT OBSERVATION + INTERPRETATION",
+  "censoring_table": {
+   "15s": {
+    "never_touched_fraction": 0.005366176851287152,
+    "touched_unfilled_fraction": 0.00209982089762932,
+    "touch_to_fill_max_identifiable_quantile": 0.9979001791023707,
+    "never_filled_fraction": 0.0044623073244145686,
+    "fill_max_identifiable_quantile": 0.9955376926755855,
+    "touch_to_fill_p99_bars_reported": 3885.0,
+    "touch_to_fill_p99_unconditionally_identifiable": true,
+    "formation_to_fill_p99_unconditionally_identifiable": true,
+    "formation_to_fill_p95_unconditionally_identifiable": true
+   },
+   "30s": {
+    "never_touched_fraction": 0.005617527486832308,
+    "touched_unfilled_fraction": 0.002960576003222396,
+    "touch_to_fill_max_identifiable_quantile": 0.9970394239967776,
+    "never_filled_fraction": 0.006428614343219914,
+    "fill_max_identifiable_quantile": 0.99357138565678,
+    "touch_to_fill_p99_bars_reported": 4394.0,
+    "touch_to_fill_p99_unconditionally_identifiable": true,
+    "formation_to_fill_p99_unconditionally_identifiable": true,
+    "formation_to_fill_p95_unconditionally_identifiable": true
+   },
+   "1m": {
+    "never_touched_fraction": 0.006246996636232627,
+    "touched_unfilled_fraction": 0.004628350373031224,
+    "touch_to_fill_max_identifiable_quantile": 0.9953716496269688,
+    "never_filled_fraction": 0.00899292922358756,
+    "fill_max_identifiable_quantile": 0.9910070707764125,
+    "touch_to_fill_p99_bars_reported": 3582.0,
+    "touch_to_fill_p99_unconditionally_identifiable": true,
+    "formation_to_fill_p99_unconditionally_identifiable": true,
+    "formation_to_fill_p95_unconditionally_identifiable": true
+   },
+   "5m": {
+    "never_touched_fraction": 0.014145658263305272,
+    "touched_unfilled_fraction": 0.011081119477198465,
+    "touch_to_fill_max_identifiable_quantile": 0.9889188805228015,
+    "never_filled_fraction": 0.02226890756302521,
+    "fill_max_identifiable_quantile": 0.9777310924369748,
+    "touch_to_fill_p99_bars_reported": 2388.0,
+    "touch_to_fill_p99_unconditionally_identifiable": false,
+    "formation_to_fill_p99_unconditionally_identifiable": false,
+    "formation_to_fill_p95_unconditionally_identifiable": true
+   },
+   "15m": {
+    "never_touched_fraction": 0.025547445255474477,
+    "touched_unfilled_fraction": 0.019662921348314606,
+    "touch_to_fill_max_identifiable_quantile": 0.9803370786516854,
+    "never_filled_fraction": 0.040145985401459854,
+    "fill_max_identifiable_quantile": 0.9598540145985401,
+    "touch_to_fill_p99_bars_reported": 1648.0,
+    "touch_to_fill_p99_unconditionally_identifiable": false,
+    "formation_to_fill_p99_unconditionally_identifiable": false,
+    "formation_to_fill_p95_unconditionally_identifiable": true
+   },
+   "1h": {
+    "never_touched_fraction": 0.0497131931166348,
+    "touched_unfilled_fraction": 0.03822937625754527,
+    "touch_to_fill_max_identifiable_quantile": 0.9617706237424547,
+    "never_filled_fraction": 0.07839388145315487,
+    "fill_max_identifiable_quantile": 0.9216061185468452,
+    "touch_to_fill_p99_bars_reported": 699.0,
+    "touch_to_fill_p99_unconditionally_identifiable": false,
+    "formation_to_fill_p99_unconditionally_identifiable": false,
+    "formation_to_fill_p95_unconditionally_identifiable": false
+   },
+   "4h": {
+    "never_touched_fraction": 0.05988023952095811,
+    "touched_unfilled_fraction": 0.10191082802547771,
+    "touch_to_fill_max_identifiable_quantile": 0.8980891719745223,
+    "never_filled_fraction": 0.15568862275449102,
+    "fill_max_identifiable_quantile": 0.844311377245509,
+    "touch_to_fill_p99_bars_reported": 175.0,
+    "touch_to_fill_p99_unconditionally_identifiable": false,
+    "formation_to_fill_p99_unconditionally_identifiable": false,
+    "formation_to_fill_p95_unconditionally_identifiable": false
+   }
+  },
+  "observed_vs_unconditional": [
+   "Reported duration quantiles are OBSERVED-EVENT quantiles conditional on the event having occurred (touch->fill n = touched_fill_n; formation->fill n = fill_anchors_n).",
+   "Under administrative right censoring at the development-window end, the unconditional touched-population distribution is identifiable only up to the quantile 1 - censor_fraction: touch->fill up to p99.79 (15s) down to p89.81 (4h); formation->fill up to p99.55 (15s) down to p84.43 (4h).",
+   "Consequently: touch->fill p99 is an unconditional-population-identifiable statistic ONLY at 15s/30s/1m (censor 0.210%/0.296%/0.463% < 1%); the reported p99 at 5m/15m/1h/4h (2,388/1,648/699/175 bars) is conditional-on-fill and must not be quoted as an unconditional population p99.",
+   "formation->fill p95 is unconditionally identifiable through 15m (censor 4.015% < 5%) but NOT at 1h/4h (7.839%/15.569%)."
+  ],
+  "challenge_to_rapid_body_long_tail": "The E1A description 'rapid body + long tail' remains ADEQUATE but INCOMPLETE. Refinements required by E1B: (1) the body includes a substantial same-bar mode (34.19%-40.43% of touched fills) that formation-anchored durations could not show; (2) the tail is heavier than p95 implies (p99 3,885/4,394/3,582 bars at 15s/30s/1m; observed maxima ~118.5 days market time); (3) at 5m-4h the 'long tail' is increasingly an UNIDENTIFIABLE region (censor ceilings), so the phenotype at coarse strata is 'rapid body + censored tail', not 'rapid body + observed long tail'.",
+  "max_is_administrative": "Maxima ~10.24e9 ms (~118.5 days) recur across 15s-1h and coincide with the window end boundary: administrative censoring artifacts, not natural endpoints.",
+  "citation": "E1B_RESULTS.json:tables.strata[tf].{touch_to_fill_right_censor_fraction,touch_to_fill_max_identifiable_quantile,fill_right_censor_fraction,fill_max_identifiable_quantile,*_market_ms}"
+ },
+ "prospective_response_assessment": {
+  "tier": "DIRECT OBSERVATION + INTERPRETATION",
+  "cell_inventory": {
+   "anchor_x_stratum_x_horizon_cells": 42,
+   "direction_adjusted_p50_positive": 42,
+   "raw_p50_positive": 41,
+   "raw_p50_nonpositive_cells": [
+    {
+     "tf": "4h",
+     "anchor": "FILL",
+     "h": 1,
+     "raw_p50_bps": -0.14514297187368858
+    }
+   ]
+  },
+  "magnitude_discipline": {
+   "abs_median_over_iqr_width_h1_range_all_strata": [
+    0.00559861009555679,
+    0.15164706978752232
+   ],
+   "abs_median_over_iqr_width_h1_range_15s_to_15m": [
+    0.00559861009555679,
+    0.02644659888767421
+   ],
+   "verdict": "At 15s-15m the medians are 0.56%-2.64% of the h1 IQR width: WEAK central tendency, not strong directional behavior. At 1h/4h the ratio reaches ~4.8%/~15.2% (FT h1) but N is 497/157 and tails are huge (FT h5 4h adj p99 483.5 bps, max 929.5 bps)."
+  },
+  "sign_consistency": {
+   "across_horizons_within_stratum_pooled": "consistent: all 21 cells positive at each anchor",
+   "across_strata_pooled": "consistent: all 42 cells positive",
+   "bullish_cohort": "positive in 42/42 cells - sign-consistent but confounded with in-window upward drift (raw p50 positive in 41/42)",
+   "bearish_cohort": "NOT sign-consistent: FIRST_TOUCH 5 positive / 5 zero / 11 negative; FILL 10 positive / 2 zero / 9 negative"
+  },
+  "end_of_window_missing": "explicitly reported per cell; maximum is 3 of 2,133 (15m h3/h5); 1-cell misses at 30s fill h5, 1m FT h5, 5m all cells, 15m fill h1, 1h fill h5; all other cells 0 (citation: each horizon block 'end_of_window_missing').",
+  "fill_population_characterization": "Post-fill behavior is descriptively most consistent with WEAK zone-direction drift at fine strata and NO CLEAR CENTRAL TENDENCY at mid strata for bearish zones; 'neutralization' cannot be distinguished from 'no clear central tendency' without a pre-event baseline anchor, which E1B does not provide. None of these labels is a trading claim.",
+  "citation": "E1B_RESULTS.json:tables.strata[tf].{first_touch,fill}.horizons[h]"
+ },
+ "development_derived_split_assessment": {
+  "tier": "DIRECT OBSERVATION + INTERPRETATION",
+  "status": "DEVELOPMENT-DERIVED DESCRIPTIVE PARTITIONS ONLY - not pre-registered thresholds, not decision thresholds, not confirmed cutoffs, not strategy rules.",
+  "gap_atr_median_split": {
+   "fine_strata": "differences are 0.001-0.05 bps scale and change sign across horizons (15s FT: h1 low>high, h3 low>high, h5 high>low; 1m FT h1 low>high)",
+   "mid_strata": "sign flips within anchor across horizons (5m FT h1 high>low +0.2122 vs +0.0960, h3 low>high +0.3475 vs +0.0673)",
+   "coarse_strata": "largest contrasts exactly where N is smallest (1h FT h1: low -1.6039 vs high +6.0915, n=249/248; 1h FILL h1: +0.0637 vs +4.6654, n=241/241)",
+   "verdict": "NO stable descriptive pattern; register as noise-prone development partition (QG8)."
+  },
+  "fvg_quality_median_split": {
+   "fine_strata": "near-degenerate differences (15s FT h1: +0.0123 vs +0.0148)",
+   "mid_strata": "5m FT h1 high>low (+0.3046 vs +0.0429) collapses by h3 (+0.2353 vs +0.2193); 15m FT h1 reverses (low +0.2670 > high +0.0223)",
+   "coarse_strata": "1h FT h1 high +6.6475 vs low -0.9150 (n=248/249); 4h FILL h1 reverses (low +12.7375 vs high -4.7588, n=71/70)",
+   "verdict": "NO stable descriptive pattern; sign instability across horizons, anchors, and strata."
+  },
+  "cross_cutting": "The sign of (high - low) flips between h1 and h5 in 6 (stratum, anchor, split) combinations; split thresholds differ between FIRST_TOUCH and FILL cohorts (medians recomputed within each anchor cohort), reinforcing that these are descriptive partitions, not fixed cutpoints.",
+  "citation": "E1B_RESULTS.json:tables.strata[tf].{first_touch,fill}.horizons[h].{gap_atr_median_split,fvg_quality_median_split}"
+ },
+ "anomalies_or_suspicious_patterns": [
+  {
+   "id": "AN1",
+   "status": "BENIGN_SERIALIZATION_ARTIFACT",
+   "obs": "Direction-adjusted bearish medians serialized as -0.0 (15s/30s FIRST_TOUCH h1-h3; 30s FILL h1 bearish = -2.1e-12 bps).",
+   "reading": "Exact-zero medians with float sign-bit/epsilon artifacts (same class as the E1A-noted -0.0). Substantive consequence: at 15s/30s the 1-bar post-touch distribution carries massive exact-zero mass (boundary-tick mid to next close often unchanged), so the median is a blunt summary there; use IQR/tails."
+  },
+  {
+   "id": "AN2",
+   "status": "FLAGGED_SMALL_N_SIGN_SENSITIVITY",
+   "obs": "4h FILL h1 raw p50 = -0.1451 bps vs direction-adjusted p50 = +8.3089 bps (N=141; bullish 84 / bearish 57).",
+   "reading": "At this N the pooled median's sign is sensitive to the direction adjustment and cohort mix; neither sign should be quoted alone."
+  },
+  {
+   "id": "AN3",
+   "status": "ADMINISTRATIVE_CENSORING_ARTIFACT",
+   "obs": "Near-identical maxima (~10.241e9 ms ~ 118.5 days) for formation->touch, touch->fill, and formation->fill across 15s-1h.",
+   "reading": "Extremes pinned at the development-window end boundary; the max is administrative, not a natural lifecycle endpoint."
+  },
+  {
+   "id": "AN4",
+   "status": "EXPECTED_NOISE",
+   "obs": "Non-monotone pooled medians across horizons in small cells (1h FILL +2.0200/+1.7706/+8.0925; 4h FILL +8.3089/+18.1627/+15.7234; 5m FILL h3 +0.4032 > h5 +0.1905).",
+   "reading": "Within-dispersion wiggle; no horizon-trend claim is made at these N."
+  },
+  {
+   "id": "AN5",
+   "status": "EXPECTED_NOISE",
+   "obs": "Largest split contrasts occur where N is smallest (1h/4h split cells, n~240-250 per arm).",
+   "reading": "Small-N instability; no pattern registered."
+  },
+  {
+   "id": "AN6",
+   "status": "OBSERVED_ONLY",
+   "obs": "Same-bar touch+fill share mildly rises from 34.19% (15m) to 40.43% (4h, 57/141).",
+   "reading": "Not interpretable at 4h given N; no scale law claimed."
+  },
+  {
+   "id": "AN7",
+   "status": "CLEAN",
+   "obs": "End-of-window missing outcomes present and explicit (max 3 of 2,133 at 15m h3/h5; isolated 1s elsewhere); integrity gate PASS 5/5; fill/touch audit 0 disagreements; preflight 0 regressions over 51,969,691 rows; reproducibility hashes identical.",
+   "reading": "No defect."
+  }
+ ],
+ "question_generator_candidates": [
+  {
+   "id": "QG1",
+   "question": "Does the post-first-touch direction-adjusted response differ from an appropriately matched formation-stage control (matched on stratum, direction, gap_atr, fvg_quality, calendar time) under a drift-aware null?",
+   "motivation": "Formation 18/21 negative vs touch/fill 42/42 positive direction-adjusted medians (I2).",
+   "status": "REGISTERED ONLY - not tested in E1B; requires its own frozen measurement contract before any test."
+  },
+  {
+   "id": "QG2",
+   "question": "Does gap-through fill have different post-fill behavior from ordinary touch->fill, at strata with adequate gap-through N (15s n=682, 30s n=213, 1m n=81) under a pre-registered minimum-N rule?",
+   "motivation": "E1B tables carry counts only; no outcome comparison exists.",
+   "status": "REGISTERED ONLY - not tested in E1B; requires its own frozen measurement contract before any test."
+  },
+  {
+   "id": "QG3",
+   "question": "Does the same-bar touch+fill subpopulation (~34-40% of touched fills) behave differently after fill than multi-bar touch->fill?",
+   "motivation": "The FILL anchor pools two lifecycle modes.",
+   "status": "REGISTERED ONLY - not tested in E1B; requires its own frozen measurement contract before any test."
+  },
+  {
+   "id": "QG4",
+   "question": "Does FVG quality modify touch->fill duration after controlling for native scale, under censor-aware estimation?",
+   "motivation": "Descriptive splits are sign-unstable; duration modification is untested.",
+   "status": "REGISTERED ONLY - not tested in E1B; requires its own frozen measurement contract before any test."
+  },
+  {
+   "id": "QG5",
+   "question": "Is the bullish/bearish post-touch asymmetry at 5m/15m/1h (bearish adjusted p50 negative at h3/h5) instrument drift or FVG-specific (drift-matched time-control null)?",
+   "motivation": "Bearish cohort sign inconsistency (D7).",
+   "status": "REGISTERED ONLY - not tested in E1B; requires its own frozen measurement contract before any test."
+  },
+  {
+   "id": "QG6",
+   "question": "Is the touch->fill duration distribution scale-consistent when expressed in native bars vs market hours, once administrative censoring is modeled?",
+   "motivation": "Bar-scale tails shrink with scale while censoring grows.",
+   "status": "REGISTERED ONLY - not tested in E1B; requires its own frozen measurement contract before any test."
+  },
+  {
+   "id": "QG7",
+   "question": "Do the never-touched and never-filled fractions continue rising with native scale beyond the development window (censoring artifact vs lifetime property)?",
+   "motivation": "Monotone censoring gradient 0.210% -> 10.191% (touched-unfilled).",
+   "status": "REGISTERED ONLY - not tested in E1B; requires its own frozen measurement contract before any test."
+  },
+  {
+   "id": "QG8",
+   "question": "Does gap_atr modify post-fill response at coarse strata (1h FILL h1 high +4.6654 vs low +0.0637 bps, n=241/241), or is this small-N noise?",
+   "motivation": "Largest split contrast at smallest N.",
+   "status": "REGISTERED ONLY - not tested in E1B; requires its own frozen measurement contract before any test."
+  }
+ ],
+ "e2_candidates_must_remain_untested": [
+  "Any conversion of QG1-QG8 into executed tests without a frozen, director-approved E2 measurement contract (denominators, null model, censoring treatment fixed in advance).",
+  "Any threshold, cutoff, or quantile-surface selection on gap_atr, fvg_quality, touch->fill duration, or post-anchor returns (the E1B median splits are descriptive partitions only).",
+  "Any conditional-expectancy, sign-persistence, or hit-rate estimation on the E1B anchor populations.",
+  "Any cross-stratum combination, ranking, or voting rule (cross-scale object identity PROHIBITED; no pooling).",
+  "Any use of E1B DEVELOPMENT-window quantities for out-of-sample, confirmation, or live purposes (confirmation LOCKED; E2/E3 NOT STARTED)."
+ ],
+ "must_not_claim": [
+  "No alpha/edge/profitability/strategy/signal/predictive-advantage claim: E1B is a locked phenotype measurement; nothing was tested.",
+  "No significance, confidence, or confirmation claims; no null model was run anywhere in this review.",
+  "No cross-scale zone identity; no pooling of strata; cross-stratum statements are side-by-side descriptive comparisons only.",
+  "Duration quantiles are conditional-on-fill observed-event quantiles, not unconditional population quantiles.",
+  "Unfilled fractions (never-touched, touched-unfilled, never-filled) are window-censored accounting complements, not lifetime fill probabilities or hazards.",
+  "Do not quote touch->fill p99 at 5m/15m/1h/4h, or formation->fill p95/p99 at 1h/4h, as unconditional population quantiles (censor ceilings: p97.77/p95.99/p92.16/p84.43).",
+  "Observed maxima (~118.5 days) are administrative window-boundary artifacts, not natural lifecycle endpoints.",
+  "gap_atr and fvg_quality median splits are development-derived descriptive partitions - not pre-registered thresholds, decision thresholds, confirmed cutoffs, or strategy rules.",
+  "Positive direction-adjusted medians after touch/fill are not a tradable continuation or reversal effect; instrument drift is an unresolved confound.",
+  "The formation->touch/fill sign flip is a descriptive stage comparison; calling it 'incremental predictive value' is PROHIBITED.",
+  "1h/4h cells (N=497/157 touches, 482/141 fills) are small-sample descriptions, not established scale phenomena.",
+  "Serialized -0.0 bearish medians are exact-zero medians (sign-bit artifacts), not negative findings.",
+  "Gap-through cohorts support no behavioral comparison at 5m/15m/1h/4h (n=20/10/4/0); none was performed here.",
+  "Nothing in this review transfers to E2, E3, confirmation, or any live context."
+ ],
+ "recommended_next_scientific_action": {
+  "action": "PASS_TO_SYNTHESIS: advance to the E1B multi-interpreter synthesis and reconciliation.",
+  "steps": [
+   "Reconcile this review's per-stratum tables and sign counts against peer E1B interpretations at synthesis.",
+   "Freeze the Question Generator register (QG1-QG8) with proposed null models, cohort definitions, and censoring treatment; none may be executed under E1.",
+   "Flag to the director: (a) the touched-fill vs gap-through and same-bar vs multi-bar post-fill comparisons require a separate frozen measurement contract (E1B aggregate tables contain counts only); (b) any drift-control design must be fixed before E2 exposure; (c) coarse-stratum tail claims are bound by the censor ceilings and any successor design should state identifiability limits up front."
+  ],
+  "explicitly_not_recommended": "No threshold selection, no optimization, no testing, no strategy construction; confirmation remains LOCKED."
+ }
+}

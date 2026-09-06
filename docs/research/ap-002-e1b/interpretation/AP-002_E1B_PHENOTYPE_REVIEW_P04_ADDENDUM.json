@@ -1,0 +1,100 @@
+{
+ "artifact_type": "AP-002_E1B_PHENOTYPE_REVIEW_ADDENDUM",
+ "interpreter_id": "P-04",
+ "generated_utc": "2026-09-06T14:19:30Z",
+ "addendum_type": "CONTRACT_COMPLETION",
+ "program": "AP-002 FVG",
+ "stage": "E1B lifecycle-stage phenotype (sealed addendum to AP-002_E1B_PHENOTYPE_REVIEW_P04)",
+ "instrument": "XAUUSD",
+ "exposure": "E1_PHENOTYPE",
+ "confirmation_status": "LOCKED",
+ "e2_status": "NOT STARTED",
+ "cross_scale_object_identity": "PROHIBITED (respected)",
+ "basis_evidence": [
+  "docs/research/ap-002-e1b/E1B_FILL_STRATIFICATION.json",
+  "docs/research/ap-002-e1b/E1B_INTERPRETER_FACT_CHECK.json",
+  "docs/research/ap-002-e1b/interpretation/AP-002_E1B_PHENOTYPE_REVIEW_P04.json (own prior review, reference only)"
+ ],
+ "scope_note": "Short sealed addendum ordered by the director after E1B reconciliation (PASS_TO_SYNTHESIS). No full reinterpretation; no peer interpretation or peer addendum read; no pipeline code touched. Cohort identity verified: E1B_FILL_STRATIFICATION.json:anchors_logical_rows_sha256 = 911301ee6ac985f76a954af5ddac10d9d8957508f4c2d44e348c718d564285c2 = frozen E1B anchor logical rows hash; totals reconcile (fill_anchors_total 379,132 = touched_fill_total 378,122 + gap_through_fill_total 1,010).",
+ "predeclared_support_rule": {
+  "citation": "E1B_FILL_STRATIFICATION.json:predeclared_support_rule",
+  "labels": {"DESCRIPTIVE_ADEQUATE": "anchor_n >= 200", "DESCRIPTIVE_THIN": "30 <= anchor_n < 200", "TOO_SPARSE_FOR_COMPARISON": "1 <= anchor_n < 30", "EMPTY": "anchor_n = 0"},
+  "provenance": "Rule fixed before inspecting per-cell aggregates; labels carry no significance meaning (artifact note). No re-derivation of thresholds performed by P-04."
+ },
+ "answer_1_touched_vs_gap_through": {
+  "question": "Does touched-fill versus gap-through behavior support any descriptive difference?",
+  "comparison_domain": "FILL anchor only; horizons 1/3/5 lawful native closes after the fill boundary tick; direction-adjusted p50 in bps; paired comparison made ONLY where both cells are predeclared DESCRIPTIVE_ADEQUATE.",
+  "direct_observations": [
+   {"stratum": "15s", "tier": "DIRECT OBSERVATION",
+    "touched": {"n": 226210, "bullish_n": 115315, "bearish_n": 110895, "adj_p50_bps": {"h1": 0.02165962548388855, "h3": 0.0661283816403567, "h5": 0.08476360137866681}, "raw_p50_bps": {"h1": 0.02110993950992912, "h3": 0.038652235211290624, "h5": 0.054371761481165515}, "iqr_h1_bps": [-0.8391901814741135, 0.91036792625658], "end_of_window_missing": 0, "citation": "E1B_FILL_STRATIFICATION.json:cells[tf=15s][TOUCHED_FILL].horizons[h].direction_adjusted_return_bps.p50"},
+    "gap_through": {"n": 682, "bullish_n": 350, "bearish_n": 332, "adj_p50_bps": {"h1": 0.0, "h3": 0.07161639394468074, "h5": 0.1901546092802613}, "raw_p50_bps": {"h1": -0.029587024315262403, "h3": 0.06793385959401654, "h5": 0.2625655518762041}, "iqr_h1_bps": [-0.8495879498446891, 0.864228251621437], "p95_h3_bps": 25.501355868071887, "end_of_window_missing": 0, "citation": "E1B_FILL_STRATIFICATION.json:cells[tf=15s][GAP_THROUGH_FILL].horizons[h].direction_adjusted_return_bps.p50"},
+    "difference_gap_minus_touched_adj_p50_bps": {"h1": -0.0217, "h3": 0.0055, "h5": 0.1054},
+    "reading": "No difference in the body: h1 adj medians 0.0000 vs +0.0217 with near-identical IQR widths (1.714 vs 1.750 bps); the sign of the difference flips across horizons (h1 gap below touched, h3/h5 gap above); gap-through carries a heavier right tail (h3 p95 +25.50 vs +5.98 bps)."},
+   {"stratum": "30s", "tier": "DIRECT OBSERVATION",
+    "touched": {"n": 99011, "bullish_n": 51116, "bearish_n": 47895, "adj_p50_bps": {"h1": 0.029787924869546106, "h3": 0.10767994934774355, "h5": 0.1607017846936115}, "raw_p50_bps": {"h1": 0.03882449774126169, "h3": 0.07522837184278233, "h5": 0.1101662822321441}, "iqr_h1_bps": [-1.255868043431798, 1.3644943411386543], "end_of_window_missing": {"h1": 0, "h3": 0, "h5": 1}, "citation": "E1B_FILL_STRATIFICATION.json:cells[tf=30s][TOUCHED_FILL].horizons[h].direction_adjusted_return_bps.p50"},
+    "gap_through": {"n": 213, "bullish_n": 119, "bearish_n": 94, "adj_p50_bps": {"h1": 0.8893667575945586, "h3": 1.369999379062663, "h5": 0.8008777620252393}, "raw_p50_bps": {"h1": 0.9279455285999708, "h3": 1.369999379062663, "h5": -0.22475565849033433}, "iqr_h1_bps": [-0.8004506240549697, 5.2040975420633195], "p95_h1_bps": 15.142300694082772, "end_of_window_missing": 0, "citation": "E1B_FILL_STRATIFICATION.json:cells[tf=30s][GAP_THROUGH_FILL].horizons[h].direction_adjusted_return_bps.p50"},
+    "difference_gap_minus_touched_adj_p50_bps": {"h1": 0.8596, "h3": 1.2623, "h5": 0.6402},
+    "reading": "Gap-through adj medians are larger than touched at ALL THREE horizons (h1 +0.889 vs +0.030, h3 +1.370 vs +0.108, h5 +0.801 vs +0.161) with a ~2.3x wider h1 IQR (6.005 vs 2.620 bps) and |median| = 14.8% of h1 IQR width vs 1.1% for touched. Caveats carried: n=213 (bearish arm only 94), heavier tails (h1 p95 +15.14 vs +5.14), and raw-vs-adjusted sign divergence at h5 (raw p50 -0.2248 vs adjusted +0.8009)."}
+  ],
+  "interpretation": [
+   {"tier": "INTERPRETATION",
+    "text": "At the only two paired-eligible strata: 15s shows NO descriptive touched-vs-gap-through difference in the distribution body (difference sign not consistent across horizons, |differences| <= 0.105 bps against IQR widths ~1.7-5.2 bps); 30s shows a single-stratum contrast (gap-through adj medians higher at all three horizons, wider dispersion) that is descriptively visible but small-N and sign-sensitive to the direction adjustment at h5. There is therefore NO scale-consistent descriptive difference; the 30s contrast is registered as new descriptive information, not a finding."},
+   {"tier": "HYPOTHESIS FOR LATER TESTING",
+    "text": "Refines QG2 of the P-04 review: does gap-through fill (price reaching the far edge without a prior overlap touch) carry systematically stronger zone-direction post-fill drift than ordinary touch->fill, at strata with adequate N, under a drift-aware null? The 30s cell (n=213) is the motivating observation; 15s (n=682) is the natural replication stratum."}
+  ],
+  "cells_excluded_from_comparison": {
+   "1m": "GAP_THROUGH n=81 DESCRIPTIVE_THIN - single-cell description only (adj p50 h1 0.0000, h3 -0.9421, h5 +2.4689 bps; raw h5 -2.1976), explicitly NOT compared.",
+   "5m": "GAP_THROUGH n=20 TOO_SPARSE_FOR_COMPARISON - not interpreted.",
+   "15m": "GAP_THROUGH n=10 TOO_SPARSE_FOR_COMPARISON - not interpreted.",
+   "1h": "GAP_THROUGH n=4 TOO_SPARSE_FOR_COMPARISON - not interpreted.",
+   "4h": "GAP_THROUGH n=0 EMPTY - nothing to compare.",
+   "citation": "E1B_FILL_STRATIFICATION.json:cells[tf][GAP_THROUGH_FILL].{anchor_n,eligibility}"
+  },
+  "verdict": "A weak, single-stratum (30s, n=213) descriptive contrast exists; no scale-consistent difference; no comparison outside the two predeclared-eligible pairs; no trading conversion."
+ },
+ "answer_2_eligible_strata": {
+  "question": "Which native strata have enough N for even descriptive comparison?",
+  "rule_provenance": "Predeclared eligibility labels from E1B_FILL_STRATIFICATION.json:predeclared_support_rule (thresholds fixed before per-cell inspection; noted by the artifact and by the director's order). P-04 did not choose or re-derive the rule.",
+  "per_stratum_labels": {
+   "15s": {"touched_fill_n": 226210, "gap_through_n": 682, "labels": "ADEQUATE / ADEQUATE", "paired_comparison": "ELIGIBLE"},
+   "30s": {"touched_fill_n": 99011, "gap_through_n": 213, "labels": "ADEQUATE / ADEQUATE", "paired_comparison": "ELIGIBLE"},
+   "1m": {"touched_fill_n": 43227, "gap_through_n": 81, "labels": "ADEQUATE / DESCRIPTIVE_THIN", "paired_comparison": "NOT ELIGIBLE (single-cell THIN description only)"},
+   "5m": {"touched_fill_n": 6961, "gap_through_n": 20, "labels": "ADEQUATE / TOO_SPARSE_FOR_COMPARISON", "paired_comparison": "NOT ELIGIBLE"},
+   "15m": {"touched_fill_n": 2094, "gap_through_n": 10, "labels": "ADEQUATE / TOO_SPARSE_FOR_COMPARISON", "paired_comparison": "NOT ELIGIBLE"},
+   "1h": {"touched_fill_n": 478, "gap_through_n": 4, "labels": "ADEQUATE / TOO_SPARSE_FOR_COMPARISON", "paired_comparison": "NOT ELIGIBLE"},
+   "4h": {"touched_fill_n": 141, "gap_through_n": 0, "labels": "DESCRIPTIVE_THIN / EMPTY", "paired_comparison": "NOT ELIGIBLE"}
+  },
+  "answer": "Under the predeclared rule, only 15s (gap-through n=682) and 30s (n=213) support an eligible paired touched-vs-gap-through descriptive comparison. 1m (n=81) is DESCRIPTIVE_THIN: single-cell description only. 5m (20), 15m (10), 1h (4) are TOO_SPARSE_FOR_COMPARISON; 4h is EMPTY (n=0). Note also that the 4h TOUCHED_FILL cell itself is DESCRIPTIVE_THIN (n=141), reinforcing the small-N caution already carried for 4h in the P-04 review.",
+  "citation": "E1B_FILL_STRATIFICATION.json:cells[tf].{fill_type,anchor_n,eligibility}"
+ },
+ "answer_3_impact_on_prior_review": {
+  "question": "Does the new evidence change any prior conclusion of the P-04 review?",
+  "per_conclusion_status": [
+   {"prior_conclusion": "Touched-vs-gap-through post-fill comparison not derivable from E1B aggregate tables; requires a later frozen measurement (P-04 gap_through_analysis.behavioral_comparison_status; QG2).", "status": "COMPLETED_BY_THIS_ADDENDUM, NOT CONTRADICTED", "note": "The director-ordered stratification artifact supplies the FILL-anchor measurement; the comparison executed here at the two eligible strata finds no 15s difference and a small-N 30s contrast registered as hypothesis material."},
+   {"prior_conclusion": "Pooled FILL-anchor medians reflect a weak positive central tendency dominated by the touched-fill population.", "status": "CONFIRMED", "note": "Stratified touched-fill adj p50 match the pooled FILL medians to <=0.008 bps at every stratum-horizon (e.g., 15s h1 +0.0217 vs pooled +0.0214; 30s h1 +0.0298 vs +0.0299; 1m h1 +0.1041 vs +0.1041; 4h h1 +8.3089 vs +8.3089; citations: E1B_FILL_STRATIFICATION.json:cells[tf][TOUCHED_FILL].horizons[h] vs E1B_RESULTS.json:tables.strata[tf].fill.horizons[h])."},
+   {"prior_conclusion": "Gap-through population sizes: adequate only at 15s, marginal at 30s/1m, inadequate 5m-4h (P-04 gap_through_analysis.adequacy_verdict).", "status": "CONFIRMED (formalized)", "note": "Predeclared labels: 15s/30s ADEQUATE, 1m DESCRIPTIVE_THIN, 5m/15m/1h TOO_SPARSE, 4h EMPTY - marginally more conservative at 1m than P-04's informal 'marginal-to-inadequate', consistent with it."},
+   {"prior_conclusion": "AN2: 4h FILL h1 raw p50 -0.1451 bps vs adj +8.3089 bps sign sensitivity at N=141.", "status": "REINFORCED", "note": "The stratification cell confirms both values and additionally carries the DESCRIPTIVE_THIN label for the whole 4h touched-fill population (E1B_FILL_STRATIFICATION.json:cells[tf=4h][TOUCHED_FILL])."},
+   {"prior_conclusion": "AN1: exact-zero median mass at fine strata (median is a blunt summary there).", "status": "REINFORCED", "note": "15s GAP_THROUGH h1 adj p50 is exactly 0.0 bps (n=682) and 1m GAP_THROUGH h1 adj p50 is exactly 0.0 bps (n=81) (E1B_FILL_STRATIFICATION.json:cells[tf][GAP_THROUGH_FILL].horizons[1])."},
+   {"prior_conclusion": "Bearish cohort post-anchor behavior is not sign-consistent (P-04 D7).", "status": "CONFIRMED, ONE TALLY CORRECTED", "note": "FIRST_TOUCH tally 5 pos/5 zero/11 neg mechanically verified TRUE; FILL tally corrected (see claim_correction). Substantive reading unchanged."},
+   {"prior_conclusion": "Overall verdict PASS_TO_SYNTHESIS and all P-04 must-not-claim items.", "status": "UNCHANGED", "note": "The new evidence completes a contract item; it triggers no rework and no reinterpretation of formation/touch-stage material. FIRST_TOUCH anchor is untouched by this addendum; QG1/QG3 remain unmeasured."}
+  ],
+  "major_conclusion_change": "NO - no major P-04 conclusion changes. The addendum completes the deferred FILL-anchor stratification measurement and registers one new small-N descriptive observation (30s gap-through contrast)."
+ },
+ "claim_correction_acknowledged": {
+  "corrected_claim": "P-04 bearish FILL direction-adjusted p50 sign tally: P-04 reported 10 positive / 2 zero / 9 negative; the mechanical count (E1B_INTERPRETER_FACT_CHECK.json:claims_verified.P04_bearish_fill_10_pos_2_zero_9_neg = false; bearish_direction_split_p50_signs_by_stage.fill = 10 pos / 1 zero / 10 neg) is 10 positive / 1 zero / 10 negative.",
+  "disputed_cell": "30s FILL h1 bearish direction-adjusted p50 = -2.102963014163413e-12 bps (E1B_RESULTS.json:tables.strata[30s].fill.horizons[1].direction_split[direction=bearish]): P-04 classified |x| < 1e-9 as zero; the mechanical strict-sign classification counts it negative. Both classifications agree the value is zero to within float epsilon; the mechanical classification is canonical.",
+  "acknowledgement_line": "CORRECTION ACCEPTED: P-04's bearish FILL tally is 10 pos / 1 zero / 10 neg, not 10 pos / 2 zero / 9 neg; the substantive conclusion (bearish FILL behavior not sign-consistent) is unchanged.",
+  "other_claims_verified_true": ["P04_raw_p50_positive_41_of_42 = true", "P04_bullish_positive_42_of_42 = true", "P04_bearish_first_touch_5_pos_5_zero_11_neg = true", "fill_adjusted_positive_21_of_21 = true", "first_touch_adjusted_positive_21_of_21 = true"],
+  "citation": "E1B_INTERPRETER_FACT_CHECK.json:{claims_verified,bearish_direction_split_p50_signs_by_stage,raw_p50_signs_both_stages}"
+ },
+ "must_not_claim_addendum": [
+  "The 30s gap-through contrast is a single-stratum, n=213 descriptive observation - not a confirmed difference, not a threshold, not a trading effect.",
+  "No comparison outside the two predeclared-eligible pairs (15s, 30s); TOO_SPARSE and EMPTY cells are not interpreted.",
+  "Eligibility labels carry no significance meaning (artifact note); the rule was fixed before per-cell inspection and was not chosen by P-04.",
+  "No alpha/edge/profitability/strategy/signal claims; no significance or confirmation claims; confirmation LOCKED; E2/E3 NOT STARTED.",
+  "No cross-scale identity or pooling; all statements are within-stratum.",
+  "Raw-vs-adjusted sign divergence in small cells (30s gap h5 raw -0.2248 vs adj +0.8009; 4h touched h1 raw -0.1451) must not be quoted as either sign alone.",
+  "The fact-check is mechanical verification only; its TRUE labels on other interpreters' claims are not P-04 evidence and are not relied upon."
+ ],
+ "recommended_next_scientific_action": "Carry the addendum to E1B synthesis as a contract-completion record: QG2 now has eligible-stratum motivating evidence (15s null result, 30s small-N contrast); QG1 and QG3 remain unmeasured; no further E1B measurement is recommended; any test remains gated behind a frozen E2 contract."
+}

@@ -1,0 +1,95 @@
+{
+  "artifact_type": "AP-002_E1B_INTERPRETER_FACT_CHECK",
+  "bearish_direction_split_p50_signs_by_stage": {
+    "fill": {
+      "negative": 10,
+      "positive": 10,
+      "zero": 1
+    },
+    "first_touch": {
+      "negative": 11,
+      "positive": 5,
+      "zero": 5
+    }
+  },
+  "bullish_direction_split_p50_signs_by_stage": {
+    "fill": {
+      "negative": 0,
+      "positive": 21,
+      "zero": 0
+    },
+    "first_touch": {
+      "negative": 0,
+      "positive": 21,
+      "zero": 0
+    }
+  },
+  "cells_compared_per_stage": 21,
+  "claims_verified": {
+    "P03_P04_fill_adjusted_positive_21_of_21": true,
+    "P03_fill_greater_than_first_touch_19_of_21": true,
+    "P03_first_touch_adjusted_positive_21_of_21": true,
+    "P04_bearish_fill_10_pos_2_zero_9_neg": false,
+    "P04_bearish_first_touch_5_pos_5_zero_11_neg": true,
+    "P04_bullish_positive_42_of_42": true,
+    "P04_raw_p50_positive_41_of_42": true
+  },
+  "elapsed_millis": 13100,
+  "fill_adjusted_p50_greater_than_first_touch_count": {
+    "count": 19,
+    "denominator": 21
+  },
+  "fill_adjusted_p50_signs": {
+    "negative": 0,
+    "positive": 21,
+    "zero": 0
+  },
+  "first_touch_adjusted_p50_signs": {
+    "negative": 0,
+    "positive": 21,
+    "zero": 0
+  },
+  "note": "mechanical verification only; no interpretation performed",
+  "raw_p50_signs_both_stages": {
+    "negative": 1,
+    "positive": 41,
+    "zero": 0
+  },
+  "same_bar_touch_fill_rate": {
+    "15m": {
+      "rate": 0.3419293218720153,
+      "same_bar_touch_fill_n": 716,
+      "touched_fill_n_denominator": 2094
+    },
+    "15s": {
+      "rate": 0.35305689403651475,
+      "same_bar_touch_fill_n": 79865,
+      "touched_fill_n_denominator": 226210
+    },
+    "1h": {
+      "rate": 0.36610878661087864,
+      "same_bar_touch_fill_n": 175,
+      "touched_fill_n_denominator": 478
+    },
+    "1m": {
+      "rate": 0.35362157910565156,
+      "same_bar_touch_fill_n": 15286,
+      "touched_fill_n_denominator": 43227
+    },
+    "30s": {
+      "rate": 0.3540515700275727,
+      "same_bar_touch_fill_n": 35055,
+      "touched_fill_n_denominator": 99011
+    },
+    "4h": {
+      "rate": 0.40425531914893614,
+      "same_bar_touch_fill_n": 57,
+      "touched_fill_n_denominator": 141
+    },
+    "5m": {
+      "rate": 0.3443470765694584,
+      "same_bar_touch_fill_n": 2397,
+      "touched_fill_n_denominator": 6961
+    }
+  }
+}
