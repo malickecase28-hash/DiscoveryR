@@ -32,6 +32,12 @@
       "sha256": "2baffc50b97bc5f6f2f3251152f7109750d35e40e40c8404c94855246aa62b1f"
     },
     {
+      "bytes": 1023,
+      "logical_name": "FILL_TOUCH_CONSISTENCY_AUDIT.json",
+      "path": "docs/research/ap-002-e1b/FILL_TOUCH_CONSISTENCY_AUDIT.json",
+      "sha256": "d934c8533dc706a6a5fe63068e6fb7a5e84f65e7e962732af303ca61cd197fbd"
+    },
+    {
       "bytes": 378,
       "logical_name": "PREFLIGHT.json",
       "path": "docs/research/ap-002-e1b/PREFLIGHT.json",
@@ -51,6 +57,6 @@
     }
   ],
   "generator": "artifact_hash_registry",
-  "generator_code_identity": "1b6dbd887857621bd40e198f8f2ef88a979f7aa2",
+  "generator_code_identity": "6ee35384486619d725f2d15e33ab08742d3fab37",
   "root": "."
 }

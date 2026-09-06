@@ -1,0 +1,29 @@
+{
+  "agreement_n": 379132,
+  "anchor_first_touch_observed_false": 1010,
+  "anchor_first_touch_observed_true": 378122,
+  "artifact_type": "AP-002_E1B_FILL_TOUCH_CONSISTENCY_AUDIT",
+  "disagreement_n": 0,
+  "duplicate_fill_payloads": 0,
+  "elapsed_millis": 27228,
+  "expected_reference": {
+    "false_or_gap_through": 1010,
+    "fill_anchors": 379132
+  },
+  "fill_anchors_total": 379132,
+  "fill_ts_mismatches": 0,
+  "gate": "E1B_PRE_INTERPRETATION_GATE = PASS",
+  "generated_from": {
+    "anchors": ".runs/ap-002-e1-native-strata/e1b-run-1/E1B_ANCHORS.jsonl",
+    "sidecar": "F:/TrinityR-views/XAUUSD/XAUUSD_DATA_SCOPE_V1/authority/fvg_availability_v2_scope_repair.jsonl",
+    "view_root": "F:/TrinityR-views/XAUUSD/XAUUSD_DATA_SCOPE_V1/development"
+  },
+  "lawful_fill_payload_count": 379132,
+  "missing_anchors": 0,
+  "pass": true,
+  "payload_first_touch_observed_false": 1010,
+  "payload_first_touch_observed_true": 378122,
+  "payload_rows_parsed": 795804,
+  "representative_disagreements": [],
+  "unmatched_anchors": 0
+}

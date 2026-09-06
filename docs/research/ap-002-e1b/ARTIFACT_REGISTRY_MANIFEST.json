@@ -31,6 +31,10 @@
   {
    "logical_name": "AP-002_E1B_EXPERIMENT_CONTRACT.md",
    "path": "docs/research/ap-002-e1b/AP-002_E1B_EXPERIMENT_CONTRACT.md"
+  },
+  {
+   "logical_name": "FILL_TOUCH_CONSISTENCY_AUDIT.json",
+   "path": "docs/research/ap-002-e1b/FILL_TOUCH_CONSISTENCY_AUDIT.json"
   }
  ]
 }
