@@ -4,8 +4,9 @@ use research_contracts::{
     ConfirmationContract, InstrumentScope, ProducerAuthority,
 };
 use research_engine::{
-    generate_report_manifest, hash_bytes, run_challenge_bundle, run_population_research,
-    ChallengeRunInput, PopulationRunInput, ReportManifestInput,
+    generate_question_templates, generate_report_manifest, hash_bytes, run_challenge_bundle,
+    run_population_research, ChallengeRunInput, PopulationRunInput, QuestionTemplateRequest,
+    ReportManifestInput,
 };
 use serde::Deserialize;
 use serde_json::{json, Value};
@@ -119,6 +120,11 @@ fn run() -> Result<(), String> {
                 "instrument_id":input.scope.instrument.instrument_id,
                 "scope_id":input.scope.interval.scope_id
             })
+        }
+        "generate-questions" => {
+            let input: QuestionTemplateRequest = value_as(value)?;
+            let report = generate_question_templates(&input).map_err(|error| error.to_string())?;
+            serde_json::to_value(report).map_err(|error| error.to_string())?
         }
         "run-experiment" => {
             let input: PopulationRunInput = value_as(value)?;
@@ -285,6 +291,6 @@ fn unique_suffix() -> u128 {
 
 fn usage(message: &str) -> String {
     format!(
-        "{message}; usage: trinity_research <validate-instrument|authority-compatibility|materialize-scope|run-experiment|verify-result|challenge-result|confirm-frozen-claim|generate-report> <input.json> [output.json]"
+        "{message}; usage: trinity_research <validate-instrument|authority-compatibility|materialize-scope|generate-questions|run-experiment|verify-result|challenge-result|confirm-frozen-claim|generate-report> <input.json> [output.json]"
     )
 }
