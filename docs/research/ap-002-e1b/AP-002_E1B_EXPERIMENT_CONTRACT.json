@@ -1,0 +1,115 @@
+{
+ "artifact_type": "AP-002_E1B_EXPERIMENT_CONTRACT",
+ "contract_version": 1,
+ "frozen": "2026-09-06",
+ "program": "AP-002 FVG",
+ "exposure_class": "E1_PHENOTYPE",
+ "instrument": "XAUUSD",
+ "basis_evidence": "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SYNTHESIS.json (logical_result_hash 1b701c016bd1effa300742ee74ce73d6e0e96313d62847d231391061dc94dca6)",
+ "development_window": {
+  "start_utc_inclusive": "2025-07-31T16:15:00Z",
+  "end_utc_exclusive": "2026-05-05T12:39:00Z"
+ },
+ "native_strata": ["15s", "30s", "1m", "5m", "15m", "1h", "4h"],
+ "cross_scale_identity": "PROHIBITED",
+ "confirmation_status": "LOCKED",
+ "exclusions": ["E2", "E3", "confirmation data", "strategy logic", "unrelated detector context", "Python-produced pipeline artifacts"],
+ "stage_anchors": ["FIRST_TOUCH", "FILL"],
+ "first_touch_anchor": {
+  "eligible_source_population": "lawful in-window FVG formations only",
+  "anchor": "first actual emitted fvg_first_touch event",
+  "primary_cohort": "zones with an actual emitted first-touch event",
+  "not_included": [
+   "gap-through fills where first_touch_observed=false",
+   "orphan/pre-development zones",
+   "imputed touches",
+   "future-derived touch status"
+  ],
+  "denominators": {
+   "TOUCH_INCIDENCE": "lawful first-touch zones / lawful formation zones",
+   "FIRST_TOUCH_FORWARD_STUDY": "N = lawful emitted first-touch anchors"
+  },
+  "anchor_availability": "received_ts_ns of the boundary-crossing tick that completes the touch event bar; equal receipts broken by source_sequence",
+  "anchor_price": "bid, ask, mid=(bid+ask)/2 from that exact boundary-crossing source tick; event-bar close is not the anchor"
+ },
+ "fill_anchor": {
+  "primary_cohort": "lawful fvg_filled events belonging to lawful in-window formations",
+  "excluded_from_primary_cohort": "orphan/pre-development fills",
+  "stratification": ["first_touch_observed=true", "first_touch_observed=false"],
+  "gap_through_rule": "do not impute a first touch for gap-through fills",
+  "anchor_availability_and_price": "identical causal rule as FIRST_TOUCH"
+ },
+ "allowed_e1_conditioning": [
+  "direction",
+  "gap",
+  "gap_atr",
+  "fvg_quality",
+  "zone bounds",
+  "formation age / time since formation",
+  "time since first touch where applicable",
+  "first_touch_observed at FILL",
+  "native timeframe"
+ ],
+ "lifecycle_outputs": {
+  "first_touch": [
+   "formation -> touch duration",
+   "touch -> fill duration",
+   "remaining active/unfilled fraction after touch",
+   "touch -> fill path",
+   "right censoring after touch"
+  ],
+  "fill": [
+   "formation -> fill duration",
+   "touch -> fill duration if touched",
+   "gap-through-fill indicator"
+  ],
+  "clock_rule": "market/event duration and known/availability duration are reported separately and never merged"
+ },
+ "prospective_outcomes": {
+  "anchors": ["FIRST_TOUCH", "FILL"],
+  "horizons_bars": [1, 3, 5],
+  "reference": "lawful future native bar closes after the anchor bar",
+  "anchor_mid": "stage-availability boundary-crossing tick mid",
+  "reported_fields": ["N", "raw_price_delta", "raw_return_bps", "direction_adjusted_return_bps", "anchor_mid", "outcome_close", "outcome availability"],
+  "quantiles": ["p05", "p25", "p50", "p75", "p95"],
+  "significance_claims": "PROHIBITED",
+  "conditioning": "median-split descriptive conditioning on gap_atr and fvg_quality, plus direction split; declared splits only"
+ },
+ "tail_reporting": {
+  "additions": ["p99", "max observed", "right-censor fraction", "max identifiable unconditional quantile = 1 - censor_fraction"],
+  "prohibition": "no heavy survival-analysis framework"
+ },
+ "required_tests": {
+  "first_touch": [
+   "actual emitted event creates exactly one anchor",
+   "duplicate touch rejected",
+   "gap-through fill does not create a touch anchor",
+   "orphan touch excluded",
+   "stage availability tied to the boundary tick",
+   "anchor price tied to the boundary tick"
+  ],
+  "fill": [
+   "normal touched fill",
+   "same-bar touch+fill",
+   "gap-through fill with first_touch_observed=false",
+   "orphan fill excluded",
+   "duplicate fill rejected",
+   "stage availability tied to the boundary tick"
+  ],
+  "outcomes": [
+   "no pre-anchor movement",
+   "1/3/5 lawful native closes",
+   "equal-receipt ordering by source_sequence",
+   "end-of-window missing outcome handled explicitly"
+  ],
+  "tail": ["p99", "max", "censor ceiling"],
+  "reproducibility": "two fresh runs with identical logical result hash"
+ },
+ "execution_rules": [
+  "reuse the existing typed FVG parser, availability sidecar, trigger-tick anchor index, and zone reconstruction; do not duplicate those systems",
+  "Rust only (PIPELINE_RULES.md)",
+  "DEVELOPMENT scope only; run twice; deterministic logical identity required",
+  "small committed review artifacts; large row-level tables stay local with hashes",
+  "no interpretation of outputs before a separate interpretation stage"
+ }
+}
