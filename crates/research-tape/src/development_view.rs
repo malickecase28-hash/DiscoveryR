@@ -455,6 +455,10 @@ pub fn filter_part(
     let reader: ParquetRecordBatchReader = builder.with_batch_size(batch_size).build()?;
     let props = WriterProperties::builder()
         .set_compression(Compression::SNAPPY)
+        // Default row groups (1M rows) buffer multi-GB of encoded payload
+        // columns before the first flush on wide mixed parts; smaller row
+        // groups bound writer memory with no semantic effect.
+        .set_max_row_group_size(32_768)
         .build();
     let output = File::create(target)?;
     let mut writer = ArrowWriter::try_new(output, schema.clone(), Some(props))?;
