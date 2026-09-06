@@ -21,6 +21,10 @@ use std::{
 };
 
 pub const BOUNDARY_MS: i64 = 1_777_984_740_000;
+/// Frozen XAUUSD_DATA_SCOPE_V1 development.start_utc_inclusive: 2025-07-31T16:15:00Z.
+pub const DEVELOPMENT_START_MS: i64 = 1_753_978_500_000;
+const DEVELOPMENT_START_NS: i64 = 1_753_978_500_000_000_000;
+pub const DEVELOPMENT_START_INCLUSIVE: &str = "2025-07-31T16:15:00Z";
 pub const DEFAULT_BATCH_SIZE: usize = 65_536;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -82,6 +86,21 @@ impl GateStats {
                 ..
             } => {
                 event_max.is_none_or(|x| x < boundary) && received_max.is_none_or(|x| x < boundary)
+            }
+        }
+    }
+    fn mins_at_or_after_start(&self) -> bool {
+        match self {
+            Self::Bar { bar_close_min, .. } => {
+                bar_close_min.is_none_or(|x| x > DEVELOPMENT_START_MS)
+            }
+            Self::Tick {
+                event_min,
+                received_min,
+                ..
+            } => {
+                event_min.is_none_or(|x| x >= DEVELOPMENT_START_NS)
+                    && received_min.is_none_or(|x| x >= DEVELOPMENT_START_NS)
             }
         }
     }
@@ -189,7 +208,14 @@ fn eligible(
     };
     let value = values[row].ok_or_else(|| format!("null gating time at row {row}"))?;
     if matches!(gate, Gate::Bar { .. }) {
-        Ok(value < boundary)
+        let open = batch
+            .column_by_name("bar_open_ts")
+            .and_then(|a| a.as_any().downcast_ref::<Int64Array>())
+            .ok_or_else(|| "missing bar_open_ts".to_string())?;
+        if open.is_null(row) {
+            return Err(format!("null gating time at row {row}"));
+        }
+        Ok(open.value(row) >= DEVELOPMENT_START_MS && value < boundary)
     } else {
         let received = batch
             .column_by_name("received_ts_ns")
@@ -198,7 +224,12 @@ fn eligible(
         if received.is_null(row) {
             return Err(format!("null gating time at row {row}"));
         }
-        Ok(value < boundary && received.value(row) < boundary)
+        Ok(
+            value >= DEVELOPMENT_START_NS
+                && value < boundary
+                && received.value(row) >= DEVELOPMENT_START_NS
+                && received.value(row) < boundary,
+        )
     }
 }
 
@@ -248,7 +279,7 @@ pub fn scan_part(
     let file = File::open(path)?;
     let builder = ParquetRecordBatchReaderBuilder::try_new(file)?;
     let fields: Vec<_> = match gate {
-        Gate::Bar { .. } => vec!["bar_close_ts"],
+        Gate::Bar { .. } => vec!["bar_open_ts", "bar_close_ts"],
         Gate::Tick { .. } => vec!["event_ts_ns", "received_ts_ns"],
     };
     let indices = fields
@@ -384,6 +415,7 @@ pub fn hash_view_identity(
         frame(&mut h, s.as_bytes());
     }
     h.update(boundary.to_le_bytes());
+    h.update(DEVELOPMENT_START_MS.to_le_bytes());
     for (((path, stat), hash), kind) in paths.iter().zip(stats).zip(hashes).zip(kinds) {
         frame(&mut h, path.as_bytes());
         frame(&mut h, kind.as_bytes());
@@ -447,6 +479,7 @@ pub struct Manifest {
     pub source_manifest_identity: String,
     pub payload_manifest_identity: String,
     pub boundary_rule: String,
+    pub development_start_inclusive: String,
     pub development_end_exclusive: String,
     pub builder_code_identity: String,
     pub source_groups: BTreeMap<String, Vec<ManifestFile>>,
@@ -604,6 +637,13 @@ pub fn verify_view(
                     io::Error::other(format!("gate violation: {}", file.logical_path)).into(),
                 );
             }
+            if !result.stats.mins_at_or_after_start() {
+                return Err(io::Error::other(format!(
+                    "development start violation: {}",
+                    file.logical_path
+                ))
+                .into());
+            }
             let hash = file.sha256.as_deref().ok_or_else(|| {
                 io::Error::other(format!("missing payload hash: {}", file.logical_path))
             })?;
@@ -722,6 +762,7 @@ pub fn materialize(
             && existing.source_manifest_identity == source_id
             && existing.payload_manifest_identity == payload_id
             && existing.builder_code_identity == code
+            && existing.development_start_inclusive == DEVELOPMENT_START_INCLUSIVE
             && existing.development_end_exclusive == "2026-05-05T12:39:00Z"
         {
             verify_view(view_root, &existing, batch_size)?;
@@ -854,7 +895,7 @@ pub fn materialize(
         code,
         started.elapsed().as_millis(),
     );
-    let manifest = Manifest { schema_version: 1, scope_id: scope.into(), instrument: "XAUUSD".into(), source_manifest_identity: source_id.into(), payload_manifest_identity: payload_id.into(), boundary_rule: "PHYSICAL DEVELOPMENT SCOPE FILTERS: end-exclusive; bars bar_close_ts < boundary; ticks event_ts_ns AND received_ts_ns < boundary_ns; null gating time is fatal".into(), development_end_exclusive: "2026-05-05T12:39:00Z".into(), builder_code_identity: code.into(), source_groups: groups, logical_view_identity: identity.clone() };
+    let manifest = Manifest { schema_version: 1, scope_id: scope.into(), instrument: "XAUUSD".into(), source_manifest_identity: source_id.into(), payload_manifest_identity: payload_id.into(), boundary_rule: "PHYSICAL DEVELOPMENT SCOPE FILTERS: development window [2025-07-31T16:15:00Z inclusive, 2026-05-05T12:39:00Z exclusive); bars bar_open_ts >= start and bar_close_ts < end; ticks event_ts_ns >= start and received_ts_ns >= start and event_ts_ns < end and received_ts_ns < end; null gating time is fatal".into(), development_start_inclusive: DEVELOPMENT_START_INCLUSIVE.into(), development_end_exclusive: "2026-05-05T12:39:00Z".into(), builder_code_identity: code.into(), source_groups: groups, logical_view_identity: identity.clone() };
     let manifest_path = temp.join("view_manifest.json");
     serde_json::to_writer_pretty(File::create(manifest_path)?, &manifest)?;
     verify_view(&temp, &manifest, batch_size)?;
