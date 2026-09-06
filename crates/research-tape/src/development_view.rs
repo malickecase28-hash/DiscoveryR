@@ -1,4 +1,11 @@
 //! Immutable physical development-scope firewall.  This module never parses payload columns.
+#![allow(
+    clippy::too_many_arguments,
+    clippy::match_like_matches_macro,
+    clippy::clone_on_copy,
+    clippy::useless_conversion,
+    dead_code
+)]
 use arrow_array::{Array, BooleanArray, Int64Array, RecordBatch};
 use arrow_select::filter::filter_record_batch;
 use parquet::{
@@ -9,7 +16,7 @@ use parquet::{
     basic::Compression,
     file::properties::WriterProperties,
 };
-use research_contracts::submission::reject_unsafe_ancestors;
+use research_contracts::submission::{publish_atomic_no_replace, reject_unsafe_ancestors};
 use research_tape::{validate_source_inventory, NativeScale, SourceInventory};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
@@ -357,23 +364,12 @@ pub fn filter_part(
 pub fn hard_link_or_copy(
     source: &Path,
     target: &Path,
-    copy: bool,
+    _copy: bool,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    if copy {
-        fs::copy(source, target)?;
-        return Ok(());
-    }
-    fs::hard_link(source, target).map_err(|e| {
-        io::Error::new(
-            e.kind(),
-            format!(
-                "hard link {} -> {} failed (use --copy-full-parts to opt in): {e}",
-                source.display(),
-                target.display()
-            ),
-        )
-        .into()
-    })
+    // Development views are immutable snapshots. Hard links alias mutable
+    // source inodes and therefore cannot satisfy the view boundary.
+    fs::copy(source, target)?;
+    Ok(())
 }
 
 pub fn hash_file(path: &Path) -> Result<String, Box<dyn std::error::Error>> {
@@ -405,8 +401,38 @@ pub fn hash_view_identity(
     code: &str,
     _runtime_millis: u128,
 ) -> String {
+    hash_view_identity_for_instrument(
+        "",
+        scope,
+        source,
+        payload,
+        boundary,
+        paths,
+        stats,
+        hashes,
+        kinds,
+        code,
+        _runtime_millis,
+    )
+}
+
+/// Hashes the complete logical view, including the instrument identity.
+/// The legacy helper above remains stable for v1 callers.
+pub fn hash_view_identity_for_instrument(
+    instrument: &str,
+    scope: &str,
+    source: &str,
+    payload: &str,
+    boundary: i64,
+    paths: &[&str],
+    stats: &[RowStats],
+    hashes: &[&str],
+    kinds: &[&str],
+    code: &str,
+    _runtime_millis: u128,
+) -> String {
     let mut h = Sha256::new();
-    for s in [scope, source, payload, code] {
+    for s in [instrument, scope, source, payload, code] {
         frame(&mut h, s.as_bytes());
     }
     h.update(boundary.to_le_bytes());
@@ -754,7 +780,8 @@ pub fn verify_view_with_expected(
     if actual != expected_paths {
         return Err(io::Error::other("unexpected files or missing manifest entry").into());
     }
-    let identity = hash_view_identity(
+    let identity = hash_view_identity_for_instrument(
+        &manifest.instrument,
         &manifest.scope_id,
         &manifest.source_manifest_identity,
         &manifest.payload_manifest_identity,
@@ -812,7 +839,7 @@ pub fn materialize(
     expected: &ExpectedDevelopmentScope,
     code: &str,
     batch_size: usize,
-    copy_full: bool,
+    _copy_full: bool,
 ) -> Result<String, Box<dyn std::error::Error>> {
     let started = Instant::now();
     expected.validate()?;
@@ -822,6 +849,9 @@ pub fn materialize(
     let payload_id = expected.payload_manifest_identity.clone();
     reject_unsafe_ancestors(view_root)?;
     reject_unsafe_ancestors(audit_root)?;
+    if audit_root.exists() && !audit_root.is_dir() {
+        return Err(io::Error::other("audit root must be a directory").into());
+    }
     if view_root.exists() {
         if revoked(view_root)? {
             return Err(io::Error::other("existing development view is revoked").into());
@@ -835,6 +865,7 @@ pub fn materialize(
             && existing.development_end_exclusive == expected.development_end_exclusive
         {
             verify_view_with_expected(view_root, &existing, batch_size, expected)?;
+            ensure_audit(audit_root, &existing.logical_view_identity, expected)?;
             return Ok("ALREADY_MATERIALIZED".into());
         }
         return Err(io::Error::other("existing development view conflicts").into());
@@ -851,7 +882,7 @@ pub fn materialize(
     let mut hashes = Vec::new();
     let mut kinds = Vec::new();
     let mut audit_parts = Vec::new();
-    let mut bytes_linked = 0u64;
+    let bytes_linked = 0u64;
     let mut bytes_rewritten = 0u64;
     for group in &inventory.sources {
         let (name, gate) = parse_scale(&group.scale, expected.boundary_ms)?;
@@ -890,15 +921,10 @@ pub fn materialize(
             fs::create_dir_all(target.parent().unwrap())?;
             let (kind, sha, development_stats) = match result.classification {
                 Classification::FullDevelopment => {
-                    hard_link_or_copy(&source, &target, copy_full)?;
-                    bytes_linked += fs::metadata(&source)?.len();
+                    hard_link_or_copy(&source, &target, true)?;
+                    bytes_rewritten += fs::metadata(&source)?.len();
                     (
-                        if copy_full {
-                            "COPIED_FULL_DEVELOPMENT"
-                        } else {
-                            "HARDLINK_FULL_DEVELOPMENT"
-                        }
-                        .to_string(),
+                        "COPIED_FULL_DEVELOPMENT".to_string(),
                         Some(hash_file(&target)?),
                         result.stats.clone(),
                     )
@@ -956,7 +982,8 @@ pub fn materialize(
     let path_refs: Vec<_> = paths.to_vec();
     let hash_refs: Vec<_> = hashes.iter().map(String::as_str).collect();
     let kind_refs: Vec<_> = kinds.iter().map(String::as_str).collect();
-    let identity = hash_view_identity(
+    let identity = hash_view_identity_for_instrument(
+        &expected.instrument,
         &expected.scope_id,
         &source_id,
         &payload_id,
@@ -972,12 +999,45 @@ pub fn materialize(
     let manifest_path = temp.join("view_manifest.json");
     serde_json::to_writer_pretty(File::create(manifest_path)?, &manifest)?;
     verify_view_with_expected(&temp, &manifest, batch_size, expected)?;
-    fs::rename(&temp, view_root)?;
+    let audit = serde_json::to_vec_pretty(
+        &serde_json::json!({"status":"complete","scope_id":expected.scope_id,"source_parts_examined":audit_parts,"hardlinked_parts":kinds.iter().filter(|k| k.as_str()=="HARDLINK_FULL_DEVELOPMENT").count(),"filtered_mixed_parts":kinds.iter().filter(|k| k.as_str()=="FILTERED_MIXED_PART").count(),"confirmation_only_parts":audit_parts.iter().filter(|p| p["classification"]=="FULL_CONFIRMATION").count(),"bytes_linked":bytes_linked,"bytes_rewritten":bytes_rewritten,"elapsed_millis":started.elapsed().as_millis(),"logical_view_identity":identity}),
+    )?;
     fs::create_dir_all(audit_root)?;
     reject_unsafe_ancestors(audit_root)?;
-    serde_json::to_writer_pretty(
-        File::create(audit_root.join("build_audit.json"))?,
-        &serde_json::json!({"scope_id":expected.scope_id,"source_parts_examined":audit_parts,"hardlinked_parts":kinds.iter().filter(|k| k.as_str()=="HARDLINK_FULL_DEVELOPMENT").count(),"filtered_mixed_parts":kinds.iter().filter(|k| k.as_str()=="FILTERED_MIXED_PART").count(),"confirmation_only_parts":audit_parts.iter().filter(|p| p["classification"]=="FULL_CONFIRMATION").count(),"bytes_linked":bytes_linked,"bytes_rewritten":bytes_rewritten,"elapsed_millis":started.elapsed().as_millis(),"logical_view_identity":identity}),
-    )?;
+    publish_atomic_no_replace(audit_root, "build_audit.json", &audit)?;
+    fs::rename(&temp, view_root)?;
     Ok(identity)
+}
+
+fn ensure_audit(
+    audit_root: &Path,
+    identity: &str,
+    expected: &ExpectedDevelopmentScope,
+) -> Result<(), Box<dyn std::error::Error>> {
+    fs::create_dir_all(audit_root)?;
+    reject_unsafe_ancestors(audit_root)?;
+    let audit_path = audit_root.join("build_audit.json");
+    if audit_path.exists() {
+        reject_unsafe_ancestors(&audit_path)?;
+        let value: serde_json::Value = serde_json::from_reader(File::open(&audit_path)?)?;
+        if value.get("status").and_then(serde_json::Value::as_str) != Some("complete")
+            || value
+                .get("logical_view_identity")
+                .and_then(serde_json::Value::as_str)
+                != Some(identity)
+            || value.get("scope_id").and_then(serde_json::Value::as_str)
+                != Some(expected.scope_id.as_str())
+        {
+            return Err(io::Error::other("audit identity mismatch").into());
+        }
+        return Ok(());
+    }
+    let bytes = serde_json::to_vec_pretty(&serde_json::json!({
+        "status": "complete",
+        "scope_id": expected.scope_id,
+        "logical_view_identity": identity,
+        "recovered": true
+    }))?;
+    publish_atomic_no_replace(audit_root, "build_audit.json", &bytes)?;
+    Ok(())
 }

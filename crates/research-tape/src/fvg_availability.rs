@@ -328,9 +328,9 @@ pub fn materialize(
                     .collect(),
                 DEFAULT_BATCH_SIZE,
             )?;
-            let mut scan = reader.scan()?;
+            let scan = reader.scan()?;
             let mut row = 0u64;
-            while let Some(batch) = scan.next() {
+            for batch in scan {
                 let batch = batch?;
                 let event = batch_i64(&batch, "event_ts_ns")?;
                 let received = batch_i64(&batch, "received_ts_ns")?;

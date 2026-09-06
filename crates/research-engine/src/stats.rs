@@ -480,11 +480,17 @@ pub fn bootstrap_by_block(
     for _ in 0..replicates {
         let mut total = 0.0;
         let mut n = 0;
-        for _ in 0..names.len() {
+        while n < values.len() {
             let block = &names[rng.index(names.len())];
             for v in values.iter().filter(|v| &v.block == block) {
-                total += v.value;
+                // Center the resampled world at zero before the tail test;
+                // otherwise a bootstrap distribution around the observation
+                // is incorrectly presented as a null p-value.
+                total += v.value - observed;
                 n += 1;
+                if n == values.len() {
+                    break;
+                }
             }
         }
         let replicate = total / n as f64;
@@ -501,11 +507,12 @@ pub fn bootstrap_by_block(
             "block-bootstrap",
             &[
                 "whole blocks sampled with replacement",
-                "tail uses finite-sample +1 rule",
+                "values are centered at the observed mean for a declared null tail",
+                "each replicate retains exactly the input row count",
                 "xorshift64* deterministic non-cryptographic RNG",
             ],
             replicates,
-            false,
+            true,
             Some(seed),
         ),
     })
@@ -570,7 +577,7 @@ pub fn block_permutation(
                 "finite-sample +1 p rule",
             ],
             replicates,
-            false,
+            true,
             Some(seed),
         ),
     })
@@ -650,7 +657,7 @@ pub fn circular_time_shift_null(
                 "xorshift64* deterministic non-cryptographic RNG",
             ],
             replicates,
-            false,
+            true,
             Some(seed),
         ),
     })
@@ -753,7 +760,7 @@ pub fn fdr_bh_by(entries: &[FamilyEntry], q: f64, by: bool) -> Result<FdrResult,
                 "only finite p-values enter the ranked family",
             ],
             entries.len(),
-            false,
+            true,
             None,
         ),
     })
@@ -789,7 +796,7 @@ pub fn max_statistic(
                 "null worlds are streamed through a bounded accumulator",
             ],
             max_worlds,
-            false,
+            true,
             None,
         ),
     })
@@ -976,6 +983,9 @@ pub fn kaplan_meier(
                 censored += 1
             }
             i += 1;
+        }
+        if at_risk == 0 {
+            break;
         }
         let hazard = events as f64 / at_risk as f64;
         survival *= 1.0 - hazard;

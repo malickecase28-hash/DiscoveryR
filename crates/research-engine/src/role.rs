@@ -4,7 +4,9 @@
 //! operations from declared detector roles. It does not inspect observations,
 //! outcomes, or prior findings.
 
-use research_contracts::{ContractError, DetectorRole, NativeScale};
+use research_contracts::{
+    validate_detector_lineage, ContractError, DetectorLineage, DetectorRole, NativeScale,
+};
 use std::collections::{BTreeMap, BTreeSet, HashSet};
 
 /// The eleven relationship families declared by the R ontology.
@@ -286,6 +288,14 @@ impl DetectorAtlas {
         if indexed.is_empty() {
             return Err(ContractError::Invalid("atlas cannot be empty".into()));
         }
+        let lineage = indexed
+            .values()
+            .map(|detector| DetectorLineage {
+                detector_id: detector.detector_id.clone(),
+                parent_detector_ids: detector.derives_from.clone(),
+            })
+            .collect::<Vec<_>>();
+        validate_detector_lineage(&lineage)?;
         for detector in indexed.values() {
             if detector
                 .derives_from
@@ -327,6 +337,23 @@ impl DetectorAtlas {
             }
         }
         false
+    }
+
+    pub fn shares_ancestor(&self, left: &str, right: &str) -> bool {
+        fn ancestors<'a>(atlas: &'a DetectorAtlas, id: &'a str, out: &mut HashSet<&'a str>) {
+            if let Some(detector) = atlas.detector(id) {
+                for parent in &detector.derives_from {
+                    if out.insert(parent.as_str()) {
+                        ancestors(atlas, parent, out);
+                    }
+                }
+            }
+        }
+        let mut left_ancestors = HashSet::new();
+        let mut right_ancestors = HashSet::new();
+        ancestors(self, left, &mut left_ancestors);
+        ancestors(self, right, &mut right_ancestors);
+        !left_ancestors.is_disjoint(&right_ancestors)
     }
 
     pub fn operators_for(

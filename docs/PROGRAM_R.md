@@ -4,7 +4,7 @@ Program R answers what information exists, what predicts what, under which
 conditions, and how stable the observation is. It produces evidence and
 knowledge records; it does not create a trading authority.
 
-The reusable flow is:
+The declared reusable flow is:
 
 `Detector Atlas → anchor program → native phenotype → question generation →
 same-domain/cross-domain discovery → candidate → method challenge → detector
@@ -30,4 +30,7 @@ partial, and inconclusive evidence. Statistics are synthetic-tested reusable
 operations; this document defines no scientific threshold or result.
 
 R confirmation freezes its claim and method contract before a separately
-authorized process consumes held-out data. A worker cannot unlock confirmation.
+authorized process consumes held-out data. The current synthetic runner covers
+causal tape-record adaptation, bounded question generation, provenance, and
+evidence states. Discovery over real detector questions and held-out consumption
+remain intentionally unavailable. A worker cannot unlock confirmation.

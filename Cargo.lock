@@ -779,6 +779,7 @@ name = "research-engine"
 version = "0.1.0"
 dependencies = [
  "research-contracts",
+ "research-tape",
  "serde",
  "serde_json",
  "sha2",

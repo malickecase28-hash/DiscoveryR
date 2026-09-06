@@ -6,6 +6,7 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
+use crate::LockedConfirmation;
 use research_contracts::{
     evidence::{ConfirmationState, EvidenceState},
     PortfolioComponent, PortfolioConstraint, PortfolioConstraintKind,
@@ -91,6 +92,91 @@ pub struct PortfolioInput {
     pub component: PortfolioComponent,
     pub strategies: Vec<StrategyStream>,
     pub constraints: Vec<PortfolioConstraint>,
+}
+
+/// Boundary-safe portfolio input. The legacy `StrategyStream` remains a
+/// descriptive fixture API; production P entry points should use this typed
+/// wrapper so index alignment cannot stand in for a causal time grid.
+#[derive(Clone, Debug, PartialEq)]
+pub struct AlignedStrategyStream {
+    pub stream: StrategyStream,
+    pub timestamps_ns: Vec<i64>,
+    pub availability_ns: Vec<i64>,
+    pub instrument_scope_identity: String,
+    pub source_identity: String,
+    pub time_grid_identity: String,
+    pub context_permission: research_contracts::ContextPermission,
+    pub confirmation: LockedConfirmation,
+}
+
+pub fn validate_aligned_streams(streams: &[AlignedStrategyStream]) -> Result<(), PortfolioError> {
+    if streams.is_empty() {
+        return Err(PortfolioError::EmptyInput);
+    }
+    let first = &streams[0];
+    first.context_permission.validate()?;
+    if first.context_permission.consumer != research_contracts::ProgramConsumer::PortfolioResearch {
+        return Err(PortfolioError::InvalidParameter(
+            "portfolio context permission",
+        ));
+    }
+    for stream in streams {
+        if !stream.confirmation.activation_locked
+            || stream.confirmation.confirmation_id.is_empty()
+            || stream.stream.evidence_state != EvidenceState::Known
+            || stream.timestamps_ns.is_empty()
+            || stream.timestamps_ns.len() != stream.availability_ns.len()
+            || stream.timestamps_ns.len() != stream.stream.returns.len()
+            || stream.instrument_scope_identity.is_empty()
+            || stream.source_identity.is_empty()
+            || stream.time_grid_identity != first.time_grid_identity
+            || stream.instrument_scope_identity != first.instrument_scope_identity
+            || stream.source_identity != first.source_identity
+            || stream.context_permission != first.context_permission
+            || stream.confirmation.holdout_policy_identity.is_empty()
+        {
+            return Err(PortfolioError::InvalidParameter("aligned strategy stream"));
+        }
+        if stream
+            .timestamps_ns
+            .windows(2)
+            .any(|pair| pair[1] <= pair[0])
+            || stream
+                .timestamps_ns
+                .iter()
+                .zip(&stream.availability_ns)
+                .any(|(time, available)| *time < 0 || *available < 0 || available > time)
+        {
+            return Err(PortfolioError::InvalidParameter("causal time grid"));
+        }
+    }
+    Ok(())
+}
+
+pub fn portfolio_report_aligned(
+    component: PortfolioComponent,
+    streams: &[AlignedStrategyStream],
+    constraints: Vec<PortfolioConstraint>,
+    scenarios: &[StressScenario],
+) -> Result<PortfolioReport, PortfolioError> {
+    validate_aligned_streams(streams)?;
+    let strategies = streams
+        .iter()
+        .map(|aligned| {
+            let mut stream = aligned.stream.clone();
+            stream.confirmation = ConfirmationState::Confirmed;
+            stream.evidence_state = EvidenceState::Known;
+            stream
+        })
+        .collect();
+    portfolio_report(
+        &PortfolioInput {
+            component,
+            strategies,
+            constraints,
+        },
+        scenarios,
+    )
 }
 
 impl PortfolioInput {
@@ -225,6 +311,7 @@ pub struct ConditionalCorrelationReport {
     pub regime: String,
     pub value: Option<f64>,
     pub observations: usize,
+    pub excluded_observations: usize,
     pub status: PortfolioStatus,
 }
 
@@ -271,6 +358,8 @@ pub struct ConcentrationReport {
 pub struct ConstraintOutcome {
     pub constraint_id: String,
     pub kind: PortfolioConstraintKind,
+    pub value: Option<f64>,
+    pub limit: Option<f64>,
     pub status: PortfolioStatus,
 }
 #[derive(Clone, Debug, PartialEq)]
@@ -444,6 +533,7 @@ pub fn conditional_correlation_report(
             regime: "<unavailable>".into(),
             value: None,
             observations: 0,
+            excluded_observations: left.returns.len().min(right.returns.len()),
             status: PortfolioStatus::Unknown,
         }]);
     }
@@ -465,6 +555,7 @@ pub fn conditional_correlation_report(
         }
     }
     let base = status([left.evidence_state.clone(), right.evidence_state.clone()].into_iter());
+    let total = left.returns.len().min(right.returns.len());
     Ok(grouped
         .into_iter()
         .map(|(regime, (x, y, observations))| match pearson(&x, &y) {
@@ -473,13 +564,15 @@ pub fn conditional_correlation_report(
                 regime,
                 value: Some(value),
                 observations,
-                status: base.clone(),
+                excluded_observations: total.saturating_sub(observations),
+                status: with_missing(base.clone(), observations, total),
             },
             Err(_) => ConditionalCorrelationReport {
                 strategy_ids: [left.strategy_id.clone(), right.strategy_id.clone()],
                 regime,
                 value: None,
                 observations,
+                excluded_observations: total.saturating_sub(observations),
                 status: PortfolioStatus::Failed,
             },
         })
@@ -525,6 +618,11 @@ pub fn capital_allocation_report(
 ) -> Result<CapitalAllocationReport, PortfolioError> {
     input.validate()?;
     let total_capital: f64 = input.strategies.iter().filter_map(|s| s.capital).sum();
+    let capital_count = input
+        .strategies
+        .iter()
+        .filter(|s| s.capital.is_some())
+        .count();
     let base = status(input.strategies.iter().map(|s| s.evidence_state.clone()));
     let allocations = input
         .strategies
@@ -544,7 +642,7 @@ pub fn capital_allocation_report(
         allocations,
         total_capital,
         status: if total_capital > 0.0 {
-            base
+            with_missing(base, capital_count, input.strategies.len())
         } else if base == PortfolioStatus::Known {
             PortfolioStatus::Unknown
         } else {
@@ -580,6 +678,8 @@ pub fn drawdown_report(input: &PortfolioInput) -> Result<DrawdownReport, Portfol
         .map(|s| s.returns.len())
         .min()
         .unwrap_or(0);
+    let total_capital: f64 = input.strategies.iter().filter_map(|s| s.capital).sum();
+    let weighted = total_capital > 0.0 && input.strategies.iter().all(|s| s.capital.is_some());
     let mut portfolio = Vec::new();
     for i in 0..n {
         let values: Vec<_> = input
@@ -588,10 +688,22 @@ pub fn drawdown_report(input: &PortfolioInput) -> Result<DrawdownReport, Portfol
             .filter_map(|s| s.returns.get(i).and_then(|v| *v))
             .collect();
         if values.len() == input.strategies.len() {
-            portfolio.push(values.iter().sum::<f64>() / values.len() as f64);
+            portfolio.push(if weighted {
+                input
+                    .strategies
+                    .iter()
+                    .zip(values.iter())
+                    .map(|(strategy, value)| {
+                        value * strategy.capital.unwrap_or(0.0) / total_capital
+                    })
+                    .sum()
+            } else {
+                values.iter().sum::<f64>() / values.len() as f64
+            });
         }
     }
     let base = status(input.strategies.iter().map(|s| s.evidence_state.clone()));
+    let drawdown_status = with_missing(base, portfolio.len(), n);
     Ok(DrawdownReport {
         max_drawdown: drawdown(portfolio.iter().copied()).unwrap_or(0.0),
         strategy_drawdowns: input
@@ -605,7 +717,11 @@ pub fn drawdown_report(input: &PortfolioInput) -> Result<DrawdownReport, Portfol
             })
             .collect(),
         observations: portfolio.len(),
-        status: with_missing(base, portfolio.len(), n),
+        status: if weighted {
+            drawdown_status
+        } else {
+            combine_status(drawdown_status, PortfolioStatus::Partial)
+        },
     })
 }
 
@@ -728,6 +844,11 @@ pub fn concentration_report(input: &PortfolioInput) -> Result<ConcentrationRepor
 pub fn risk_budget_report(input: &PortfolioInput) -> Result<RiskBudgetReport, PortfolioError> {
     input.validate()?;
     let total: f64 = input.strategies.iter().filter_map(|s| s.risk_budget).sum();
+    let budget_count = input
+        .strategies
+        .iter()
+        .filter(|s| s.risk_budget.is_some())
+        .count();
     let base = status(input.strategies.iter().map(|s| s.evidence_state.clone()));
     let allocations = input
         .strategies
@@ -749,7 +870,7 @@ pub fn risk_budget_report(input: &PortfolioInput) -> Result<RiskBudgetReport, Po
     Ok(RiskBudgetReport {
         total_budget: total,
         status: if total > 0.0 {
-            base
+            with_missing(base, budget_count, input.strategies.len())
         } else if base == PortfolioStatus::Known {
             PortfolioStatus::Unknown
         } else {
@@ -761,17 +882,50 @@ pub fn risk_budget_report(input: &PortfolioInput) -> Result<RiskBudgetReport, Po
 
 pub fn constraints_report(input: &PortfolioInput) -> Result<ConstraintReport, PortfolioError> {
     input.validate()?;
+    let mut outcomes = Vec::new();
+    for constraint in &input.constraints {
+        let limit = constraint
+            .parameters
+            .get("max")
+            .and_then(|v| v.as_f64())
+            .or_else(|| constraint.parameters.get("limit").and_then(|v| v.as_f64()));
+        let minimum = constraint.parameters.get("min").and_then(|v| v.as_f64());
+        let value = match constraint.kind {
+            PortfolioConstraintKind::CapitalAllocation => {
+                Some(capital_allocation_report(input)?.total_capital)
+            }
+            PortfolioConstraintKind::Drawdown => Some(drawdown_report(input)?.max_drawdown),
+            PortfolioConstraintKind::Capacity => capacity_report(input)?.bottleneck,
+            PortfolioConstraintKind::Liquidity => liquidity_report(input)?.minimum,
+            PortfolioConstraintKind::RiskBudget => Some(risk_budget_report(input)?.total_budget),
+            PortfolioConstraintKind::Concentration => Some(concentration_report(input)?.herfindahl),
+            PortfolioConstraintKind::Turnover => turnover_report(input)?.total,
+            _ => None,
+        };
+        let status = match (value, limit, minimum) {
+            (Some(value), Some(limit), _) if value <= limit => PortfolioStatus::Known,
+            (Some(value), _, Some(minimum)) if value >= minimum => PortfolioStatus::Known,
+            (Some(_), Some(_), _) | (Some(_), _, Some(_)) => PortfolioStatus::Abstained,
+            _ => PortfolioStatus::Unknown,
+        };
+        outcomes.push(ConstraintOutcome {
+            constraint_id: constraint.constraint_id.clone(),
+            kind: constraint.kind.clone(),
+            value,
+            limit: limit.or(minimum),
+            status,
+        });
+    }
+    let aggregate = outcomes.iter().fold(PortfolioStatus::Known, |left, right| {
+        combine_status(left, right.status.clone())
+    });
     Ok(ConstraintReport {
-        constraints: input
-            .constraints
-            .iter()
-            .map(|constraint| ConstraintOutcome {
-                constraint_id: constraint.constraint_id.clone(),
-                kind: constraint.kind.clone(),
-                status: PortfolioStatus::Known,
-            })
-            .collect(),
-        status: PortfolioStatus::Known,
+        constraints: outcomes,
+        status: if input.constraints.is_empty() {
+            PortfolioStatus::Unknown
+        } else {
+            aggregate
+        },
     })
 }
 

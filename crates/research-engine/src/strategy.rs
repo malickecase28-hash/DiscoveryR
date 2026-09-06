@@ -1,19 +1,70 @@
+use crate::LockedConfirmation;
 use research_contracts::{
     ContractError, CostModel, DecisionRule, ExecutionAssumption, RiskRule, StrategyHypothesis,
 };
+use serde::Serialize;
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct ConfirmedBehavioralInput {
     pub input_id: String,
     pub confirmed: bool,
     pub available_time_ns: i64,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct ConfirmedInputManifest {
     pub strategy_id: String,
     pub holdout_policy_identity: String,
     pub inputs: Vec<ConfirmedBehavioralInput>,
+}
+
+/// Manifest issued by the strict confirmation boundary. The inner manifest
+/// remains private so a worker cannot manufacture a confirmed input for strict
+/// S entry points by setting the legacy boolean field.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct CustodiedInputManifest {
+    manifest: ConfirmedInputManifest,
+    confirmation: LockedConfirmation,
+}
+
+impl CustodiedInputManifest {
+    pub fn issue(
+        manifest: ConfirmedInputManifest,
+        confirmation: LockedConfirmation,
+    ) -> Result<Self, StrategyError> {
+        manifest.validate_for(&StrategyHypothesis {
+            strategy_id: manifest.strategy_id.clone(),
+            hypothesis_id: "custodied-input".into(),
+            confirmed_finding_ids: manifest
+                .inputs
+                .iter()
+                .map(|input| input.input_id.clone())
+                .collect(),
+            parameters: std::collections::BTreeMap::from([(
+                String::from("bound"),
+                serde_json::json!(true),
+            )]),
+        })?;
+        if !confirmation.activation_locked
+            || confirmation.holdout_policy_identity != manifest.holdout_policy_identity
+        {
+            return Err(StrategyError::Custody(
+                "confirmation is not locked to input policy".into(),
+            ));
+        }
+        Ok(Self {
+            manifest,
+            confirmation,
+        })
+    }
+
+    pub fn manifest(&self) -> &ConfirmedInputManifest {
+        &self.manifest
+    }
+
+    pub fn confirmation(&self) -> &LockedConfirmation {
+        &self.confirmation
+    }
 }
 
 impl ConfirmedInputManifest {
@@ -54,7 +105,7 @@ impl ConfirmedInputManifest {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct StrategySpec {
     pub hypothesis: StrategyHypothesis,
     pub decision_rule: DecisionRule,

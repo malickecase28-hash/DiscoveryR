@@ -1,3 +1,4 @@
+use crate::identity::validate_identity;
 use schemars::{schema_for, JsonSchema};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -11,8 +12,8 @@ pub mod submission;
 pub mod timing;
 
 pub use authority::{
-    validate_compatibility, AuthorityCompatibility, AuthorityDelta, DetectorVersion,
-    ProducerAuthority,
+    validate_compatibility, validate_compatibility_for_scope, AuthorityCompatibility,
+    AuthorityDelta, DetectorVersion, ProducerAuthority,
 };
 pub use evidence::{
     AttackKind, ChallengeResult, ConfirmationActor, ConfirmationContract, ConfirmationState,
@@ -20,8 +21,8 @@ pub use evidence::{
     MethodChallenge, NullDesign, OutcomeDefinition, Question,
 };
 pub use identity::{
-    validate_detector_lineage, validate_object_lineage, DetectorLineage, ObjectIdentity,
-    ReproducibilityIdentity,
+    validate_detector_lineage, validate_object_lineage, CompleteReproducibilityIdentity,
+    DetectorLineage, ObjectIdentity, ReproducibilityIdentity,
 };
 pub use programs::{
     CostModel, DecisionRule, ExecutionAssumption, PortfolioComponent, PortfolioConstraint,
@@ -391,6 +392,25 @@ pub fn validate_contract(contract: &ExperimentContract) -> Result<(), ContractEr
 }
 
 pub fn validate_knowledge_record(record: &KnowledgeRecord) -> Result<(), ContractError> {
+    let (record_id, provenance) = match record {
+        KnowledgeRecord::Question(record) => (&record.record_id, &record.provenance),
+        KnowledgeRecord::Finding(record) => (&record.record_id, &record.provenance),
+        KnowledgeRecord::Challenge(record) => (&record.record_id, &record.provenance),
+        KnowledgeRecord::Knowledge(record) => (&record.record_id, &record.provenance),
+    };
+    validate_identity(record_id, "record_id")?;
+    for id in &provenance.evidence_ids {
+        validate_identity(id, "provenance evidence_id")?;
+    }
+    for id in provenance
+        .experiment_id
+        .iter()
+        .chain(provenance.run_id.iter())
+        .chain(provenance.code_identity.iter())
+        .chain(provenance.researcher_id.iter())
+    {
+        validate_identity(id, "provenance identity")?;
+    }
     if let KnowledgeRecord::Finding(finding) = record {
         match (&finding.status, &finding.rejection_reason) {
             (FindingStatus::Rejected, Some(_)) => Ok(()),
@@ -612,6 +632,10 @@ pub fn generated_additive_schemas() -> Vec<(&'static str, String)> {
             schema_json::<ReproducibilityIdentity>(),
         ),
         (
+            "complete_reproducibility_identity_v1.schema.json",
+            schema_json::<CompleteReproducibilityIdentity>(),
+        ),
+        (
             "object_identity_v1.schema.json",
             schema_json::<ObjectIdentity>(),
         ),
@@ -619,6 +643,44 @@ pub fn generated_additive_schemas() -> Vec<(&'static str, String)> {
             "detector_lineage_v1.schema.json",
             schema_json::<DetectorLineage>(),
         ),
+        (
+            "anchor_definition_v1.schema.json",
+            schema_json::<AnchorDefinition>(),
+        ),
+        (
+            "anchor_program_v1.schema.json",
+            schema_json::<AnchorProgram>(),
+        ),
+        (
+            "context_permission_v1.schema.json",
+            schema_json::<ContextPermission>(),
+        ),
+        (
+            "lifecycle_vocabulary_v1.schema.json",
+            schema_json::<LifecycleVocabulary>(),
+        ),
+        (
+            "lifecycle_transition_v1.schema.json",
+            schema_json::<LifecycleTransition>(),
+        ),
+        (
+            "scope_interval_v1.schema.json",
+            schema_json::<ScopeInterval>(),
+        ),
+        (
+            "future_data_policy_v1.schema.json",
+            schema_json::<FutureDataPolicy>(),
+        ),
+        ("holdout_leaf_v1.schema.json", schema_json::<HoldoutLeaf>()),
+        (
+            "exposure_history_v1.schema.json",
+            schema_json::<ExposureHistory>(),
+        ),
+        (
+            "control_design_v1.schema.json",
+            schema_json::<ControlDesign>(),
+        ),
+        ("null_design_v1.schema.json", schema_json::<NullDesign>()),
     ]
 }
 

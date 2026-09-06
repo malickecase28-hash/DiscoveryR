@@ -4,7 +4,8 @@ use serde_json::Value;
 use std::collections::{BTreeSet, HashSet};
 
 use crate::{
-    identity::validate_identity, ContractError, DetectorRole, KnowledgeRecord, NativeScale,
+    identity::validate_identity, validate_knowledge_record, ContractError, DetectorRole,
+    KnowledgeRecord, NativeScale,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
@@ -17,6 +18,7 @@ pub enum EvidenceState {
     Inconclusive,
     Partial,
     Contradictory,
+    Failed,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
@@ -131,9 +133,20 @@ pub struct NullDesign {
     pub parameters: Value,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum AttackKind {
+    Lookahead,
+    PopulationConditioning,
+    DenominatorErrors,
+    LineageDuplication,
+    FalseConfluence,
+    BadControls,
+    TemporalDependence,
+    NormalizationLeakage,
+    Fragility,
+    SampleConcentration,
+    AlternativeExplanations,
     TimestampLeakage,
     SelectionBias,
     MultipleTesting,
@@ -306,7 +319,9 @@ impl KnowledgeEnvelope {
             ));
         }
         validate_identity(&self.knowledge_id, "knowledge_id")?;
-        self.facets.validate()
+        self.facets.validate()?;
+        validate_knowledge_record(&self.record)?;
+        Ok(())
     }
 }
 
@@ -322,6 +337,8 @@ pub struct KnowledgeQuery {
     pub evidence_id: Option<String>,
     pub strategy_id: Option<String>,
     pub portfolio_id: Option<String>,
+    pub lifecycle_stage: Option<String>,
+    pub evidence_state: Option<EvidenceState>,
 }
 
 impl KnowledgeQuery {
@@ -358,6 +375,32 @@ impl KnowledgeQuery {
                 .portfolio_id
                 .as_ref()
                 .is_none_or(|id| f.portfolio_ids.contains(id))
+            && self.lifecycle_stage.as_ref().is_none_or(|stage| {
+                envelope
+                    .record_content()
+                    .and_then(|content| content.get("lifecycle_stage"))
+                    .and_then(Value::as_str)
+                    == Some(stage.as_str())
+            })
+            && self.evidence_state.as_ref().is_none_or(|state| {
+                envelope
+                    .record_content()
+                    .and_then(|content| content.get("evidence_state"))
+                    .and_then(|value| serde_json::from_value::<EvidenceState>(value.clone()).ok())
+                    .as_ref()
+                    == Some(state)
+            })
+    }
+}
+
+impl KnowledgeEnvelope {
+    fn record_content(&self) -> Option<&Value> {
+        match &self.record {
+            KnowledgeRecord::Question(record) => Some(&record.content),
+            KnowledgeRecord::Finding(record) => Some(&record.content),
+            KnowledgeRecord::Challenge(record) => Some(&record.content),
+            KnowledgeRecord::Knowledge(record) => Some(&record.content),
+        }
     }
 }
 

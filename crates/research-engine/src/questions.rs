@@ -93,6 +93,14 @@ impl QuestionGenerationRequest {
                 "availability map contains an undeclared context".into(),
             ));
         }
+        let mut directions = HashSet::new();
+        if self
+            .directions
+            .iter()
+            .any(|direction| !directions.insert(*direction))
+        {
+            return Err(ContractError::Invalid("directions must be unique".into()));
+        }
         Ok(())
     }
 }
@@ -153,6 +161,7 @@ impl DetectorAtlas {
 
         let mut questions = Vec::new();
         let mut rejected = Vec::new();
+        let mut accepted_contexts = Vec::new();
         for context_id in &request.context_detector_ids {
             let Some(context) = self.detector(context_id) else {
                 return Err(ContractError::Invalid(format!(
@@ -195,6 +204,9 @@ impl DetectorAtlas {
             }
             if self.is_derived_from(context_id, &request.anchor_detector_id)
                 || self.is_derived_from(&request.anchor_detector_id, context_id)
+                || accepted_contexts
+                    .iter()
+                    .any(|prior: &String| self.shares_ancestor(context_id, prior))
             {
                 rejected.push(RejectedCandidate {
                     detector_id: context_id.clone(),
@@ -202,6 +214,8 @@ impl DetectorAtlas {
                 });
                 continue;
             }
+
+            accepted_contexts.push(context_id.clone());
 
             for operator in RelationshipOperator::ALL {
                 let anchor_compatible = anchor

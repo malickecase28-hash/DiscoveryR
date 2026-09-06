@@ -24,11 +24,42 @@ fn write_json(value: Value, output: Option<&str>) -> Result<(), String> {
                     .map_err(|error| format!("create output root: {error}"))?;
             }
         }
-        fs::write(&path, bytes).map_err(|error| format!("write {}: {error}", path.display()))?;
+        if fs::symlink_metadata(&path).is_ok() {
+            return Err(format!(
+                "refusing to replace existing output {}",
+                path.display()
+            ));
+        }
+        let parent = path.parent().ok_or("output has no parent")?;
+        reject_unsafe_ancestors(parent).map_err(|error| error.to_string())?;
+        let temp = parent.join(format!(
+            ".research-output-{}-{}",
+            std::process::id(),
+            unique_suffix()
+        ));
+        let mut file = fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(&temp)
+            .map_err(|error| format!("create output: {error}"))?;
+        use std::io::Write;
+        file.write_all(&bytes)
+            .map_err(|error| format!("write output: {error}"))?;
+        file.sync_all()
+            .map_err(|error| format!("sync output: {error}"))?;
+        fs::hard_link(&temp, &path)
+            .map_err(|error| format!("publish {}: {error}", path.display()))?;
+        fs::remove_file(&temp).map_err(|error| format!("remove temporary output: {error}"))?;
     } else {
         println!("{}", String::from_utf8_lossy(&bytes));
     }
     Ok(())
+}
+
+fn unique_suffix() -> u128 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map_or(0, |duration| duration.as_nanos())
 }
 
 fn output_path(path: &str) -> Result<PathBuf, String> {
@@ -88,24 +119,26 @@ fn run() -> Result<(), String> {
         "run-experiment" => {
             let question: Question = value_as(value)?;
             question.validate().map_err(|error| error.to_string())?;
-            json!({"status":"validated", "execution":"dry_run_only", "question_id": question.question_id})
+            json!({"status":"not_run", "execution":"unavailable", "question_id": question.question_id})
         }
         "verify-result" => {
             let identity: ReproducibilityIdentity = value_as(value)?;
             let hash = verify_identity(&identity, None).map_err(|error| error.to_string())?;
-            json!({"status":"verified", "identity_hash":hash})
+            json!({"status":"not_run", "verification":"artifact_bytes_required", "identity_hash":hash})
         }
         "challenge-result" => {
             let challenge: MethodChallenge = value_as(value)?;
             challenge.validate().map_err(|error| error.to_string())?;
-            json!({"status":"recorded", "challenge_id": challenge.challenge_id, "result": challenge.result})
+            json!({"status":"not_run", "challenge_id": challenge.challenge_id, "result": challenge.result})
         }
         "confirm-frozen-claim" => {
             let contract: ConfirmationContract = value_as(value)?;
             contract.validate().map_err(|error| error.to_string())?;
-            json!({"status":"locked", "activation_locked":true, "confirmation_id":contract.confirmation_id, "custodian_required":true})
+            json!({"status":"not_run", "activation_locked":true, "confirmation_id":contract.confirmation_id, "custodian_required":true})
         }
-        "generate-report" => json!({"status":"validated", "report": value}),
+        "generate-report" => {
+            json!({"status":"not_run", "report_generation":"typed_runner_required"})
+        }
         _ => return Err(usage("unknown command")),
     };
     write_json(result, output.as_deref())

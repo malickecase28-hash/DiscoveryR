@@ -10,6 +10,9 @@ and strategy overlap, capital allocation, drawdown interaction, regime
 diversification, capacity, turnover, liquidity, concentration, risk budgets,
 optimization, and stress. Constraints and context permissions are explicit.
 
+The legacy vector stream is descriptive fixture support. Boundary-safe P input
+uses aligned timestamps, availability times, source/scope/time-grid identities,
+portfolio context permission, and a bound locked strategy confirmation.
 Synthetic fixtures exercise two or more strategy streams, missing values,
 conditional regimes, and deterministic replay. Unknown, abstained, null, and
 contradictory inputs remain visible in reports. No actual research result,

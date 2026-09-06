@@ -11,14 +11,16 @@ scale, timezone, warmup, exclusions, and transformations are recorded. A fresh
 process can materialize the same scope and verify the same logical identity.
 Missing checks are reported as `not_run`; a timeout is not a successful result.
 
-The command surface is intentionally small:
+The command surface is intentionally explicit:
 
-`validate instrument` checks source and authority contracts; `materialize scope`
-creates a declared development view; `run experiment` executes a frozen
-contract; `verify result` replays and compares identities; `challenge result`
-attaches independent method evidence; `confirm frozen claim` is available only
-to an externally authorized custodian; `generate report` emits a path-independent
-machine-readable report.
+`validate instrument` checks the typed scope. The tape materializer is the
+operation that creates a declared development view and defaults to content
+copies. The engine CLI returns `not_run` for execution, replay, challenge,
+confirmation, and arbitrary report wrapping when their typed runner/custody
+boundary is not supplied; it never reports validation as execution. The library
+APIs `run_research`, `method_challenge_protocol`, and the bound confirmation
+functions provide the synthetic infrastructure path. Output publication is
+relative, no-replace, and rejects final symlink/reparse targets.
 
 Reproducibility proves the computation and its inputs. It does not prove a
 scientific claim, profitability, or future performance.

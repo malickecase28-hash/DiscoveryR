@@ -200,6 +200,79 @@ pub struct ReproducibilityIdentity {
     pub user_identities: Vec<String>,
 }
 
+/// Complete identity manifest used by new R/S/P runners. The compact v1
+/// identity above remains wire-compatible for existing callers.
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct CompleteReproducibilityIdentity {
+    pub instrument_identity: String,
+    pub producer_commit_identity: String,
+    pub producer_source_identity: String,
+    pub producer_blob_identity: String,
+    pub authority_version_identity: String,
+    pub detector_version_identity: String,
+    pub parameter_identity: String,
+    pub source_manifest_identity: String,
+    pub payload_manifest_identity: String,
+    pub data_scope_identity: String,
+    pub experiment_contract_identity: String,
+    pub code_identity: String,
+    pub scanner_version_identity: String,
+    pub control_design_identity: String,
+    pub null_design_identity: String,
+    pub seed_identity: String,
+    pub output_identity: String,
+    pub native_scale_identity: String,
+    pub availability_contract_identity: String,
+}
+
+impl CompleteReproducibilityIdentity {
+    pub fn validate(&self) -> Result<(), ContractError> {
+        for (field, value) in [
+            ("instrument_identity", &self.instrument_identity),
+            ("producer_commit_identity", &self.producer_commit_identity),
+            ("producer_source_identity", &self.producer_source_identity),
+            ("producer_blob_identity", &self.producer_blob_identity),
+            (
+                "authority_version_identity",
+                &self.authority_version_identity,
+            ),
+            ("detector_version_identity", &self.detector_version_identity),
+            ("parameter_identity", &self.parameter_identity),
+            ("source_manifest_identity", &self.source_manifest_identity),
+            ("payload_manifest_identity", &self.payload_manifest_identity),
+            ("data_scope_identity", &self.data_scope_identity),
+            (
+                "experiment_contract_identity",
+                &self.experiment_contract_identity,
+            ),
+            ("code_identity", &self.code_identity),
+            ("scanner_version_identity", &self.scanner_version_identity),
+            ("control_design_identity", &self.control_design_identity),
+            ("null_design_identity", &self.null_design_identity),
+            ("seed_identity", &self.seed_identity),
+            ("output_identity", &self.output_identity),
+            ("native_scale_identity", &self.native_scale_identity),
+            (
+                "availability_contract_identity",
+                &self.availability_contract_identity,
+            ),
+        ] {
+            validate_identity(value, field)?;
+        }
+        Ok(())
+    }
+
+    pub fn identity_hash(&self) -> Result<String, ContractError> {
+        self.validate()?;
+        let bytes =
+            serde_json::to_vec(self).map_err(|error| ContractError::Invalid(error.to_string()))?;
+        let mut hasher = Sha256::new();
+        hasher.update(bytes);
+        Ok(format!("{:x}", hasher.finalize()))
+    }
+}
+
 impl ReproducibilityIdentity {
     pub fn validate(&self) -> Result<(), ContractError> {
         for (field, value) in [

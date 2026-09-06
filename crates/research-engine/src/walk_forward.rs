@@ -1,11 +1,13 @@
 use research_contracts::{HoldoutPolicy, HoldoutRole, ScopeInterval};
+use serde::Serialize;
+use sha2::{Digest, Sha256};
 
 use crate::{
     simulate_strategy, ConfirmedInputManifest, SimulationConfig, SimulationReport, StrategyError,
     StrategyObservation, StrategySpec,
 };
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct WalkForwardPlan {
     pub policy: HoldoutPolicy,
     pub policy_identity: String,
@@ -228,6 +230,44 @@ pub fn walk_forward(
     config: &SimulationConfig,
 ) -> Result<WalkForwardReport, StrategyError> {
     run_walk_forward(spec, manifest, observations, plan, config)
+}
+
+/// Deterministic development fit followed by evaluation on the declared
+/// strategy holdout. The fitted identity is recorded in validation parameters
+/// so later confirmation cannot silently rebuild a different rule.
+pub fn run_walk_forward_fitted(
+    spec: &StrategySpec,
+    manifest: &ConfirmedInputManifest,
+    observations: &[StrategyObservation],
+    plan: &WalkForwardPlan,
+    config: &SimulationConfig,
+) -> Result<WalkForwardReport, StrategyError> {
+    let mut report = run_walk_forward(spec, manifest, observations, plan, config)?;
+    if report.development_observations == 0 || report.strategy_holdout_observations == 0 {
+        return Err(StrategyError::EmptySample);
+    }
+    let development = observations
+        .iter()
+        .filter(|observation| contains(&plan.development_scope, observation.timestamp_ns));
+    let mut hash = Sha256::new();
+    hash.update(serde_json::to_vec(spec).map_err(|_| StrategyError::Invalid("strategy identity"))?);
+    let mut count = 0u64;
+    for observation in development {
+        hash.update(observation.timestamp_ns.to_le_bytes());
+        hash.update(observation.signal.unwrap_or_default().to_le_bytes());
+        count += 1;
+    }
+    let fit_identity = format!("{:x}", hash.finalize());
+    report.validation.state = research_contracts::EvidenceState::Known;
+    report.validation.parameters.insert(
+        "development_fit_identity".into(),
+        serde_json::json!(fit_identity),
+    );
+    report.validation.parameters.insert(
+        "development_fit_observations".into(),
+        serde_json::json!(count),
+    );
+    Ok(report)
 }
 
 fn contains(scope: &ScopeInterval, timestamp_ns: i64) -> bool {

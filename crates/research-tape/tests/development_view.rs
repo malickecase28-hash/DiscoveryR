@@ -71,7 +71,7 @@ fn identity_is_deterministic_and_runtime_independent() {
         "payload",
         B,
         &["x"],
-        &[stats.clone()],
+        std::slice::from_ref(&stats),
         &["h"],
         &["FILTERED_MIXED_PART"],
         "commit",
@@ -270,7 +270,7 @@ fn revoked_view_fails_verification() {
 #[test]
 fn malformed_received_time_fails_exposed_view_verification() {
     use parquet::arrow::ArrowWriter;
-    use std::{fs::File, path::PathBuf};
+    use std::fs::File;
     let root = std::env::temp_dir().join(format!("dev_view_verify_{}", std::process::id()));
     std::fs::create_dir_all(root.join("tick")).unwrap();
     let path = root.join("tick/part.parquet");
@@ -320,7 +320,7 @@ fn malformed_received_time_fails_exposed_view_verification() {
         logical_view_identity: "x".into(),
     };
     assert!(development_view::verify_view(&root, &manifest, 64).is_err());
-    let _ = std::fs::remove_dir_all(PathBuf::from(root));
+    let _ = std::fs::remove_dir_all(root);
 }
 
 fn expected_scope(manifest: &Manifest) -> ExpectedDevelopmentScope {

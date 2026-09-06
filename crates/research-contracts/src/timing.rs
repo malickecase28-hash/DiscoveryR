@@ -1,5 +1,6 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 use std::collections::{BTreeSet, HashSet};
 
 use crate::{identity::validate_identity, ContractError, NativeScale};
@@ -408,6 +409,15 @@ impl HoldoutPolicy {
         }
         Ok(())
     }
+
+    pub fn identity_hash(&self) -> Result<String, ContractError> {
+        self.validate()?;
+        let bytes =
+            serde_json::to_vec(self).map_err(|error| ContractError::Invalid(error.to_string()))?;
+        let mut hash = Sha256::new();
+        hash.update(bytes);
+        Ok(format!("{:x}", hash.finalize()))
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
@@ -427,7 +437,7 @@ pub struct ExposureEvent {
 #[schemars(deny_unknown_fields)]
 pub struct ExposureHistory {
     pub policy: HoldoutPolicy,
-    pub events: Vec<ExposureEvent>,
+    events: Vec<ExposureEvent>,
 }
 
 impl ExposureHistory {
@@ -437,6 +447,10 @@ impl ExposureHistory {
             policy,
             events: Vec::new(),
         })
+    }
+
+    pub fn events(&self) -> &[ExposureEvent] {
+        &self.events
     }
 }
 

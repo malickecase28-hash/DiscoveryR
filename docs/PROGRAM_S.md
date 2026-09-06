@@ -10,8 +10,11 @@ labels are continuation, exhaustion/reversal, structural reaction, breakout,
 mean reversion, multi-scale structural, regime filter, and
 execution/abstention; labels do not hardcode a strategy.
 
-The runner produces a `StrategyValidation` containing input identities, timing,
-coverage, abstentions, costs, risks, and validation evidence. Method challenge
+The descriptive runner produces a `StrategyValidation` containing input
+identities, timing, coverage, abstentions, costs, risks, and validation
+evidence. The strict causal simulation path attaches input IDs per observation;
+the bound confirmation API requires all declared challenge attacks and a
+custodian receipt. Method challenge
 attacks lookahead, selection, controls, temporal dependence, multiple testing,
 fragility, concentration, and alternative explanations. Challenge survival and
 promotion are evidence states, not confirmation.

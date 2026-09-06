@@ -2,7 +2,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
-use crate::{identity::validate_identity, ContractError, NativeScale};
+use crate::{identity::validate_identity, ContractError, InstrumentScope, NativeScale};
 
 #[derive(Debug, Clone, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
@@ -107,6 +107,14 @@ pub fn validate_compatibility(
     expected.validate()?;
     actual.validate()?;
     let mut deltas = Vec::new();
+    if expected.producer_id != actual.producer_id {
+        add_delta(
+            &mut deltas,
+            "producer_id",
+            expected.producer_id.clone(),
+            actual.producer_id.clone(),
+        );
+    }
     for (surface, left, right) in [
         (
             "producer_commit",
@@ -192,4 +200,42 @@ pub fn validate_compatibility(
             changed_surfaces: deltas,
         })
     }
+}
+
+pub fn validate_compatibility_for_scope(
+    expected: &ProducerAuthority,
+    actual: &ProducerAuthority,
+    expected_scope: &InstrumentScope,
+    actual_scope: &InstrumentScope,
+) -> Result<AuthorityCompatibility, ContractError> {
+    expected_scope.validate()?;
+    actual_scope.validate()?;
+    let mut result = validate_compatibility(expected, actual)?;
+    if expected_scope.instrument.instrument_id != actual_scope.instrument.instrument_id
+        || expected_scope.instrument.dataset_identity != actual_scope.instrument.dataset_identity
+    {
+        let delta = AuthorityDelta {
+            surface: "instrument_or_dataset_identity".into(),
+            expected: format!(
+                "{}:{}",
+                expected_scope.instrument.instrument_id, expected_scope.instrument.dataset_identity
+            ),
+            actual: format!(
+                "{}:{}",
+                actual_scope.instrument.instrument_id, actual_scope.instrument.dataset_identity
+            ),
+        };
+        result = match result {
+            AuthorityCompatibility::Compatible => AuthorityCompatibility::DeltaRequired {
+                changed_surfaces: vec![delta],
+            },
+            AuthorityCompatibility::DeltaRequired {
+                mut changed_surfaces,
+            } => {
+                changed_surfaces.push(delta);
+                AuthorityCompatibility::DeltaRequired { changed_surfaces }
+            }
+        };
+    }
+    Ok(result)
 }
