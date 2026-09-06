@@ -1,0 +1,116 @@
+{
+  "artifact_type": "AP-002_BLIND_QG_MANIFEST",
+  "artifact_version": "QG_V1",
+  "program_id": "AP-002",
+  "generated_utc": "2026-09-06T15:20:19Z",
+  "generator": {
+    "id": "AP-002_BLIND_QUESTION_GENERATOR_QG_V1",
+    "role": "Blind Question Generator for AP-002 E2/E3 question universe",
+    "e1_freeze_commit": "a7a9637410a74aba4e23827fc1b1e7dc6ec34a6f",
+    "e1_status_as_found": "FROZEN_COMPLETE_CONFIRMATION_LOCKED",
+    "e2_e3_status_as_found": "NOT_STARTED",
+    "producer_commit": "211891e705d5e8ea132ef1391a0da4a9e5ff4376",
+    "detector_version": "trinity.analytics.bar.fvg.v4.2"
+  },
+  "inputs_consumed": [
+    {
+      "path": "knowledge/wave1_authority_closure/AP-002_AUTHORITY_V1.json",
+      "sha256_as_found": "9b5609c98088660bee8ce32cf9a112ed92f6d3c9a6f965efa5eac65c8f427e51",
+      "role": "FVG authoritative semantics, lifecycle vocabulary, lawful availability rule, native strata, cross-scale identity restriction, exposure status",
+      "identity_note": "sha256_as_found matches the ap002 recovery_artifact_sha256 recorded inside XAUUSD_AUTHORITY_WAVE1_V2.json"
+    },
+    {
+      "path": "knowledge/wave1_authority_closure/XAUUSD_AUTHORITY_WAVE1_V2.json",
+      "sha256_as_found": "246287c3a83086bece10398daee01c536652aaeef2705bf6a38d53948b8e2caa",
+      "role": "Instrument/data authority; AP-002 gate status; TC-001 scoped-E2 eligibility; BG-001 confluence restriction",
+      "identity_note": "FROZEN, closure_state CLOSED, confirmation LOCKED as found"
+    },
+    {
+      "path": "knowledge/wave1_authority_closure/PRODUCER_LINKAGE_V2.json",
+      "sha256_as_found": "2b75ef033384709c6a81dac3a1b2b11bb35d178998be11d68a7bf9996c511dfc",
+      "role": "Detector-to-payload producer mapping; tick-surface same-step availability semantics; parameter identity (0 external parameters)",
+      "identity_note": "sha256_as_found matches the producer_linkage recovery_artifact_sha256 recorded inside XAUUSD_AUTHORITY_WAVE1_V2.json"
+    },
+    {
+      "path": "registry/detectors_v1.json",
+      "sha256_as_found": "9894e2bee36c781eb6e28980ce5f5aaa6d3d91fd5b4a38c0488000b9e3113ac9",
+      "role": "Detector registry: 23 families (16 bar-domain, 7 tick-domain), native scales, domains; all semantic_status UNRESOLVED, roles/derives_from empty as found",
+      "identity_note": "Registry entry semantics consumed as found; no roles or dependency edges were assumed"
+    },
+    {
+      "path": "contracts/detector_registry_entry_v1.schema.json",
+      "sha256_as_found": "131a8457736d6442bba4db110a795ece00b822aa2de4193df18d229765c115cd",
+      "role": "Registry entry schema = scientific ontology (role vocabulary, semantic status, native scale scope)",
+      "identity_note": ""
+    }
+  ],
+  "forbidden_materials_opened": [],
+  "blindness_incidents": [],
+  "blindness_attestation": "No E1_RESULTS/E1B_RESULTS, phenotype interpreter reviews, Method Challenge findings, phenotype-derived candidate questions/winners, effect sizes, return signs, observed lifecycle frequencies, or observed outcomes were consumed. Only the five files listed above were opened. No generated question was run. No git commit was made.",
+  "outputs": [
+    {
+      "path": "docs/research/ap-002-qg/AP-002_BLIND_QG_UNIVERSE.json",
+      "sha256": "835d6e89007919d842b3d40434f664adaef5549ef1d3e98ee0995f0d401b54ee",
+      "content": "Machine-readable blind question universe: 14 core question records (full required-field records), 5 parameterized systematic families with explicit expansion rules, 4 optional items (1 gated), shared definitions (exposure classification rules, null library, controls, minimum support, multiplicity families, dependency caveats, context classes), domain coverage with rejected combinations, exact search-space accounting"
+    },
+    {
+      "path": "docs/research/ap-002-qg/AP-002_BLIND_QG_REPORT.md",
+      "sha256": "2e5ea92d0d92a4a2ae92cd366ebaef97cc193a044edfd89d2f8cbeae2f11420c",
+      "content": "Human-readable report: blindness statement, input licensing, exposure classification rules, universe summary, search-space accounting, null design rationale, domain coverage and rejections, E1-reopen justification, caveats, handoff"
+    },
+    {
+      "path": "docs/research/ap-002-qg/AP-002_BLIND_QG_MANIFEST.json",
+      "sha256": null,
+      "content": "This manifest"
+    }
+  ],
+  "counts": {
+    "core_questions": 14,
+    "core_primary_test_cells": 16,
+    "systematic_families": 5,
+    "systematic_expanded_test_cells_total": 581,
+    "systematic_expanded_test_cells_by_family": {"QG1-SF-1": 98, "QG1-SF-2": 126, "QG1-SF-3": 126, "QG1-SF-4_upper_bound_gated": 168, "QG1-SF-5": 63},
+    "optional_items": 4,
+    "optional_expanded_test_cells_total": 161,
+    "optional_expanded_test_cells_by_item": {"QG1-OPT-01_gated": 84, "QG1-OPT-02": 21, "QG1-OPT-03": 28, "QG1-OPT-04": 28},
+    "total_expanded_test_cells": 758,
+    "e1_reopen_proposals": 0,
+    "e1_reopen_justification": "Generator is blind to the frozen E1 contract contents; no genuine semantic omission can be established without consuming forbidden E1 materials. All own-lifecycle content is admitted only in conditional E2 form under declared sub-rules E2B (own formation-time attributes as conditioners) and E2C (same-detector population properties incl. composition/censoring rules).",
+    "e2_same_domain_questions": 13,
+    "e3_cross_domain_questions": 10,
+    "e2_same_domain_expanded_test_cells": 346,
+    "e3_cross_domain_expanded_test_cells": 412,
+    "notes_on_counts": "Question-level counts treat each parameterized family as one record. Cell-level counts use the declared expansion formulas; SF-4 (168) and OPT-01 (84) are declared upper bounds subject to the context-resolution gate and the cross-scale identity clearance gate respectively; gated drops are counted DROPPED_AT_GATE, not as failures. CORE-12 expands to 3 gradient meta-tests (magnitude, stage-age, crowding)."
+  },
+  "domain_coverage_summary": {
+    "domains_producing_questions": [
+      "lifecycle transition", "duration / persistence", "stage-conditioned behavior", "same-domain conditioning",
+      "cross-domain conditioning", "lead / lag", "direction (as predeclared moderator/interaction only)",
+      "magnitude", "regime dependence", "temporal context", "structural nesting", "spatial relationships",
+      "scale relationships (stratified replication form)", "incremental information", "interaction effects",
+      "anomalous lifecycle cases", "normalization robustness", "censoring-sensitive questions",
+      "missingness / availability-sensitive questions"
+    ],
+    "domains_rejected_or_lawfully_restricted": [
+      "unconditional own-lifecycle phenotype cuts (E1 closed; R1)",
+      "cross-scale object identity conditioning (prohibited; R2)",
+      "external calendar/news conditioning (no authorized surface; R3)",
+      "post-formation information as formation-time conditioner (leakage boundary; R4)",
+      "detector-specific semantic co-occurrence claims (registry UNRESOLVED + BG-001; R5)",
+      "reverse anchors (outside AP-002 scope; R6)",
+      "counterfactual parameter sweeps over min_gap_atr (code-frozen parameters; R7)"
+    ]
+  },
+  "handoff_items_for_research_worker": [
+    "Reconcile exposure classifications against the frozen E1 contract at merge time (generator was blind to it); if frozen E1 already covers the conditional same-domain tier, re-scope the E2 tier without touching E3.",
+    "Clear or drop QG1-OPT-01 (CROSS_STRATUM_COACTIVATION) against the cross-scale identity restriction: it asserts time-point spatial overlap only, never object identity.",
+    "Resolve SF-4 / CORE-06/07/08/11 context (family, readout) pairs at the context-resolution gate; unresolved pairs are DROPPED_AT_GATE.",
+    "Finalize multiplicity exactly from the declared expansion formulas (Holm on 16 core cells; BH-FDR per SF family; OPTIONAL tier exploratory).",
+    "Fix the declared design choices before execution: UTC 8h session blocks, age buckets, lag-bucket quantiles, materiality thresholds for CORE-14."
+  ],
+  "generation_environment": {
+    "platform": "Windows, Git Bash",
+    "tools_used": "Read (5 allowed files), Bash (mkdir, sha256sum, date), Write (3 artifacts), Python for JSON validation",
+    "git_commit_made": false
+  }
+}
