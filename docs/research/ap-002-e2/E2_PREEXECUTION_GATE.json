@@ -1,0 +1,23 @@
+{
+  "artifact_type": "E2_PREEXECUTION_GATE",
+  "checks": {
+    "canonical_forbidden_semantic_tokens": [],
+    "cell_registry_rows": 472,
+    "cells_with_unspecified_null": 0,
+    "cells_with_unspecified_statistic": 0,
+    "cells_with_unspecified_support_rule": 0,
+    "confirmation_access": 0,
+    "corrected_development_scope_identity_verified": true,
+    "duplicate_cell_ids": 0,
+    "e1a_e1b_identities_verified": true,
+    "e3_cells_included_in_e2": 0,
+    "empty_required_identities": [],
+    "expected_cell_registry_rows": 472,
+    "sidecar_identity_verified": true,
+    "unassigned_multiplicity_families": 0,
+    "v1_accounting_figure_violations": []
+  },
+  "generated_before_outcomes": true,
+  "rule": "PASS required before any E2 behavioral result may be produced; FAIL means stop without E2 results.",
+  "status": "PASS"
+}

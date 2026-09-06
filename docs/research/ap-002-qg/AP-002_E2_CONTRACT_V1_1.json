@@ -1,0 +1,106 @@
+{
+  "active_accounting": {
+    "PRIMARY": 135,
+    "ROBUSTNESS": 50,
+    "SYSTEMATIC": 287,
+    "TOTAL": 472
+  },
+  "artifact_type": "AP-002_E2_CONTRACT_V1_1",
+  "competing_risk_rule": "formation->first-touch: FIRST_TOUCH = event of interest; FILL_WITHOUT_RECORDED_TOUCH = competing terminal event; END_OF_DEVELOPMENT = right censor. Never describe gap-through fill as censored. touched->fill: FILLED = event; end-of-development while TOUCHED_UNFILLED = right censor.",
+  "confirmation_status": "LOCKED",
+  "cross_scale_identity": "PROHIBITED",
+  "data_identity": {
+    "binding_rule": "Authority V1 supplies semantics only; execution binds to the corrected 16:15 DEVELOPMENT scope and the scope-repair sidecar verified above. Empty identities fail closed.",
+    "development_end_utc_exclusive": "2026-05-05T12:39:00Z",
+    "development_start_utc_inclusive": "2025-07-31T16:15:00Z",
+    "development_view_manifest_sha256": "5727233e9f8920ab25a4715f59b1d07dcffd8c9ff82e474d8aa642855924a4f4",
+    "e1a_logical_result_hash": "1b701c016bd1effa300742ee74ce73d6e0e96313d62847d231391061dc94dca6",
+    "e1b_logical_result_hash": "2a7a142cadb36449d14d4128361d11ce99a3a4d7d8a004dd539bc4dc32fb823c",
+    "input_identity": "5727233e9f8920ab25a4715f59b1d07dcffd8c9ff82e474d8aa642855924a4f4",
+    "sidecar_sha256": "8882dfca1e34aab71df411ee0837a7203b01462e3ada565119e66e48c4e15929"
+  },
+  "exposure_class": "E2_SAME_DOMAIN",
+  "native_strata": [
+    "15s",
+    "30s",
+    "1m",
+    "5m",
+    "15m",
+    "1h",
+    "4h"
+  ],
+  "panel_populations": {
+    "contrast_1": {
+      "population": "the same zones that genuinely emit FIRST_TOUCH; formation measurement at their lawful formation anchor, first-touch measurement at their lawful FIRST_TOUCH anchor; same native horizon h after each respective anchor",
+      "purpose": "remove selection into touch from the formation-vs-touch comparison",
+      "stages": "FORMATION vs FIRST_TOUCH"
+    },
+    "contrast_2": {
+      "note": "no one-bar-before-fill or other future-defined pseudo-anchor; gap-through behavior remains under CORE-10",
+      "population": "the same zones that both touch and later fill; gap-through fills excluded (no FIRST_TOUCH anchor)",
+      "stages": "FIRST_TOUCH vs FILL"
+    }
+  },
+  "state_model": {
+    "completion_modes": [
+      "TOUCH_THEN_FILL",
+      "FILL_WITHOUT_RECORDED_TOUCH",
+      "TOUCH_AND_FILL_SAME_COMPLETED_BAR"
+    ],
+    "market_states": [
+      "FORMED_UNTOUCHED",
+      "TOUCHED_UNFILLED",
+      "FILLED"
+    ],
+    "observation_status": [
+      "OBSERVED_TERMINAL",
+      "RIGHT_CENSORED_UNTOUCHED",
+      "RIGHT_CENSORED_TOUCHED"
+    ],
+    "terminal_paths": [
+      "FORMED_UNTOUCHED -> TOUCHED_UNFILLED -> FILLED",
+      "FORMED_UNTOUCHED -> FILLED (first_touch_observed=false; competing terminal gap-through)",
+      "TOUCHED_UNFILLED -> FILLED"
+    ]
+  },
+  "statistical_execution_rules": {
+    "B": 4999,
+    "multiplicity_families": {
+      "MF_DIRECTION_ASYMMETRY": {
+        "cells": 84,
+        "procedure": "Holm familywise alpha 0.05"
+      },
+      "MF_E2_CORE": {
+        "cells": 9,
+        "procedure": "Holm familywise alpha 0.05"
+      },
+      "MF_E2_ROBUSTNESS": {
+        "cells": 50,
+        "procedure": "separate lane; no behavioral p-values; robustness estimates and block-bootstrap uncertainty reported separately"
+      },
+      "MF_SF1": {
+        "cells": 98,
+        "procedure": "BH-FDR q=0.05"
+      },
+      "MF_SF2": {
+        "cells": 126,
+        "procedure": "BH-FDR q=0.05"
+      },
+      "MF_SF5": {
+        "cells": 63,
+        "procedure": "BH-FDR q=0.05"
+      },
+      "MF_STAGE_MATCHED": {
+        "cells": 42,
+        "procedure": "Holm familywise alpha 0.05"
+      }
+    },
+    "no_post_hoc": "No test statistic, resample count, seed, multiplicity procedure or support threshold may be chosen after E2 outcomes are inspected.",
+    "p_rule": "p = (1 + null_count_as_or_more_extreme) / (B + 1); two-sided unless predeclared otherwise",
+    "seed_derivation": "SHA256(E2 contract identity | multiplicity family | cell_id | replicate index) -> u64",
+    "support": "every contrast bucket n >= 30 within the cell's stratum, else UNSUPPORTED"
+  },
+  "supersedes": "AP-002_E2_CONTRACT_V1.json (empty-identity defect)",
+  "terminology": "STAGE-CONDITIONED INFORMATIONAL RELATIONSHIP / STAGE-ASSOCIATED CONDITIONAL CONTRAST; decision rule SURVIVES_STAGE_CONDITIONING; never 'causal stage effect'.",
+  "warm_state_rule": "CORE-04/CORE-05/SF-5: pre-boundary warm state only where current state is lawfully represented; else HISTORY_INCOMPLETE with deterministic washout exclusion; rolling prior-K (K=20) history requires K lawful prior completions; exclusions recorded by question, stratum and reason."
+}

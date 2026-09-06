@@ -1,0 +1,9 @@
+{
+  "artifact_type": "AP-002_E2_EXPERIMENT",
+  "cells_total": 472,
+  "confirmation_status": "LOCKED",
+  "contract": "AP-002_E2_CONTRACT_V1_1.json",
+  "e2_executed": false,
+  "e3_executed": false,
+  "experiment_id": "AP-002-FVG-E2-SAME-DOMAIN"
+}

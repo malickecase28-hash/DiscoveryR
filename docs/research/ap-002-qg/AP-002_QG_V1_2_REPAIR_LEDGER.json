@@ -1,0 +1,53 @@
+{
+  "artifact_type": "AP-002_QG_V1_2_REPAIR_LEDGER",
+  "blocker_1_stale_v1_1_semantics": {
+    "cause": "the V1.1 compiler transformed only tiers.* record arrays; prohibited V1 semantics survived in shared_definitions, anchor_object, domain_coverage and other non-tier sections",
+    "repair": "recursive whole-tree transformation with historical-field isolation; the entire active surface is validated token-free",
+    "v1_repair_hits": [
+      "<root>: far-edge invalidation",
+      "<root>: FILL_ON_FIRST_TOUCH_BAR_INSTANT",
+      "<root>: INVALIDATED_WITHOUT_TOUCH",
+      "<root>: CENSORED_ACTIVE_AT_END_OF_STREAM",
+      "<root>: invalidation_event",
+      "<root>: INVALIDATED_UNTOUCHED",
+      "<root>: CENSORED_ACTIVE_AT_END_OF_STREAM",
+      "<root>: censored-aware at end-of-stream and far-edge invalidation",
+      "<root>: touch vs invalidation",
+      "<root>: fill vs invalidation",
+      "<root>: far-edge invalidation",
+      "<root>: far-edge invalidation",
+      "<root>: homogeneous-rate baseline",
+      "<root>: touch vs invalidation",
+      "<root>: fill vs invalidation",
+      "<registry>: homogeneous-rate baseline",
+      "<root>: far-edge invalidation",
+      "<root>: FILL_ON_FIRST_TOUCH_BAR_INSTANT",
+      "<root>: INVALIDATED_WITHOUT_TOUCH",
+      "<root>: CENSORED_ACTIVE_AT_END_OF_STREAM",
+      "<root>: invalidation_event",
+      "<root>: INVALIDATED_UNTOUCHED",
+      "<root>: CENSORED_ACTIVE_AT_END_OF_STREAM",
+      "<root>: censored-aware at end-of-stream and far-edge invalidation",
+      "<root>: touch vs invalidation",
+      "<root>: fill vs invalidation",
+      "<root>: far-edge invalidation",
+      "<root>: far-edge invalidation",
+      "<root>: homogeneous-rate baseline",
+      "<root>: touch vs invalidation",
+      "<root>: fill vs invalidation"
+    ]
+  },
+  "blocker_2_validator_blind_spot": {
+    "cause": "the V1.1 gate validated selected paths, not the executable semantic surface",
+    "repair": "post-repair whole-tree active scan fails the freeze on any prohibited token; the scan runs over every emitted artifact"
+  },
+  "blocker_3_empty_view_identity": {
+    "cause": "the V1.1 compiler read the view hash from a nonexistent provenance path",
+    "repair": "read from tables.*.provenance.development_view_manifest_sha256; fail closed on empty; verified = 5727233e9f8920ab25a4715f59b1d07dcffd8c9ff82e474d8aa642855924a4f4"
+  },
+  "blocker_4_stale_accounting": {
+    "cause": "V1.1 carried MF_CORE_PRIMARY 16-cell, MF_SF4 168-cell and 758/346/412 figures inside active semantics",
+    "repair": "V1 figures moved to HISTORICAL_V1 fields only; active accounting reconciles to 472 (135/287/50); SF-4 held with no active multiplicity family"
+  },
+  "note": "This ledger and the HISTORICAL_V1 fields are the only places where V1 terminology may be quoted."
+}

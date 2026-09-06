@@ -1,0 +1,14 @@
+{
+  "artifact_type": "AP-002_QG_V1_2_MANIFEST",
+  "compiler": "ap002_qg_freeze (Rust)",
+  "confirmation_status": "LOCKED",
+  "inputs_verified": {
+    "development_start": "2025-07-31T16:15:00Z",
+    "development_view_manifest_sha256": "5727233e9f8920ab25a4715f59b1d07dcffd8c9ff82e474d8aa642855924a4f4",
+    "e1a_logical_result_hash": "1b701c016bd1effa300742ee74ce73d6e0e96313d62847d231391061dc94dca6",
+    "e1b_logical_result_hash": "2a7a142cadb36449d14d4128361d11ce99a3a4d7d8a004dd539bc4dc32fb823c",
+    "sidecar_sha256": "8882dfca1e34aab71df411ee0837a7203b01462e3ada565119e66e48c4e15929"
+  },
+  "sealed_v1_source_sha256": "835d6e89007919d842b3d40434f664adaef5549ef1d3e98ee0995f0d401b54ee",
+  "v1_2_repair_hits": 31
+}
