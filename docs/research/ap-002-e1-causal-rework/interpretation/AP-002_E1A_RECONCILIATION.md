@@ -3,6 +3,14 @@
 Recorded verbatim from the research director's reconciliation of the two independent
 phenotype reviews (P-01, P-02). Frozen before the independent Method Challenge.
 
+> **FREEZE CORRECTIONS — applied 2026-09-05 per director freeze order.**
+> This document was corrected at the AP-002 E1A freeze; the original verbatim text is preserved at commit `dee3d32`.
+>
+> 1. The premise "a filling bar necessarily overlaps the zone" was **refuted by the Method Challenge** (the linked producer tests far-edge fill independently of zone overlap) and has been removed from this record. Canonical producer semantics are recorded in the A1 section.
+> 2. A1 is canonically classified `RESOLVED_EXPECTED_SEMANTIC_CASE`. The observation survives; the anomaly interpretation does not.
+> 3. The DEVELOPMENT start is **2025-07-31T16:15:00Z** (frozen `XAUUSD_DATA_SCOPE_V1`, never amended per Git history). A2 has been re-evaluated against that exact boundary.
+> 4. **NEW FINDING recorded at freeze:** the materialized development view was built with an effective start boundary of **2025-07-31T16:00:00Z (exclusive)**, not the frozen 16:15:00Z scope boundary (per-timeframe view `bar_close_min` = 16:00:15/16:00:30/16:01:00/16:05:00/16:15:00/17:00:00/20:00:00, all consistent with `bar_close > 16:00:00Z`; the view's tick segment extends back to 2025-07-08). Consequently the committed E1 cohort contains **28 formed zones** (15s: 15, 30s: 8, 1m: 5 — 0.0073% of 381,527) whose formation detection precedes 16:15:00Z, and the preflight stream pre-dates the boundary. A1 and A2 classifications are unaffected: all 533 orphan events have `detection_ts ≤ 2025-07-31T16:00:00Z < 16:15:00Z`. Final freeze decision (freeze-with-annotation vs view correction + rerun) pending director ruling.
+
 ---
 
 ## Reconciliation complete: **PASS_TO_METHOD_CHALLENGE**
@@ -87,6 +95,32 @@ smaller long-lived persistent population
 P-02's warning that the tables stop at p95 is correct. We do not yet characterize the extreme tail well enough to make strong statements about it.
 
 That is a good E1B extension target, not a reason to reject E1A.
+
+Canonical tail/censoring statement to freeze:
+
+```text
+rapid lifecycle body + materially long-lived tail
+```
+
+with the qualification:
+
+```text
+tail estimates are increasingly limited by administrative right censoring
+at coarser native strata
+```
+
+(censoring rises 0.45% at 15s to 15.57% at 4h; unconditional p95 is not identifiable at 1h/4h and is up to 5.1× the observed-fill p95 at 15m).
+
+Required for E1B tail reporting:
+
+```text
+p99
+max
+censor-aware unconditional quantile reporting
+max identifiable unconditional quantile = 1 - censor fraction
+```
+
+Do not introduce a large survival-analysis subsystem.
 
 ---
 
@@ -208,9 +242,18 @@ This absolutely belongs in the later Question Generator.
 
 ---
 
-# A1 — fill without recorded first touch: **genuine anomaly**
+# A1 — fill without recorded first touch: **RESOLVED_EXPECTED_SEMANTIC_CASE**
 
-This is the most important reconciliation result.
+```text
+OBSERVATION:
+1,010 in-window formed zones filled without an emitted first-touch event.
+
+EXPLANATION:
+linked producer semantics permit a gap-through/far-edge fill without overlap.
+
+STATUS:
+RESOLVED_EXPECTED_SEMANTIC_CASE
+```
 
 Observed counts are:
 
@@ -226,91 +269,76 @@ Observed counts are:
 
 These are real rows in the E1 result.
 
-And I investigated the producer semantics.
-
-The FVG implementation checks zone overlap first. If an untapped zone overlaps the bar, it sets `zone.touched = true` and emits `fvg_first_touch`. **Only afterward** does it test far-edge fill and emit `fvg_filled`; that fill payload records `first_touch_observed: zone.touched`.
-
-The frozen authority says the same thing: first later overlap emits first-touch; far-edge reach emits fill.
-
-A far-edge fill necessarily overlaps the zone.
-
-Therefore, under the linked producer semantics:
+Canonical producer semantics (confirmed against the linked producer implementation and by the Method Challenge's exact-row audit):
 
 ```text
-known in-window formation
-        ↓
-later fill
-        ↓
-should have recorded first touch
+FIRST TOUCH:
+bar range overlaps the active zone
+
+FILL:
+bullish: bar low <= lower far edge
+bearish: bar high >= upper far edge
 ```
 
-So `formed_fill_without_prior_touch_n > 0` is **not something I am willing to wave away as ordinary phenotype**.
+The fill test is independent of the overlap predicate.
 
-Possible explanations include:
+Therefore a bar entirely beyond the far edge can produce:
 
 ```text
-payload materialization omission
-multi-event serialization issue
-state/restoration edge case
-event loss
-research reconstruction mismatch
-another producer-path detail
+fvg_filled
+first_touch_observed = false
 ```
 
-We do not guess which.
+without producing `fvg_first_touch`.
 
-**P-02 is correct that this must be resolved before FIRST_TOUCH E1B is frozen.**
+The earlier reconciliation premise — "a filling bar necessarily overlaps the zone" — was **false under the linked producer implementation** and has been removed from the canonical record.
+
+The Method Challenge's exact-row audit verified:
+
+* all 1,010 fill payloads carry `first_touch_observed = false`
+* zero first-touch events exist anywhere in the ingested stream for those zone ids
+* all 1,010 fill bars trade entirely beyond the zone far edge (OHLC-verified; majority preceded by session gaps — gap-throughs — remainder one-bar full traverses)
+* event totals reconcile exactly per stratum; zero serialization loss
+* same-bar touch+fill (79,871 at 15s) is handled correctly and is not the source
+
+These cases must **not** be called an unexplained anomaly or serialization defect.
 
 It does **not** invalidate the FVG formation cohort.
 
 ---
 
-# A2 — orphan events: probably left truncation, but verify
+# A2 — orphan events: **LEFT_TRUNCATED_PRE_DEVELOPMENT_STATE (verified)**
 
-Totals reported by the interpreters are correct:
+Totals:
 
 ```text
 orphan first-touch events = 177
 orphan fills              = 356
 ```
 
-The natural explanation is much less alarming than A1.
-
-Our DEVELOPMENT scanner initializes its own research zone book at the development boundary.
-
-But the precomputed analytical lake was produced with detector state that may contain FVGs formed **before** DEVELOPMENT began.
-
-Therefore:
+The Method Challenge verified the left-truncation hypothesis. Canonical statement:
 
 ```text
-zone formed before development
-        ↓
-development begins
-        ↓
-old zone touches/fills
-        ↓
-E1 scanner has no local formation
-        ↓
-orphan lifecycle event
+533 orphan lifecycle events are attributable to detector state whose
+formation predates the DEVELOPMENT cohort boundary
+(2025-07-31T16:15:00Z).
+
+detection_ts < 2025-07-31T16:15:00Z  →  533 / 533
+(maximum orphan detection_ts = 2025-07-31T16:00:00Z;
+531 strictly before 16:00:00Z, 2 exactly at 16:00:00Z)
+
+unexplained subset = 0
 ```
 
-That would also explain why the issue becomes relatively more visible at coarse scales where zones can persist longer.
+These events remain excluded from in-window formed-zone cohorts.
 
-This is a **strong hypothesis**, not yet an established fact.
+They must **not** be called missing formations.
 
-The decisive test is trivial:
+Supporting evidence: maximum orphan `zone_id` = minimum in-window `zone_id` − 1 at every stratum (20554/8769/3756/660/201/40/16 vs 20555/8770/3757/661/202/41/17) — the producer entered the window with warm state; earliest orphan formation 2025-07-23T00:25:45Z.
 
-> inspect `detection_ts` for the orphan events.
+Per-stratum N (touches / fills, 15s→4h): 75/158, 46/94, 32/60, 8/18, 7/13, 6/7, 3/6.
 
-If their formation/detection timestamps precede DEVELOPMENT start, classify them as:
-
-```text
-LEFT_TRUNCATED_PRE_DEVELOPMENT_STATE
-```
-
-and the mystery is over.
-
-If not, investigate further.
+Note: the Method Challenge initially evaluated this audit against 2025-07-31T16:00:00Z — the development view's effective materialized boundary — rather than the frozen scope boundary of 16:15:00Z. The correction was applied at freeze; the classification is unchanged because all 533 detection timestamps precede both boundaries.
 
 ---
 
@@ -390,6 +418,20 @@ fill_event_time
 
 and characterize that distribution.
 
+The Method Challenge computed exactly these paired per-event distributions. Canonical clock statement to freeze:
+
+```text
+event-level touch/fill availability delays are small in the distribution body
+(touch p50 92–119 ms, fill p50 85–115 ms at every stratum; p95 0.34–1.63 s)
+but can have large session-gap tails (max ≈ 2.1 days).
+```
+
+Do **NOT** freeze:
+
+> "1h has strongest clock dependence"
+
+because that was produced by comparing separate marginal quantiles rather than paired per-event delays. The challenge's paired delay distributions are preserved in `AP-002_E1_ANOMALY_AUDIT.json`.
+
 ---
 
 # Reconciled E1B decision
@@ -445,12 +487,12 @@ We should implement both in **one E1B stage-anchor extension**, not create two p
 | Raw medians positive                  | **21/21 OBSERVED**                          |
 | Direction-adjusted medians negative   | **18/21 NEGATIVE, 1 ZERO, 2 POSITIVE**      |
 | Directional reversal edge             | **NOT ESTABLISHED**                         |
-| Fill without first touch              | **REAL ANOMALY, MUST RESOLVE**              |
-| Orphan events                         | **LIKELY LEFT TRUNCATION, MUST VERIFY**     |
+| Fill without first touch              | **RESOLVED_EXPECTED_SEMANTIC_CASE**         |
+| Orphan events                         | **LEFT_TRUNCATED (verified 533/533 < 16:15 boundary)** |
 | 4h "coverage excess"                  | **REJECT AS STATED**                        |
 | p95 tail limitation                   | **VALID CAUTION**                           |
 | Known vs market-time differences      | **OBSERVED, NEED PAIRED DELTA**             |
-| FIRST_TOUCH E1B                       | **YES, after A1 resolution**                |
+| FIRST_TOUCH E1B                       | **BLOCKED_PENDING_MEASUREMENT_CONTRACT**    |
 | FILL E1B                              | **YES, secondary**                          |
 | Strategy/alpha claim                  | **NO**                                      |
 | Confirmation                          | **LOCKED**                                  |
@@ -599,7 +641,7 @@ Observed counts:
 
 Frozen producer semantics process first-touch overlap before far-edge fill.
 
-A filling bar necessarily overlaps the zone.
+[REMOVED AT FREEZE: the premise "A filling bar necessarily overlaps the zone." was refuted by the Method Challenge — the producer tests far-edge fill independently of overlap. See canonical producer semantics in the A1 section above.]
 
 Determine why these rows have fill without scanner-recorded first touch.
 

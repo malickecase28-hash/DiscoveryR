@@ -1,0 +1,220 @@
+{
+ "artifact_type": "AP-002_E1_METHOD_CHALLENGE",
+ "challenger_id": "AP-002-E1-INDEPENDENT-METHOD-CHALLENGER",
+ "challenger_role": "Independent method skeptic; did not build the scanner; did not write P-01 or P-02; scanner code and all frozen artifacts left unmodified; no scanner re-run performed.",
+ "generated_utc": "2026-09-06T04:03:29Z",
+ "program": "AP-002 FVG",
+ "stage": "E1 PHENOTYPE METHOD CHALLENGE",
+ "accepted_scanner_evidence": {
+  "logical_result_hash": "735bd7ab06ae2caf72e37447d207dec62c17932ee1684c4c393d8ace07684c52",
+  "scanner_integrity_gate": "PASS",
+  "confirmation": "LOCKED"
+ },
+ "verification_substrate": {
+  "zone_rows_recomputed": "All 381,527 rows of .runs/ap-002-e1-native-strata/causal-rework-final-run-1/E1_ZONES.jsonl parsed and every headline aggregate (formations, direction counts, touch/fill/censor counts, path decomposition, lifecycle medians, prospective medians) independently recomputed and matched to E1_RESULTS.json tables.",
+  "run_equivalence_spot_check": "sha256 of run-1 and run-2 E1_ZONES.jsonl both equal 0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd, matching RUN_MANIFEST.json/REPRODUCIBILITY.json.",
+  "payload_event_reconciliation": "Development-view payload_fvg events parsed for all 7 strata: touch events = recorded + orphan_touch and fill events = recorded + orphan_fill exactly at every stratum; formations = 381,527. No event loss or duplication in the ingested stream.",
+  "anomaly_audit": "AP-002_E1_ANOMALY_AUDIT.json (A1, A2, clock audit, tail/censor appendix)."
+ },
+ "per_claim_classifications": [
+  {
+   "claim_id": 1,
+   "claim": "Median formation-to-touch is 2 native bars across all seven strata.",
+   "verdict": "SURVIVED",
+   "evidence": "Recomputed from zone rows: median formation_to_touch_market_ms / bar width = 2.0 at every stratum (15s 30,000 ms / 15 s; 30s 60,000 / 30 s; 1m 120,000 / 60 s; 5m 600,000 / 300 s; 15m 1,800,000 / 900 s; 1h 7,200,000 / 3,600 s; 4h 28,800,000 / 14,400 s), with p25 = 1.0 bar everywhere. Matches E1_RESULTS.json tables.strata.rows[tf] formation_to_touch_market_ms.p50. Independent per-zone recomputation, not a restatement.",
+   "sources": [
+    "E1_ZONES.jsonl (run-1, sha256 0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd; recomputed in this audit)",
+    "E1_RESULTS.json tables.strata.rows[tf]"
+   ]
+  },
+  {
+   "claim_id": 2,
+   "claim": "Median formation-to-fill is approximately 5-8 native bars.",
+   "verdict": "SURVIVED",
+   "evidence": "Recomputed fill p50 in native bars: 7 (15s), 7 (30s), 7 (1m), 7 (5m), 8 (15m), 8 (1h), 5 (4h) - inside the stated 5-8 range. Matches E1_RESULTS.json tables.strata.rows[tf] formation_to_fill_market_ms.p50. Caveat retained: these medians condition on filled zones (fill-time quantiles exclude the censored slowest zones).",
+   "sources": [
+    "E1_ZONES.jsonl (run-1, sha256 0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd; recomputed in this audit)",
+    "E1_RESULTS.json tables.strata.rows[tf]"
+   ]
+  },
+  {
+   "claim_id": 3,
+   "claim": "The phenotype has a rapid body and a long-lived right tail.",
+   "verdict": "SURVIVED",
+   "evidence": "Body confirmed (touch p50 = 2 bars, fill p50 = 5-8 bars, all strata). Tail is even longer than the frozen p95 suggests: observed-fill p99 = 14,176 / 11,481 / 10,697 / 4,665 / 2,832 / 1,363 / 462 bars (15s..4h) vs p95 717 / 695 / 669 / 701 / 561 / 402 / 170 bars; max observed fill 682,740 bars (~118 days) at 15s. Tail/censor audit (AP-002_E1_ANOMALY_AUDIT.json tail_censor_appendix) shows the frozen p95 understates the unconditional tail: unconditional p95 = 857 / 870 / 996 / 1,471 / 2,835 bars at 15s..15m (identifiable because censor < 5%).",
+   "sources": [
+    "E1_ZONES.jsonl (run-1, sha256 0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd; recomputed in this audit)",
+    "AP-002_E1_ANOMALY_AUDIT.json"
+   ]
+  },
+  {
+   "claim_id": 4,
+   "claim": "Observed fill fractions are development-window cumulative observations, not lifetime probabilities.",
+   "verdict": "SURVIVED",
+   "evidence": "E1_RESULTS.json tables.strata.rows[tf]: fill_rate numerator = in-window fills, denominator = all in-window formations; right_censored_n zones are active and unfilled at the final lawful bar (scanner fvg_e1.rs finish(): right_censored = fill_ts.is_none()). Censoring rises 0.45% (15s) to 15.57% (4h), so coarse fill fractions (92.16% at 1h, 84.43% at 4h) are window-truncated lower bounds. The window is ~1,471x the 15s p95 fill time but only ~6.9x at 4h.",
+   "sources": [
+    "E1_RESULTS.json tables.strata.rows[tf]",
+    "crates/research-tape/src/fvg_e1.rs finish()"
+   ]
+  },
+  {
+   "claim_id": 5,
+   "claim": "Fill rate and right-censor rate are accounting complements under the scanner definition and must not be presented as independent findings.",
+   "verdict": "SURVIVED",
+   "evidence": "Identity verified numerically at all 7 strata: fill_n + right_censored_n = lawful_formation_n (e.g. 226,908 + 1,017 = 227,925 at 15s; 141 + 26 = 167 at 4h), because right_censored is defined as fill_ts.is_none() (fvg_e1.rs finish()). The two rates are one statistic, not two findings; the only empirical content is the censor gradient across strata.",
+   "sources": [
+    "E1_RESULTS.json tables.strata.rows[tf]",
+    "crates/research-tape/src/fvg_e1.rs finish()"
+   ]
+  },
+  {
+   "claim_id": 6,
+   "claim": "Bullish formation fraction descriptively rises with native scale.",
+   "verdict": "SURVIVED",
+   "evidence": "Recomputed from zone rows: bullish share 0.5103 (15s), 0.5171 (30s), 0.5244 (1m), 0.5429 (5m), 0.5798 (15m), 0.5832 (1h), 0.6048 (4h) - monotone in scale, matching bullish_n/bearish_n in E1_RESULTS.json tables.strata.rows[tf]. Correctly labeled descriptive only: a single development window on one instrument cannot separate scale-dependent formation asymmetry from window drift; no formal test run in this audit.",
+   "sources": [
+    "E1_ZONES.jsonl (run-1, sha256 0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd; recomputed in this audit)",
+    "E1_RESULTS.json tables.strata.rows[tf]"
+   ]
+  },
+  {
+   "claim_id": 7,
+   "claim": "Raw prospective median returns are positive in 21/21 cells.",
+   "verdict": "SURVIVED",
+   "evidence": "Recomputed from per-zone prospective_outcomes (all 381,527 zones, native closes +1/+3/+5): raw median > 0 in all 21 stratum x horizon cells, from +0.0124 bps (15s h1) to +25.980 bps (4h h5). Sign pattern consistent with development-window upward drift inherited by raw pooling.",
+   "sources": [
+    "E1_ZONES.jsonl (run-1, sha256 0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd; recomputed in this audit)",
+    "E1_RESULTS.json tables.strata.rows[tf]"
+   ]
+  },
+  {
+   "claim_id": 8,
+   "claim": "Direction-adjusted prospective medians are 18 negative, 1 zero, 2 positive.",
+   "verdict": "SURVIVED",
+   "evidence": "Recomputed exactly: 18 negative, 1 zero, 2 positive. Zero cell = 15s h1 (median exactly 0.0; the frozen table serializes -0.0 - a sign-bit artifact, not a negative). Positive cells: 1h h3 +0.852 bps (n=523) and 4h h5 +12.508 bps (n=167). All other 18 cells negative, magnitudes growing with horizon.",
+   "sources": [
+    "E1_ZONES.jsonl (run-1, sha256 0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd; recomputed in this audit)",
+    "E1_RESULTS.json tables.strata.rows[tf]"
+   ]
+  },
+  {
+   "claim_id": 9,
+   "claim": "This is not evidence of a confirmed reversal edge.",
+   "verdict": "SURVIVED",
+   "evidence": "No null test exists anywhere in the frozen evidence; both reviews and the reconciliation correctly refuse the edge/alpha/reversal language. The two positive dir-adj cells sit on n=523 and n=167 with tails spanning hundreds of bps (4h h5 p05/p95 = -278.6/+282.7 bps); medians of that size are indistinguishable from noise without a formal test. The pattern is registered as DESCRIPTIVE_DIRECTIONAL_ASYMMETRY only. E2/E3 untouched; confirmation LOCKED.",
+   "sources": [
+    "interpretation/AP-002_E1_PHENOTYPE_REVIEW_P01.md",
+    "interpretation/AP-002_E1_PHENOTYPE_REVIEW_P02.md",
+    "E1_ZONES.jsonl (run-1, sha256 0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd; recomputed in this audit)"
+   ]
+  },
+  {
+   "claim_id": 10,
+   "claim": "Fill-without-recorded-first-touch is a genuine anomaly.",
+   "verdict": "SURVIVED",
+   "evidence": "The rows are real and demanded explanation - the claim survives as stated. But the A1 audit fully resolves it: all 1,010 rows (682/213/81/20/10/4/0) are EXPECTED_SEMANTIC_CASE - the producer tests far-edge fill independently of range overlap, and a bar trading entirely beyond the far edge fills without ever overlapping (1,010/1,010 fill payloads carry first_touch_observed=false; 0 touch events exist anywhere in the stream for those zone ids; 1,010/1,010 fill bars verified entirely beyond the zone far edge; majority preceded by session gaps). The reconciliation premise \"a filling bar necessarily overlaps the zone\" is false under the linked producer code. Not a scanner defect, not serialization loss. See AP-002_E1_ANOMALY_AUDIT.json A1.",
+   "sources": [
+    "AP-002_E1_ANOMALY_AUDIT.json",
+    "F:/TrinityR/crates/trinity-analytics/src/bar/mod.rs FvgDetector::process_bar",
+    "E1_ZONES.jsonl (run-1, sha256 0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd; recomputed in this audit)"
+   ]
+  },
+  {
+   "claim_id": 11,
+   "claim": "Orphan lifecycle events are probably left-truncated pre-development state.",
+   "verdict": "SURVIVED",
+   "evidence": "Confirmed, no longer \"probably\": all 533 orphan events (177 touches, 356 fills) carry payload detection_ts < 2025-07-31T16:15:00Z, the frozen XAUUSD_DATA_SCOPE_V1 DEVELOPMENT start inclusive (531 strictly before 2025-07-31T16:00:00Z, 2 exactly at 16:00:00Z), and max orphan zone_id = min in-window zone_id - 1 at every stratum (20554/8769/3756/660/201/40/16 vs 20555/8770/3757/661/202/41/17). Classified LEFT_TRUNCATED_PRE_DEVELOPMENT_STATE with per-stratum N in AP-002_E1_ANOMALY_AUDIT.json. Unexplained subset: 0.",
+   "sources": [
+    "AP-002_E1_ANOMALY_AUDIT.json",
+    "E1_ZONES.jsonl (run-1, sha256 0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd; recomputed in this audit)"
+   ]
+  },
+  {
+   "claim_id": 12,
+   "claim": "The claimed 4h coverage excess based on N-bars x timeframe is not a valid coverage calculation.",
+   "verdict": "SURVIVED",
+   "evidence": "Rejection confirmed quantitatively. 4h: 1,169 bars x 4 h = 194.83 bar-days; 1h: 4,406 occupied hours = 183.58 days. The 270-hour excess equals exactly the 270 hourly sub-buckets that are unoccupied at 1h granularity but sit inside 197 partially-occupied 4h buckets (972 of 1,169 4h bars have all four sub-buckets occupied). bars x width counts empty sub-buckets as covered whenever any tick lands in the coarser bucket; it is not an observed-coverage estimator. No coverage defect exists: all seven strata span the identical wall-clock window (last 2026-05-05T12:00-12:38:45Z; first bar closes 2025-07-31T16:00:15Z-20:00:00Z under the development view's effective 16:00:00Z start boundary, which precedes the frozen 16:15:00Z scope boundary - see freeze_corrections).",
+   "sources": [
+    "F:/TrinityR-views/XAUUSD/XAUUSD_DATA_SCOPE_V1/development/{1h,4h}/part-*.parquet bar_close_ts",
+    "E1_RESULTS.json tables.strata.rows[tf]",
+    "AP-002_E1_ANOMALY_AUDIT.json"
+   ]
+  },
+  {
+   "claim_id": 13,
+   "claim": "Known-time versus market-time quantile differences are descriptive only; paired event-level delay distributions are required for a clock-dependence claim.",
+   "verdict": "SURVIVED",
+   "evidence": "Paired per-event distributions computed (AP-002_E1_ANOMALY_AUDIT.json clock_audit): touch delay p50 92-119 ms, fill delay p50 85-115 ms at every stratum; p95 0.34-1.63 s; max ~2.1 days (session-gap receipt). They show no distinctive 1h clock effect, so P-01's \"1h shows the strongest clock dependence\" (based on separate-quantile comparison, e.g. 1h fill p75 known 104,400,134 vs market 118,800,000 ms) is not supported at event level: the quantile divergences mix formation receipt latency with event receipt latency. Descriptive-only status confirmed; E1B must pre-register the anchor clock.",
+   "sources": [
+    "AP-002_E1_ANOMALY_AUDIT.json",
+    "E1_ZONES.jsonl (run-1, sha256 0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd; recomputed in this audit)",
+    "E1_RESULTS.json tables.strata.rows[tf]"
+   ]
+  },
+  {
+   "claim_id": 14,
+   "claim": "FIRST_TOUCH E1B is justified if the no-touch-fill anomaly is resolved.",
+   "verdict": "SURVIVED",
+   "evidence": "The condition is now met: A1 is resolved with a complete mechanistic, evidence-backed classification (EXPECTED_SEMANTIC_CASE, 1,010/1,010 rows) and zero scanner defect. First touch remains near-universal (94.0-99.5% per stratum), median latency 2 native bars, causally available. The scientific blocker is removed; the remaining precondition is administrative: freeze the measurement contract (touch-cohort denominator; treatment of gap-through-fill zones that never emit a touch and are structurally absent from any touch-anchored cohort, identifiable via fill payload first_touch_observed=false; anchor clock). The formal decision FIRST_TOUCH_E1B=BLOCKED encodes exactly this contract precondition per the challenge rules.",
+   "sources": [
+    "AP-002_E1_ANOMALY_AUDIT.json",
+    "E1_RESULTS.json tables.strata.rows[tf]"
+   ]
+  },
+  {
+   "claim_id": 15,
+   "claim": "FILL E1B is justified but lower priority.",
+   "verdict": "SURVIVED",
+   "evidence": "Fill event stream verified complete and correctly attributed (payload fill events = recorded + orphan fills at every stratum; orphans classified as left truncation; A1 gap-through fills legitimately belong to the fill cohort and are self-documenting via first_touch_observed=false). Fill cohorts are large at fine/mid strata (226,908 at 15s down to 2,104 at 15m) with registered survivor-conditioning at 1h (92.2%) and 4h (84.4%). Post-fill behavior is wholly unobserved in E1. Decision: READY, second priority after FIRST_TOUCH.",
+   "sources": [
+    "AP-002_E1_ANOMALY_AUDIT.json",
+    "E1_RESULTS.json tables.strata.rows[tf]"
+   ]
+  }
+ ],
+ "decisions": {
+  "E1A_FORMATION_PHENOTYPE": "PASS",
+  "FIRST_TOUCH_E1B": "BLOCKED",
+  "FILL_E1B": "READY",
+  "QUESTION_GENERATOR_ELIGIBILITY": "PARTIAL"
+ },
+ "decision_rationale": {
+  "E1A_FORMATION_PHENOTYPE": "PASS. The formation cohort and every headline phenotype statistic reproduce exactly from the zone rows; determinism re-verified (run-1/run-2 byte-identical); the two mandatory anomaly audits resolved without any scanner defect (A1 EXPECTED_SEMANTIC_CASE 1,010/1,010; A2 LEFT_TRUNCATED_PRE_DEVELOPMENT_STATE 533/533, zero unexplained); the research reconstruction handled both cases faithfully (fail-closed identity validation, no fabricated touches, orphans excluded from cohorts by construction). Freeze may proceed with two annotations: (a) formed_fill_without_prior_touch_n must be labeled a producer-semantic gap-through-fill case, not an unexplained anomaly; (b) orphan_touch_n/orphan_fill_n must be labeled pre-development left-truncated state. The director reconciliation sentence \"a filling bar necessarily overlaps the zone\" is factually wrong under the linked producer code and must not enter any frozen text.",
+  "FIRST_TOUCH_E1B": "BLOCKED, per the challenge rule for the observed A1 outcome: the lake legitimately omits first-touch while preserving fill, so FIRST_TOUCH E1B remains blocked until the measurement contract is defined. The anomaly itself is fully resolved (no data defect), so the only remaining item is the contract, which must state: (1) the touch-cohort denominator (zones with a recorded first touch, per stratum); (2) the treatment of gap-through-fill zones that never emit a touch (excluded from touch-anchored cohorts and reported separately via the fill payload first_touch_observed=false flag; they must not be silently imputed); (3) the anchor clock (market vs known time), given the paired-delay distributions now on record. Once the director freezes that contract, FIRST_TOUCH E1B is unblocked with no further audit required.",
+  "FILL_E1B": "READY. The fill event stream is complete and correctly attributed; A1 rows belong in fill cohorts (their fills are genuine far-edge reaches); A2 orphan fills are pre-development state already excluded from cohorts. Registration caveats: survivor-conditioning at 1h/4h (7.84%/15.57% right-censored) must be stated; anchor clock and same-bar touch+fill handling pre-registered; second priority after FIRST_TOUCH in one E1B stage-anchor extension.",
+  "QUESTION_GENERATOR_ELIGIBILITY": "PARTIAL. Eligible as registered hypotheses requiring formal nulls: the direction-adjusted negative-median pattern (18/21 cells, non-positive 19/21, magnitude growing with horizon and scale), the bullish-share gradient (0.5103 to 0.6048), the tail characterization beyond p95, censored-population heterogeneity, and the paired clock-delay structure. NOT eligible: any edge/alpha/profitability framing; the 4h h5 (+12.508 bps, n=167) or 1h h3 (+0.852 bps, n=523) cells as findings; any lifetime-fill-probability reading of observed fill fractions; any cross-scale pooling or cross-scale zone identity."
+ },
+ "prospective_response_assessment": {
+  "verified_sign_counts": {
+   "raw_positive": "21/21",
+   "direction_adjusted": "18 negative / 1 zero / 2 positive"
+  },
+  "zero_cell": "15s h1, median exactly 0.0 (frozen table serializes -0.0; sign-bit artifact).",
+  "positive_cells": "1h h3 +0.852 bps (n=523); 4h h5 +12.5076 bps (n=167).",
+  "question_generator_entry": "Yes, as DESCRIPTIVE_DIRECTIONAL_ASYMMETRY worth later testing: the sign split is the signature of window drift plus a mild counter-directional median tendency after formation, present in both direction cohorts at nearly all scales and horizons. It is scientifically interesting enough for Question Generator entry as a hypothesis family (zero-median tests per stratum x horizon; drift-aware nulls; gap_atr/quality conditionals), and explicitly NOT as an edge, alpha, or reversal effect. No E2 run, no formal confirmation performed in this audit."
+ },
+ "tail_censor_recommendation": {
+  "p95_distortion": "Material at 1h and 4h: right-censoring (7.84% / 15.57%) removes precisely the slowest zones, so the observed-fill p95 conditions on the fastest 92.2% / 84.4% of the population and the unconditional p95 is NOT identifiable from this window (max identifiable unconditional quantile = 1 - censor_rate). At 15s-15m (censor 0.45-4.01%) the unconditional p95 is identifiable and is 1.2x-5.1x the frozen observed-fill p95 in native bars (15s 857 vs 717; 30s 870 vs 695; 1m 996 vs 669; 5m 1,471 vs 701; 15m 2,835 vs 561) because the tail is extremely fat. The frozen p95s are therefore systematically conservative descriptions of the tail at every stratum, and materially censored-conditioned statistics at 1h/4h.",
+  "e1b_additions": "Add, per stratum, with no new framework: (1) p99 and max of formation_to_fill and formation_to_touch market durations; (2) unconditional-denominator quantiles (censored = unfilled), which under this design's single-end administrative censoring equal the Kaplan-Meier estimate for all t below the window end and are identifiable up to 1 - censor_rate; (3) an explicit \"max identifiable unconditional quantile = 1 - censor_rate\" line per stratum so no one reads coarse tails as identified. A full survival-model framework is NOT warranted.",
+  "claim3_status": "\"Rapid body + long tail\" SURVIVED and is understated, not distorted: the body claim (2-bar touch, 5-8 bar fill medians) is exact; the tail extends 1-2 orders of magnitude beyond p95 (p99 up to 14,176 bars; max observed 682,740 bars at 15s)."
+ },
+ "cross_scale_discipline": {
+  "identity": "All statistics recomputed per native stratum; (timeframe, zone_id) identity only; no cross-scale object identity inferred anywhere in this audit.",
+  "coverage": "bars x timeframe rejected as a coverage estimator with an exact bucket-accounting demonstration (claim 12)."
+ },
+ "scanner_defect_found": false,
+ "scanner_code_modified": false,
+ "blocking_items_for_E1A_freeze": [
+  "None blocking. Two labeling annotations required (A1 gap-through-fill semantics; A2 pre-development left truncation) and one frozen-text correction (the \"filling bar necessarily overlaps the zone\" premise in the director reconciliation is false)."
+ ],
+ "confirmation_status": "LOCKED",
+ "e2_e3": "NOT STARTED; not touched by this audit.",
+ "freeze_corrections": [
+ {
+  "applied_utc": "2026-09-05",
+  "ordered_by": "director freeze order AP-002 E1A FINAL FREEZE",
+  "correction": "DEVELOPMENT start boundary corrected from 2025-07-31T16:00:00Z (the development view's effective materialized start boundary) to 2025-07-31T16:15:00Z (frozen XAUUSD_DATA_SCOPE_V1 development.start_utc_inclusive; scope file never amended per Git history). Claim-11 evidence and the claim-12 window note were updated accordingly. Classification unchanged: all 533 orphan payloads carry detection_ts < 2025-07-31T16:15:00Z.",
+  "audit_reference": "AP-002_E1_ANOMALY_AUDIT.json#development_boundary_conformance_finding"
+ }
+]
+}

@@ -1,0 +1,841 @@
+{
+ "artifact_type": "AP-002_E1_ANOMALY_AUDIT",
+ "challenger_id": "AP-002-E1-INDEPENDENT-METHOD-CHALLENGER",
+ "generated_utc": "2026-09-06T04:01:33Z",
+ "audit_substrate": {
+  "zone_rows": ".runs/ap-002-e1-native-strata/causal-rework-final-run-1/E1_ZONES.jsonl (381,527 rows; sha256 0f0b9555c65d0052bea56c1d668a9032007138233113c244079bba061ecaa6cd; run-2 byte-identical, sha256 verified equal in this audit)",
+  "event_payloads": "F:/TrinityR-views/XAUUSD/XAUUSD_DATA_SCOPE_V1/development/{tf}/part-0000[0-4].parquet payload_fvg (the exact parts the scanner ingested per RUN_MANIFEST.provenance.source_parts); spot-verified byte-identical payload_fvg to F:/TrinityR-research/analytical_lake/fusion_markets/xauusd/{tf}/part-00000.parquet in-window (15s and 4h: 100% row-joined equality, identical null patterns)",
+  "bar_ohlc": "same development parquet parts (bar_open_ts, bar_close_ts, high, low)",
+  "producer_source": "F:/TrinityR/crates/trinity-analytics/src/bar/mod.rs, FvgDetector::process_bar (trinity.analytics.bar.fvg.v4.2); producer commit 211891e705d5e8ea132ef1391a0da4a9e5ff4376 per AP-002_AUTHORITY_V1.json",
+  "research_reconstruction_source": "F:/TrinityR-research/ap-002-e1-native-strata/crates/research-tape/src/fvg_e1.rs (scanner commit bb27149c2f5218737b9b025e22b422a75fc7f354)",
+  "development_start_boundary": "2025-07-31T16:15:00Z (epoch ms 1753978500000) = frozen XAUUSD_DATA_SCOPE_V1 development.start_utc_inclusive; development_end_exclusive 2026-05-05T12:39:00Z [corrected at freeze from 2025-07-31T16:00:00Z, which is the development view's effective materialized start boundary (per-timeframe bar_close_min 15s 16:00:15Z, 30s 16:00:30Z, 1m 16:01:00Z, 5m 16:05:00Z, 15m 16:15:00Z, 1h 17:00:00Z, 4h 20:00:00Z all match bar_close > 16:00:00Z), not the frozen scope boundary]",
+  "scanner_code_modified": false,
+  "scanner_rerun_performed": false
+ },
+ "A1_fill_without_prior_touch": {
+  "classification": "EXPECTED_SEMANTIC_CASE",
+  "n_total": 1010,
+  "mechanism": "The producer tests far-edge fill independently of range overlap. FvgDetector::process_bar: touch is emitted only when `bar.h >= zone.lower && bar.l <= zone.upper` and the zone is not yet touched; fill is emitted when bullish `bar.l <= zone.lower` (bearish `bar.h >= zone.upper`); the fill payload records `first_touch_observed: zone.touched`; the zone is then removed from active state. A bar that trades entirely beyond the far edge (bullish: high < zone.lower; bearish: low > zone.upper) reaches the far edge without its range ever overlapping the zone, so the lake legitimately emits fill with no first-touch and first_touch_observed=false. The director reconciliation premise \"a filling bar necessarily overlaps the zone\" is false for beyond-edge bars; the frozen authority semantics themselves (fill = low reaches lower edge / high reaches upper edge; touch = range overlaps) admit this case. The research reconstruction (fvg_e1.rs) processed these rows faithfully: it recorded the fill, recorded no touch, and never fabricated a touch.",
+  "evidence": {
+   "per_stratum": [
+    {
+     "timeframe": "15s",
+     "reported_n": 682,
+     "observed_n": 682,
+     "counts_match": true,
+     "fill_payload_first_touch_observed_false": 682,
+     "fill_payload_first_touch_observed_true": 0,
+     "touch_events_found_anywhere_for_a1_zones": 0,
+     "same_bar_touch_events_for_a1_zones": 0,
+     "fill_bar_entirely_beyond_far_edge": 682,
+     "fill_within_1_bar_of_formation": 285,
+     "session_gap_immediately_before_fill_bar": 260,
+     "median_beyond_edge_distance_price_units": 0.1974999999999909,
+     "max_beyond_edge_distance_price_units": 124.69499999999971
+    },
+    {
+     "timeframe": "30s",
+     "reported_n": 213,
+     "observed_n": 213,
+     "counts_match": true,
+     "fill_payload_first_touch_observed_false": 213,
+     "fill_payload_first_touch_observed_true": 0,
+     "touch_events_found_anywhere_for_a1_zones": 0,
+     "same_bar_touch_events_for_a1_zones": 0,
+     "fill_bar_entirely_beyond_far_edge": 213,
+     "fill_within_1_bar_of_formation": 47,
+     "session_gap_immediately_before_fill_bar": 143,
+     "median_beyond_edge_distance_price_units": 2.655000000000655,
+     "max_beyond_edge_distance_price_units": 89.29499999999916
+    },
+    {
+     "timeframe": "1m",
+     "reported_n": 81,
+     "observed_n": 81,
+     "counts_match": true,
+     "fill_payload_first_touch_observed_false": 81,
+     "fill_payload_first_touch_observed_true": 0,
+     "touch_events_found_anywhere_for_a1_zones": 0,
+     "same_bar_touch_events_for_a1_zones": 0,
+     "fill_bar_entirely_beyond_far_edge": 81,
+     "fill_within_1_bar_of_formation": 3,
+     "session_gap_immediately_before_fill_bar": 76,
+     "median_beyond_edge_distance_price_units": 8.094999999999345,
+     "max_beyond_edge_distance_price_units": 89.29499999999916
+    },
+    {
+     "timeframe": "5m",
+     "reported_n": 20,
+     "observed_n": 20,
+     "counts_match": true,
+     "fill_payload_first_touch_observed_false": 20,
+     "fill_payload_first_touch_observed_true": 0,
+     "touch_events_found_anywhere_for_a1_zones": 0,
+     "same_bar_touch_events_for_a1_zones": 0,
+     "fill_bar_entirely_beyond_far_edge": 20,
+     "fill_within_1_bar_of_formation": 0,
+     "session_gap_immediately_before_fill_bar": 20,
+     "median_beyond_edge_distance_price_units": 19.95999999999958,
+     "max_beyond_edge_distance_price_units": 83.94499999999971
+    },
+    {
+     "timeframe": "15m",
+     "reported_n": 10,
+     "observed_n": 10,
+     "counts_match": true,
+     "fill_payload_first_touch_observed_false": 10,
+     "fill_payload_first_touch_observed_true": 0,
+     "touch_events_found_anywhere_for_a1_zones": 0,
+     "same_bar_touch_events_for_a1_zones": 0,
+     "fill_bar_entirely_beyond_far_edge": 10,
+     "fill_within_1_bar_of_formation": 1,
+     "session_gap_immediately_before_fill_bar": 9,
+     "median_beyond_edge_distance_price_units": 18.777500000000146,
+     "max_beyond_edge_distance_price_units": 80.04500000000007
+    },
+    {
+     "timeframe": "1h",
+     "reported_n": 4,
+     "observed_n": 4,
+     "counts_match": true,
+     "fill_payload_first_touch_observed_false": 4,
+     "fill_payload_first_touch_observed_true": 0,
+     "touch_events_found_anywhere_for_a1_zones": 0,
+     "same_bar_touch_events_for_a1_zones": 0,
+     "fill_bar_entirely_beyond_far_edge": 4,
+     "fill_within_1_bar_of_formation": 0,
+     "session_gap_immediately_before_fill_bar": 4,
+     "median_beyond_edge_distance_price_units": 14.789999999999509,
+     "max_beyond_edge_distance_price_units": 22.345000000001164
+    },
+    {
+     "timeframe": "4h",
+     "reported_n": 0,
+     "observed_n": 0,
+     "counts_match": true,
+     "fill_payload_first_touch_observed_false": 0,
+     "fill_payload_first_touch_observed_true": 0,
+     "touch_events_found_anywhere_for_a1_zones": 0,
+     "same_bar_touch_events_for_a1_zones": 0,
+     "fill_bar_entirely_beyond_far_edge": 0,
+     "fill_within_1_bar_of_formation": 0,
+     "session_gap_immediately_before_fill_bar": 0,
+     "median_beyond_edge_distance_price_units": 0.0,
+     "max_beyond_edge_distance_price_units": 0.0
+    }
+   ],
+   "event_total_reconciliation": [
+    {
+     "timeframe": "15s",
+     "dev_bars": 1054977,
+     "dev_payload_rows": 469198,
+     "touch_events_in_payloads": 226777,
+     "recorded_touch_n": 226702,
+     "orphan_touch_n": 75,
+     "touch_reconciles": true,
+     "fill_events_in_payloads": 227066,
+     "recorded_fill_n": 226908,
+     "orphan_fill_n": 158,
+     "fill_reconciles": true
+    },
+    {
+     "timeframe": "30s",
+     "dev_bars": 527896,
+     "dev_payload_rows": 210647,
+     "touch_events_in_payloads": 99359,
+     "recorded_touch_n": 99313,
+     "orphan_touch_n": 46,
+     "touch_reconciles": true,
+     "fill_events_in_payloads": 99326,
+     "recorded_fill_n": 99232,
+     "orphan_fill_n": 94,
+     "fill_reconciles": true
+    },
+    {
+     "timeframe": "1m",
+     "dev_bars": 263976,
+     "dev_payload_rows": 93905,
+     "touch_events_in_payloads": 43465,
+     "recorded_touch_n": 43433,
+     "orphan_touch_n": 32,
+     "touch_reconciles": true,
+     "fill_events_in_payloads": 43373,
+     "recorded_fill_n": 43313,
+     "orphan_fill_n": 60,
+     "fill_reconciles": true
+    },
+    {
+     "timeframe": "5m",
+     "dev_bars": 52841,
+     "dev_payload_rows": 15784,
+     "touch_events_in_payloads": 7047,
+     "recorded_touch_n": 7039,
+     "orphan_touch_n": 8,
+     "touch_reconciles": true,
+     "fill_events_in_payloads": 6999,
+     "recorded_fill_n": 6981,
+     "orphan_fill_n": 18,
+     "fill_reconciles": true
+    },
+    {
+     "timeframe": "15m",
+     "dev_bars": 17615,
+     "dev_payload_rows": 4842,
+     "touch_events_in_payloads": 2143,
+     "recorded_touch_n": 2136,
+     "orphan_touch_n": 7,
+     "touch_reconciles": true,
+     "fill_events_in_payloads": 2117,
+     "recorded_fill_n": 2104,
+     "orphan_fill_n": 13,
+     "fill_reconciles": true
+    },
+    {
+     "timeframe": "1h",
+     "dev_bars": 4406,
+     "dev_payload_rows": 1141,
+     "touch_events_in_payloads": 503,
+     "recorded_touch_n": 497,
+     "orphan_touch_n": 6,
+     "touch_reconciles": true,
+     "fill_events_in_payloads": 489,
+     "recorded_fill_n": 482,
+     "orphan_fill_n": 7,
+     "fill_reconciles": true
+    },
+    {
+     "timeframe": "4h",
+     "dev_bars": 1169,
+     "dev_payload_rows": 349,
+     "touch_events_in_payloads": 160,
+     "recorded_touch_n": 157,
+     "orphan_touch_n": 3,
+     "touch_reconciles": true,
+     "fill_events_in_payloads": 147,
+     "recorded_fill_n": 141,
+     "orphan_fill_n": 6,
+     "fill_reconciles": true
+    }
+   ],
+   "representative_exact_row_traces": [
+    {
+     "identity": "15s:26769",
+     "direction": "bearish",
+     "zone_id": 26769,
+     "detection_ts": 1754599410000,
+     "detection_iso": "2025-08-07T20:43:30Z",
+     "origin_ts": 1754599380000,
+     "lower": 3399.21,
+     "upper": 3400.0299999999997,
+     "fill_ts": 1754604015000,
+     "fill_iso": "2025-08-07T22:00:15Z",
+     "fill_event_first_touch_observed": false,
+     "fill_event_fill_basis": "wick_reaches_far_edge",
+     "n_touch_events_for_zone_in_stream": 0,
+     "fill_bar": {
+      "open": 1754604000000.0,
+      "close_ts": 1754604015000,
+      "high": 3406.085,
+      "low": 3403.5550000000003
+     },
+     "prev_bar_close_ts": 1754600340000,
+     "prev_bar_close_iso": "2025-08-07T20:59:00Z",
+     "bar_open_ts": 1754604000000,
+     "bar_open_iso": "2025-08-07T22:00:00Z",
+     "session_gap_ms_before_fill_bar": 3660000,
+     "far_edge": 3400.0299999999997,
+     "bar_extreme_beyond_far_edge_by": 3.5250000000005457
+    },
+    {
+     "identity": "15s:20811",
+     "direction": "bearish",
+     "zone_id": 20811,
+     "detection_ts": 1753999965000,
+     "detection_iso": "2025-07-31T22:12:45Z",
+     "origin_ts": 1753999935000,
+     "lower": 3291.025,
+     "upper": 3291.085,
+     "fill_ts": 1753999980000,
+     "fill_iso": "2025-07-31T22:13:00Z",
+     "fill_event_first_touch_observed": false,
+     "fill_event_fill_basis": "wick_reaches_far_edge",
+     "n_touch_events_for_zone_in_stream": 0,
+     "fill_bar": {
+      "open": 1753999965000.0,
+      "close_ts": 1753999980000,
+      "high": 3291.665,
+      "low": 3291.145
+     },
+     "prev_bar_close_ts": 1753999965000,
+     "prev_bar_close_iso": "2025-07-31T22:12:45Z",
+     "bar_open_ts": 1753999965000,
+     "bar_open_iso": "2025-07-31T22:12:45Z",
+     "session_gap_ms_before_fill_bar": 0,
+     "far_edge": 3291.085,
+     "bar_extreme_beyond_far_edge_by": 0.05999999999994543
+    },
+    {
+     "identity": "1h:325",
+     "direction": "bearish",
+     "zone_id": 325,
+     "detection_ts": 1766181600000,
+     "detection_iso": "2025-12-19T22:00:00Z",
+     "origin_ts": 1766174400000,
+     "lower": 4340.27,
+     "upper": 4345.24,
+     "fill_ts": 1766365200000,
+     "fill_iso": "2025-12-22T01:00:00Z",
+     "fill_event_first_touch_observed": false,
+     "fill_event_fill_basis": "wick_reaches_far_edge",
+     "n_touch_events_for_zone_in_stream": 0,
+     "fill_bar": {
+      "open": 1766361600000.0,
+      "close_ts": 1766365200000,
+      "high": 4366.299999999999,
+      "low": 4355.1849999999995
+     },
+     "prev_bar_close_ts": 1766181600000,
+     "prev_bar_close_iso": "2025-12-19T22:00:00Z",
+     "bar_open_ts": 1766361600000,
+     "bar_open_iso": "2025-12-22T00:00:00Z",
+     "session_gap_ms_before_fill_bar": 180000000,
+     "far_edge": 4345.24,
+     "bar_extreme_beyond_far_edge_by": 9.944999999999709
+    },
+    {
+     "identity": "5m:2932",
+     "direction": "bullish",
+     "zone_id": 2932,
+     "detection_ts": 1761311400000,
+     "detection_iso": "2025-10-24T13:10:00Z",
+     "origin_ts": 1761310800000,
+     "lower": 4082.345,
+     "upper": 4088.915,
+     "fill_ts": 1761523500000,
+     "fill_iso": "2025-10-27T00:05:00Z",
+     "fill_event_first_touch_observed": false,
+     "fill_event_fill_basis": "wick_reaches_far_edge",
+     "n_touch_events_for_zone_in_stream": 0,
+     "fill_bar": {
+      "open": 1761523200000.0,
+      "close_ts": 1761523500000,
+      "high": 4067.87,
+      "low": 4058.275
+     },
+     "prev_bar_close_ts": 1761339600000,
+     "prev_bar_close_iso": "2025-10-24T21:00:00Z",
+     "bar_open_ts": 1761523200000,
+     "bar_open_iso": "2025-10-27T00:00:00Z",
+     "session_gap_ms_before_fill_bar": 183600000,
+     "far_edge": 4082.345,
+     "bar_extreme_beyond_far_edge_by": 14.474999999999909
+    }
+   ],
+   "serialization_checks": "One-versus-many payload serialization handled (research-tape fvg_e1.rs deserialize_events); dev-payload touch/fill/formation event totals reconcile exactly to recorded + orphan counts at every stratum (see event_total_reconciliation), so no touch event was lost or duplicated anywhere in the ingested stream. Same-bar touch+fill pairs exist (79,871 at 15s, 35,056 at 30s, 15,288 at 1m, 2,397 at 5m, 716 at 15m, 175 at 1h, 57 at 4h) and are processed touch-before-fill by the reconstruction - they are not the A1 source (same_bar_touch_events_for_a1_zones = 0 everywhere).",
+   "producer_state_restoration": "ActiveFvg (including the touched flag) and next_zone_id are serialized/restored in the detector state envelope (dump_state/restore_state), so no part boundary can reset or drop zone touch state."
+  },
+  "consequence": "The lake legitimately omits first-touch while preserving fill: formation E1 survives; FIRST_TOUCH E1B stays blocked until the measurement contract defines the touch-anchored cohort (denominator and treatment of gap-through-fill zones, whose fill payloads carry first_touch_observed=false as the discriminator).",
+  "scanner_reconstruction_defect": false
+ },
+ "A2_orphan_lifecycle_events": {
+  "classification": "LEFT_TRUNCATED_PRE_DEVELOPMENT_STATE",
+  "n_total": {
+   "orphan_touches": 177,
+   "orphan_fills": 356
+  },
+  "mechanism": "The producer entered the development window with warm detector state: zones formed on pre-scope data (the lake/development stream begins 2025-07-31T16:00:15Z but in-window zone ids start at 20555 (15s) / 8770 (30s) / 3757 (1m) / 661 (5m) / 202 (15m) / 41 (1h) / 17 (4h), and the earliest orphan formation detection is 2025-07-23T00:25:45Z). Events emitted in-window for those pre-scope zones reference zone ids absent from the development-initialized research zone book, so the scanner counts them as orphans. This is left truncation at the development boundary, not event loss. [Freeze correction: the frozen scope boundary is 2025-07-31T16:15:00Z; the view's effective start boundary was 2025-07-31T16:00:00Z (exclusive). All 533 orphan formations precede both boundaries; classification unchanged. The view's tick segment extends to 2025-07-08T22:01:08Z with no start filter stated in its boundary_rule - flagged for scanner-author review.]",
+  "per_stratum": [
+   {
+    "timeframe": "15s",
+    "orphan_touch_n": 75,
+    "orphan_fill_n": 158,
+    "detection_ts_strictly_before_development_start": 233,
+    "detection_ts_exactly_at_boundary_excluded_bar": 0,
+    "min_in_window_zone_id": 20555,
+    "max_orphan_zone_id": 20554,
+    "all_orphan_ids_below_min_in_window_id": true,
+    "unexplained_n": 0
+   },
+   {
+    "timeframe": "30s",
+    "orphan_touch_n": 46,
+    "orphan_fill_n": 94,
+    "detection_ts_strictly_before_development_start": 140,
+    "detection_ts_exactly_at_boundary_excluded_bar": 0,
+    "min_in_window_zone_id": 8770,
+    "max_orphan_zone_id": 8769,
+    "all_orphan_ids_below_min_in_window_id": true,
+    "unexplained_n": 0
+   },
+   {
+    "timeframe": "1m",
+    "orphan_touch_n": 32,
+    "orphan_fill_n": 60,
+    "detection_ts_strictly_before_development_start": 90,
+    "detection_ts_exactly_at_boundary_excluded_bar": 2,
+    "min_in_window_zone_id": 3757,
+    "max_orphan_zone_id": 3756,
+    "all_orphan_ids_below_min_in_window_id": true,
+    "unexplained_n": 0
+   },
+   {
+    "timeframe": "5m",
+    "orphan_touch_n": 8,
+    "orphan_fill_n": 18,
+    "detection_ts_strictly_before_development_start": 26,
+    "detection_ts_exactly_at_boundary_excluded_bar": 0,
+    "min_in_window_zone_id": 661,
+    "max_orphan_zone_id": 660,
+    "all_orphan_ids_below_min_in_window_id": true,
+    "unexplained_n": 0
+   },
+   {
+    "timeframe": "15m",
+    "orphan_touch_n": 7,
+    "orphan_fill_n": 13,
+    "detection_ts_strictly_before_development_start": 20,
+    "detection_ts_exactly_at_boundary_excluded_bar": 0,
+    "min_in_window_zone_id": 202,
+    "max_orphan_zone_id": 201,
+    "all_orphan_ids_below_min_in_window_id": true,
+    "unexplained_n": 0
+   },
+   {
+    "timeframe": "1h",
+    "orphan_touch_n": 6,
+    "orphan_fill_n": 7,
+    "detection_ts_strictly_before_development_start": 13,
+    "detection_ts_exactly_at_boundary_excluded_bar": 0,
+    "min_in_window_zone_id": 41,
+    "max_orphan_zone_id": 40,
+    "all_orphan_ids_below_min_in_window_id": true,
+    "unexplained_n": 0
+   },
+   {
+    "timeframe": "4h",
+    "orphan_touch_n": 3,
+    "orphan_fill_n": 6,
+    "detection_ts_strictly_before_development_start": 9,
+    "detection_ts_exactly_at_boundary_excluded_bar": 0,
+    "min_in_window_zone_id": 17,
+    "max_orphan_zone_id": 16,
+    "all_orphan_ids_below_min_in_window_id": true,
+    "unexplained_n": 0
+   }
+  ],
+  "evidence": {
+   "identity_monotonicity": "max orphan zone_id = min in-window zone_id - 1 at every stratum; no orphan id collides with an in-window id, so no misattribution is possible.",
+   "detection_ts_test": "all 533 orphan payloads carry detection_ts < 1753978500000 (2025-07-31T16:15:00Z, the frozen DEVELOPMENT start inclusive): 531 strictly before 1753977600000 (16:00:00Z), 2 exactly at 16:00:00Z (1m zone 3756, formed on the bar closing at 16:00:00Z; its touch and fill occur at 16:01:00Z). Re-verified at freeze against the extracted orphan table: 533/533 satisfy detection_ts < 16:15:00Z.",
+   "orphan_formation_window": "2025-07-23T00:25:45Z .. 2025-07-31T16:00:00Z; orphan event occurrence window 2025-07-31T16:00:45Z .. 2025-08-29T14:31:00Z.",
+   "unexplained_subset_n": 0
+  },
+  "consequence": "Orphans are pre-development detector state. They are already excluded from all formed_* cohort counts by the reconstruction (fvg_e1.rs orphan counters); no E1 statistic is contaminated. No reclassification of any lifecycle statistic is required."
+ },
+ "clock_audit": {
+  "definition": "Paired per-event information delay = available_time_ns/1e6 - event_time_ms, computed per zone row from E1_ZONES.jsonl (first_touch_available_time_ns - first_touch_ts; fill_available_time_ns - fill_ts). Units: milliseconds. No significance testing.",
+  "touch_delay_ms": {
+   "15s": {
+    "N": 226702,
+    "p05": 15.0,
+    "p25": 63.0,
+    "p50": 119.0,
+    "p75": 348.0,
+    "p95": 1632.0,
+    "max": 183660064.0
+   },
+   "30s": {
+    "N": 99313,
+    "p05": 14.000244140625,
+    "p25": 63.0,
+    "p50": 119.0,
+    "p75": 313.0,
+    "p95": 1502.000244140625,
+    "max": 188100071.0
+   },
+   "1m": {
+    "N": 43433,
+    "p05": 15.0,
+    "p25": 63.0,
+    "p50": 115.0,
+    "p75": 255.0,
+    "p95": 1182.4001464843764,
+    "max": 183660279.0
+   },
+   "5m": {
+    "N": 7039,
+    "p05": 16.0,
+    "p25": 60.0,
+    "p50": 108.0,
+    "p75": 205.0,
+    "p95": 888.3999999999978,
+    "max": 183600276.0
+   },
+   "15m": {
+    "N": 2136,
+    "p05": 13.0,
+    "p25": 54.75006103515625,
+    "p50": 100.0,
+    "p75": 174.000244140625,
+    "p95": 748.25,
+    "max": 183600117.0
+   },
+   "1h": {
+    "N": 497,
+    "p05": 15.8,
+    "p25": 51.0,
+    "p50": 92.0,
+    "p75": 127.0,
+    "p95": 352.2,
+    "max": 183600267.0
+   },
+   "4h": {
+    "N": 157,
+    "p05": 19.0,
+    "p25": 56.0,
+    "p50": 108.0,
+    "p75": 180.0,
+    "p95": 1518.3999999999926,
+    "max": 172800276.0
+   }
+  },
+  "fill_delay_ms": {
+   "15s": {
+    "N": 226908,
+    "p05": 14.000244140625,
+    "p25": 60.0,
+    "p50": 115.0,
+    "p75": 307.0,
+    "p95": 1414.000244140625,
+    "max": 183675029.0
+   },
+   "30s": {
+    "N": 99232,
+    "p05": 14.000244140625,
+    "p25": 60.0,
+    "p50": 113.999755859375,
+    "p75": 279.0,
+    "p95": 1323.0,
+    "max": 183660097.0
+   },
+   "1m": {
+    "N": 43313,
+    "p05": 14.000244140625,
+    "p25": 59.0,
+    "p50": 110.000244140625,
+    "p75": 232.0,
+    "p95": 1075.0,
+    "max": 183660064.0
+   },
+   "5m": {
+    "N": 6981,
+    "p05": 13.0,
+    "p25": 56.0,
+    "p50": 103.0,
+    "p75": 184.0,
+    "p95": 836.0,
+    "max": 12608176.0
+   },
+   "15m": {
+    "N": 2104,
+    "p05": 15.0,
+    "p25": 53.0,
+    "p50": 99.0,
+    "p75": 156.25,
+    "p95": 604.7499999999986,
+    "max": 12608176.0
+   },
+   "1h": {
+    "N": 482,
+    "p05": 12.0,
+    "p25": 48.0,
+    "p50": 85.0,
+    "p75": 125.0,
+    "p95": 395.1499999999998,
+    "max": 183600267.0
+   },
+   "4h": {
+    "N": 141,
+    "p05": 20.0,
+    "p25": 56.0,
+    "p50": 91.0,
+    "p75": 126.000244140625,
+    "p95": 341.0,
+    "max": 187200071.0
+   }
+  },
+  "reading": "Median paired receipt latency is ~0.09-0.12 s for both touch and fill at every stratum; p95 is 0.34-1.63 s. The max (~1.8e8 ms, about 2.1 days) is session-gap receipt (a bar completing at a session close becomes known at the next receipt). No stratum, including 1h, shows a distinctively large paired delay: the frozen tables known-vs-market quantile divergences (e.g. 1h fill p75 known 104,400,134 ms vs market 118,800,000 ms) arise from comparing separately computed quantiles of formation->event known and formation->event market durations, whose difference mixes formation receipt latency with event receipt latency. The paired distributions above are the required descriptive basis; any clock-dependence claim still requires a defined anchor-clock contract in E1B."
+ },
+ "tail_censor_appendix": {
+  "definition": "Fill/touch market durations from E1_ZONES.jsonl. observed = filled (touched) zones only. uncond_pX = quantile over ALL formations with censored zones counted as unfilled (this equals the Kaplan-Meier estimate for t < window end under single-end administrative censoring). Max identifiable unconditional quantile = 1 - censor_rate.",
+  "per_stratum": {
+   "15s": {
+    "N_all": 227925,
+    "observed_fills": 226908,
+    "censored": 1017,
+    "censor_rate": 0.004461994076999013,
+    "max_identifiable_unconditional_quantile": 0.995538005923001,
+    "fill_market_ms_observed": {
+     "p50": 105000.0,
+     "p95": 10755000.0,
+     "p99": 212644799.9999975,
+     "max": 10241100000.0
+    },
+    "fill_p50_bars": 7.0,
+    "fill_p95_bars": 717.0,
+    "fill_p99_bars": 14176.319999999832,
+    "fill_max_bars": 682740.0,
+    "unconditional_fill_q_at_p90_ms": null,
+    "touch_market_ms_observed": {
+     "p50": 30000.0,
+     "p95": 2850000.0,
+     "p99": 52423949.999999024,
+     "max": 10241055000.0
+    },
+    "touch_p95_bars": 190.0,
+    "touch_max_bars": 682737.0,
+    "unconditional_p95_fill_identifiable": true,
+    "unconditional_p95_fill_ms_if_identifiable": 12855000.0,
+    "uncond_p90_fill_ms": 3255000.0,
+    "uncond_p90_fill_bars": 217.0,
+    "uncond_p95_fill_ms": 12855000.0,
+    "uncond_p95_fill_bars": 857.0,
+    "uncond_p99_fill_ms": 518385000.0,
+    "uncond_p99_fill_bars": 34559.0
+   },
+   "30s": {
+    "N_all": 99874,
+    "observed_fills": 99232,
+    "censored": 642,
+    "censor_rate": 0.006428099405250616,
+    "max_identifiable_unconditional_quantile": 0.9935719005947494,
+    "fill_market_ms_observed": {
+     "p50": 210000.0,
+     "p95": 20850000.0,
+     "p99": 344420700.00000006,
+     "max": 10241040000.0
+    },
+    "fill_p50_bars": 7.0,
+    "fill_p95_bars": 695.0,
+    "fill_p99_bars": 11480.690000000002,
+    "fill_max_bars": 341368.0,
+    "unconditional_fill_q_at_p90_ms": null,
+    "touch_market_ms_observed": {
+     "p50": 60000.0,
+     "p95": 5520000.0,
+     "p99": 108465600.00000405,
+     "max": 10240950000.0
+    },
+    "touch_p95_bars": 184.0,
+    "touch_max_bars": 341365.0,
+    "unconditional_p95_fill_identifiable": true,
+    "unconditional_p95_fill_ms_if_identifiable": 26100000.0,
+    "uncond_p90_fill_ms": 6270000.0,
+    "uncond_p90_fill_bars": 209.0,
+    "uncond_p95_fill_ms": 26100000.0,
+    "uncond_p95_fill_bars": 870.0,
+    "uncond_p99_fill_ms": 1276020000.0,
+    "uncond_p99_fill_bars": 42534.0
+   },
+   "1m": {
+    "N_all": 43706,
+    "observed_fills": 43313,
+    "censored": 393,
+    "censor_rate": 0.00899190042557086,
+    "max_identifiable_unconditional_quantile": 0.9910080995744291,
+    "fill_market_ms_observed": {
+     "p50": 420000.0,
+     "p95": 40164000.00000009,
+     "p99": 641829599.999995,
+     "max": 10241040000.0
+    },
+    "fill_p50_bars": 7.0,
+    "fill_p95_bars": 669.4000000000015,
+    "fill_p99_bars": 10697.159999999916,
+    "fill_max_bars": 170684.0,
+    "unconditional_fill_q_at_p90_ms": null,
+    "touch_market_ms_observed": {
+     "p50": 120000.0,
+     "p95": 11064000.000000088,
+     "p99": 217473600.0000003,
+     "max": 10240920000.0
+    },
+    "touch_p95_bars": 184.40000000000146,
+    "touch_max_bars": 170682.0,
+    "unconditional_p95_fill_identifiable": true,
+    "unconditional_p95_fill_ms_if_identifiable": 59744482.81116536,
+    "uncond_p90_fill_ms": 13260000.0,
+    "uncond_p90_fill_bars": 221.0,
+    "uncond_p95_fill_ms": 59760000.0,
+    "uncond_p95_fill_bars": 996.0,
+    "uncond_p99_fill_ms": 5064600000.0,
+    "uncond_p99_fill_bars": 84410.0
+   },
+   "5m": {
+    "N_all": 7140,
+    "observed_fills": 6981,
+    "censored": 159,
+    "censor_rate": 0.02226890756302521,
+    "max_identifiable_unconditional_quantile": 0.9777310924369748,
+    "fill_market_ms_observed": {
+     "p50": 2100000.0,
+     "p95": 210300000.0,
+     "p99": 1399499999.999997,
+     "max": 10240800000.0
+    },
+    "fill_p50_bars": 7.0,
+    "fill_p95_bars": 701.0,
+    "fill_p99_bars": 4664.99999999999,
+    "fill_max_bars": 34136.0,
+    "unconditional_fill_q_at_p90_ms": null,
+    "touch_market_ms_observed": {
+     "p50": 600000.0,
+     "p95": 47429999.999999836,
+     "p99": 651557999.9999999,
+     "max": 8981400000.0
+    },
+    "touch_p95_bars": 158.09999999999945,
+    "touch_max_bars": 29938.0,
+    "unconditional_p95_fill_identifiable": true,
+    "unconditional_p95_fill_ms_if_identifiable": 441376579.28663546,
+    "uncond_p90_fill_ms": 91200000.0,
+    "uncond_p90_fill_bars": 304.0,
+    "uncond_p95_fill_ms": 441300000.0,
+    "uncond_p95_fill_bars": 1471.0,
+    "uncond_p99_fill_ms": null
+   },
+   "15m": {
+    "N_all": 2192,
+    "observed_fills": 2104,
+    "censored": 88,
+    "censor_rate": 0.040145985401459854,
+    "max_identifiable_unconditional_quantile": 0.9598540145985401,
+    "fill_market_ms_observed": {
+     "p50": 7200000.0,
+     "p95": 504584999.9999993,
+     "p99": 2548637999.999981,
+     "max": 10133100000.0
+    },
+    "fill_p50_bars": 8.0,
+    "fill_p95_bars": 560.6499999999992,
+    "fill_p99_bars": 2831.819999999979,
+    "fill_max_bars": 11259.0,
+    "unconditional_fill_q_at_p90_ms": null,
+    "touch_market_ms_observed": {
+     "p50": 1800000.0,
+     "p95": 168300000.0,
+     "p99": 1113885000.0,
+     "max": 6840900000.0
+    },
+    "touch_p95_bars": 187.0,
+    "touch_max_bars": 7601.0,
+    "unconditional_p95_fill_identifiable": true,
+    "unconditional_p95_fill_ms_if_identifiable": 2495239391.634976,
+    "uncond_p90_fill_ms": 351000000.0,
+    "uncond_p90_fill_bars": 390.0,
+    "uncond_p95_fill_ms": 2551500000.0,
+    "uncond_p95_fill_bars": 2835.0,
+    "uncond_p99_fill_ms": null
+   },
+   "1h": {
+    "N_all": 523,
+    "observed_fills": 482,
+    "censored": 41,
+    "censor_rate": 0.07839388145315487,
+    "max_identifiable_unconditional_quantile": 0.9216061185468452,
+    "fill_market_ms_observed": {
+     "p50": 28800000.0,
+     "p95": 1446479999.999999,
+     "p99": 4905431999.999995,
+     "max": 10238400000.0
+    },
+    "fill_p50_bars": 8.0,
+    "fill_p95_bars": 401.7999999999997,
+    "fill_p99_bars": 1362.6199999999988,
+    "fill_max_bars": 2844.0,
+    "unconditional_fill_q_at_p90_ms": null,
+    "touch_market_ms_observed": {
+     "p50": 7200000.0,
+     "p95": 710639999.999999,
+     "p99": 2706480000.000018,
+     "max": 8780400000.0
+    },
+    "touch_p95_bars": 197.39999999999972,
+    "touch_max_bars": 2439.0,
+    "unconditional_p95_fill_identifiable": false,
+    "unconditional_p95_fill_ms_if_identifiable": null,
+    "uncond_p90_fill_ms": 2570400000.0,
+    "uncond_p90_fill_bars": 714.0,
+    "uncond_p95_fill_ms": null,
+    "uncond_p99_fill_ms": null
+   },
+   "4h": {
+    "N_all": 167,
+    "observed_fills": 141,
+    "censored": 26,
+    "censor_rate": 0.15568862275449102,
+    "max_identifiable_unconditional_quantile": 0.844311377245509,
+    "fill_market_ms_observed": {
+     "p50": 72000000.0,
+     "p95": 2448000000.0,
+     "p99": 6647040000.0,
+     "max": 8769600000.0
+    },
+    "fill_p50_bars": 5.0,
+    "fill_p95_bars": 170.0,
+    "fill_p99_bars": 461.6,
+    "fill_max_bars": 609.0,
+    "unconditional_fill_q_at_p90_ms": null,
+    "touch_market_ms_observed": {
+     "p50": 28800000.0,
+     "p95": 1391039999.9999938,
+     "p99": 5443199999.999995,
+     "max": 8769600000.0
+    },
+    "touch_p95_bars": 96.59999999999957,
+    "touch_max_bars": 609.0,
+    "unconditional_p95_fill_identifiable": false,
+    "unconditional_p95_fill_ms_if_identifiable": null,
+    "uncond_p90_fill_ms": null,
+    "uncond_p95_fill_ms": null,
+    "uncond_p99_fill_ms": null
+   }
+  }
+ },
+ "development_boundary_conformance_finding": {
+ "finding": "The materialized development view was built with an effective start boundary of 2025-07-31T16:00:00Z (exclusive), while the frozen XAUUSD_DATA_SCOPE_V1 development.start_utc_inclusive is 2025-07-31T16:15:00Z. Discovered during the freeze-order re-evaluation of A2 against the exact frozen boundary.",
+ "evidence": {
+  "scope_file": "instruments/XAUUSD/data_scope_v1.json",
+  "frozen_development_start_inclusive": "2025-07-31T16:15:00Z (epoch ms 1753978500000)",
+  "view_effective_bar_start_rule": "bar_close_ts > 2025-07-31T16:00:00Z",
+  "view_tick_segment_min_event": "2025-07-08T22:01:08.175Z (epoch ns 1752019268175000000; boundary_rule in view manifest states end-exclusive filtering only)",
+  "scanner_stream_earliest_anchor_receipt": "2025-07-31T16:01:00.539Z (earliest anchor_received_ts_ns in committed E1_ZONES.jsonl)"
+ },
+ "cohort_impact": {
+  "formed_zones_with_detection_before_16_15": {
+   "15s": 15,
+   "30s": 8,
+   "1m": 5,
+   "5m": 0,
+   "15m": 0,
+   "1h": 0,
+   "4h": 0,
+   "total": 28,
+   "fraction_of_381527": 7.34e-05
+  },
+  "preflight_stream_includes_pre_boundary_segment": true
+ },
+ "classifications_unaffected": [
+  "A1 = EXPECTED_SEMANTIC_CASE (producer semantics, boundary-independent)",
+  "A2 = LEFT_TRUNCATED_PRE_DEVELOPMENT_STATE (533/533 detection_ts < 2025-07-31T16:15:00Z)",
+  "headline phenotype claims (perturbation ~0.0073% of cohort)"
+ ],
+ "disposition": "PENDING_DIRECTOR_RULING: freeze-with-annotation vs correct view builder start rule + re-materialize + rerun before freeze"
+},
+ "freeze_corrections": [
+ {
+  "applied_utc": "2026-09-05",
+  "ordered_by": "director freeze order AP-002 E1A FINAL FREEZE",
+  "correction": "DEVELOPMENT start boundary fields corrected from the development view's effective 2025-07-31T16:00:00Z to the frozen scope boundary 2025-07-31T16:15:00Z. A2 re-verified against the extracted orphan table: 533/533 detection_ts < 16:15:00Z; classification unchanged. development_boundary_conformance_finding added at freeze."
+ }
+]
+}
