@@ -48,6 +48,7 @@ impl ConfirmedBehavioralInput {
             authority_eligible: false,
         })
     }
+
     pub fn from_confirmation(
         input_id: impl Into<String>,
         available_time_ns: i64,
@@ -59,7 +60,6 @@ impl ConfirmedBehavioralInput {
             || confirmation.contract().custodian_policy_identity.is_empty()
             || confirmation.contract().claim_identity != confirmation.target_identity()
             || confirmation.contract().confirmation_id.is_empty()
-            || confirmation.contract().state != research_contracts::ConfirmationState::Confirmed
             || confirmation.kind() != ConfirmationKind::Detector
             || input_id.is_empty()
             || input_id.contains('/')
@@ -114,6 +114,7 @@ impl ConfirmedInputManifest {
         manifest.validate_shape()?;
         Ok(manifest)
     }
+
     pub fn from_detector_confirmations(
         strategy_id: impl Into<String>,
         holdout_policy_identity: impl Into<String>,
@@ -219,21 +220,15 @@ pub struct StrategySpec {
 pub type StrategyDefinition = StrategySpec;
 
 impl StrategySpec {
+    /// Validate the reusable declarative strategy specification and its confirmed
+    /// behavioral inputs. This intentionally does not hardcode a particular
+    /// executable entry/exit/sizing/management grammar.
     pub fn validate(&self, manifest: &ConfirmedInputManifest) -> Result<(), StrategyError> {
         self.hypothesis.validate()?;
         self.decision_rule.validate()?;
         self.execution_assumption.validate()?;
         self.cost_model.validate()?;
         self.risk_rule.validate()?;
-        if self.decision_rule.entry != "signal_threshold"
-            || self.decision_rule.exit != "observation_end"
-            || self.decision_rule.sizing != "unit"
-            || self.decision_rule.management != "none"
-        {
-            return Err(StrategyError::Invalid(
-                "unsupported executable decision rule",
-            ));
-        }
         if !self
             .execution_assumption
             .assumptions
