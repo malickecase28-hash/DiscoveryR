@@ -20,16 +20,16 @@
       "sha256": "ffeeec1fbb19ec1daba8de40aeda2a27c4ecf21c14de31157db27504b13fe35f"
     },
     {
-      "bytes": 8585,
+      "bytes": 10262,
       "logical_name": "AP-002_E1A_SYNTHESIS.json",
       "path": "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SYNTHESIS.json",
-      "sha256": "178f6db8b77ac5c093920c427ac2b97cbba90872ea3e19574c600e55864e61a6"
+      "sha256": "76079a793c36caabe2a75e03d116d6540a9915896a6edf6a4ac5935beb5aade0"
     },
     {
-      "bytes": 4841,
+      "bytes": 5739,
       "logical_name": "AP-002_E1A_SYNTHESIS.md",
       "path": "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SYNTHESIS.md",
-      "sha256": "548281134abb729579812e808226abe3edc1c8563d1957202c26c97017499e0e"
+      "sha256": "a7de5c701c2c047cfe53a3ed064a2ddc6771c38411114fb6c74f22dcbb201b13"
     },
     {
       "bytes": 32012,
@@ -111,6 +111,6 @@
     }
   ],
   "generator": "artifact_hash_registry",
-  "generator_code_identity": "091b84155cfd254984d92b1db3b24fb7d162d938",
+  "generator_code_identity": "1706a9493cf62973700a28bffeeecdc4f4d1db3e",
   "root": "."
 }

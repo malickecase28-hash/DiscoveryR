@@ -1,0 +1,371 @@
+{
+  "artifact_type": "AP-002_E1_FINAL_METHOD_CHALLENGE",
+  "challenger_id": "AP-002-E1-FINAL-INDEPENDENT-SKEPTIC",
+  "generated_utc": "2026-09-06T14:47:19Z",
+  "program": "AP-002 FVG",
+  "instrument": "XAUUSD",
+  "exposure": "E1_PHENOTYPE",
+  "development_scope": "XAUUSD_DATA_SCOPE_V1 DEVELOPMENT only",
+  "role": "Final independent scientific skeptic; did not build the scanners; did not produce P-01/P-02/P-03/P-04; did not write the reconciliations; no scanner code read-modified or re-run; no row-level tables (.runs/**) consumed; no repository search beyond the frozen evidence base.",
+  "active_evidence_identity": {
+    "e1a_logical_result_hash": "1b701c016bd1effa300742ee74ce73d6e0e96313d62847d231391061dc94dca6",
+    "e1b_logical_result_hash": "2a7a142cadb36449d14d4128361d11ce99a3a4d7d8a004dd539bc4dc32fb823c",
+    "confirmation_status": "LOCKED",
+    "cross_scale_object_identity": "PROHIBITED (respected throughout)"
+  },
+  "evidence_base": [
+    "knowledge/wave1_authority_closure/AP-002_AUTHORITY_V1.json",
+    "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SYNTHESIS.json",
+    "docs/research/ap-002-e1a-scope-repair/E1_EXPERIMENT.json",
+    "docs/research/ap-002-e1a-scope-repair/E1_RESULTS.json",
+    "docs/research/ap-002-e1a-scope-repair/PREFLIGHT.json",
+    "docs/research/ap-002-e1a-scope-repair/RUN_MANIFEST.json",
+    "docs/research/ap-002-e1a-scope-repair/SCANNER_INTEGRITY_GATE.json",
+    "docs/research/ap-002-e1a-scope-repair/REPRODUCIBILITY.json",
+    "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SCOPE_REPAIR_AUDIT.json",
+    "docs/research/ap-002-e1a-scope-repair/AP-002_E1A_SCOPE_REPAIR_IMPACT_ASSESSMENT.md",
+    "docs/research/ap-002-e1a-scope-repair/ARTIFACT_SHA256.json",
+    "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1_PHENOTYPE_REVIEW_P01.json",
+    "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1_PHENOTYPE_REVIEW_P02.json",
+    "docs/research/ap-002-e1-causal-rework/interpretation/AP-002_E1A_RECONCILIATION.md",
+    "docs/research/ap-002-e1-causal-rework/challenge/AP-002_E1_METHOD_CHALLENGE.json",
+    "docs/research/ap-002-e1-causal-rework/challenge/AP-002_E1_ANOMALY_AUDIT.json",
+    "docs/research/ap-002-e1-causal-rework/SUPERSEDED_SCOPE_BOUNDARY_MISALIGNMENT.md",
+    "docs/research/ap-002-e1b/AP-002_E1B_EXPERIMENT_CONTRACT.json",
+    "docs/research/ap-002-e1b/E1B_EXPERIMENT.json",
+    "docs/research/ap-002-e1b/E1B_RESULTS.json",
+    "docs/research/ap-002-e1b/PREFLIGHT.json",
+    "docs/research/ap-002-e1b/RUN_MANIFEST.json",
+    "docs/research/ap-002-e1b/E1B_SCANNER_INTEGRITY_GATE.json",
+    "docs/research/ap-002-e1b/REPRODUCIBILITY.json",
+    "docs/research/ap-002-e1b/FILL_TOUCH_CONSISTENCY_AUDIT.json",
+    "docs/research/ap-002-e1b/E1B_FILL_STRATIFICATION.json",
+    "docs/research/ap-002-e1b/E1B_INTERPRETER_FACT_CHECK.json",
+    "docs/research/ap-002-e1b/ARTIFACT_SHA256.json",
+    "docs/research/ap-002-e1b/interpretation/AP-002_E1B_PHENOTYPE_REVIEW_P03.json",
+    "docs/research/ap-002-e1b/interpretation/AP-002_E1B_PHENOTYPE_REVIEW_P04.json",
+    "docs/research/ap-002-e1b/interpretation/AP-002_E1B_PHENOTYPE_REVIEW_P03_ADDENDUM.json",
+    "docs/research/ap-002-e1b/interpretation/AP-002_E1B_PHENOTYPE_REVIEW_P04_ADDENDUM.json"
+  ],
+  "verification_method": {
+    "approach": "All 18 claims re-checked by direct arithmetic against the committed tables (E1_RESULTS.json, E1B_RESULTS.json, E1B_FILL_STRATIFICATION.json) and against the committed mechanical audit artifacts (AP-002_E1A_SCOPE_REPAIR_AUDIT.json, E1B_INTERPRETER_FACT_CHECK.json, FILL_TOUCH_CONSISTENCY_AUDIT.json) rather than recomputation from row data, per the evidence-base discipline. Hash registries re-verified file-by-file.",
+    "scanner_defect_found": false,
+    "scanner_code_modified": false
+  },
+  "per_claim_classifications": [
+    {
+      "claim_id": 1,
+      "claim": "FVG formation-to-touch median is two native bars across all seven strata.",
+      "classification": "SURVIVED",
+      "evidence": "formation_to_touch_market_ms.p50 / bar-width = 2.0 at every stratum (15s 30000/15000; 30s 60000/30000; 1m 120000/60000; 5m 600000/300000; 15m 1800000/900000; 1h 7200000/3600000; 4h 28800000/14400000), identical in E1A E1_RESULTS.json and E1B E1B_RESULTS.json; p25 = 1 bar everywhere. Descriptive of the touched population (touch incidence 0.9401-0.9946); the never-touched minority (10 at 4h to 1223 at 15s) has no touch time by construction.",
+      "sources": ["E1_RESULTS.json:tables.strata.rows[tf].formation_to_touch_market_ms", "E1B_RESULTS.json:tables.strata.rows[tf].formation_to_touch_market_ms", "AP-002_E1A_RECONCILIATION.md (AGREED_SUPPORTED)"]
+    },
+    {
+      "claim_id": 2,
+      "claim": "FVG formation-to-fill body is rapid relative to the full observed tail.",
+      "classification": "SURVIVED",
+      "evidence": "Formation->fill p50 = 7/7/7/7/8/8/5 native bars (15s..4h) against observed-event p95 = 717/695/670/701/562/403/170 bars and observed-event p99 = 14178/11481/10701/4654/2835/1249/462 bars; observed max ~10.24e9 ms (~118.5 days, administrative window-boundary artifact). Body-to-p95 ratio is ~100x at fine/mid strata. The 'full observed tail' is itself a censored lower bound at coarse strata (fill censor 0.45%..15.57%), so the claim understates, not overstates, the tail.",
+      "sources": ["E1B_RESULTS.json:tables.strata.rows[tf].formation_to_fill_market_ms", "AP-002_E1_ANOMALY_AUDIT.json:tail_censor_appendix", "AP-002_E1B_PHENOTYPE_REVIEW_P04.json:tail_censoring_assessment"]
+    },
+    {
+      "claim_id": 3,
+      "claim": "First-touch-to-fill median is one native bar across all seven strata.",
+      "classification": "SURVIVED",
+      "evidence": "touch_to_fill_market_ms.p50 / bar-width = 1.0 at all seven strata; p25 = 0.0 everywhere (same-bar mass). Quantiles condition on touched-then-filled zones (n = touched_fill_n, 226210 down to 141); touch->fill right-censoring 0.210%..10.191% is reported separately and correctly.",
+      "sources": ["E1B_RESULTS.json:tables.strata.rows[tf].touch_to_fill_market_ms", "E1B_RESULTS.json:tables.strata.rows[tf].touch_to_fill_right_censor_fraction"]
+    },
+    {
+      "claim_id": 4,
+      "claim": "Approximately 34-40% of touched-and-filled zones fill on the first-touch bar itself.",
+      "classification": "SURVIVED",
+      "evidence": "same_bar_touch_fill_n / touched_fill_n = 0.3531 (15s), 0.3541 (30s), 0.3536 (1m), 0.3443 (5m), 0.3419 (15m), 0.3661 (1h), 0.4043 (4h) - range 34.2%-40.4%. Denominator is touched_fill_n as required (not all formations or all touches); independently reproduced by E1B_INTERPRETER_FACT_CHECK.json:same_bar_touch_fill_rate. Counted zones: 79865/35055/15286/2397/716/175/57.",
+      "sources": ["E1B_RESULTS.json:tables.strata.rows[tf].same_bar_touch_fill_n", "E1B_INTERPRETER_FACT_CHECK.json:same_bar_touch_fill_rate"]
+    },
+    {
+      "claim_id": 5,
+      "claim": "A persistent touched-but-unfilled population exists and censoring becomes more material at coarser strata.",
+      "classification": "SURVIVED",
+      "evidence": "Touched-but-unfilled at window end (touch_anchors_n - touched_fill_n) = 476/294/201/78/42/19/16 zones; touch_to_fill_right_censor_fraction rises monotonically 0.210%, 0.296%, 0.463%, 1.108%, 1.966%, 3.823%, 10.191% (15s..4h). Never-touched fraction also rises (0.537%..5.988%); never-filled fraction 0.446%..15.569%. All are administrative window-censoring quantities, not lifetime probabilities.",
+      "sources": ["E1B_RESULTS.json:tables.strata.rows[tf].touch_to_fill_right_censor_fraction", "E1B_RESULTS.json:tables.strata.rows[tf].touch_incidence", "AP-002_E1B_PHENOTYPE_REVIEW_P04.json:population_reconciliation"]
+    },
+    {
+      "claim_id": 6,
+      "claim": "Formation-anchor direction-adjusted medians are 18 negative / 1 zero / 2 positive.",
+      "classification": "SURVIVED",
+      "evidence": "Recounted from E1_RESULTS.json horizon tables and mechanically verified by AP-002_E1A_SCOPE_REPAIR_AUDIT.json:prospective_sign_counts.corrected_result (negative=18, zero=1, positive=2; raw_median_positive=21). Zero cell = 15s h1 (serialized -0.0, sign-bit artifact of exact 0.0); positive cells = 1h h3 +0.852 bps (n=523) and 4h h5 +12.508 bps (n=167). Magnitude audit applies: the 21 medians span -2.094..+12.508 bps against p05-p95 spans of 6.4..561 bps; this is a weak-central-tendency pattern, not a strong directional structure.",
+      "sources": ["E1_RESULTS.json:tables.strata.rows[tf].horizons[*].direction_adjusted_return_bps.p50", "AP-002_E1A_SCOPE_REPAIR_AUDIT.json:prospective_sign_counts"]
+    },
+    {
+      "claim_id": 7,
+      "claim": "FIRST_TOUCH direction-adjusted medians are positive in 21/21 cells.",
+      "classification": "SURVIVED",
+      "evidence": "All 21 stratum-horizon cells positive, from +0.0136 bps (15s h1) to +13.2671 bps (4h h5); mechanically verified by E1B_INTERPRETER_FACT_CHECK.json (first_touch_adjusted_p50_signs positive=21/21). As a sign census it stands. Interpretation is NOT admitted: raw medians are also positive 21/21 here (drift signature), the bullish cohort is positive 21/21 while bearish is 5 pos / 5 zero / 11 neg, and no drift-aware null exists. Any directional reading REQUIRES_E2.",
+      "sources": ["E1B_RESULTS.json:tables.strata.rows[tf].first_touch.horizons[*].direction_adjusted_return_bps.p50", "E1B_INTERPRETER_FACT_CHECK.json:first_touch_adjusted_p50_signs"]
+    },
+    {
+      "claim_id": 8,
+      "claim": "FILL direction-adjusted medians are positive in 21/21 cells.",
+      "classification": "SURVIVED",
+      "evidence": "All 21 cells positive, from +0.0214 bps (15s h1) to +18.1627 bps (4h h3); mechanically verified by E1B_INTERPRETER_FACT_CHECK.json (fill_adjusted_p50_signs positive=21/21). Raw FILL medians are positive only 20/21 (4h h1 raw -0.145 bps, n=141) - the drift-adjusted/direction-adjusted divergence at small N. Same interpretive restriction as claim 7: descriptive sign census only; REQUIRES_E2 for any directional structure claim.",
+      "sources": ["E1B_RESULTS.json:tables.strata.rows[tf].fill.horizons[*].direction_adjusted_return_bps.p50", "E1B_INTERPRETER_FACT_CHECK.json:fill_adjusted_p50_signs"]
+    },
+    {
+      "claim_id": 9,
+      "claim": "FILL medians exceed FIRST_TOUCH medians in 19/21 cells.",
+      "classification": "SURVIVED",
+      "evidence": "Paired recomputation confirms 19/21 (exceptions 1h h3: 1.7706 < 2.7102; 4h h1: 8.3089 < 10.6759); mechanically verified by E1B_INTERPRETER_FACT_CHECK.json (fill_adjusted_p50_greater_than_first_touch_count 19/21). Magnitude audit applies: the FILL-FT differences range from +0.0011 bps (15m h1, against a per-cohort IQR width of ~16.5 bps - meaningless at the median level) and +0.0078 bps (15s h1) to +8.79 bps (4h h3, n=141). The 19/21 count is verified, but only the coarse-stratum differences are descriptively non-trivial; the fine-stratum differences are quantile noise.",
+      "sources": ["E1B_RESULTS.json:tables.strata.rows[tf].first_touch/fill.horizons[*].direction_adjusted_return_bps.p50", "E1B_INTERPRETER_FACT_CHECK.json:fill_adjusted_p50_greater_than_first_touch_count"]
+    },
+    {
+      "claim_id": 10,
+      "claim": "The apparent formation->touch->fill sign reversal is descriptive across different selected cohorts and is NOT yet a causal stage effect.",
+      "classification": "SURVIVED",
+      "evidence": "The claim as worded is correct and is the load-bearing defensive framing. The three cohorts differ: FORMATION = all lawful in-window formations (381,498); FIRST_TOUCH = only zones that emit a touch (379,248; 94.0-99.5% of formations); FILL = only zones that fill (379,132). Anchor prices also differ (formation availability tick vs boundary-crossing tick inside/at the zone) and horizon clocks start at different lifecycle moments. No matched/within-cohort evidence exists anywhere in E1. The reversal may therefore be cohort selection, anchor-definition mechanics (approach-phase price path into the zone), or drift composition; none is separated. See sign_reversal_classification and the selection audit.",
+      "sources": ["AP-002_E1A_SYNTHESIS.json:canonical_observations", "AP-002_E1B_PHENOTYPE_REVIEW_P03.json:formation_vs_touch_vs_fill_comparison", "AP-002_E1B_PHENOTYPE_REVIEW_P04.json:formation_vs_touch_vs_fill_descriptive_comparison.confounds_registered"]
+    },
+    {
+      "claim_id": 11,
+      "claim": "The pooled post-touch/fill positive tendency is disproportionately bullish-carried.",
+      "classification": "SURVIVED",
+      "evidence": "Bullish direction-adjusted p50 positive in 42/42 anchor cells (mechanically verified); bearish positive in only 15/42 (FT 5/21, FILL 10/21), zero or epsilon in 7, negative in 20 - e.g. 15s FT bearish exactly 0.0 at all horizons (n=111,069), 5m FILL bearish -0.019/-0.098/-0.971 (n=3,214), 1h FILL h3/h5 bearish -3.06/-4.89 (n=203). Only 4h (n=63-94) shows clearly positive bearish medians. Descriptively verified; the drift attribution (window drift vs FVG-specific asymmetry) REQUIRES_E2.",
+      "sources": ["E1B_INTERPRETER_FACT_CHECK.json:bullish/bearish_direction_split_p50_signs_by_stage", "E1B_RESULTS.json:tables.strata.rows[tf].first_touch/fill.horizons[*].direction_split"]
+    },
+    {
+      "claim_id": 12,
+      "claim": "Bearish stage-anchor medians are not sign-consistent.",
+      "classification": "SURVIVED",
+      "evidence": "Mechanically verified: bearish FIRST_TOUCH 5 positive / 5 zero / 11 negative of 21; bearish FILL 10 positive / 1 zero / 10 negative of 21 (E1B_INTERPRETER_FACT_CHECK.json). Note: P-04's original FILL tally (10 pos / 2 zero / 9 neg) FAILED the mechanical check and was corrected in the P-04 addendum (disputed cell 30s FILL h1 bearish = -2.1e-12 bps; mechanical strict-sign classification is canonical). The substantive conclusion (no sign-consistent bearish pattern) survives the correction.",
+      "sources": ["E1B_INTERPRETER_FACT_CHECK.json:bearish_direction_split_p50_signs_by_stage", "AP-002_E1B_PHENOTYPE_REVIEW_P04_ADDENDUM.json:claim_correction_acknowledged"]
+    },
+    {
+      "claim_id": 13,
+      "claim": "Fine-scale central tendencies are small relative to dispersion.",
+      "classification": "SURVIVED",
+      "evidence": "Recomputed |direction-adjusted p50| / IQR-width at h1: 15s 0.81%, 30s 0.56%, 1m 1.74%, 5m 1.68%, 15m 0.76% (FT) and 15s 1.22%, 30s 1.14%, 1m 2.64%, 5m 1.87%, 15m 0.71% (FILL); |p50| / p05-p95 span is 0.15-0.70% at those strata. Matches P-04's 0.56-2.64% range. Coarse strata are larger (1h ~4.0-4.8%, 4h ~10.8-15.2% of IQR) but rest on n=141-497 with p05-p95 spans of 149-427 bps. Sign consistency without magnitude is weak central tendency.",
+      "sources": ["E1B_RESULTS.json:tables.strata.rows[tf].first_touch/fill.horizons[*].direction_adjusted_return_bps (p25/p50/p75/p05/p95)", "AP-002_E1B_PHENOTYPE_REVIEW_P04.json:prospective_response_assessment.magnitude_discipline"]
+    },
+    {
+      "claim_id": 14,
+      "claim": "Gap-through fill is a legitimate producer-semantic lifecycle case.",
+      "classification": "SURVIVED",
+      "evidence": "A1 resolution stands on the corrected cohort: producer tests far-edge fill independently of range overlap; all 1,010 in-window formed zones that filled without a touch event carry first_touch_observed=false, zero touch events exist anywhere in the stream for those zone ids, all fill bars trade entirely beyond the zone far edge, majority preceded by session gaps. E1B independently reconciles: FILL_TOUCH_CONSISTENCY_AUDIT.json shows 0 disagreements across 379,132 fill anchors (378,122 first_touch_observed=true + 1,010 false); E1B_SCANNER_INTEGRITY_GATE.json stage_stratification PASS with gap_through_fill_n=1010. Not an anomaly, not a serialization defect.",
+      "sources": ["AP-002_E1_ANOMALY_AUDIT.json:A1_fill_without_prior_touch", "FILL_TOUCH_CONSISTENCY_AUDIT.json", "E1B_SCANNER_INTEGRITY_GATE.json:stage_stratification"]
+    },
+    {
+      "claim_id": 15,
+      "claim": "No robust touched-fill vs gap-through post-fill difference is supported; 30s is only hypothesis-grade.",
+      "classification": "SURVIVED",
+      "evidence": "E1B_FILL_STRATIFICATION.json confirms gap-through n = 682/213/81/20/10/4/0 (15s..4h). Predeclared support labels (fixed before inspection): only 15s and 30s are paired-eligible (both cells DESCRIPTIVE_ADEQUATE). 15s: ordering flips across horizons, |differences| <= 0.105 bps against IQR widths ~1.7-5.2 bps - indistinguishable. 30s: gap-through uniformly higher (+0.889/+1.370/+0.801 vs +0.030/+0.108/+0.161 bps) but n=213, ~2.3x wider h1 IQR, bullish composition 55.9% vs 51.1%, and contradicted by the 15s null. 1m (n=81, THIN) is already sign-flipping; 5m/15m/1h TOO_SPARSE; 4h EMPTY. Labels are size-support labels, not significance. Conclusion 'no robust scale-consistent descriptive difference' is justified; the 30s contrast is a registered hypothesis only.",
+      "sources": ["E1B_FILL_STRATIFICATION.json:cells", "AP-002_E1B_PHENOTYPE_REVIEW_P03_ADDENDUM.json:q1/q2", "AP-002_E1B_PHENOTYPE_REVIEW_P04_ADDENDUM.json:answer_1"]
+    },
+    {
+      "claim_id": 16,
+      "claim": "Left-truncated/orphan events are correctly excluded from the lawful in-window formation population.",
+      "classification": "SURVIVED",
+      "evidence": "AP-002_E1A_SCOPE_REPAIR_AUDIT.json (fail-closed, reconciled_with_scanner_counters=true): 536 orphan events (178 touch / 358 fill) on the corrected cohort; all_orphans_left_truncated=true at every stratum; every orphan detected strictly before its stratum's first lawful in-window formation (orphan detection window 2025-07-22..2025-07-31T16:15:00Z, two events exactly at the boundary instant originating from excluded pre-boundary formation-bar state). E1B reconciles identical counts (P-03 stratum_sum_reconciliation, P-04 population_reconciliation). Exclusion is correct; orphans are not missing formations.",
+      "sources": ["AP-002_E1A_SCOPE_REPAIR_AUDIT.json:strata[*].all_orphans_left_truncated", "AP-002_E1B_PHENOTYPE_REVIEW_P04.json:population_reconciliation"]
+    },
+    {
+      "claim_id": 17,
+      "claim": "Raw observed fill fractions are not lifetime fill probabilities.",
+      "classification": "SURVIVED",
+      "evidence": "fill_rate + right_censored_rate = 1 by scanner construction (accounting complement; verified per stratum). Censoring rises 0.45%..15.57% with native scale; at 4h fill p95 (~170 bars) is ~14.5% of the entire 1169-bar window. Coarse-scale fill fractions (92.16% at 1h, 84.43% at 4h) are window-truncated lower bounds. Same discipline applies to touch incidence (never-touched complement) and to all E1B touch->fill censoring fractions. E1B correctly carries fill_max_identifiable_quantile / touch_to_fill_max_identifiable_quantile per stratum.",
+      "sources": ["E1_RESULTS.json:tables.strata.rows[tf].fill_rate/right_censored_rate", "E1B_RESULTS.json:tables.strata.rows[tf].fill_max_identifiable_quantile", "AP-002_E1A_RECONCILIATION.md (ACCOUNTING COMPLEMENT)"]
+    },
+    {
+      "claim_id": 18,
+      "claim": "Cross-scale object identity must not be inferred.",
+      "classification": "SURVIVED",
+      "evidence": "Authority freezes identity = (timeframe, zone_id) and cross_scale_identity = UNRESOLVED_AND_PROHIBITED (AP-002_AUTHORITY_V1.json). Both integrity gates verify native identities only ((timeframe, zone_id) for E1A; (stage, timeframe, zone_id) for E1B). All four reviews and both addenda declare and respect the prohibition; no pooled-scale analytic statistic exists in any frozen artifact (the only cross-stratum sums are arithmetic identity checks). Discipline held throughout.",
+      "sources": ["AP-002_AUTHORITY_V1.json:identity/cross_scale_identity", "SCANNER_INTEGRITY_GATE.json:native_identity", "E1B_SCANNER_INTEGRITY_GATE.json:native_stage_identity"]
+    }
+  ],
+  "explicit_decisions": {
+    "E1A_FORMATION": "PASS",
+    "E1B_FIRST_TOUCH": "PASS",
+    "E1B_FILL": "PASS",
+    "COMPLETE_AP002_E1": "PASS",
+    "QUESTION_GENERATOR_ELIGIBILITY": "YES"
+  },
+  "decision_rationale": {
+    "E1A_FORMATION": "PASS. Corrected evidence (scope-repaired view, two-run deterministic reproduction, integrity gate 9/9) verified claim-by-claim; A1/A2 fully resolved with zero unexplained events; sign counts mechanically audited. One administrative provenance defect found and documented (see findings): AP-002_E1A_SYNTHESIS.json/.md do not match their recorded SHA256 entries in that package's ARTIFACT_SHA256.json. This does not touch the scanner evidence (E1_RESULTS_corrected.json and all other 16 registry entries verify OK, and the synthesis content is independently corroborated by AP-002_E1A_SCOPE_REPAIR_AUDIT.json and by the E1B package's exact reconciliation to 381,498 formations / 178+358 orphans), but the registry must be regenerated before knowledge-base admission.",
+    "E1B_FIRST_TOUCH": "PASS. Contract-compliant cohort (gap-through excluded, never imputed; orphans excluded; one anchor per emitted touch), integrity gate 5/5, two-run identical hashes, sign counts and censoring ceilings mechanically verified. Interpretation boundaries (no stage-effect, no drift, no significance language) are correctly drawn by P-03/P-04 and preserved here.",
+    "E1B_FILL": "PASS. Same integrity basis; fill-touch consistency audit 0/379,132 disagreements; the one interpreter tally error (P-04 bearish FILL 10/2/9 -> 10/1/10) was mechanically caught and corrected with no substantive change. Contract completion (E1B_FILL_STRATIFICATION.json) closed the gap-through reporting gap. FILL aggregate quantiles are conditional-on-fill observed-event quantities and are correctly bounded by the committed censor ceilings.",
+    "COMPLETE_AP002_E1": "PASS with mandatory annotations. All 18 canonical claims survive as descriptive phenotype statements; no scanner defect was demonstrated; confirmation remains LOCKED. Admission to the frozen knowledge base requires: (a) regeneration of the E1A-scope-repair hash registry (provenance defect below); (b) attachment of the must-not-claim list, including the corrected unconditional-quantile language; (c) the sign-reversal classification SURVIVES_AS_DESCRIPTIVE_COHORT_PATTERN with the E2 gate on any stage-effect language.",
+    "QUESTION_GENERATOR_ELIGIBILITY": "YES. The E1A PARTIAL status was conditioned on the blocked FIRST_TOUCH measurement contract; that contract was frozen, executed, audited, and completed with the gap-through stratification. Candidates A-G are bounded, non-strategic, and each carries a declared null/matching requirement; none may be executed under E1, and each requires its own frozen E2 measurement contract before any test."
+  },
+  "sign_reversal_classification": "SURVIVES_AS_DESCRIPTIVE_COHORT_PATTERN",
+  "sign_reversal_rationale": "The formation-anchored pattern (18 neg / 1 zero / 2 pos) and the touch/fill-anchored patterns (21/21 pos each) are measured on three different cohorts (all lawful formations vs touched-only vs filled-only) with different anchor price definitions (formation availability tick vs in/at-zone boundary tick) and different horizon start points. Touch and fill are outcomes, so the later cohorts are outcome-selected subsamples of the formation cohort; no matched or within-zone evidence exists in E1. The reversal is therefore admitted ONLY as a cross-cohort descriptive pattern. Calling it a stage effect, stage conditioning, approach-phase spending, recentering, or continuation/reversion requires the E2 experiment below. Neither P-03 nor P-04 asserts the stage-effect version without qualification (both register selection and anchor-definition as confounds); no frozen wording converts the cohort pattern into a within-object stage effect, so nothing must be rewritten - the boundary must simply be held at admission.",
+  "mandatory_audits": {
+    "selection_audit": {
+      "cohorts": {
+        "FORMATION": "all lawful in-window formations, N=381,498 (227909/99866/43701/7140/2192/523/167)",
+        "FIRST_TOUCH": "only zones with an emitted fvg_first_touch event, N=379,248 (touch incidence 0.9946..0.9401 by stratum)",
+        "FILL": "only zones with a lawful fvg_filled event, N=379,132 (fill incidence 0.9955..0.8443), itself split touched-fill 378,122 / gap-through 1,010"
+      },
+      "finding": "The cohorts are nested by outcome selection (touch and fill are later-bar outcomes of the same zones), and the anchor price changes across stages (formation availability tick vs boundary-crossing tick inside/at the zone). Any difference of stage-level statistics therefore confounds (i) outcome selection, (ii) anchor re-definition, (iii) horizon-clock shift, and (iv) instrument drift interacting with cohort direction composition. E1 contains no matched, within-zone, or time-matched evidence that separates these.",
+      "frozen_wording_check": "P-03 labels the stage comparison INTERPRETATION and states 'anchor populations are selected (touched/filled zones)' and 'not a tested effect'; P-04 lists cohort conditioning and anchor-price definition among registered confounds and prohibits 'incremental predictive value' language. No frozen text asserts a within-object stage effect. Classification: SURVIVES_AS_DESCRIPTIVE_COHORT_PATTERN. The stage-effect reading is REQUIRES_E2.",
+      "recommended_e2_experiment": {
+        "name": "E2 STAGE-MATCHED LIFECYCLE PANEL (recommended; not executed)",
+        "design": [
+          "1. Within-zone panel: per stratum, for every zone that touches within a pre-registered window, compute direction-adjusted returns at matched calendar offsets from BOTH the formation anchor and the first-touch anchor (and, for zones that fill, the fill anchor). The within-zone touch-vs-formation contrast on identical clock offsets tests stage conditioning while holding the zone, direction, calendar time, and drift exposure fixed.",
+          "2. Selection model: censor-aware (single-end administrative) comparison of touched vs never-touched and filled vs touched-unfilled zones on gap_atr, fvg_quality, direction, session/time-of-day, so the population that 'selects into' touch/fill is characterized; selection into touch/fill is thereby measured, not assumed away.",
+          "3. Drift-aware null: per stratum and horizon, a time-matched unconditional control (same calendar grid, same direction mix, no FVG requirement) providing the null distribution of direction-adjusted medians under pure window drift; the stage contrast must beat this null to be stage-conditioned.",
+          "4. Pre-registered decision rule: stage-conditioned = within-zone sign change that also exceeds the time-matched null; selection-only = the sign change vanishes under matching. Cohorts, denominators, censoring treatment, and the null must be frozen in an E2 contract before any computation. No strategy rules; E3 untouched; confirmation LOCKED."
+        ],
+        "distinguishes": "stage-conditioned behavior vs selection into touch/fill vs anchor-definition mechanics vs drift composition"
+      }
+    },
+    "drift_direction_audit": {
+      "observations": [
+        "DEVELOPMENT window is upward-drifted: raw median returns positive 21/21 cells at formation, 21/21 at FIRST_TOUCH, 20/21 at FILL (sole negative: 4h FILL h1 -0.145 bps, n=141).",
+        "Direction adjustment (sign-of-formation times return) removes the formation-direction component but NOT calendar drift: under upward drift the adjusted statistic is biased positive for bullish zones and negative for bearish zones, and pooling leaves a drift residue proportional to the direction imbalance - and the formation population is descriptively bullish-skewed and increasingly so with scale (bullish share 0.5103 at 15s to 0.6048 at 4h).",
+        "The observed asymmetry matches exactly this signature: bullish adjusted medians positive 42/42; bearish mostly zero/negative (FT 5 pos/5 zero/11 neg; FILL 10 pos/1 zero/10 neg). The pooled positive medians are disproportionately bullish-carried and are therefore not distinguishable from drift-carried without controls."
+      ],
+      "requirements_before_promotion": {
+        "drift_aware_null": "REQUIRED for claims 7, 8, 11 (and any use of the 18/1/2 formation pattern as directional structure): null distribution of direction-adjusted medians under window drift (time-matched unconditional returns per stratum/horizon).",
+        "direction_matched_control": "REQUIRED for claims 7, 8, 11, 12: per-direction analysis vs same-direction unconditional windows (bullish-only and bearish-only controls), so the bearish zero/negative pattern can be read separately from pooling.",
+        "time_matched_control": "REQUIRED for claims 7, 8, 10, 11: same calendar grid, same stratum, no-FVG control, to separate FVG-specific behavior from calendar/session effects (including session-gap concentration of gap-through fills)."
+      },
+      "conclusion": "All E1 directional patterns are admitted as descriptive only. The raw-return interpretation is drift-contaminated and must not be used; the direction-adjusted interpretation is drift-residual under direction imbalance and equally requires nulls. Bullish/bearish imbalance is itself drift-confounded (E1A X13). Nothing here survives to 'edge' language under any reading."
+    },
+    "censoring_audit": {
+      "verified_principles": [
+        "Observed-event quantiles (conditional on the event having occurred) and administratively censored population quantities are kept distinct in the committed artifacts: E1B carries fill_right_censor_fraction, touch_to_fill_right_censor_fraction, fill_max_identifiable_quantile and touch_to_fill_max_identifiable_quantile per stratum, and the E1A challenge appendix carries max_identifiable_unconditional_quantile = 1 - censor_rate.",
+        "fill_rate + right_censored_rate = 1 is an accounting complement, never two findings.",
+        "Observed maxima ~10.24e9 ms (~118.5 days) recur across 15s-1h and coincide with the window end: administrative artifacts, not natural lifecycle endpoints."
+      ],
+      "committed_ceilings": {
+        "formation_to_fill_max_identifiable_quantile": {"15s": 0.9955, "30s": 0.9936, "1m": 0.9910, "5m": 0.9777, "15m": 0.9599, "1h": 0.9216, "4h": 0.8443},
+        "touch_to_fill_max_identifiable_quantile": {"15s": 0.9979, "30s": 0.9970, "1m": 0.9954, "5m": 0.9889, "15m": 0.9803, "1h": 0.9618, "4h": 0.8981},
+        "formation_to_touch_max_identifiable_quantile_equals_touch_incidence": {"15s": 0.9946, "30s": 0.9944, "1m": 0.9938, "5m": 0.9859, "15m": 0.9745, "1h": 0.9503, "4h": 0.9401}
+      },
+      "p95_p99_language_that_must_be_corrected_or_labeled": [
+        "Touch->fill p99 at 5m/15m/1h/4h (2,388/1,648/699/175 native bars) is an observed-event (filled-only) quantile; the unconditional p99 is NOT identifiable there (ceilings p98.9/p98.0/p96.2/p89.8). It is identifiable only at 15s/30s/1m.",
+        "Formation->fill p99 at 5m/15m/1h/4h (4,654/2,835/1,249/462 bars) is observed-event only (ceilings p97.8/p96.0/p92.2/p84.4).",
+        "Formation->fill p95 is unconditionally identifiable through 15m but NOT at 1h/4h (ceilings p92.2/p84.4).",
+        "Formation->touch p95 at 4h is NOT identifiable unconditionally: the ceiling is touch incidence p94.01, below 95. The committed 89-bar value is a touched-only quantile. (Subtler than the fill cases; flagged here explicitly.)",
+        "All 'max' duration values (~118.5 days) are window-boundary administrative artifacts and must never be described as natural lifetimes.",
+        "Any unconditional quantile statement at 4h beyond p84.4 (fill), p89.8 (touch->fill), p94.0 (touch) is prohibited."
+      ],
+      "check_of_ceiling_usage": "P-03 and P-04 use the fill and touch->fill ceilings correctly and explicitly prohibit unconditional p99 beyond 1m; P-04 additionally marks formation->fill p95 unidentifiable at 1h/4h. No frozen text misquotes an observed-event quantile as unconditional. The formation->touch 4h p95 ceiling case is not spelled out in P-03/P-04 and is recorded here as a required annotation."
+    },
+    "same_bar_audit": {
+      "denominator_check": "Verified canonical denominator: same_bar_touch_fill_n / touched_fill_n = 0.3531/0.3541/0.3536/0.3443/0.3419/0.3661/0.4043 (15s..4h), reproduced by E1B_INTERPRETER_FACT_CHECK.json. Alternative denominators (touch anchors or all formations) give 33.5-40.4% - same range, but the frozen artifacts consistently use touched_fill_n and that usage is correct: a same-bar event requires both a touch and a fill, so its natural cohort is touched-and-filled zones.",
+      "phenotype_or_point_mass": "Do not force either interpretation. For: a distinct mode is suggested by the stable ~34-41% share across strata and by p25 = 0 with p50 = 1 at every stratum (the median sits exactly on the boundary between the zero mass and the one-bar mass). Against: the point mass is a geometric near-necessity - touch is range overlap and fill is far-edge reach, so any bar whose range both overlaps a ~0.5-ATR-wide zone and reaches its far edge resolves it same-bar; narrow zones relative to bar range make this common by construction, and no post-fill outcome comparison between same-bar and multi-bar fills exists anywhere in E1 (P-04 QG3 registered, unmeasured). Verdict: the descriptive fact SURVIVES; 'distinct phenotype mode' is INCONCLUSIVE and gated behind QG-candidate G (E2). The point-mass reading is the default until matched evidence says otherwise."
+    },
+    "gap_through_audit": {
+      "counts_verified": "E1B_FILL_STRATIFICATION.json: GAP_THROUGH_FILL anchor_n = 682 (15s), 213 (30s), 81 (1m), 20 (5m), 10 (15m), 4 (1h), 0 (4h); total 1,010; touched_fill_total 378,122; fill_anchors_total 379,132. Matches the required confirmation exactly.",
+      "conclusion_assessment": "'No robust scale-consistent descriptive difference' is justified and correctly bounded: paired comparison is lawful only at 15s (682) and 30s (213) under the predeclared size rule; 15s is a null (sign flips across horizons, |diff| <= 0.105 bps vs IQR ~1.7-5.2 bps); 30s is a single-stratum, small-N, composition-confounded contrast (gap-through medians uniformly higher, but bullish share 55.9% vs 51.1%, ~2.3x wider IQR, contradicted by 15s); 1m (81) already flips sign; 5m/15m/1h/4h are too sparse/empty. The mixture-negligibility check (pooled vs touched-only medians differ <= ~0.002-0.008 bps) confirms gap-through does not drive FILL aggregates.",
+      "label_discipline": "DESCRIPTIVE_ADEQUATE/THIN/TOO_SPARSE/EMPTY are predeclared denominator-based support labels; they are not statistical significance and must never be read as such. The 30s contrast is hypothesis-grade only."
+    },
+    "magnitude_audit": {
+      "method": "Compared each direction-adjusted median with its IQR width, p05-p95 span, and N per cell (h1 rows shown; h3/h5 pattern consistent).",
+      "key_numbers": "|p50|/IQR-width at h1: 15s 0.81%/1.22%, 30s 0.56%/1.14%, 1m 1.74%/2.64%, 5m 1.68%/1.87%, 15m 0.76%/0.71%, 1h 3.98%/4.81%, 4h 15.16%/10.77% (FIRST_TOUCH/FILL). |p50|/p05-p95 span 0.15-3.24% (FT), 0.19-2.49% (FILL). Coarse-cell p05-p95 spans: 4h FT h1 329.7 bps (n=157), 4h FILL h3 534.2 bps (n=141).",
+      "claims_reduced_to_weak_central_tendency": [
+        "Claim 6 (formation 18/1/2 pattern): median magnitudes -0.000..-2.094 bps (and +0.852/+12.508 exceptions) against p05-p95 spans 6.4..561 bps - sign pattern of a weak central tendency; the two positive cells are small-sample medians.",
+        "Claim 7 (FIRST_TOUCH 21/21 positive): sign-consistent but medians are 0.15-3.24% of the p05-p95 span at 15s-15m; weak central tendency.",
+        "Claim 8 (FILL 21/21 positive): same reduction; additionally raw-vs-adjusted sign divergence at 4h h1 (n=141) shows sign fragility at small N.",
+        "Claim 9 (FILL > FIRST_TOUCH 19/21): verified count, but fine-stratum differences are quantile noise (+0.0011 bps at 15m h1 vs IQR ~16.5 bps; +0.0078 bps at 15s h1 vs IQR ~1.7 bps); only 1m-4h h3/h5 differences are descriptively non-trivial.",
+        "Claim 11 (bullish-carried): the composition fact is robust, but any per-direction magnitude reading is weak-central-tendency at fine strata and small-N at coarse strata.",
+        "Claim 12 (bearish not sign-consistent): verified as a sign census; individual bearish cells are weak medians against wide dispersion."
+      ],
+      "claims_not_reduced": "Claims 1, 3, 4, 5 (frequency/count claims on durations and same-bar shares) and the A1/A2 resolution (claims 14, 16) are large-mass, large-N facts, not median-vs-dispersion cases."
+    }
+  },
+  "question_generator_handoff": [
+    {"id": "A", "candidate": "Is the formation->touch sign change a genuine stage-conditioned effect after matching the same eligible population (within-zone matched anchors, matched clock offsets)?", "priority": "HIGHEST", "justification": "18-neg/1-zero/2-pos (formation cohort) vs 21/21-positive (touch cohort) with outcome selection, anchor re-definition and horizon-clock shift confounded; no within-zone evidence exists; the E2 STAGE-MATCHED LIFECYCLE PANEL is the designated instrument."},
+    {"id": "B", "candidate": "Does post-touch behavior differ from matched formation-stage and time-matched controls?", "priority": "HIGH", "justification": "Complements A with a between-zone matched control: rules out drift and calendar/session artifacts as the source of the 21/21 post-touch positive medians."},
+    {"id": "C", "candidate": "Does post-fill behavior differ from matched pre-fill controls?", "priority": "HIGH", "justification": "FILL 21/21 positive but no pre-fill baseline anchor exists in E1B; 'continuation', 'neutralization' and 'reversion' labels are currently indistinguishable without it."},
+    {"id": "D", "candidate": "Does the direction asymmetry (bullish 42/42 positive; bearish mostly zero/negative) survive direction-matched, time-matched, drift-aware nulls?", "priority": "HIGHEST", "justification": "The development window is upward-drifted (raw 41/42 positive across anchors), the direction-adjusted transform leaves drift residue under direction imbalance, and the formation population is bullish-skewed with scale (51.0%..60.5%); drift attribution is unresolved."},
+    {"id": "E", "candidate": "Does gap-through fill differ from ordinary touch->fill after proper matching (direction/composition-matched, adequate-N strata)?", "priority": "MEDIUM", "justification": "15s null vs 30s single-stratum contrast (n=213, 55.9% vs 51.1% bullish, wider IQR); no matched test exists; 5m-4h unmeasurable in-window."},
+    {"id": "F", "candidate": "Do gap_atr or fvg_quality modify lifecycle duration or stage response?", "priority": "MEDIUM", "justification": "Median-split orderings are sign-unstable across anchors/horizons/strata and largest at smallest N; gap_atr p05 is floor-pinned at 0.2205-0.2294 vs min_gap_atr 0.2 (threshold-selected population); duration modification is untested and censor-aware estimation is required."},
+    {"id": "G", "candidate": "Does same-bar fill represent a distinct lifecycle phenotype (vs multi-bar touch->fill) after matching?", "priority": "MEDIUM", "justification": "34.2-40.4% same-bar mass with p25=0 everywhere; geometric point-mass alternative unresolved; no committed outcome comparison between the two modes (P-04 QG3 registered, unmeasured)."}
+  ],
+  "surviving_e1_knowledge": [
+    "381,498 lawful FVG formations across 7 native XAUUSD strata in the frozen DEVELOPMENT window; deterministic two-run reproduction; integrity gates 9/9 (E1A) and 5/5 (E1B); cross-scale identity prohibited and respected.",
+    "Median formation->first-touch = 2 native bars and median first-touch->fill = 1 native bar (p25 = 0) at every stratum; median formation->fill = 7/7/7/7/8/8/5 bars.",
+    "34.2-40.4% of touched-and-filled zones fill on the first-touch bar itself (denominator touched_fill_n).",
+    "Rapid lifecycle body with a materially long-lived right tail; the observed tail is a censored lower bound, increasingly so at coarse strata (fill censoring 0.45%..15.57%; touch->fill censoring 0.21%..10.19%; unconditional quantiles identifiable only up to the committed per-stratum ceilings).",
+    "Direction-adjusted prospective medians: formation anchor 18 negative / 1 zero / 2 positive of 21; FIRST_TOUCH 21/21 positive; FILL 21/21 positive; FILL exceeds FIRST_TOUCH in 19/21 cells - a cross-cohort descriptive pattern, weak central tendency relative to dispersion, NOT a tested effect.",
+    "Pooled post-anchor positive tendency is bullish-carried (bullish 42/42 positive; bearish 15/42 positive, mostly zero/negative); bearish medians are not sign-consistent.",
+    "Gap-through fills (1,010: 682/213/81/20/10/4/0) are a legitimate producer-semantic case (far-edge fill independent of overlap), never imputed as touch, excluded from FIRST_TOUCH cohorts, and a negligible mixture (<= ~0.008 bps median shift) in FILL aggregates.",
+    "Orphan lifecycle events (178 touch / 358 fill) are left-truncated pre-development detector state, correctly excluded from all in-window cohorts.",
+    "Observed fill fractions and censoring fractions are accounting complements and window-bounded descriptive quantities, never lifetime probabilities or hazards.",
+    "No robust touched-fill vs gap-through post-fill difference is supported at the two paired-eligible strata (15s null; 30s hypothesis-grade contrast)."
+  ],
+  "failed_interpretations": [
+    "P-04 bearish FILL direction-adjusted sign tally '10 positive / 2 zero / 9 negative' - FAILED mechanical verification (E1B_INTERPRETER_FACT_CHECK.json claims_verified.P04_bearish_fill_10_pos_2_zero_9_neg = false); canonical tally is 10 positive / 1 zero / 10 negative (disputed cell 30s FILL h1 bearish = -2.1e-12 bps); corrected in the P-04 addendum; substantive conclusion unchanged.",
+    "Historical (pre-repair, kept as record): P-01 '19/21 negative' direction-adjusted medians - corrected to 18 negative / 1 zero / 2 positive.",
+    "Historical: the reconciliation premise 'a filling bar necessarily overlaps the zone' - false under the linked producer implementation; removed from the canonical record.",
+    "Historical: P-02 A4 '4h coverage excess' from N-bars x timeframe - METHODOLOGICALLY_UNSUPPORTED_AS_STATED (not a valid observed-coverage estimator).",
+    "Historical: '1h has strongest clock dependence' - produced by comparing separate marginal quantiles rather than paired per-event delays; rejected.",
+    "Any reading of the stage sign reversal as a within-object stage effect, approach-phase spending, recentering, continuation, reversion, or neutralization - not supported by E1; gated behind E2 (candidate A-C).",
+    "Any drift attribution of the bullish-carried pattern (FVG-specific vs window drift) - not separable in E1; gated behind E2 (candidate D)."
+  ],
+  "unresolved_questions": [
+    "Stage conditioning vs selection into touch/fill (the sign reversal): requires the E2 STAGE-MATCHED LIFECYCLE PANEL; not answerable from E1 by construction.",
+    "Whether the post-anchor positive medians are drift residue or FVG-specific: requires drift-aware, direction-matched, time-matched nulls (candidate D).",
+    "Whether same-bar fill is a distinct phenotype or a geometric point mass (candidate G).",
+    "Whether gap_atr/fvg_quality modify durations or stage response (candidate F), including the floor-pinned gap_atr population question.",
+    "Gap-through post-fill behavior beyond the two eligible strata (candidate E).",
+    "The lifecycle tail beyond the committed ceilings at 5m-4h is unidentifiable in this window, not observed short.",
+    "Whether the monotone bullish formation-share gradient (51.0%..60.5%) is drift, session aggregation, or detector asymmetry (E1A X13).",
+    "4h incidence uptick and 4h small-N cells (n=141-167): sampling noise vs genuine coarse-scale structure."
+  ],
+  "required_e2_questions": [
+    "E2-Q1 (from A/B): within-zone matched formation-vs-first-touch contrast at identical clock offsets, with a time-matched no-FVG control, per stratum - separates stage conditioning from selection, anchor mechanics, and drift.",
+    "E2-Q2 (from D): direction-matched and time-matched drift-aware null for post-touch and post-fill direction-adjusted medians, per direction, per stratum.",
+    "E2-Q3 (from C): post-fill vs matched pre-fill control contrast (pre-fill baseline anchor design) to test continuation/neutralization/reversion labels.",
+    "E2-Q4 (from E): touched-fill vs gap-through post-fill contrast with composition matching and a pre-registered minimum-N rule (eligible in-window strata: 15s, 30s; 1m marginal).",
+    "E2-Q5 (from F/G): censor-aware test of gap_atr and fvg_quality modification of touch->fill duration, and same-bar vs multi-bar post-fill contrast, with floor-selection sensitivity for gap_atr.",
+    "All E2 questions require their own frozen measurement contract (cohorts, denominators, nulls, censoring treatment, decision rules) before execution; none may run under E1."
+  ],
+  "required_e3_questions": [
+    "E3 (only after E2 adjudication, and only for patterns that survive E2 nulls): out-of-window replication of the stage-contrast and direction-asymmetry results at matched N (e.g., the 1h FILL fvg_quality split separations and the 4h cells), per the frozen confirmation discipline.",
+    "E3 must not be entered with any E1 descriptive pattern as a prior 'finding'; confirmation remains LOCKED and no E3 work is authorized by this challenge."
+  ],
+  "must_not_claim": [
+    "No edge, alpha, profitability, strategy, signal, or predictive-advantage claims from anything in E1/E1A/E1B; nothing was tested; confirmation LOCKED; E2/E3 NOT STARTED.",
+    "The formation->touch->fill sign reversal is NOT a stage effect, NOT approach-phase spending, NOT recentering, NOT continuation/reversion - it is a descriptive pattern across differently selected cohorts with different anchor definitions, until E2 proves otherwise.",
+    "No significance, confidence, p-value, or confirmation language anywhere; eligibility labels (DESCRIPTIVE_ADEQUATE/THIN/TOO_SPARSE/EMPTY) are size-support labels, not statistical significance.",
+    "Observed fill fractions, touch incidence, and all censoring fractions are window-censored accounting complements, not lifetime probabilities, hazards, or asymptotic fill rates.",
+    "No unconditional p99/max at 5m/15m/1h/4h for any duration variable; no unconditional formation->fill p95 at 1h/4h; no unconditional formation->touch p95 at 4h (ceiling p94.0); no unconditional quantile at 4h beyond p84.4 (fill) / p89.8 (touch->fill) / p94.0 (touch).",
+    "Observed duration maxima (~118.5 days) are administrative window-boundary artifacts, not natural lifetimes.",
+    "The 4h h5 (+12.5 bps formation; +15.7 bps FILL) and 1h h3/h5 cells, the 4h bearish-positive medians (n=63), and the 30s gap-through contrast (n=213) are small-sample medians, not established sign reversals or effects.",
+    "Raw-return medians must not be interpreted as directional behavior (window drift); direction-adjusted medians must not be interpreted as drift-free directional structure (drift residue under direction imbalance).",
+    "Bearish -0.0 (and -2.1e-12) cells are exact-zero medians (sign-bit/epsilon artifacts), not negative findings.",
+    "No cross-scale zone identity, no pooling of strata, no claim that strata are interchangeable; horizons are native-bar-relative (no exposure-matched cross-stratum magnitude comparison).",
+    "Development median splits on gap_atr/fvg_quality are not thresholds, cutoffs, or confirmed modifier effects.",
+    "Gap-through post-fill behavior is not characterized beyond the 15s null and 30s hypothesis-grade contrast; sparse cells (5m/15m/1h/4h) must never be quoted.",
+    "Orphans are not missing formations; A1 gap-through cases are not an anomaly or defect.",
+    "Nothing transfers to E2, E3, confirmation, or live use."
+  ],
+  "findings": [
+    {
+      "id": "F-1",
+      "severity": "administrative-provenance",
+      "type": "HASH_REGISTRY_MISMATCH",
+      "detail": "In docs/research/ap-002-e1a-scope-repair/ARTIFACT_SHA256.json, the entries for AP-002_E1A_SYNTHESIS.json (registry 178f6db8b77ac5c093920c427ac2b97cbba90872ea3e19574c600e55864e61a6, 8585 bytes) and AP-002_E1A_SYNTHESIS.md (registry 548281134abb729579812e808226abe3edc1c8563d1957202c26c97017499e0e, 4841 bytes) do not match the files on disk (actual: daf1b94a0fabd0c0592ebe790960bbe68ca7a4e0ed8ad394a0c64139ecee0804 and 04c412f8c47408d6454e472afdd3746c9fc66f00c0d6590d529a40f356a83c55). The other 16 of 18 registry entries verify OK, as do all 11 entries of the E1B package registry. File mtimes indicate the synthesis files were written one minute after the registry was generated.",
+      "impact": "None on scanner evidence or scientific content: E1_RESULTS_corrected.json and all integrity/reproducibility artifacts verify; the synthesis content is independently corroborated by AP-002_E1A_SCOPE_REPAIR_AUDIT.json (formation counts, sign counts, A1/A2 reconciliation) and by the E1B package's exact reconciliation to the E1A cohort. Not a scanner defect; no code modified.",
+      "required_action": "Regenerate the E1A-scope-repair ARTIFACT_SHA256.json registry (or re-issue the synthesis files under hash) before knowledge-base admission. Administrative only; does not alter the PASS verdicts."
+    },
+    {
+      "id": "F-2",
+      "severity": "info",
+      "type": "CENSOR_CEILING_ANNOTATION",
+      "detail": "The unconditional formation->touch p95 at 4h is not identifiable (ceiling = touch incidence p94.01); P-03/P-04 spell out the fill and touch->fill ceilings but not this one.",
+      "required_action": "Attach the annotation in the censoring audit to the knowledge-base entry; no artifact rewrite required."
+    }
+  ],
+  "blocking_items_for_knowledge_base_freeze": [
+    "F-1: regenerate the E1A-scope-repair hash registry (administrative).",
+    "Attach the must-not-claim list and the corrected censoring-ceiling language to the frozen entry.",
+    "Attach the sign-reversal classification (SURVIVES_AS_DESCRIPTIVE_COHORT_PATTERN) and the E2 gate to any stage-comparison wording."
+  ],
+  "confirmation_status": "LOCKED",
+  "e2_e3": "NOT STARTED; not touched by this challenge. No E2 question was executed; the E2 STAGE-MATCHED LIFECYCLE PANEL is a recommendation only.",
+  "scanner_defect_found": false,
+  "scanner_code_modified": false,
+  "existing_files_modified": false
+}

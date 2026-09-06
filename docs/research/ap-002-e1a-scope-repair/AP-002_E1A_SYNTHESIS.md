@@ -88,6 +88,16 @@ not established as structurally bullish · no clock-dependence claims from mixed
 quantiles · orphans are not missing formations · nothing transfers to
 E2/E3/confirmation/live.
 
+## Post-challenge annotations (AP-002_E1_FINAL_METHOD_CHALLENGE)
+
+- **Sign reversal**: SURVIVES_AS_DESCRIPTIVE_COHORT_PATTERN across nested
+  formation/touch/fill cohorts — NOT a stage effect; the E2 stage-matched
+  lifecycle panel is required before any stage-conditioned claim.
+- **Censoring language**: formation→touch p95 is not identifiable unconditionally
+  at 4h (ceiling = touch-incidence p94.01); p99/max at 5m–4h are observed-event
+  quantiles only; formation→fill p95 is not identifiable at 1h/4h; all lifecycle
+  maxima (~118.5 days) are window-boundary artifacts.
+
 ## Final state
 
 ```text

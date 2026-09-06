@@ -93,7 +93,10 @@
   "Higher-timeframe FVGs are not established as structurally bullish.",
   "No clock-dependence claims from mixed marginal quantiles.",
   "Orphans are not missing formations; A1 cases are not an unexplained anomaly.",
-  "Nothing transfers to E2/E3/confirmation/live."
+  "Nothing transfers to E2/E3/confirmation/live.",
+  "No unconditional formation->touch p95 at 4h (identifiable ceiling = touch-incidence p94.01).",
+  "No unconditional p99/max at 5m-4h for formation->fill or touch->fill (observed-event quantiles only).",
+  "All lifecycle maxima (~118.5 days) are development-window boundary artifacts, not natural lifecycle endpoints."
  ],
  "final_state": {
   "E1A_FORMATION_PHENOTYPE": "FROZEN",
@@ -101,5 +104,15 @@
   "FILL_E1B": "READY_SECOND_PRIORITY",
   "QUESTION_GENERATOR_ELIGIBILITY": "PARTIAL",
   "CONFIRMATION": "LOCKED"
+ },
+ "post_challenge_annotations": {
+  "source": "AP-002_E1_FINAL_METHOD_CHALLENGE (docs/research/ap-002-e1-final-challenge/)",
+  "sign_reversal_classification": "SURVIVES_AS_DESCRIPTIVE_COHORT_PATTERN - the formation/touch/fill cohorts are nested by outcome selection with changing anchor price and clock; the descriptive sign reversal is NOT a stage effect, and the E2 stage-matched lifecycle panel (within-zone matched contrasts, censor-aware selection model, time-matched drift-aware null) is required before any stage-conditioned claim.",
+  "censoring_language_rules": [
+   "formation->touch p95 is NOT identifiable unconditionally at 4h (identifiable ceiling = touch-incidence p94.01)",
+   "formation->fill and touch->fill p99 at 5m/15m/1h/4h are observed-event (filled-only) quantiles, not unconditional",
+   "formation->fill p95 is not identifiable at 1h/4h (ceilings p92.16/p84.43)",
+   "all lifecycle maxima (~118.5 days) are development-window boundary artifacts, not natural lifecycle endpoints"
+  ]
  }
 }
