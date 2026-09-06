@@ -133,7 +133,10 @@ fn run() -> Result<(), String> {
         }
         "verify-result" => {
             let input: VerifyResultInput = value_as(value)?;
-            input.identity.validate().map_err(|error| error.to_string())?;
+            input
+                .identity
+                .validate()
+                .map_err(|error| error.to_string())?;
             let identity_hash = input
                 .identity
                 .identity_hash()
@@ -258,7 +261,10 @@ fn write_json(value: &Value, output: Option<&str>) -> Result<(), String> {
     };
     let path = workspace_path(output)?;
     if fs::symlink_metadata(&path).is_ok() {
-        return Err(format!("refusing to replace existing output {}", path.display()));
+        return Err(format!(
+            "refusing to replace existing output {}",
+            path.display()
+        ));
     }
     let parent = path.parent().ok_or("output has no parent")?;
     fs::create_dir_all(parent).map_err(|error| format!("create output root: {error}"))?;
@@ -277,8 +283,7 @@ fn write_json(value: &Value, output: Option<&str>) -> Result<(), String> {
         .map_err(|error| format!("write output: {error}"))?;
     file.sync_all()
         .map_err(|error| format!("sync output: {error}"))?;
-    fs::hard_link(&temp, &path)
-        .map_err(|error| format!("publish {}: {error}", path.display()))?;
+    fs::hard_link(&temp, &path).map_err(|error| format!("publish {}: {error}", path.display()))?;
     let _ = fs::remove_file(&temp);
     Ok(())
 }

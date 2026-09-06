@@ -358,8 +358,8 @@ fn scale_token(scale: &NativeScale) -> &'static str {
 }
 
 fn template_identity<T: Serialize + ?Sized>(value: &T) -> Result<String, ContractError> {
-    let bytes = serde_json::to_vec(value)
-        .map_err(|error| ContractError::Invalid(error.to_string()))?;
+    let bytes =
+        serde_json::to_vec(value).map_err(|error| ContractError::Invalid(error.to_string()))?;
     let mut hash = Sha256::new();
     hash.update(TEMPLATE_DOMAIN);
     hash.update(bytes);

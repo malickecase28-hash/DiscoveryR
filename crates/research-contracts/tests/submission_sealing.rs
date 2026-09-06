@@ -1,11 +1,25 @@
 use research_contracts::submission::{seal, verify, FileRecord, SealOptions, SubmissionManifest};
 use sha2::{Digest, Sha256};
-use std::fs;
+use std::{
+    fs,
+    sync::atomic::{AtomicU64, Ordering},
+};
 
 fn temp() -> std::path::PathBuf {
-    let p = std::env::temp_dir().join(format!("seal-test-{}-{}", std::process::id(), unique()));
-    fs::create_dir_all(&p).unwrap();
-    p
+    static COUNTER: AtomicU64 = AtomicU64::new(0);
+    loop {
+        let p = std::env::temp_dir().join(format!(
+            "seal-test-{}-{}-{}",
+            std::process::id(),
+            unique(),
+            COUNTER.fetch_add(1, Ordering::Relaxed)
+        ));
+        match fs::create_dir(&p) {
+            Ok(()) => return p,
+            Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => continue,
+            Err(error) => panic!("create temp directory: {error}"),
+        }
+    }
 }
 
 fn unique() -> u128 {

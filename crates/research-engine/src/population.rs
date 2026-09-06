@@ -13,8 +13,8 @@
 
 use crate::{DetectorAtlas, DetectorDescriptor, RelationshipOperator};
 use research_contracts::{
-    CompleteReproducibilityIdentity, ContextPermission, ContractError, DetectorRole,
-    EvidenceState, NativeScale, ProgramConsumer, ReproducibilityIdentity,
+    CompleteReproducibilityIdentity, ContextPermission, ContractError, DetectorRole, EvidenceState,
+    NativeScale, ProgramConsumer, ReproducibilityIdentity,
 };
 use research_tape::{AnchorInstance, ContextObservation};
 use serde::{Deserialize, Serialize};
@@ -64,10 +64,7 @@ pub struct CandidateGate {
 
 impl CandidateGate {
     fn validate(&self) -> Result<(), ContractError> {
-        if self.min_support == 0
-            || !self.min_abs_metric.is_finite()
-            || self.min_abs_metric < 0.0
-        {
+        if self.min_support == 0 || !self.min_abs_metric.is_finite() || self.min_abs_metric < 0.0 {
             return Err(ContractError::Invalid(
                 "invalid explicit candidate gate".into(),
             ));
@@ -265,8 +262,16 @@ pub fn run_population_research(
         .map(|candidate| format!("candidate-{}", &candidate.discovery_identity[..16]))
         .collect::<Vec<_>>();
 
-    let scope_start_ns = input.records.iter().map(|record| record.anchor.anchor_time).min();
-    let scope_end_ns = input.records.iter().map(|record| record.anchor.anchor_time).max();
+    let scope_start_ns = input
+        .records
+        .iter()
+        .map(|record| record.anchor.anchor_time)
+        .min();
+    let scope_end_ns = input
+        .records
+        .iter()
+        .map(|record| record.anchor.anchor_time)
+        .max();
     let status = if input.records.is_empty() {
         EvidenceState::Unknown
     } else if !discoveries.is_empty()
@@ -343,7 +348,10 @@ fn validate_metric_requests(
             .ok_or_else(|| ContractError::Invalid("unknown context detector".into()))?;
         if !anchor.native_scales.contains(&request.anchor_scale)
             || !context.native_scales.contains(&request.context_scale)
-            || !input.permission.allowed_scales.contains(&request.context_scale)
+            || !input
+                .permission
+                .allowed_scales
+                .contains(&request.context_scale)
             || !input
                 .permission
                 .allowed_detector_ids
@@ -406,10 +414,7 @@ fn validate_records(
             || !anchor.native_scales.contains(&record.anchor.native_scale)
             || record.anchor.anchor_time < 0
             || record.anchor.source.part.is_empty()
-            || record
-                .anchor
-                .value
-                .is_some_and(|value| !value.is_finite())
+            || record.anchor.value.is_some_and(|value| !value.is_finite())
         {
             return Err(ContractError::Invalid(
                 "population record does not match frozen experiment".into(),
@@ -441,7 +446,10 @@ fn validate_records(
                 || context.available_time > record.anchor.anchor_time
                 || context.value.is_some_and(|value| !value.is_finite())
                 || !descriptor.native_scales.contains(&context.native_scale)
-                || !input.permission.allowed_scales.contains(&context.native_scale)
+                || !input
+                    .permission
+                    .allowed_scales
+                    .contains(&context.native_scale)
                 || !input
                     .permission
                     .allowed_detector_ids
@@ -480,8 +488,8 @@ fn phenotype_summary(
                 .unwrap_or_default();
             values.sort_by(|left, right| left.total_cmp(right));
             let value_samples = values.len();
-            let mean = (!values.is_empty())
-                .then(|| values.iter().sum::<f64>() / values.len() as f64);
+            let mean =
+                (!values.is_empty()).then(|| values.iter().sum::<f64>() / values.len() as f64);
             let minimum = values.first().copied();
             let maximum = values.last().copied();
             let p10 = quantile_sorted(&values, 0.10);

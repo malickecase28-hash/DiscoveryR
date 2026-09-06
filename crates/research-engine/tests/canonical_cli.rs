@@ -140,7 +140,12 @@ fn experiment() -> PopulationRunInput {
     }
 }
 
-fn run(root: &PathBuf, command: &str, input: &PathBuf, output: Option<&str>) -> std::process::Output {
+fn run(
+    root: &PathBuf,
+    command: &str,
+    input: &PathBuf,
+    output: Option<&str>,
+) -> std::process::Output {
     let mut process = Command::new(env!("CARGO_BIN_EXE_trinity_research"));
     process
         .env("TRINITYR_WORKSPACE", root)
@@ -156,10 +161,23 @@ fn run(root: &PathBuf, command: &str, input: &PathBuf, output: Option<&str>) -> 
 fn canonical_cli_runs_verifies_and_manifests_a_population_result() {
     let root = temp_root();
     let input_path = root.join("experiment.json");
-    fs::write(&input_path, serde_json::to_vec_pretty(&experiment()).unwrap()).unwrap();
+    fs::write(
+        &input_path,
+        serde_json::to_vec_pretty(&experiment()).unwrap(),
+    )
+    .unwrap();
 
-    let executed = run(&root, "run-experiment", &input_path, Some("results/program-r.json"));
-    assert!(executed.status.success(), "{}", String::from_utf8_lossy(&executed.stderr));
+    let executed = run(
+        &root,
+        "run-experiment",
+        &input_path,
+        Some("results/program-r.json"),
+    );
+    assert!(
+        executed.status.success(),
+        "{}",
+        String::from_utf8_lossy(&executed.stderr)
+    );
     let artifact = root.join("results/program-r.json");
     let bytes = fs::read(&artifact).unwrap();
     let report: PopulationResearchReport = serde_json::from_slice(&bytes).unwrap();
@@ -179,7 +197,11 @@ fn canonical_cli_runs_verifies_and_manifests_a_population_result() {
     )
     .unwrap();
     let verified = run(&root, "verify-result", &verify_path, None);
-    assert!(verified.status.success(), "{}", String::from_utf8_lossy(&verified.stderr));
+    assert!(
+        verified.status.success(),
+        "{}",
+        String::from_utf8_lossy(&verified.stderr)
+    );
     let value: Value = serde_json::from_slice(&verified.stdout).unwrap();
     assert_eq!(value["status"], "VERIFIED");
 
@@ -199,7 +221,11 @@ fn canonical_cli_runs_verifies_and_manifests_a_population_result() {
     )
     .unwrap();
     let manifested = run(&root, "generate-report", &manifest_path, None);
-    assert!(manifested.status.success(), "{}", String::from_utf8_lossy(&manifested.stderr));
+    assert!(
+        manifested.status.success(),
+        "{}",
+        String::from_utf8_lossy(&manifested.stderr)
+    );
     let value: Value = serde_json::from_slice(&manifested.stdout).unwrap();
     assert_eq!(value["manifest_version"], 1);
     assert_eq!(value["artifact_sha256"], hash_bytes(&bytes));
@@ -211,7 +237,11 @@ fn canonical_cli_runs_verifies_and_manifests_a_population_result() {
 fn canonical_cli_refuses_output_escape() {
     let root = temp_root();
     let input_path = root.join("experiment.json");
-    fs::write(&input_path, serde_json::to_vec_pretty(&experiment()).unwrap()).unwrap();
+    fs::write(
+        &input_path,
+        serde_json::to_vec_pretty(&experiment()).unwrap(),
+    )
+    .unwrap();
     let output = run(&root, "run-experiment", &input_path, Some("../escape.json"));
     assert!(!output.status.success());
     let _ = fs::remove_dir_all(root);

@@ -166,7 +166,10 @@ fn candidate_promotion_requires_an_explicit_predeclared_gate() {
     value.metric_requests[0].candidate_gate = None;
     let report = run_population_research(&value).unwrap();
     assert!(report.candidate_ids.is_empty());
-    assert_eq!(report.candidate_evaluations[0].reason, "NO_PREDECLARED_GATE");
+    assert_eq!(
+        report.candidate_evaluations[0].reason,
+        "NO_PREDECLARED_GATE"
+    );
 }
 
 #[test]

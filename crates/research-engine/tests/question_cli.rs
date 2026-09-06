@@ -71,7 +71,11 @@ fn canonical_cli_generates_cross_scale_templates_without_outcomes() {
         .arg(&input)
         .output()
         .unwrap();
-    assert!(output.status.success(), "{}", String::from_utf8_lossy(&output.stderr));
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
     let report: QuestionTemplateReport = serde_json::from_slice(&output.stdout).unwrap();
     report.validate_identity().unwrap();
     assert!(!report.questions.is_empty());
