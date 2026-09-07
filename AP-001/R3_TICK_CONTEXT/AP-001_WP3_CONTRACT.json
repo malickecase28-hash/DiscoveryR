@@ -1,13 +1,26 @@
 {
   "contract_id": "AP-001-WP3-CONTRACT",
-  "status": "FROZEN (design); input binding to WP2 anchor artifact recorded at WP3 start",
+  "status": "FROZEN (V3 + final hardening; design, pre-WP3)",
   "frozen_utc": "2026-09-06",
-  "plan": "AP-001_PLAN_FROZEN.md (WP3 row, plan §6)",
+  "plan": "AP-001/AP-001_DRIFT_BURST_PROGRAM_R_RESEARCH_PLAN_V3.md + AP-001/AP-001_V3_FINAL_HARDENING_AMENDMENT.md (D-008; WP3, §4, §6, §7, §11)",
+  "active_authority": {
+    "decision": "D-008",
+    "wp1_status": "COMPLETE and preserved",
+    "confirmation_status": "LOCKED and untouched",
+    "historical_plan": "AP-001/AP-001_PLAN_FROZEN.md is preserved as historical WP1 authority only",
+    "behavioral_scan_status": "NOT_RUN by this contract re-freeze"
+  },
+  "dependencies": {
+    "wp1": "AP-001/R1_CONTRACT/AP-001_WP1_CONTRACT.json + AP-001/R1_CONTRACT/AP-001_WP1_PREFLIGHT.json",
+    "wp2": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_CONTRACT.json and frozen WP2 anchor/reference artifacts",
+    "required_before_execution": "WP2 artifacts are frozen and their hashes are recorded in the WP3 preflight"
+  },
   "inherits": {
-    "wp1_contract": "AP-001/R1_CONTRACT/AP-001_WP1_CONTRACT.json (causal clock, partition, D-006 anchor rule)",
-    "wp2_contract": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_CONTRACT.json (anchor table, support/noise reference, block rules)",
+    "wp1_contract": "AP-001/R1_CONTRACT/AP-001_WP1_CONTRACT.json (causal clock, development partition, D-006 anchor rule, boundary evidence)",
+    "wp2_contract": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_CONTRACT.json (anchor table, native tick clock, separate seven-scale bar bridge, availability_evidence/sidecar_binding, support/noise reference, block rules)",
     "anchors_input": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_ANCHORS.* sha256 recorded in WP3 preflight",
-    "reference_input": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_SUPPORT_REFERENCE.json sha256 recorded in WP3 preflight"
+    "reference_input": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_SUPPORT_REFERENCE.json sha256 recorded in WP3 preflight",
+    "boundary_and_warm_state": "WP2 boundary_and_warm_state is inherited; WP1's one left-truncated episode remains flagged and no warm-state proof is invented"
   },
   "objective": "Determine how causally-available tick context changes the anchor (conditioning) and how the tick-detector system evolves after the anchor (co-evolution), per plan §6, on the development leaf only.",
   "context_families": {
@@ -18,13 +31,42 @@
     "spread_state": {"role": "trading condition", "at_anchor": "level, widening, tightening, regime", "post_anchor": "widening/tightening transitions, persistence"},
     "feed_health": {"role": "data-quality control", "at_anchor": "validity and contamination only", "post_anchor": "degradation/recovery status only"}
   },
+  "native_clock_and_bridge": {
+    "native_tick_horizons_seconds": [5, 15, 30, 60, 120, 300],
+    "bar_bridge": {
+      "scales": ["15s", "30s", "1m", "5m", "15m", "1h", "4h"],
+      "horizons_bars": [1, 2, 3, 5],
+      "role": "separate bounded outcome layer inherited from WP2; never replaces or pools with native tick outcomes",
+      "alignment": "count only the first fully post-anchor native bar defined by WP2: interval start strictly after anchor event_ts_ns and verified bar availability key strictly after anchor (received_ts_ns, source_sequence); exclude partial/pre-anchor bars"
+    },
+    "no_future_conditioning": "At-anchor conditioning uses only payload values lawfully available at the WP2 anchor. Post-anchor context transitions and bar/structural events are outcomes or sequence evidence; prospective re-anchors use their own later lawful availability."
+  },
+  "support_rule": {
+    "default_effective_observations": 300,
+    "low_support_fallback": "150-299 effective observations only, predeclared LOW_SUPPORT_FALLBACK, with at least 3 UTC calendar-month blocks each containing at least 50 effective observations and the frozen block sign/breadth/dominance checks",
+    "below_floor": "below 150 effective observations is INSUFFICIENT_SUPPORT",
+    "effective_unit": "matched or paired analytical units after conditioning, causal eligibility, exclusions, and missingness; never raw rows",
+    "no_attractive_effect_relaxation": true
+  },
+  "rule_11_lineage_adjudication": {
+    "rule": "Before any Drift-Burst same-domain relationship is described as independent, additive, confluence, or promoted, adjudicate each named pair separately.",
+    "named_pairs": ["Drift-Burst vs micro_volatility", "Drift-Burst vs quote_arrival", "Drift-Burst vs quote_dynamics", "Drift-Burst vs quote_pressure", "Drift-Burst vs spread_state", "Drift-Burst vs feed_health"],
+    "statuses": ["INDEPENDENT_ENOUGH_FOR_CONTROL", "PARTIALLY_OVERLAPPING", "DEPENDENT_SAME_INFORMATION_FAMILY", "QUALITY_OR_CONDITION_CONTROL_ONLY", "UNRESOLVED_LINEAGE"],
+    "contract_freeze_status": "UNRESOLVED_LINEAGE until the WP3 artifact records an evidence-backed status for every named pair",
+    "special_rules": {
+      "feed_health": "quality instrumentation and contamination control only by default; not an independent vote",
+      "spread_state": "market/trading condition only by default; not an independent vote",
+      "unresolved": "UNRESOLVED_LINEAGE cannot promote confluence or independent confirmation"
+    },
+    "evidence": "Use producer field lineage, lawful availability, and observed semantics. Detector names alone do not establish independence."
+  },
   "step_0_payload_inventory": {
     "purpose": "before any behavioral scan, inventory every field of the six context payloads from a deterministic sample of the development leaf",
     "output": "AP-001/R3_TICK_CONTEXT/AP-001_WP3_PAYLOAD_DICTIONARY.json — per detector: field, type, state-vs-measurement classification, availability semantics (live vs episode-scoped), nullability",
     "rule": "fields whose availability semantics cannot be established causally are excluded from anchor-time conditioning and marked accordingly"
   },
   "question_class_A_conditioning": {
-    "snapshot": "at each WP2 anchor tick, parse all six context payloads present at that availability (received_ts_ns, source_sequence); missing payload = explicit missingness, anchor stays in denominator",
+    "snapshot": "at each WP2 anchor tick, parse all six context payloads present at the anchor availability key (received_ts_ns, source_sequence); event_ts_ns is provenance only; missing payload or unresolved availability is explicit missingness and the anchor stays in the denominator",
     "outcomes_conditioned": ["next first-entry transition", "recovery from DECAY_RISK/DYING", "time-to-peak", "time-to-termination", "horizon endpoint returns (direction-adjusted)", "MFE", "MAE", "realized variance (all six horizons)"],
     "continuous_handling": "raw values retained; readable quintile bands per WP2 band rule (edges frozen in reference artifact); band tables are summaries only",
     "output": "AP-001/R3_TICK_CONTEXT/AP-001_WP3_CONDITIONING_TABLES.json — per family x anchor state x outcome: support, block table, effect vs WP2 reference, INSUFFICIENT_SUPPORT marking per reference rules"
@@ -44,6 +86,15 @@
     "feed_health": "degraded/contaminated anchors flagged; analyses report quality-excluded variants where the family role requires it",
     "missingness": "per-family anchor coverage reported; no silent drops"
   },
+  "missingness": {
+    "rule": "Report per-family and per-outcome missingness, quality exclusions, left/right-boundary censoring, and unresolved availability without imputation or silent denominator changes.",
+    "reasons": ["NULL_PAYLOAD", "UNRESOLVED_AVAILABILITY", "QUALITY_EXCLUDED", "LEFT_TRUNCATED_EPISODE", "RIGHT_CENSORED_EPISODE", "DEVELOPMENT_BOUNDARY", "DATA_GAP"]
+  },
+  "determinism": {
+    "rerun": "Repeat the deterministic development scan in a fresh process; canonical output hashes must match before interpretation.",
+    "ordering": "Sort tables by family, anchor state, anchor availability key, native scale, outcome, and stable event key before canonical serialization.",
+    "record": "Record contract/input/artifact hashes, code identity, effective-unit counts, missingness counts, lineage statuses, and runtime in WP3 preflight."
+  },
   "exit_condition": "Every tick family ends with an anchor-context result and a post-anchor sequence result, or an explicit null / insufficient-support / quality-excluded status; payload dictionary complete; determinism hashes match.",
   "deliverables": [
     "AP-001/R3_TICK_CONTEXT/AP-001_WP3_PAYLOAD_DICTIONARY.json",
@@ -52,6 +103,6 @@
     "AP-001/R3_TICK_CONTEXT/AP-001_WP3_PREFLIGHT.json",
     "AP-001/R3_TICK_CONTEXT/AP-001_WP3_REPORT.md"
   ],
-  "interpretation_boundary": "Tables are frozen, then interpreted by the analyst. No scanner change after seeing results (defect protocol excepted). No candidate promotion in WP3.",
+  "interpretation_boundary": "Tables are frozen, then interpreted by the analyst. No scanner change after seeing results (defect protocol excepted). WP3 is discovery only: no candidate promotion, independent confluence claim, or activation decision.",
   "change_rule": "Deviations require decision-log entries and director approval before affected evidence is used."
 }

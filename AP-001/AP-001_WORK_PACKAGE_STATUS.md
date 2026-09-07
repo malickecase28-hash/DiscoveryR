@@ -5,7 +5,7 @@
 **HISTORICAL PLAN:** `AP-001_PLAN_FROZEN.md` (sha256 `012fc0d676fe0092f10110b03a25c37fbe896198e136667bbfef7637c1676193`), preserved as the plan under which WP1 originally executed
 **FROZEN INPUT:** `analytical_lake/fusion_markets/xauusd/` — manifest.json SHA256 `1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af`, payload_manifest.json SHA256 `78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed` (verified, sizes match plan)
 **CONFIRMATION STATUS:** LOCKED — confirmation leaf untouched
-**PROJECT STATE:** STOPPED at user decision after WP1 completion. Resume point is the D-008 V3 delta gate, not behavioral WP2 execution.
+**PROJECT STATE:** D-008 V3 delta gate PASS. WP2 behavioral execution was stopped by user direction before completion; outputs are not frozen.
 
 ## Current status record
 
@@ -20,8 +20,8 @@ DELIVERABLE: Verified input identities, anchor sanity, rows/s, memory, full-run 
 EVIDENCE_ID: AP-001-WP1-CONTRACT (R1_CONTRACT/AP-001_WP1_PREFLIGHT.json, content sha256 dbea294d38f67751f6e797d5c9a11501731589719f623df756fcfebde5d83248)
 EXIT_CONDITION: Causal ordering and first-entry reconstruction pass — SATISFIED
 CURRENT_RESULT: G1 PASS (identities exact); G2 PASS (43,007,489 dev-leaf rows, 0 ordering regressions, 0 received<event); G3 PASS (117,696 milestone comparisons, 0 mismatches under D-006); G4 PASS (118,673 rows/s, 362.4 s dev-leaf scan, RSS 0.11 GiB, full-tape ETA ~9.6 min)
-BLOCKER: project is intentionally stopped; pre-V3 R2-R4 contracts require D-008 reconciliation before use
-NEXT_ACTION: on explicit resume, run the narrow V3 delta gate: bar/structural availability bindings, first-fully-post-anchor bar alignment, boundary/warm-state reconciliation, 300/150 support rule insertion, named same-domain lineage requirements; then re-freeze R2-R4 contracts
+BLOCKER: WP2 replay 2 stopped before completion; deterministic replay pair is not established. Unresolved bar-detector warm-state coverage remains explicit missingness under the re-frozen contracts
+NEXT_ACTION: await new research direction. Do not rerun WP2 without explicit direction and a new hypothesis; if resumed, start from the re-frozen R2 contract with measured-throughput forecast, checkpoints, and the 3x stop/diagnose rule
 SCOPE_CHANGE: D-005/D-006 anchor mechanics; D-008 prospective V3 + final-hardening amendment; forming-phase crossings remain backlog only
 CONFIRMATION_STATUS: LOCKED
 ```
@@ -31,10 +31,10 @@ CONFIRMATION_STATUS: LOCKED
 | WP | Status | Evidence | Exit |
 | --- | --- | --- | --- |
 | WP1 Contract and benchmark | **COMPLETE** | R1_CONTRACT preflight + report, run 3 | Causal ordering and first-entry reconstruction PASS |
-| D-008 V3 delta gate | REQUIRED BEFORE WP2, NOT STARTED | V3 + final-hardening amendment | New prospective requirements bound to existing evidence; R2-R4 contracts reconciled and re-frozen |
-| WP2 Lifecycle, tick-market, and bar-bridge discovery | STOPPED; pre-V3 contract **NOT EXECUTABLE** | R2 contract exists but requires D-008 re-freeze | Every anchor has native tick and bar-bridge result or INSUFFICIENT_SUPPORT |
-| WP3 Same-domain conditioning and co-evolution | STOPPED; pre-V3 contract **NOT EXECUTABLE** | R3 contract exists but requires D-008 re-freeze | Tick family results, named lineage status, or explicit null/insufficient/quality-excluded |
-| WP4 Structural conditioning and bridge interpretation | STOPPED; pre-V3 contract **NOT EXECUTABLE** | R4 contract exists but requires D-008 re-freeze | Structural and cross-resolution report states what matters / recurs / lacks support |
+| D-008 V3 delta gate | **PASS** (closed 2026-09-06) | Independent audit + R2/R3/R4 contract re-freeze | V3 requirements bound; sidecar identity/scope/order verified; R2-R4 re-frozen |
+| WP2 Lifecycle, tick-market, and bar-bridge discovery | **STOPPED; INCOMPLETE** | D-010; partial replay 2 only; no frozen WP2 outputs | Every anchor has native tick and bar-bridge result or INSUFFICIENT_SUPPORT |
+| WP3 Same-domain conditioning and co-evolution | STOPPED; waits for WP2 outputs | Re-frozen R3 contract | Tick family results, named lineage status, or explicit null/insufficient/quality-excluded |
+| WP4 Structural conditioning and bridge interpretation | STOPPED; waits for WP2/WP3 outputs | Re-frozen R4 contract | Structural and cross-resolution report states what matters / recurs / lacks support |
 | WP5 Candidate challenge | NOT STARTED | — | Each candidate SURVIVED_CHALLENGE / REJECTED / NULL / INCONCLUSIVE |
 | WP6 Confirmation | LOCKED (opens once, after WP5) | — | Each survivor CONFIRMED / FAILED_CONFIRMATION / INCONCLUSIVE_CONFIRMATION |
 | WP7 Characterization | NOT STARTED | — | Definition of done satisfied |
@@ -60,6 +60,13 @@ It must close only these prospective gaps before WP2:
 4. insert the AP-001 support rule: 300 effective observations; 150-299 only as `LOW_SUPPORT_FALLBACK`; below 150 `INSUFFICIENT_SUPPORT`;
 5. require named Rule 11 lineage adjudication for Drift-Burst vs `micro_volatility`, `quote_arrival`, `quote_dynamics`, `quote_pressure`, `spread_state`, and `feed_health`;
 6. re-freeze R2, R3, and R4 contracts against V3 + amendment before dispatch.
+
+## D-008 gate closure evidence
+
+- R2, R3, and R4 are frozen against V3 plus the final hardening amendment. Their contracts record D-008 authority, preserved WP1 evidence, locked confirmation, and no behavioral scan.
+- The availability sidecar is bound by path, SHA256, source-view manifest SHA256, source and payload identities, row counts, coordinate mapping, AP-001 cutoff clipping, and zero-regression validation. The sidecar contributes 1,736,910 records before the cutoff; 350,872 later records remain excluded.
+- The verified sidecar does not prove bar-detector warm state. The contracts retain `UNRESOLVED_AVAILABILITY` and explicit missingness for that gap.
+- Independent verifier recommendation: PASS. `git diff --check` and scoped JSON assertions pass. No WP1, confirmation, or AP-002 artifact changed.
 
 ## Standing notes
 

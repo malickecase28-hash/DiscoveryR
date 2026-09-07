@@ -1,6 +1,7 @@
 pub mod fvg_availability;
 
 pub mod ap001_drift_burst;
+pub mod ap001_wp2;
 
 use arrow_array::{Array, Int64Array, RecordBatch, StringArray};
 use parquet::arrow::{

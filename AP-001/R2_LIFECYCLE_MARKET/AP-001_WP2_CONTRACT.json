@@ -1,17 +1,42 @@
 {
   "contract_id": "AP-001-WP2-CONTRACT",
-  "status": "FROZEN",
+  "status": "FROZEN (V3 + final hardening; pre-WP2)",
   "frozen_utc": "2026-09-06",
-  "plan": "AP-001_PLAN_FROZEN.md (WP2 row, plan §4, §5, §11)",
+  "plan": "AP-001/AP-001_DRIFT_BURST_PROGRAM_R_RESEARCH_PLAN_V3.md + AP-001/AP-001_V3_FINAL_HARDENING_AMENDMENT.md (D-008; WP2, §4, §5, §7, §11)",
+  "active_authority": {
+    "decision": "D-008",
+    "wp1_status": "COMPLETE and preserved",
+    "confirmation_status": "LOCKED and untouched",
+    "historical_plan": "AP-001/AP-001_PLAN_FROZEN.md is preserved as historical WP1 authority only",
+    "behavioral_scan_status": "NOT_RUN by this contract re-freeze"
+  },
+  "dependencies": {
+    "wp1": "AP-001/R1_CONTRACT/AP-001_WP1_CONTRACT.json + AP-001/R1_CONTRACT/AP-001_WP1_PREFLIGHT.json + AP-001/R1_CONTRACT/AP-001_WP1_REPORT.md",
+    "required_before_execution": "WP1 COMPLETE; D-006 anchor mechanics and development/confirmation partition inherited unchanged"
+  },
   "inherits": {
     "wp1_contract": "AP-001/R1_CONTRACT/AP-001_WP1_CONTRACT.json",
-    "anchor_rule": "D-005 armed-episode first entry (see WP1 contract anchor_definitions as amended)",
+    "anchor_rule": "D-006 milestone candidate capture: candidate is recorded at the lawful crossing tick, replaced on producer value replacement, and becomes the WEAK/ONLINE anchor at episode arm; STRONG/DECAY_RISK/DYING remain first lawful state entries",
     "partition": "development leaf only; confirmation leaf untouched; cutoff 1773619200000000000 ns",
-    "causal_clock": "availability = received_ts_ns, tie-break = source_sequence; emitted_events fields never knowable before episode end"
+    "causal_clock": "tick availability = received_ts_ns, tie-break = source_sequence, provenance = event_ts_ns; emitted_events and all completion fields are future outcomes and never anchor-time information"
   },
-  "objective": "Produce the first complete Drift-Burst behavioral result on the development leaf: lifecycle atlas, six-horizon market paths, internal-attribute splits, and the frozen support/noise reference for later candidate screening.",
+  "boundary_and_warm_state": {
+    "wp1_evidence": {
+      "report": "AP-001/R1_CONTRACT/AP-001_WP1_REPORT.md",
+      "preflight": "AP-001/R1_CONTRACT/AP-001_WP1_PREFLIGHT.json",
+      "facts": [
+        "WP1 G3 matched all 24,253 completed development-leaf episodes with zero anchor mismatches under the implemented D-006 mechanics",
+        "WP1 recorded one left-truncated track, zero right-censored forming tracks, and zero right-censored armed tracks",
+        "WP1 kept the confirmation leaf footer-only and did not use it for development evidence"
+      ]
+    },
+    "left_boundary": "Carry the WP1 LEFT_TRUNCATED_EPISODE flag. Exclude a left-truncated episode only from analyses requiring unseen inception, prior path, or complete dwell; it remains eligible for lawful forward outcomes from an observed in-window state.",
+    "right_boundary": "Retain a still-active episode as RIGHT_CENSORED_EPISODE at the development cutoff. Mark horizons extending past the lawful development window censored/missing; do not impute or call censoring termination.",
+    "warm_state": "Use producer/replay warm state only when its lawful pre-development availability is supplied. WP1 evidence establishes the observed lifecycle boundary facts above but contains no bar/structural warm-state artifact; that demonstrated gap is recorded as missingness for any bridge context requiring unavailable prior state, with no WP1 rerun or invented washout."
+  },
+  "objective": "Produce the first complete Drift-Burst behavioral result on the development leaf: lifecycle atlas, six native tick-horizon market paths, the separate bounded seven-scale tick-to-bar bridge, internal-attribute splits, and the frozen support/noise reference for later candidate screening.",
   "cohort": {
-    "anchors": "first lawful entry per (armed episode, state) for WEAK, ONLINE, STRONG, DECAY_RISK, DYING, per D-005 rule",
+    "anchors": "first lawful entry per (armed episode, state) for WEAK, ONLINE, STRONG, DECAY_RISK, DYING, using D-006 candidate capture for WEAK/ONLINE and first lawful state entry for STRONG/DECAY_RISK/DYING",
     "anchor_record": [
       "anchor_id, episode_id, anchor_state, direction/internal_sign",
       "availability: received_ts_ns, source_sequence; provenance event_ts_ns",
@@ -55,6 +80,82 @@
     ],
     "normalization": "raw values stored; normalized values = return / baseline_IQR(h) of the frozen noise reference; basis recorded alongside"
   },
+  "native_tick_and_bar_bridge": {
+    "native_tick_horizons_seconds": [5, 15, 30, 60, 120, 300],
+    "bar_scales": ["15s", "30s", "1m", "5m", "15m", "1h", "4h"],
+    "bar_horizons": [1, 2, 3, 5],
+    "bar_availability_coordinate": {
+      "key": ["received_ts_ns", "source_sequence"],
+      "provenance": "event_ts_ns identifies the source event; bar_close_ts_ns is the native temporal boundary only",
+      "producer_replay_rule": "A completed native bar becomes lawful at the received_ts_ns/source_sequence of the first source tick whose event time enters the next native bucket, using the verified producer/replay availability sidecar coordinate; no nominal bar-close substitution",
+      "sidecar_reference": "crates/research-tape/src/fvg_availability.rs (FVG_BAR_AVAILABILITY_SIDECAR V1); each structural family must bind or explicitly report missing its verified coordinate"
+    },
+    "first_fully_post_anchor_bar": "For each native scale, the +1 bar is the earliest bar whose interval start is strictly greater than the anchor event_ts_ns and whose verified availability key (received_ts_ns, source_sequence) is strictly later than the anchor key. Exclude the anchor-containing/partial bar and any pre-anchor price. +2/+3/+5 count from that first fully post-anchor bar.",
+    "outcomes": ["bar close return", "direction-adjusted return", "MFE/MAE over fully post-anchor bars", "realized volatility", "continuation/reversal", "censor status"],
+    "native_clock_separation": "The six second-based tick horizons are the primary Drift-Burst clock. The seven-scale bar bridge is a separate bounded outcome layer and never replaces or pools with the native tick outcomes.",
+    "no_future_conditioning": "Later bar or structural events remain outcomes of the tick anchor. A repeated later event may become a separate prospective re-anchor question only at its own verified lawful availability."
+  },
+  "availability_evidence": {
+    "sidecar_binding": {
+      "artifact_type": "FVG_BAR_AVAILABILITY_SIDECAR",
+      "artifact_version": "V1",
+      "sidecar_path": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.jsonl",
+      "sidecar_manifest_path": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.manifest.json",
+      "source_view_manifest_path": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\development-superseded-16x00\\view_manifest.json",
+      "sidecar_sha256": "a0846a200f764a30e4b65f696e2ec80d6225409d6ac2f592679db9e47c20cb1d",
+      "sidecar_manifest_content_sha256": "b94064c358663ba9591f825c749f754f234a29de1a930531d24fab662cef6965",
+      "source_view_manifest_sha256": "4842ac0dfe0b207b75f4a1003fd16f5d2a8d63f93b3ac4dde943ff33372c9613",
+      "source_manifest_identity": "1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af",
+      "payload_manifest_identity": "78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed",
+      "input_rows": 54415940,
+      "sidecar_records_total": 2087782,
+      "source_view_scope": {
+        "first_source_row_event_ts_ns": 1752019268175000000,
+        "first_source_row_utc": "2025-07-09T00:01:08.175Z",
+        "end_exclusive_utc": "2026-05-05T12:39:00Z",
+        "declared_tick_rows": 54415940,
+        "scanned_tick_rows": 54415940,
+        "min_event_ts_ns": 1752019268175000000,
+        "min_received_ts_ns": 1752019268175000000,
+        "max_event_ts_ns": 1777984738817000000,
+        "max_received_ts_ns": 1777984738817000000
+      },
+      "coordinate_mapping": {
+        "available_time_ns": "received_ts_ns",
+        "trigger_source_sequence": "source_sequence",
+        "trigger_event_time_ns": "event_ts_ns",
+        "bar_close_ts_ns": "temporal boundary only"
+      },
+      "ap001_clipping": {
+        "cutoff_ns": 1773619200000000000,
+        "cutoff_utc": "2026-03-16T00:00:00Z",
+        "include_rule": "use only sidecar records with available_time_ns < 1773619200000000000",
+        "records_before_cutoff": 1736910,
+        "records_at_or_after_cutoff_excluded": 350872,
+        "outside_exact_ap001_leaf_or_without_verified_availability": "explicit UNRESOLVED_AVAILABILITY/missingness; never inferred or forward-filled"
+      },
+      "availability_order_check": {
+        "source_view_manifest_sha256": "4842ac0dfe0b207b75f4a1003fd16f5d2a8d63f93b3ac4dde943ff33372c9613",
+        "source_view": {
+          "availability_key_regressions": 0,
+          "availability_nulls": 0,
+          "source_sequence_nonincreasing": 0,
+          "event_order_regressions": 0
+        },
+        "sidecar": {
+          "availability_key_regressions": 0
+        },
+        "scope": "source view and sidecar checks cover the supplied artifacts; AP-001 execution still clips by available_time_ns before the cutoff"
+      },
+      "preflight_requirement": "WP2 preflight must record these paths, hashes, source/sidecar counts, cutoff coverage counts, coordinate mapping, and availability_order_check before using any bridge output.",
+      "scope_limit": "This evidence binds availability ordering and coordinate mapping only. It does not prove unavailable bar-detector payload warm state or structural payload semantics; retain the explicit warm-state gap and UNRESOLVED_AVAILABILITY/missingness."
+    }
+  },
+  "missingness": {
+    "rule": "Retain the anchor in denominators and record explicit per-horizon/per-scale missingness when a lawful payload, availability coordinate, complete bar, or outcome window is unavailable.",
+    "no_imputation": true,
+    "reasons": ["NULL_PAYLOAD", "UNRESOLVED_AVAILABILITY", "LEFT_TRUNCATED_EPISODE", "RIGHT_CENSORED_EPISODE", "DEVELOPMENT_BOUNDARY", "DATA_GAP", "NO_FULLY_POST_ANCHOR_BAR"]
+  },
   "internal_attribute_splits": {
     "continuous_attributes": ["operational.z", "operational.score", "operational.efficiency", "operational.var_rate", "operational.cabs", "operational.update_count", "operational.duration_s", "episode_age", "state_age"],
     "bands": "per attribute, quintile edges computed over the development anchor population of the corresponding anchor state; edges frozen into the reference artifact; raw values always retained alongside band labels",
@@ -67,7 +168,19 @@
     "baseline_paths": "pseudo-anchors at every 500th development tick (deterministic row index i % 500 == 0 among state-bearing rows), same six horizons, same measurements, no conditioning; stored as the movement baseline",
     "materiality_rule": "a conditional effect is material when |median direction-adjusted return difference vs the same-horizon baseline median| >= 0.10 * baseline_IQR(h)",
     "support_rules": {
-      "SUPPORT_MIN": 250,
+      "default_effective_observations": 300,
+      "low_support_fallback": {
+        "range": "150-299 effective observations",
+        "status": "LOW_SUPPORT_FALLBACK",
+        "predeclared": true,
+        "required_chronological_breadth": "at least 3 UTC calendar-month blocks, each with at least 50 effective observations, with the existing block sign/breadth and dominance checks retained"
+      },
+      "insufficient_support": {
+        "range": "below 150 effective observations",
+        "status": "INSUFFICIENT_SUPPORT"
+      },
+      "effective_observation_unit": "one causally eligible analytical unit after conditioning, matching, exclusions, and missingness rules; for matched or paired controls, matched/paired analytical units, never raw rows",
+      "no_attractive_effect_relaxation": true,
       "BLOCKS_MIN": 3,
       "block_definition": "calendar month (UTC) of anchor availability",
       "block_rule": "effect sign consistent in >= 3 month blocks, each with >= 50 supporting anchors",
@@ -77,7 +190,9 @@
   },
   "determinism": {
     "rerun": "full scan executed twice; output content hashes must match; measured runtime from the second run",
-    "memory": "streaming with bounded pending-window buffer (<= ~301 s of ticks plus pending measurements); report peak RSS"
+    "memory": "streaming with bounded pending-window buffer (<= ~301 s of ticks plus pending measurements); report peak RSS",
+    "ordering": "sort emitted tables deterministically by native scale, anchor availability key, anchor id, and horizon; serialize canonical JSON before hashing",
+    "reproducibility": "record input artifact hashes, contract hash, code identity, run hashes, row/unit counts, missingness counts, and runtime"
   },
   "deliverables": {
     "anchors": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_ANCHORS.json (or parquet if larger; sha256 recorded either way)",
@@ -89,6 +204,6 @@
     "preflight": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_PREFLIGHT.json (row counts, anchor counts per state vs WP1, determinism hashes, runtime)"
   },
   "exit_condition": "Every anchor has a lifecycle result and market-path result, or an explicit INSUFFICIENT_SUPPORT/missingness status; atlas and splits complete; determinism hashes match; support reference frozen.",
-  "interpretation_boundary": "The E1 report is frozen, then interpreted by the research analyst. No scanner change after seeing results (defect protocol excepted). No candidate promotion in WP2; candidates form after WP4 per plan §10 flow.",
+  "interpretation_boundary": "The E1 report is frozen, then interpreted by the research analyst. No scanner change after seeing results (defect protocol excepted). WP2 is discovery only: no candidate promotion, confluence claim, or activation decision; candidates form only after WP4 and director review per the V3 flow.",
   "change_rule": "Deviations require decision-log entries and director approval before affected evidence is used."
 }

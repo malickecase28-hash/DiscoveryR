@@ -1,20 +1,101 @@
 {
   "contract_id": "AP-001-WP4-CONTRACT",
-  "status": "FROZEN (design); input bindings to WP2/WP3 artifacts recorded at WP4 start",
+  "status": "FROZEN (V3 + final hardening; design, pre-WP4)",
   "frozen_utc": "2026-09-06",
-  "plan": "AP-001_PLAN_FROZEN.md (WP4 row, plan §7)",
+  "plan": "AP-001/AP-001_DRIFT_BURST_PROGRAM_R_RESEARCH_PLAN_V3.md + AP-001/AP-001_V3_FINAL_HARDENING_AMENDMENT.md (D-008; WP4, §4, §7, §11)",
+  "active_authority": {
+    "decision": "D-008",
+    "wp1_status": "COMPLETE and preserved",
+    "confirmation_status": "LOCKED and untouched",
+    "historical_plan": "AP-001/AP-001_PLAN_FROZEN.md is preserved as historical WP1 authority only",
+    "behavioral_scan_status": "NOT_RUN by this contract re-freeze"
+  },
+  "dependencies": {
+    "wp1": "AP-001/R1_CONTRACT/AP-001_WP1_CONTRACT.json + AP-001/R1_CONTRACT/AP-001_WP1_PREFLIGHT.json",
+    "wp2": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_CONTRACT.json and frozen WP2 anchor/bridge/reference artifacts",
+    "wp3": "AP-001/R3_TICK_CONTEXT/AP-001_WP3_CONTRACT.json and frozen WP3 context/lineage artifacts",
+    "required_before_execution": "WP2 and WP3 input hashes and payload dictionaries are recorded in the WP4 preflight"
+  },
   "inherits": {
-    "wp1_contract": "AP-001/R1_CONTRACT/AP-001_WP1_CONTRACT.json (causal clock, partition, D-006 anchor rule)",
-    "wp2_contract": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_CONTRACT.json (anchor table, support/noise reference, band rules)",
-    "wp3_contract": "AP-001/R3_TICK_CONTEXT/AP-001_WP3_CONTRACT.json (co-evolution pattern, reanchor-candidate discipline)",
-    "anchors_input": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_ANCHORS.* sha256 recorded in WP4 preflight"
+    "wp1_contract": "AP-001/R1_CONTRACT/AP-001_WP1_CONTRACT.json (causal clock, development partition, D-006 anchor rule, boundary evidence)",
+    "wp2_contract": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_CONTRACT.json (anchor table, native tick clock, separate seven-scale bridge, support/noise reference, band rules)",
+    "wp3_contract": "AP-001/R3_TICK_CONTEXT/AP-001_WP3_CONTRACT.json (co-evolution, named Rule 11 lineage adjudication, reanchor discipline)",
+    "anchors_input": "AP-001/R2_LIFECYCLE_MARKET/AP-001_WP2_ANCHORS.* sha256 recorded in WP4 preflight",
+    "boundary_and_warm_state": "WP2 boundary_and_warm_state is inherited; WP1's one left-truncated episode remains flagged and no warm-state proof is invented"
   },
   "objective": "Determine how known bar structure changes the anchor (context at the anchor) and how structural detectors evolve after the anchor, including joint price/detector sequencing, per plan §7, on the development leaf only.",
   "bar_scales": ["15s", "30s", "1m", "5m", "15m", "1h", "4h"],
   "bar_availability_clock": {
-    "rule": "a bar's payload becomes lawful at the received_ts_ns/source_sequence of the first tick whose event time enters a later bucket (established sidecar convention); bar_close_ts is the temporal boundary only",
-    "implementation": "the scanner streams ticks and bars together; for each anchor, the lawful snapshot per scale is the latest bar whose availability (received_ts, source_sequence) is strictly before the anchor's availability; else missing",
-    "native_scale": "every object keeps its scale label; scales are never merged into one population"
+    "key": ["received_ts_ns", "source_sequence"],
+    "provenance": "event_ts_ns identifies source event order; bar_close_ts_ns is the native temporal boundary only",
+    "rule": "A completed bar payload becomes lawful at the producer/replay availability coordinate of the first source tick whose event time enters the later native bucket, with source_sequence as the equal-receipt tie-break. Use the verified availability sidecar coordinate, never nominal bar-close provenance.",
+    "sidecar_reference": "crates/research-tape/src/fvg_availability.rs (FVG_BAR_AVAILABILITY_SIDECAR V1); every structural family must bind or explicitly report missing its verified coordinate",
+    "implementation": "For each anchor and scale, use the latest bar whose verified availability key is strictly before the anchor availability key; otherwise report missing. Do not forward-fill across an unresolved or unavailable coordinate.",
+    "native_scale": "Every object keeps its native scale label; scales are never merged into one population"
+  },
+  "native_clock_and_bridge": {
+    "native_tick_horizons_seconds": [5, 15, 30, 60, 120, 300],
+    "bar_bridge_scales": ["15s", "30s", "1m", "5m", "15m", "1h", "4h"],
+    "bar_bridge_horizons": [1, 2, 3, 5],
+    "first_fully_post_anchor_bar": "For every scale, +1 starts at the earliest native bar whose interval start is strictly greater than anchor event_ts_ns and whose verified availability key is strictly later than the anchor (received_ts_ns, source_sequence). Exclude the anchor-containing/partial bar and all pre-anchor price; count +2/+3/+5 from that bar.",
+    "separation": "Native tick horizons remain the primary Drift-Burst clock. The bounded seven-scale bar bridge is a separate persistence/transfer outcome layer and is never pooled with or used to replace native tick results.",
+    "no_future_conditioning": "A post-anchor structural transition or bar event is an outcome. It cannot condition the original anchor; recurring events become prospective re-anchor questions at their own verified lawful availability."
+  },
+  "availability_evidence": {
+    "sidecar_binding": {
+      "artifact_type": "FVG_BAR_AVAILABILITY_SIDECAR",
+      "artifact_version": "V1",
+      "sidecar_path": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.jsonl",
+      "sidecar_manifest_path": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\authority\\fvg_availability_v1.manifest.json",
+      "source_view_manifest_path": "F:\\TrinityR-views\\XAUUSD\\XAUUSD_DATA_SCOPE_V1\\development-superseded-16x00\\view_manifest.json",
+      "sidecar_sha256": "a0846a200f764a30e4b65f696e2ec80d6225409d6ac2f592679db9e47c20cb1d",
+      "sidecar_manifest_content_sha256": "b94064c358663ba9591f825c749f754f234a29de1a930531d24fab662cef6965",
+      "source_view_manifest_sha256": "4842ac0dfe0b207b75f4a1003fd16f5d2a8d63f93b3ac4dde943ff33372c9613",
+      "source_manifest_identity": "1176d6518c83ff1b5ec27b03df416c11d146b9611fb307398193c5cb9b5053af",
+      "payload_manifest_identity": "78d5fc20758831e06d487217d0367bbaab5f25cb7eefcac8bee9446f6eea3eed",
+      "input_rows": 54415940,
+      "sidecar_records_total": 2087782,
+      "source_view_scope": {
+        "first_source_row_event_ts_ns": 1752019268175000000,
+        "first_source_row_utc": "2025-07-09T00:01:08.175Z",
+        "end_exclusive_utc": "2026-05-05T12:39:00Z",
+        "declared_tick_rows": 54415940,
+        "scanned_tick_rows": 54415940,
+        "min_event_ts_ns": 1752019268175000000,
+        "min_received_ts_ns": 1752019268175000000,
+        "max_event_ts_ns": 1777984738817000000,
+        "max_received_ts_ns": 1777984738817000000
+      },
+      "coordinate_mapping": {
+        "available_time_ns": "received_ts_ns",
+        "trigger_source_sequence": "source_sequence",
+        "trigger_event_time_ns": "event_ts_ns",
+        "bar_close_ts_ns": "temporal boundary only"
+      },
+      "ap001_clipping": {
+        "cutoff_ns": 1773619200000000000,
+        "cutoff_utc": "2026-03-16T00:00:00Z",
+        "include_rule": "use only sidecar records with available_time_ns < 1773619200000000000",
+        "records_before_cutoff": 1736910,
+        "records_at_or_after_cutoff_excluded": 350872,
+        "outside_exact_ap001_leaf_or_without_verified_availability": "explicit UNRESOLVED_AVAILABILITY/missingness; never inferred or forward-filled"
+      },
+      "availability_order_check": {
+        "source_view_manifest_sha256": "4842ac0dfe0b207b75f4a1003fd16f5d2a8d63f93b3ac4dde943ff33372c9613",
+        "source_view": {
+          "availability_key_regressions": 0,
+          "availability_nulls": 0,
+          "source_sequence_nonincreasing": 0,
+          "event_order_regressions": 0
+        },
+        "sidecar": {
+          "availability_key_regressions": 0
+        },
+        "scope": "source view and sidecar checks cover the supplied artifacts; AP-001 execution still clips by available_time_ns before the cutoff"
+      },
+      "preflight_requirement": "WP4 preflight must record these paths, hashes, source/sidecar counts, cutoff coverage counts, coordinate mapping, and availability_order_check before using any structural context or bridge output.",
+      "scope_limit": "This evidence binds availability ordering and coordinate mapping only. It does not prove unavailable bar-detector payload warm state or structural payload semantics; retain the explicit warm-state gap and UNRESOLVED_AVAILABILITY/missingness."
+    }
   },
   "context_roles": {
     "location_and_zones": {"families": ["fvg", "range", "order_blocks", "dealing_range"], "at_anchor": "inside/outside, boundary relation, direction, age, normalized distance", "post_anchor": "first touch, fill, break, boundary interaction, object termination where lawful"},
@@ -46,7 +127,29 @@
     "reanchor_candidates": "recurring post-anchor events are LISTED for prospective re-anchor in their own lawful study; not treated as anchor-time information",
     "output": "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_SEQUENCING_TABLES.json"
   },
-  "exit_condition": "Report states which contexts matter, which detector-system sequences recur, which do not, and which lack support; payload dictionary complete; lineage notes recorded; determinism hashes match.",
+  "rule_11_lineage_control": {
+    "source": "AP-001/R3_TICK_CONTEXT/AP-001_WP3_CONTRACT.json rule_11_lineage_adjudication",
+    "required_named_pairs": ["Drift-Burst vs micro_volatility", "Drift-Burst vs quote_arrival", "Drift-Burst vs quote_dynamics", "Drift-Burst vs quote_pressure", "Drift-Burst vs spread_state", "Drift-Burst vs feed_health"],
+    "allowed_statuses": ["INDEPENDENT_ENOUGH_FOR_CONTROL", "PARTIALLY_OVERLAPPING", "DEPENDENT_SAME_INFORMATION_FAMILY", "QUALITY_OR_CONDITION_CONTROL_ONLY", "UNRESOLVED_LINEAGE"],
+    "confluence_rule": "feed_health and spread_state are not independent votes by default; any UNRESOLVED_LINEAGE pair blocks promotion as independent confluence; raw3-derived structural detectors are one information family unless evidence adjudicates otherwise"
+  },
+  "support_rule": {
+    "default_effective_observations": 300,
+    "low_support_fallback": "150-299 effective observations only, predeclared LOW_SUPPORT_FALLBACK, with at least 3 UTC calendar-month blocks each containing at least 50 effective observations and the frozen block sign/breadth/dominance checks",
+    "below_floor": "below 150 effective observations is INSUFFICIENT_SUPPORT",
+    "effective_unit": "matched or paired analytical units after conditioning, causal eligibility, exclusions, and missingness; never raw rows",
+    "no_attractive_effect_relaxation": true
+  },
+  "missingness": {
+    "rule": "Keep every lawful anchor in the denominator and report per-scale/per-family missingness, unresolved availability, quality exclusions, left/right censoring, development-boundary truncation, and absent full post-anchor bars without imputation.",
+    "reasons": ["NULL_PAYLOAD", "UNRESOLVED_AVAILABILITY", "QUALITY_EXCLUDED", "LEFT_TRUNCATED_EPISODE", "RIGHT_CENSORED_EPISODE", "DEVELOPMENT_BOUNDARY", "DATA_GAP", "NO_FULLY_POST_ANCHOR_BAR"]
+  },
+  "determinism": {
+    "rerun": "Repeat the deterministic development scan in a fresh process; canonical output hashes must match before interpretation.",
+    "ordering": "Sort by family, native scale, anchor availability key, anchor id, event type, and latency before canonical serialization.",
+    "record": "Record contract/input/artifact hashes, code identity, effective-unit counts, missingness counts, lineage statuses, and runtime in WP4 preflight."
+  },
+  "exit_condition": "Report states which contexts matter, which detector-system sequences recur, which do not, and which lack support; payload dictionary complete; named Rule 11 statuses recorded; native tick and separate seven-scale bridge outputs preserve missingness; determinism hashes match.",
   "deliverables": [
     "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_PAYLOAD_DICTIONARY.json",
     "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_CONDITIONING_TABLES.json",
@@ -56,6 +159,6 @@
     "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_REPORT.md",
     "AP-001/R4_STRUCTURAL_CONTEXT/AP-001_WP4_CANDIDATE_LIST.json (candidate shortlist input, pre-promotion)"
   ],
-  "interpretation_boundary": "Tables frozen, then interpreted. No candidate promotion in WP4; the candidate shortlist goes to the director promotion gate, then WP5.",
+  "interpretation_boundary": "Tables are frozen, then interpreted. WP4 is discovery only: no candidate promotion or activation; the shortlist goes to the director promotion gate, and unresolved lineage cannot be promoted.",
   "change_rule": "Deviations require decision-log entries and director approval before affected evidence is used."
 }
