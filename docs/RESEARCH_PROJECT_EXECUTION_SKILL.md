@@ -255,6 +255,8 @@ Example:
 
 Changing AP-002 E2 from exhaustive pre-interpretation resampling to a discovery-first, challenge-second design requires its own approved change record before execution resumes.
 
+A confirmed quality-instrumentation finding follows the same rule. If a project such as `feed_health` recommends excluding or flagging degraded intervals, that finding triggers a separate change decision for each affected frozen detector project. It does not automatically invalidate, amend, or rerun those projects. The decision for each affected project must state the evidence blast radius and whether a sensitivity rerun, exclusion rerun, flag-only treatment, or no change is warranted.
+
 ---
 
 ## 9. Candidate-promotion gate
