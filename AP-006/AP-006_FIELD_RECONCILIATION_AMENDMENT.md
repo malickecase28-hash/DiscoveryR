@@ -1,6 +1,6 @@
 # AP-006 field-reconciliation amendment (pre-V3)
 
-**Status:** Proposed, supersedes the degradation-episode framing in V1 and V2 before either executes
+**Status:** APPROVED, supersedes the degradation-episode framing in V1 and V2 before either executes
 **Trigger:** `payload_manifest.json` (verified SHA256 `78d5fc20…3eed`, matching the frozen identity) shows the real `feed_health` schema does not match this plan's original design
 **Applies to:** `AP-006_FEED_HEALTH_PROGRAM_R_RESEARCH_PLAN_V2.md`, before WP1 executes
 **Rule invoked:** the same one AP-001 used for its own V3 delta gate: repair the gap, don't redo the whole document
@@ -28,7 +28,7 @@ There is no episode to have a duration, no recovery to measure, and no flapping 
 
 **Detector role.** Confirmed `QUALITY_INSTRUMENTATION`, but the scientific unit is not an episode. It is a single anomaly-flag firing, of one of eight named types, at a lawful tick.
 
-**Definition of done, restated.** For each anomaly type: incidence rate, whether it clusters with other anomaly types at the same or nearby ticks, whether it coincides with genuine market stress or occurs independent of it, and whether ticks at or near a firing measurably contaminate another detector's evidence at that point. The exclusion-rule recommendation is the same deliverable as before; only the unit that recommendation is built from changes, from "exclude ticks inside a degraded episode" to "exclude or flag ticks at or within a defined short window of a named anomaly type's firing."
+**Definition of done, restated.** For each anomaly type: incidence rate, whether it clusters with other anomaly types at the same or nearby ticks, the observable market-stress context around the firing, and whether ticks at or near a firing measurably contaminate another detector's evidence at that point. The exclusion-rule recommendation is the same deliverable as before; only the unit that recommendation is built from changes, from "exclude ticks inside a degraded episode" to "exclude or flag ticks at or within a defined short window of a named anomaly type's firing."
 
 **Sections requiring rewrite before WP1 executes:**
 
@@ -36,7 +36,7 @@ There is no episode to have a duration, no recovery to measure, and no flapping 
 - Section 5 (Left/right boundary, episode-continuation rule) — the 5-second flap-continuation rule is deleted; there is no episode to continue. Replace with a co-occurrence window rule: how close together do two firings (same type or different types) have to be to call them one contamination incident versus two separate ones. This is a new arbitrary-number risk this amendment introduces and must be justified the same way, not just asserted.
 - Section 6 (Episode-lifecycle measures) — "time to recovery," "flap count," "total degraded duration" are removed. Replaced with: per-type incidence rate, inter-firing interval distribution per type, and co-firing rate across types.
 - Section 7 (What the study measures) — same replacement as Section 6; drop episode-onset framing.
-- Section 8 (Market-stress conditioning) — unchanged in principle, applied per firing instead of per episode: does `micro_volatility` and `spread_state` look elevated in the window immediately before a firing, versus their own baseline. The `LIKELY_GENUINE_STRESS` / `LIKELY_ARTIFACT` / `AMBIGUOUS` classification carries over unchanged; only the anchor (a firing, not an episode) changes.
+- Section 8 (Market-stress conditioning) — unchanged in principle, applied per firing instead of per episode: characterize `micro_volatility`, `spread_state`, `quote_arrival`, and session/time context immediately before a firing versus baseline. Preserve V2's market-context labels `DEGRADED_WITH_MARKET_STRESS`, `DEGRADED_WITHOUT_MARKET_STRESS`, and `AMBIGUOUS_MARKET_CONTEXT`. Do not infer whether the underlying market move itself was genuine or fake.
 - Section 9 (Cross-resolution contamination tests) — unchanged in structure (AP-005 tick-domain subject, AP-003 bar-domain subject, cross-resolution comparison); the comparison is now "AP-003/AP-005 evidence inside versus outside a window around a named firing type," not "inside versus outside a degraded episode."
 
 **Sections unaffected:** Section 1's central deliverable (an exclusion-rule recommendation other AP-series projects can act on through their own change decisions), Section 2 scope, Section 4 causal clock and data identities, most of 10-19.
@@ -51,4 +51,4 @@ Before WP2 executes, WP1 must additionally freeze:
 
 ## Decision
 
-`APPROVED` / `REWORK` / `REJECTED`, same as any other change decision, before AP-006 WP1 dispatches.
+`APPROVED` before AP-006 WP1 dispatches.

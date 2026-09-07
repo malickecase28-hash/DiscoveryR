@@ -1,6 +1,6 @@
 # AP-005 field-reconciliation amendment (pre-V3)
 
-**Status:** Proposed, supersedes the regime-based framing in V1 and V2 before either executes
+**Status:** APPROVED, supersedes the regime-based framing in V1 and V2 before either executes
 **Trigger:** `payload_manifest.json` (verified SHA256 `78d5fc20…3eed`, matching the frozen identity) shows the real `quote_pressure` schema does not match this plan's original design
 **Applies to:** `AP-005_QUOTE_PRESSURE_PROGRAM_R_RESEARCH_PLAN_V2.md`, before WP1 executes
 **Rule invoked:** the same one AP-001 used for its own V3 delta gate: repair the gap, don't redo the whole document
@@ -48,4 +48,4 @@ Before WP2 executes, WP1 must additionally freeze:
 
 ## Decision
 
-`APPROVED` / `REWORK` / `REJECTED`, same as any other change decision, before AP-005 WP1 dispatches.
+`APPROVED` before AP-005 WP1 dispatches.
