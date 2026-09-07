@@ -75,15 +75,34 @@ Do not defer this as an informal implementation detail.
 
 Right-boundary handling must also be explicit.
 
-### Step 4 — Define the measurement clocks
+### Step 4 — Define the measurement clocks and resolution bridge
 
 Use only clocks justified by the detector.
+
+The native-outcome clock follows the detector's native data granularity:
+
+- **tick-native detector:** use justified wall-clock or event-time horizons;
+- **bar-native detector:** use native-bar counts on the detector's own scale.
+
+Do not use one fixed wall-clock horizon as the primary phenotype across heterogeneous bar scales.
+
+Anchor resolution does not determine the only valid outcome resolution. Every behavioral detector plan must explicitly decide whether an opposite-resolution bridge is scientifically meaningful:
+
+- tick anchor -> later bar-price / structural outcomes;
+- bar anchor -> immediate tick-price / microstructure outcomes.
+
+A bridge is separate from the native phenotype. It does not replace the native clock.
+
+For a tick->bar bridge, define which fully post-anchor bars are counted so pre-anchor price cannot enter a forward outcome.
+
+For a bar->tick bridge, start at the verified lawful availability time of the bar event, not nominal provenance.
 
 Possible clocks:
 
 - lifecycle/event clock;
-- fixed forward market horizons;
+- fixed tick-time market horizons;
 - native-bar horizons;
+- cross-resolution bridge horizons;
 - antecedent windows;
 - time-to-transition;
 - time-to-resolution.
@@ -107,6 +126,8 @@ These are permission classes, not mandatory filters.
 Preserve native timeframe and lineage.
 
 Do not count dependent detectors as independent confluence without evidence.
+
+The plan must name the detector pairs or families with plausible input, derivation, or semantic overlap. A generic "lineage duplication" risk is insufficient when the concrete pairs are already knowable. Unresolved lineage cannot be presented as independent confirmation.
 
 ### Step 6 — Define the research questions
 
@@ -179,6 +200,10 @@ A candidate promotion rule should consider:
 - censoring;
 - decision relevance.
 
+Freeze a **numeric support floor or a mechanical support-selection rule** before candidate outcomes are interpreted. The plan may use a program standard such as 300 observations with a predeclared 150-observation low-support fallback, or a detector-specific rule with a stated statistical reason. It may not say only "support meets the frozen minimum" while leaving the minimum undefined.
+
+For matched or paired designs, define whether support means raw rows, unique events/objects, or matched analytical units.
+
 A p-value alone is never sufficient.
 
 ### Step 9 — Separate discovery, challenge, and confirmation
@@ -244,8 +269,9 @@ At minimum cover:
 - duplicate occupancy;
 - temporal dependence;
 - regime/session confounding;
-- lineage duplication;
-- low support;
+- lineage duplication, with named high-risk detector pairs/families;
+- low support, with an explicit numeric floor or mechanical rule;
+- cross-resolution search explosion;
 - search explosion;
 - performance;
 - AI over-interpretation;
@@ -348,7 +374,10 @@ A plan is `APPROVED` only when a research director can answer all of these witho
 - How are left and right boundaries handled?
 - What is measured?
 - Why are those horizons or clocks used?
+- What is the native clock, and is a cross-resolution bridge required or explicitly excluded?
 - What contexts are allowed?
+- Which detector pairs have known or plausible lineage overlap?
+- What exact support floor or mechanical support rule governs promotion?
 - What distinguishes discovery from challenge?
 - What causes a candidate to advance?
 - What remains untouched for confirmation?
