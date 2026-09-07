@@ -1,4 +1,4 @@
-# AP-001 Drift-Burst Program R research plan
+# AP-001 Drift-Burst Program R research plan — V3
 
 **Status:** Draft for sign-off  
 **Project:** AP-001 Drift-Burst, XAUUSD  
@@ -22,24 +22,27 @@ Primary anchors:
 For each anchor, the study must answer:
 
 1. What usually happens next inside Drift-Burst?
-2. What happens to price after the state becomes knowable?
-3. What were the other detectors doing at the anchor time?
-4. How do those other detectors change after the anchor?
-5. How do the price path and the detector-system path unfold together after the anchor?
-6. Which same-domain tick conditions change those lifecycle, market, or detector-system outcomes?
-7. Which already-known bar and structural conditions change those lifecycle, market, or detector-system outcomes?
-8. Does Drift-Burst add information beyond those contexts?
-9. Which findings survive untouched chronological confirmation?
+2. What happens to price on the native tick-time clock after the state becomes knowable?
+3. Does information originating in the tick event persist into later bar-scale price or structural behavior?
+4. What were the other detectors doing at the anchor time?
+5. How do those other detectors change after the anchor?
+6. How do the tick-price path, bar-price path, Drift-Burst lifecycle, and detector-system path unfold together?
+7. Which same-domain tick conditions change those lifecycle, market, or detector-system outcomes?
+8. Which already-known bar and structural conditions change those outcomes?
+9. Which later bar/structural events repeatedly emerge after the tick anchor, and which of them deserve a prospective re-anchor?
+10. Does Drift-Burst add information beyond those contexts?
+11. Which findings survive untouched chronological confirmation?
 
-The project therefore studies three distinct objects after every Drift-Burst anchor:
+The project therefore studies four distinct objects after every Drift-Burst anchor:
 
 - **the Drift-Burst lifecycle itself;**
-- **the future market-price path;**
+- **the native tick-time market-price path;**
+- **the later bar-scale market and structural path;**
 - **the future detector-system path.**
 
-These are not interchangeable. A price return says what the market did. A detector transition says how the market-information system evolved. The research must preserve both, then study their timing and relationship.
+These are not interchangeable. The detector's native clock determines when the information originates; it does not dictate the only resolution on which that information may later express itself. Program R must preserve the native tick outcome and separately test whether the information persists or transfers into bar-scale behavior.
 
-AP-001 Program R is complete only when the lifecycle, market consequences, detector-system consequences, same-domain context, structural context, joint price/detector sequencing, incremental-information tests, challenge, confirmation, and final characterization are finished. Every major claim must end as `CONFIRMED`, `REJECTED`, `NULL`, or `INCONCLUSIVE`.
+AP-001 Program R is complete only when the lifecycle, native tick-time market consequences, bounded tick->bar outcome bridge, detector-system consequences, same-domain context, structural context, joint cross-resolution sequencing, incremental-information tests, challenge, confirmation, and final characterization are finished. Every major claim must end as `CONFIRMED`, `REJECTED`, `NULL`, or `INCONCLUSIVE`.
 
 A large result table is not completion.
 
@@ -47,7 +50,7 @@ A large result table is not completion.
 
 ### Included
 
-Lifecycle reconstruction, first-entry anchors, state occupancy as a separate measure, transition paths, recoveries, peak, termination, market-path behavior, tick context, bar and structural context, antecedent sequence discovery, prospective re-anchoring, matched controls, challenge testing, untouched confirmation, and post-confirmation characterization.
+Lifecycle reconstruction, first-entry anchors, state occupancy as a separate measure, transition paths, recoveries, peak, termination, native tick-time market-path behavior, bounded tick->bar outcome measurement, tick context, bar and structural context, cross-resolution sequence discovery, prospective re-anchoring, matched controls, challenge testing, untouched confirmation, and post-confirmation characterization.
 
 ### Excluded
 
@@ -88,11 +91,33 @@ The primary cohort uses the first lawful entry into each anchor state. Repeated 
 
 Incomplete and right-censored episodes remain in the study.
 
+### Left- and right-boundary policy
+
+**Left boundary.** WP1 first checks whether the frozen producer/replay process provides lawful warm state from before the DEVELOPMENT boundary. If it does, use that state only to establish the detector's lawful current lifecycle at the first in-window tick; pre-window observations never become DEVELOPMENT outcomes.
+
+If a Drift-Burst episode is already active when DEVELOPMENT begins and its true first entry or prior lifecycle path is not observed, flag it `LEFT_TRUNCATED_EPISODE`.
+
+A left-truncated episode:
+
+- is excluded from analyses requiring episode inception, prior path, or full dwell time;
+- may remain eligible for forward outcome analysis from a lawfully observed in-window state;
+- is never silently treated as a fresh first-entry episode.
+
+No arbitrary washout is introduced unless WP1 proves the producer's state memory requires one. Any required washout must be frozen before WP2.
+
+**Right boundary.** An episode still active at the DEVELOPMENT boundary is retained with `RIGHT_CENSORED_EPISODE` observation status. Right censoring is not a Drift-Burst lifecycle state and is not a termination event. Future horizons extending beyond the lawful DEVELOPMENT window are marked censored/missing rather than dropped or imputed.
+
 ## 4. Time design
 
-The project uses three time views. They answer different questions.
+The project uses four time views. They answer different questions.
 
-A fourth analytical distinction applies across all three clocks:
+The central rule is:
+
+> **Anchor resolution does not determine outcome resolution.**
+
+Drift-Burst is tick-native, so its first outcome clock is tick time. The same anchor is also followed into lawful bar-scale outcomes to test whether information persists or transfers into later structure.
+
+A further analytical distinction applies across all clocks:
 
 - **anchor-time context** = detector information already knowable at `t`;
 - **post-anchor detector evolution** = detector changes after `t`, treated as outcomes or sequence evidence;
@@ -135,6 +160,83 @@ At every horizon, measure the whole path inside the window:
 - missingness when the lawful window ends before the horizon.
 
 Store raw values, normalized values, and the normalization basis.
+
+### Cross-resolution bridge: tick anchor -> bar outcome
+
+The fixed second-based horizons above remain the **native Drift-Burst outcome clock**.
+
+A second, bounded bar-outcome clock asks whether the same tick-defined state contains information that expresses itself later as bar-scale price behavior or structural change.
+
+#### Bridge scales
+
+Follow every lawful primary anchor into these native bar scales:
+
+- `15s`
+- `30s`
+- `1m`
+- `5m`
+- `15m`
+- `1h`
+- `4h`
+
+At each scale measure:
+
+- `+1 bar`
+- `+2 bars`
+- `+3 bars`
+- `+5 bars`
+
+The first counted bar is the first native bar whose interval begins after the Drift-Burst anchor. This prevents pre-anchor price from entering a supposedly forward bar outcome.
+
+The bridge is discovery first. It does not create seven separate full detector studies.
+
+#### Bar-scale price outcomes
+
+At every bridge horizon record:
+
+- raw return from the lawful Drift-Burst anchor price to the horizon close;
+- direction-adjusted return;
+- bar-scale MFE and MAE over fully post-anchor bars;
+- realized volatility;
+- continuation/reversal classification relative to the Drift-Burst direction;
+- censor status.
+
+Where a separate tick-resolved path is needed inside a bar-defined horizon, the tick path may be retained as higher-resolution observation. It does not replace the bar count.
+
+#### Structural outcomes
+
+For each bridge scale also record the first lawful post-anchor occurrence and latency, where applicable, of:
+
+- `bos_choch`;
+- `swings` / `local_structure` transition;
+- `fvg` formation, touch, fill, or termination;
+- `range` transition or break;
+- `order_blocks` formation, touch, mitigation, or invalidation;
+- structural or micro-liquidity interaction;
+- material session/auction/volume-state transition.
+
+Each structural detector keeps its own native scale and lawful availability coordinate.
+
+#### Information persistence versus information transfer
+
+The bridge distinguishes two different findings:
+
+- **information persistence** — the Drift-Burst state remains informative as the outcome clock moves from seconds into later bars;
+- **information transfer** — the Drift-Burst state is followed by a repeatable bar/structural transition that becomes a better description of the later market path.
+
+A weak tick outcome with a strong later bar outcome is valid. A strong short-lived tick outcome with no bar persistence is also valid.
+
+#### Prospective re-anchor rule
+
+A bar or structural event that occurs after the Drift-Burst anchor is an outcome of the original anchor.
+
+Example:
+
+`STRONG -> tick response -> 5m BOS -> later bar continuation`
+
+AP-001 may discover and characterize this sequence. It may not treat the later BOS as if it were known at `STRONG`.
+
+If a later structural event repeatedly appears before a material outcome, create a separate prospective bridge test anchored when that event itself becomes lawfully available, with the earlier Drift-Burst state retained only as already-known context.
 
 ### Antecedent windows
 
@@ -190,11 +292,10 @@ Does tick context already known at `t` change:
 - recovery;
 - time to peak;
 - time to termination;
-- continuation;
-- reversal;
-- MFE;
-- MAE;
-- realized volatility?
+- tick-time continuation or reversal;
+- tick-time MFE, MAE, or realized volatility;
+- later bar-scale continuation or reversal;
+- the probability or latency of a later structural transition?
 
 **Post-anchor detector-system response**
 
@@ -214,6 +315,8 @@ If a post-anchor detector event repeatedly appears before an important price out
 ## 7. Bar and structural context and co-evolution
 
 At each Drift-Burst anchor, snapshot the latest lawful bar information at 15s, 30s, 1m, 5m, 15m, 1h, and 4h. Native scale remains attached to every object.
+
+WP1 must bind each bar detector's research-availability coordinate to the frozen producer/replay semantics. Nominal bar-close provenance is not assumed to equal lawful availability. Where a detector requires a receipt/sidecar availability coordinate, the causal join uses that verified coordinate.
 
 The study then follows subsequent structural-detector changes after the anchor. This is necessary because a structural snapshot and a structural transition are different pieces of information.
 
@@ -255,13 +358,15 @@ Examples:
 
 These are detector-system outcomes, not information available at `t`.
 
-**C. Joint price / detector-system sequencing**
+**C. Joint cross-resolution price / detector-system sequencing**
 
 For each anchor, reconstruct the ordered path:
 
-`Drift-Burst anchor -> price movement -> other-detector transitions -> Drift-Burst transitions -> later price movement`
+`Drift-Burst anchor -> tick-price response -> tick-detector transitions -> bar-scale price response -> structural-detector transitions -> Drift-Burst lifecycle transitions -> later price movement`
 
-The analysis records event order and latency rather than assuming one detector caused another.
+The analysis records event order, native scale, and latency rather than assuming one detector caused another.
+
+This sequence is used to determine whether information remains tick-native, persists into later bars, or transfers into another structural state before the eventual market outcome.
 
 Questions include:
 
@@ -287,6 +392,9 @@ Example: a known boundary with `WEAK` versus a comparable known boundary without
 
 **Control C. Same eligible episode across lifecycle states.**  
 Compare episodes that lawfully reach multiple states. Keep this paired population separate from the general first-entry population. Do not use eventual completion to define the earlier general cohort.
+
+**Cross-resolution control rule.**  
+Controls A through C are evaluated separately for native tick-time outcomes and promoted bar-bridge outcomes. Results are never pooled across bar scales. A bar-scale relationship may advance only on the scale where its support, effect, and causal definition are valid.
 
 ## 9. Evidence levels and decision relevance
 
@@ -317,22 +425,22 @@ A tag states how later strategy research may use the information. It is not a tr
 
 | WP | Purpose | Required output | Exit condition |
 | --- | --- | --- | --- |
-| **WP1 Contract and benchmark** | Bind the plan to real data and measure scan cost. | Verified input identities, anchor sanity, rows/s, memory, full-run ETA. | Causal ordering and first-entry reconstruction pass. |
-| **WP2 Lifecycle and market discovery** | Produce the first complete Drift-Burst behavioral result. | Lifecycle paths, transition timing, dwell, termination, six-horizon market paths, internal-attribute splits, readable E1 report. | Every anchor has a result or `INSUFFICIENT_SUPPORT`. |
-| **WP3 Same-domain conditioning and co-evolution and co-evolution** | Determine how tick context changes the anchor and how the tick-detector system evolves afterward. | Conditional lifecycle/market tables, post-anchor tick-transition tables, event-order and latency summaries, support and stability summaries. | Every tick family ends with an anchor-context result and a post-anchor sequence result, or an explicit null/insufficient-support/quality-excluded status. |
-| **WP4 Structural conditioning and co-evolution and co-evolution** | Determine how known bar structure changes the anchor and how structural detectors evolve afterward. | Scale-preserved structural-context tables, post-anchor structural-transition tables, joint price/detector sequence summaries, lineage notes, candidate list. | The report states which contexts matter, which detector-system sequences recur, which do not, and which lack support. |
+| **WP1 Contract, boundary, availability, and benchmark** | Bind the plan to real data; verify warm-state/boundary handling; verify bar-context availability semantics; measure scan cost. | Verified input identities, anchor sanity, left/right-boundary rule, bar-availability bindings, rows/s, memory, full-run ETA. | Causal ordering, boundary handling, bar-availability binding, and first-entry reconstruction pass. |
+| **WP2 Lifecycle, tick-market, and bar-bridge discovery** | Produce the first complete Drift-Burst behavioral result on the native tick clock and bounded tick->bar bridge. | Lifecycle paths, transition timing, dwell, termination, six tick-horizon market paths, seven-scale `+1/+2/+3/+5 bar` bridge summaries, internal-attribute splits, readable E1 report. | Every anchor has a native tick result and bar-bridge result, or `INSUFFICIENT_SUPPORT`. |
+| **WP3 Same-domain conditioning and co-evolution** | Determine how tick context changes lifecycle, tick outcomes, and promoted bar-bridge outcomes, and how the tick-detector system evolves afterward. | Conditional lifecycle/market tables, post-anchor tick-transition tables, event-order and latency summaries, support and stability summaries. | Every tick family ends with an anchor-context result and a post-anchor sequence result, or an explicit null/insufficient-support/quality-excluded status. |
+| **WP4 Structural conditioning, co-evolution, and bridge interpretation** | Determine how known bar structure changes the anchor, how structural detectors evolve afterward, and whether Drift-Burst information persists or transfers into later bar behavior. | Scale-preserved structural-context tables, post-anchor structural-transition tables, joint cross-resolution sequence summaries, information-persistence/transfer table, lineage notes, prospective re-anchor candidates. | The report states which contexts matter, which cross-resolution sequences recur, which later events remain retrospective, and which deserve prospective re-anchor. |
 | **WP5 Candidate challenge** | Try to destroy promoted findings and test incremental information. | Matched controls, block-aware nulls, multiplicity-adjusted challenge results. | Each candidate is `SURVIVED_CHALLENGE`, `REJECTED`, `NULL`, or `INCONCLUSIVE`. |
 | **WP6 Confirmation** | Test frozen survivors on untouched data. | One frozen confirmation result per survivor. | Each is `CONFIRMED`, `FAILED_CONFIRMATION`, or `INCONCLUSIVE_CONFIRMATION`. |
-| **WP7 Characterization and closure** | Explain confirmed information and negative knowledge. | Final report, knowledge ledger, decision-relevance matrix. | Definition of done is satisfied. |
+| **WP7 Characterization and closure** | Explain confirmed information, negative knowledge, and Drift-Burst's native versus cross-resolution information domain. | Final report, knowledge ledger, decision-relevance matrix, information-persistence/transfer summary. | Definition of done is satisfied and confirmed findings state whether information is tick-native, bar-persistent, cross-resolution, or absent. |
 
 ### Research flow
 
 ```mermaid
 flowchart TD
     A[Plan sign-off] --> B[WP1 contract and benchmark]
-    B --> C[WP2 lifecycle and market behavior]
+    B --> C[WP2 lifecycle + tick market + bar bridge]
     C --> D[WP3 tick context]
-    D --> E[WP4 structural context]
+    D --> E[WP4 structural context + bridge interpretation]
     E --> F[Candidate shortlist]
     F --> G[WP5 challenge]
     G -->|survives| H[WP6 confirmation]
@@ -385,15 +493,15 @@ Initial three-point estimates cover active engineering and research time, exclud
 
 | Work package | Optimistic | Most likely | Pessimistic |
 | --- | ---: | ---: | ---: |
-| WP1 | 0.5 h | 0.75 h | 1.5 h |
-| WP2 | 1.5 h | 2.5 h | 4 h |
+| WP1 | 0.75 h | 1 h | 2 h |
+| WP2 | 2 h | 3 h | 5 h |
 | WP3 | 1.5 h | 2.5 h | 4 h |
-| WP4 | 2 h | 3.5 h | 6 h |
+| WP4 | 2.5 h | 4 h | 6.5 h |
 | WP5 | 1.5 h | 3 h | 5 h |
 | WP6 | 1 h | 1.5 h | 2.5 h |
 | WP7 | 1.5 h | 2.5 h | 4 h |
 
-PERT weighting gives an initial forecast of about **17 active work-hours**.
+PERT weighting gives an initial forecast of about **18 active work-hours**.
 
 This is a planning forecast, not a promise. WP1 replaces scan-time assumptions with measured runtime before WP2 begins. The project is reforecast only if measured runtime or a scientific defect changes the total forecast by more than 25 percent.
 
@@ -402,9 +510,9 @@ If a work package reaches its pessimistic estimate without meeting its exit cond
 Progress is measured by completed scientific deliverables:
 
 1. benchmark and anchor sanity;
-2. lifecycle and market behavior;
+2. lifecycle, native tick behavior, and bar bridge;
 3. tick conditioning;
-4. structural conditioning;
+4. structural conditioning and bridge interpretation;
 5. challenged candidates;
 6. confirmation;
 7. final knowledge.
@@ -425,6 +533,10 @@ Infrastructure-only work does not count as research progress unless it repairs a
 | lineage duplication | dependency map and provenance | collapse dependent context into one information family |
 | low-support interactions | frozen support rule and distinct-period requirements | mark `INSUFFICIENT_SUPPORT` |
 | search explosion | semantic context families and controlled candidate promotion | register extra ideas for later work |
+| cross-resolution search explosion | fixed seven bar scales and `+1/+2/+3/+5` bridge only; challenge only promoted relationships | do not add arbitrary bar grids or cross every structural field with every Drift-Burst field |
+| bar-availability mismatch | WP1 verifies each structural detector's lawful availability coordinate | reject any join that substitutes nominal provenance for verified availability |
+| partial-bar contamination | first counted bridge bar must begin after the tick anchor | reject any bar-path artifact containing pre-anchor price |
+| future structural-event leakage | post-anchor bar/structural events remain outcomes until prospectively re-anchored | reject any claim that treats a later BOS/FVG/range/liquidity event as known at the Drift-Burst anchor |
 | scanner performance | WP1 benchmark before full run | optimize the local hot path only |
 | AI over-interpretation | every claim links to deterministic evidence | skeptic downgrades unsupported wording |
 | confirmation contamination | locked custody | invalidate confirmation status if breached |
@@ -464,6 +576,9 @@ The final report must explain:
 
 - what `WEAK`, `ONLINE`, `STRONG`, `DECAY_RISK`, and `DYING` mean behaviorally;
 - which internal attributes matter;
+- what happens on the native tick-time clock;
+- what happens on the bounded tick->bar bridge;
+- whether information remains tick-native, persists into later bars, or transfers into structural events;
 - which tick conditions change those meanings;
 - which market structures change those meanings;
 - how the tick and structural detector system evolves after each Drift-Burst state;
@@ -482,15 +597,20 @@ Research starts only after these items are accepted:
 
 - [ ] primary anchors
 - [ ] causal and cohort rules
+- [ ] explicit left/right-boundary and warm-state policy
+- [ ] verified bar-context availability semantics
 - [ ] lifecycle clock
-- [ ] six market horizons and their reasons
+- [ ] six native tick-time horizons and their reasons
+- [ ] bounded seven-scale `+1/+2/+3/+5 bar` tick->bar bridge
+- [ ] first-fully-post-anchor bar alignment rule
+- [ ] information-persistence versus information-transfer distinction
 - [ ] market-path measurements
 - [ ] tick-context design
 - [ ] post-anchor tick-detector co-evolution design
 - [ ] structural-context design
 - [ ] post-anchor structural-detector co-evolution design
 - [ ] joint price/detector sequencing rule
-- [ ] prospective re-anchor rule for post-anchor detector discoveries
+- [ ] prospective re-anchor rule for post-anchor tick and structural discoveries
 - [ ] incremental-information controls
 - [ ] evidence levels and decision-relevance tags
 - [ ] seven work packages
@@ -521,4 +641,4 @@ References:
 
 After AP-001 uses this plan once, convert the stable parts into a detector-research skill. The skill should adapt `figure-it-out` for scope, definition of done, work decomposition, risk, and auditability; `technical-writing` for project documents; `teach` for human-readable result explanations; and `unslop` for plain language.
 
-The skill must remain detector-aware. It must not force future detectors through Drift-Burst-specific anchors, horizons, or context rules.
+The skill must remain detector-aware. It must not force future detectors through Drift-Burst-specific anchors, horizons, or context rules. Every future detector plan must nevertheless ask whether the detector's native anchor can produce meaningful outcomes at the opposite data resolution, and must bound that cross-resolution bridge before execution.
